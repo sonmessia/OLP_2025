@@ -1,0 +1,34 @@
+services:
+  # Dịch vụ Cơ sở dữ liệu MongoDB
+  mongo-db:
+    image: mongo:5.0
+    container_name: mongo-db
+    networks:
+      - fiware_default
+    expose:
+      - "27017"
+    command: --bind_ip_all
+
+  orion-ld:
+    image: fiware/orion-ld
+    container_name: fiware-orionld
+    hostname: orion
+    networks:
+      - fiware_default
+    ports:
+      - "1026:1026"
+    command: -dbhost mongo-db
+    depends_on:
+      - mongo-db
+    healthcheck:
+      test: curl --fail -s http://orion:1026/version || exit 1
+  ld-context:
+    image: httpd:alpine
+    hostname: context
+    container_name: fiware-ld-context
+    ports:
+      - "3004:80"
+# Định nghĩa mạng ảo
+networks:
+  fiware_default:
+    driver: bridge
