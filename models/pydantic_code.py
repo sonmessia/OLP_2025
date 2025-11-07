@@ -242,7 +242,7 @@ class AirQualityObserved(BaseModel):
         ]
     ] = Field(
         None,
-        description=" Weather observed associated to the air quality conditions described by this entity",
+        description="Weather observed associated to the air quality conditions described by this entity",
         pattern=r"^[\\w\\-\\.\\{\\}\\$\\+\\*\\[\\]`|~^@!, :\\\\]+$",
         min_length=1,
         max_length=256,
