@@ -7,6 +7,8 @@ services:
       - fiware_default
     expose:
       - "27017"
+    volumes:
+      - mongo-db:/data/db
     command: --bind_ip_all
 
   orion-ld:
@@ -34,3 +36,7 @@ services:
 networks:
   fiware_default:
     driver: bridge
+
+# Define volumes for data persistence
+volumes:
+  mongo-db:
