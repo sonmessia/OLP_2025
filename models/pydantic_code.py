@@ -179,7 +179,7 @@ class AirQualityObserved(BaseModel):
     no: Optional[float] = Field(None, description="Nitrogen monoxide detected", ge=0.0)
     no2: Optional[float] = Field(None, description="Nitrogen dioxide detected", ge=0.0)
     nox: Optional[float] = Field(None, description="Other Nitrogen oxides detected")
-    o3: Optional[float] = Field(None, description="Ozone detected ")
+    o3: Optional[float] = Field(None, description="Ozone detected")
     owner: Optional[
         List[
             Union[
