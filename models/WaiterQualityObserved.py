@@ -246,7 +246,7 @@ class WaterQualityObserved(BaseModel):
     cationic_surfactants: Optional[confloat(ge=0.0)] = Field(
         None,
         alias="cationic-surfactants",
-        description="Concentrtation of cationic surfactants",
+        description="Concentration of cationic surfactants",
     )
     cod: Optional[confloat(ge=0.0)] = Field(
         None,
