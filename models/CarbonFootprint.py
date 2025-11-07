@@ -272,7 +272,7 @@ class CarbonFootPrint(BaseModel):
     )
     dateObserved: Optional[str] = Field(
         None,
-        description="The date and time of this observation in ISO8601 UTCformat. It can be represented by an specific time instant or by an ISO8601 interval",
+        description="The date and time of this observation in ISO8601 UTC format. It can be represented by an specific time instant or by an ISO8601 interval",
     )
     description: Optional[str] = Field(None, description="A description of this item")
     enterococci: Optional[confloat(ge=0.0)] = Field(
