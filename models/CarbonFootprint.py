@@ -281,7 +281,7 @@ class CarbonFootPrint(BaseModel):
     escherichiaColi: Optional[confloat(ge=0.0)] = Field(
         None, description="Concentration of Escherichia coli"
     )
-    flow: Optional[float] = Field(None, description="Water Flow observed. ")
+    flow: Optional[float] = Field(None, description="Water Flow observed.")
     fluoride: Optional[confloat(ge=0.0)] = Field(
         None, description="Concentration of fluoride"
     )
