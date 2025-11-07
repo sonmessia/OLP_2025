@@ -194,7 +194,7 @@ class AirQualityObserved(BaseModel):
         min_length=1,
         max_length=256,
     )
-    pb: Optional[float] = Field(None, description="Lead detected   ")
+    pb: Optional[float] = Field(None, description="Lead detected")
     pm1: Optional[float] = Field(
         None, description="Particulate matter 1 micrometers or less in diameter", ge=0.0
     )
