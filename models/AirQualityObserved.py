@@ -156,7 +156,7 @@ class AirQualityObserved(BaseModel):
         description="Timestamp of the last modification of the entity. This will usually be allocated by the storage platform",
     )
     dateObserved: Optional[AwareDatetime] = Field(
-        None, description="The date and time of this observation in ISO8601 UTCformat"
+        None, description="The date and time of this observation in ISO8601 UTC format"
     )
     description: Optional[str] = Field(None, description="A description of this item")
     id: Optional[
