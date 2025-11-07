@@ -35,6 +35,6 @@ networks:
   fiware_default:
     driver: bridge
 
-# Định nghĩa volumes cho data persistence
+# Define volumes for data persistence
 volumes:
   mongo-db:
