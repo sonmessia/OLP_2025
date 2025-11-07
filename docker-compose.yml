@@ -21,13 +21,15 @@ services:
     depends_on:
       - mongo-db
     healthcheck:
-      test: curl --fail -s http://orion:1026/version || exit 1
+      test: wget --spider -q http://orion:1026/version || exit 1
   ld-context:
     image: httpd:alpine
     hostname: context
     container_name: fiware-ld-context
     ports:
       - "3004:80"
+    volumes:
+      - ./ld-context-files:/usr/local/apache2/htdocs/
 # Định nghĩa mạng ảo
 networks:
   fiware_default:

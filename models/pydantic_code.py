@@ -156,7 +156,7 @@ class AirQualityObserved(BaseModel):
         description="Timestamp of the last modification of the entity. This will usually be allocated by the storage platform",
     )
     dateObserved: Optional[AwareDatetime] = Field(
-        None, description="The date and time of this observation in ISO8601 UTCformat"
+        None, description="The date and time of this observation in ISO8601 UTC format"
     )
     description: Optional[str] = Field(None, description="A description of this item")
     id: Optional[
@@ -179,7 +179,7 @@ class AirQualityObserved(BaseModel):
     no: Optional[float] = Field(None, description="Nitrogen monoxide detected", ge=0.0)
     no2: Optional[float] = Field(None, description="Nitrogen dioxide detected", ge=0.0)
     nox: Optional[float] = Field(None, description="Other Nitrogen oxides detected")
-    o3: Optional[float] = Field(None, description="Ozone detected ")
+    o3: Optional[float] = Field(None, description="Ozone detected")
     owner: Optional[
         List[
             Union[
@@ -194,7 +194,7 @@ class AirQualityObserved(BaseModel):
         min_length=1,
         max_length=256,
     )
-    pb: Optional[float] = Field(None, description="Lead detected   ")
+    pb: Optional[float] = Field(None, description="Lead detected")
     pm1: Optional[float] = Field(
         None, description="Particulate matter 1 micrometers or less in diameter", ge=0.0
     )
@@ -242,7 +242,7 @@ class AirQualityObserved(BaseModel):
         ]
     ] = Field(
         None,
-        description=" Weather observed associated to the air quality conditions described by this entity",
+        description="Weather observed associated to the air quality conditions described by this entity",
         pattern=r"^[\\w\\-\\.\\{\\}\\$\\+\\*\\[\\]`|~^@!, :\\\\]+$",
         min_length=1,
         max_length=256,
