@@ -245,10 +245,7 @@ class WaterQualityObserved(BaseModel):
         None,
         alias="cationic-surfactants",
         description="Concentration of cationic surfactants",
-<<<<<<< HEAD
         ge=0.0,
-=======
->>>>>>> 4f275d57b4d956ab2e81a01ab77ac01b2f0a0a1a
     )
     cod: Optional[float] = Field(
         None,
@@ -284,7 +281,6 @@ class WaterQualityObserved(BaseModel):
     escherichiaColi: Optional[float] = Field(
         None, description="Concentration of Escherichia coli", ge=0.0
     )
-<<<<<<< HEAD
     flow: Optional[float] = Field(None, description="Water Flow observed. ")
     fluoride: Optional[float] = Field(
         None, description="Concentration of fluoride", ge=0.0
@@ -295,11 +291,6 @@ class WaterQualityObserved(BaseModel):
         pattern=r"^[\\w\\-\\.\\{\\}\\$\\+\\*\\[\\]`|~^@!, :\\\\]+$",
         min_length=1,
         max_length=256,
-=======
-    flow: Optional[float] = Field(None, description="Water Flow observed.")
-    fluoride: Optional[confloat(ge=0.0)] = Field(
-        None, description="Concentration of fluoride"
->>>>>>> 4f275d57b4d956ab2e81a01ab77ac01b2f0a0a1a
     )
     location: Optional[
         Union[Location, Location1, Location2, Location3, Location4, Location5]
