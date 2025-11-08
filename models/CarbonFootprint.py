@@ -138,7 +138,8 @@ class CarbonFootprint(BaseModel):
         None, description="The date and time when the emission occurred"
     )
     emissionSource: Optional[str] = Field(
-        None, description="The source of the carbon emission (e.g., Transport, Industry, Agriculture)"
+        None,
+        description="The source of the carbon emission (e.g., Transport, Industry, Agriculture)",
     )
     id: Optional[Union[str, AnyUrl]] = Field(
         None,

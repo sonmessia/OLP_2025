@@ -1,5 +1,4 @@
 services:
-  # Dịch vụ Cơ sở dữ liệu MongoDB
   mongo-db:
     image: mongo:5.0
     container_name: mongo-db
@@ -10,6 +9,25 @@ services:
     volumes:
       - mongo-db:/data/db
     command: --bind_ip_all
+
+  postgres-db:
+    image: postgres:15-alpine
+    container_name: postgres-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./init:/docker-entrypoint-initdb.d
+      - postgres-db:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $$POSTGRES_USER"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
   orion-ld:
     image: fiware/orion-ld
@@ -24,6 +42,7 @@ services:
       - mongo-db
     healthcheck:
       test: wget --spider -q http://orion:1026/version || exit 1
+
   ld-context:
     image: httpd:alpine
     hostname: context
@@ -32,11 +51,11 @@ services:
       - "3004:80"
     volumes:
       - ./ld-context-files:/usr/local/apache2/htdocs/
-# Định nghĩa mạng ảo
+
 networks:
   fiware_default:
     driver: bridge
 
-# Define volumes for data persistence
 volumes:
   mongo-db:
+  postgres-db:
