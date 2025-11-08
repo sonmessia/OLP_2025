@@ -39,7 +39,10 @@ CREATE TABLE CarbonFootprint (
     type TEXT
 );
 
-
+-- Add indexes to improve query performance on CarbonFootprint
+CREATE INDEX idx_carbonfootprint_emission_date ON CarbonFootprint(emissionDate);
+CREATE INDEX idx_carbonfootprint_date_created ON CarbonFootprint(dateCreated);
+CREATE INDEX idx_carbonfootprint_related_source ON CarbonFootprint(relatedSource);
 --------------------------------------------------------------
 -- BẢNG 2: AirQualityObserved
 --------------------------------------------------------------
