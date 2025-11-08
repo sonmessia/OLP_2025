@@ -47,5 +47,9 @@ command = [
     "GET",
     "http://localhost:1026/ngsi-ld/v1/entities?local=true&limit=1000",
 ]
-result = subprocess.run(command, capture_output=True, text=True)
-print(result.stdout)
+try:
+    result = subprocess.run(command, capture_output=True, text=True, check=True)
+    print(result.stdout)
+except subprocess.CalledProcessError as e:
+    print(f"Error executing curl command: {e}")
+    print(f"stderr: {e.stderr}")

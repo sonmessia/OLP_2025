@@ -49,6 +49,8 @@ services:
     container_name: fiware-ld-context
     ports:
       - "3004:80"
+    volumes:
+      - ./ld-context-files:/usr/local/apache2/htdocs/
 
 networks:
   fiware_default:
