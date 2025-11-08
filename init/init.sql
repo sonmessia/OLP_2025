@@ -96,6 +96,10 @@ CREATE TABLE AirQualityObserved (
     windSpeed NUMERIC
 );
 
+-- Indexes for AirQualityObserved timestamp columns
+CREATE INDEX idx_airquality_date_observed ON AirQualityObserved(dateObserved);
+CREATE INDEX idx_airquality_date_created ON AirQualityObserved(dateCreated);
+CREATE INDEX idx_airquality_date_modified ON AirQualityObserved(dateModified);
 
 --------------------------------------------------------------
 -- BẢNG 3: WaterQualityObserved
