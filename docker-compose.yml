@@ -29,6 +29,16 @@ services:
       timeout: 5s
       retries: 5
 
+  backend:
+    build: ./backend
+    container_name: backend
+    hostname: backend
+    networks:
+      - fiware_default
+    ports:
+      - "8000:8000"
+    restart: unless-stopped
+
   orion-ld:
     image: fiware/orion-ld
     container_name: fiware-orionld
