@@ -21,7 +21,7 @@ services:
     ports:
       - "5432:5432"
     volumes:
-      - ./init:/docker-entrypoint-initdb.d
+      - .config/postgres/init:/docker-entrypoint-initdb.d
       - postgres-db:/var/lib/postgresql/data
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U $$POSTGRES_USER"]
@@ -47,6 +47,8 @@ services:
     image: httpd:alpine
     hostname: context
     container_name: fiware-ld-context
+    networks:
+      - fiware_default
     ports:
       - "3004:80"
     volumes:

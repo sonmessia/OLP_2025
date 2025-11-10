@@ -1,0 +1,1570 @@
+{
+    "@context": {
+        "type": "@type",
+        "id": "@id",
+        "ngsi-ld": "https://uri.etsi.org/ngsi-ld/",
+        "fiware": "https://uri.fiware.org/ns/data-models#",
+        "schema": "https://schema.org/",
+        "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+        "xsd": "http://www.w3.org/2001/XMLSchema#",
+        "AirQualityObserved": "fiware:AirQualityObserved",
+        "Building": "fiware:Building",
+        "CO2eq": {
+            "@id": "fiware:CO2eq",
+            "@type": "xsd:number"
+        },
+        "CarbonFootprint": "fiware:CarbonFootprint",
+        "Device": "fiware:Device",
+        "address": "fiware:address",
+        "addressCountry": {
+            "@id": "fiware:addressCountry",
+            "@type": "xsd:string"
+        },
+        "addressLocality": {
+            "@id": "fiware:addressLocality",
+            "@type": "xsd:string"
+        },
+        "addressRegion": {
+            "@id": "fiware:addressRegion",
+            "@type": "xsd:string"
+        },
+        "airQualityIndex": {
+            "@id": "fiware:airQualityIndex",
+            "@type": "xsd:number"
+        },
+        "airQualityLevel": {
+            "@id": "fiware:airQualityLevel",
+            "@type": "xsd:string"
+        },
+        "alternateName": {
+            "@id": "fiware:alternateName",
+            "@type": "xsd:string"
+        },
+        "areaServed": {
+            "@id": "fiware:areaServed",
+            "@type": "xsd:string"
+        },
+        "as": {
+            "@id": "fiware:as",
+            "@type": "xsd:number"
+        },
+        "batteryLevel": {
+            "@id": "fiware:batteryLevel",
+            "@type": "xsd:undefined"
+        },
+        "c6h6": {
+            "@id": "fiware:c6h6",
+            "@type": "xsd:number"
+        },
+        "category": {
+            "@id": "fiware:category",
+            "@type": "xsd:array"
+        },
+        "cd": {
+            "@id": "fiware:cd",
+            "@type": "xsd:number"
+        },
+        "charge": {
+            "@id": "fiware:charge",
+            "@type": "xsd:number"
+        },
+        "co": {
+            "@id": "fiware:co",
+            "@type": "xsd:number"
+        },
+        "co2": {
+            "@id": "fiware:co2",
+            "@type": "xsd:number"
+        },
+        "coLevel": {
+            "@id": "fiware:coLevel",
+            "@type": "xsd:string"
+        },
+        "collapseRisk": {
+            "@id": "fiware:collapseRisk",
+            "@type": "xsd:number"
+        },
+        "configuration": {
+            "@id": "fiware:configuration",
+            "@type": "xsd:array"
+        },
+        "containedInPlace": {
+            "@id": "fiware:containedInPlace",
+            "@type": "xsd:undefined"
+        },
+        "controlledAsset": {
+            "@id": "fiware:controlledAsset",
+            "@type": "xsd:array"
+        },
+        "controlledProperty": {
+            "@id": "fiware:controlledProperty",
+            "@type": "xsd:array"
+        },
+        "dataProvider": {
+            "@id": "fiware:dataProvider",
+            "@type": "xsd:string"
+        },
+        "dateCreated": {
+            "@id": "fiware:dateCreated",
+            "@type": "xs:dateTime"
+        },
+        "dateFirstUsed": {
+            "@id": "fiware:dateFirstUsed",
+            "@type": "xs:dateTime"
+        },
+        "dateInstalled": {
+            "@id": "fiware:dateInstalled",
+            "@type": "xs:dateTime"
+        },
+        "dateLastCalibration": {
+            "@id": "fiware:dateLastCalibration",
+            "@type": "xs:dateTime"
+        },
+        "dateLastValueReported": {
+            "@id": "fiware:dateLastValueReported",
+            "@type": "xs:dateTime"
+        },
+        "dateManufactured": {
+            "@id": "fiware:dateManufactured",
+            "@type": "xs:dateTime"
+        },
+        "dateModified": {
+            "@id": "fiware:dateModified",
+            "@type": "xs:dateTime"
+        },
+        "dateObserved": {
+            "@id": "fiware:dateObserved",
+            "@type": "xs:dateTime"
+        },
+        "depth": {
+            "@id": "fiware:depth",
+            "@type": "xsd:number"
+        },
+        "description": {
+            "@id": "fiware:description",
+            "@type": "xsd:string"
+        },
+        "deviceCategory": {
+            "@id": "fiware:deviceCategory",
+            "@type": "xsd:array"
+        },
+        "deviceState": {
+            "@id": "fiware:deviceState",
+            "@type": "xsd:string"
+        },
+        "direction": {
+            "@id": "fiware:direction",
+            "@type": "xsd:string"
+        },
+        "distance": {
+            "@id": "fiware:distance",
+            "@type": "xsd:number"
+        },
+        "district": {
+            "@id": "fiware:district",
+            "@type": "xsd:string"
+        },
+        "dstAware": {
+            "@id": "fiware:dstAware",
+            "@type": "xsd:boolean"
+        },
+        "emissionDate": {
+            "@id": "fiware:emissionDate",
+            "@type": "xs:dateTime"
+        },
+        "emissionSource": {
+            "@id": "fiware:emissionSource",
+            "@type": "xsd:string"
+        },
+        "firmwareVersion": {
+            "@id": "fiware:firmwareVersion",
+            "@type": "xsd:string"
+        },
+        "floorsAboveGround": {
+            "@id": "fiware:floorsAboveGround",
+            "@type": "xsd:number"
+        },
+        "floorsBelowGround": {
+            "@id": "fiware:floorsBelowGround",
+            "@type": "xsd:number"
+        },
+        "hardwareVersion": {
+            "@id": "fiware:hardwareVersion",
+            "@type": "xsd:string"
+        },
+        "ipAddress": {
+            "@id": "fiware:ipAddress",
+            "@type": "xsd:array"
+        },
+        "location": {
+            "@id": "fiware:location",
+            "@type": "xsd:undefined"
+        },
+        "macAddress": {
+            "@id": "fiware:macAddress",
+            "@type": "xsd:string"
+        },
+        "mapUrl": {
+            "@id": "fiware:mapUrl",
+            "@type": "@id"
+        },
+        "mcc": {
+            "@id": "fiware:mcc",
+            "@type": "xsd:string"
+        },
+        "mnc": {
+            "@id": "fiware:mnc",
+            "@type": "xsd:string"
+        },
+        "name": {
+            "@id": "fiware:name",
+            "@type": "xsd:string"
+        },
+        "ni": {
+            "@id": "fiware:ni",
+            "@type": "xsd:number"
+        },
+        "no": {
+            "@id": "fiware:no",
+            "@type": "xsd:number"
+        },
+        "no2": {
+            "@id": "fiware:no2",
+            "@type": "xsd:number"
+        },
+        "nox": {
+            "@id": "fiware:nox",
+            "@type": "xsd:number"
+        },
+        "o3": {
+            "@id": "fiware:o3",
+            "@type": "xsd:number"
+        },
+        "occupier": {
+            "@id": "fiware:occupier",
+            "@type": "@id"
+        },
+        "openingHours": {
+            "@id": "fiware:openingHours",
+            "@type": "xsd:array"
+        },
+        "osVersion": {
+            "@id": "fiware:osVersion",
+            "@type": "xsd:string"
+        },
+        "owner": {
+            "@id": "fiware:owner",
+            "@type": "xsd:array"
+        },
+        "pb": {
+            "@id": "fiware:pb",
+            "@type": "xsd:number"
+        },
+        "peopleCapacity": {
+            "@id": "fiware:peopleCapacity",
+            "@type": "xsd:number"
+        },
+        "peopleOccupancy": {
+            "@id": "fiware:peopleOccupancy",
+            "@type": "xsd:number"
+        },
+        "pm1": {
+            "@id": "fiware:pm1",
+            "@type": "xsd:number"
+        },
+        "pm10": {
+            "@id": "fiware:pm10",
+            "@type": "xsd:number"
+        },
+        "pm25": {
+            "@id": "fiware:pm25",
+            "@type": "xsd:number"
+        },
+        "pm4": {
+            "@id": "fiware:pm4",
+            "@type": "xsd:number"
+        },
+        "postOfficeBoxNumber": {
+            "@id": "fiware:postOfficeBoxNumber",
+            "@type": "xsd:string"
+        },
+        "postalCode": {
+            "@id": "fiware:postalCode",
+            "@type": "xsd:string"
+        },
+        "precipitation": {
+            "@id": "fiware:precipitation",
+            "@type": "xsd:number"
+        },
+        "pressure": {
+            "@id": "fiware:pressure",
+            "@type": "xsd:number"
+        },
+        "provider": {
+            "@id": "fiware:provider",
+            "@type": "xsd:string"
+        },
+        "refBuilding": {
+            "@id": "fiware:refBuilding",
+            "@type": "@id"
+        },
+        "refDevice": {
+            "@id": "fiware:refDevice",
+            "@type": "@id"
+        },
+        "refDeviceModel": {
+            "@id": "fiware:refDeviceModel",
+            "@type": "@id"
+        },
+        "refPointOfInterest": {
+            "@id": "fiware:refPointOfInterest",
+            "@type": "@id"
+        },
+        "refWeatherObserved": {
+            "@id": "fiware:refWeatherObserved",
+            "@type": "@id"
+        },
+        "relatedSource": {
+            "@id": "fiware:relatedSource",
+            "@type": "@id"
+        },
+        "relativeHumidity": {
+            "@id": "fiware:relativeHumidity",
+            "@type": "xsd:number"
+        },
+        "relativePosition": {
+            "@id": "fiware:relativePosition",
+            "@type": "xsd:string"
+        },
+        "reliability": {
+            "@id": "fiware:reliability",
+            "@type": "xsd:number"
+        },
+        "rssi": {
+            "@id": "fiware:rssi",
+            "@type": "xsd:number"
+        },
+        "seeAlso": {
+            "@id": "fiware:seeAlso",
+            "@type": "xsd:undefined"
+        },
+        "serialNumber": {
+            "@id": "fiware:serialNumber",
+            "@type": "xsd:string"
+        },
+        "sh2": {
+            "@id": "fiware:sh2",
+            "@type": "xsd:number"
+        },
+        "so2": {
+            "@id": "fiware:so2",
+            "@type": "xsd:number"
+        },
+        "softwareVersion": {
+            "@id": "fiware:softwareVersion",
+            "@type": "xsd:string"
+        },
+        "source": {
+            "@id": "fiware:source",
+            "@type": "xsd:string"
+        },
+        "streetAddress": {
+            "@id": "fiware:streetAddress",
+            "@type": "xsd:string"
+        },
+        "streetNr": {
+            "@id": "fiware:streetNr",
+            "@type": "xsd:string"
+        },
+        "supportedProtocol": {
+            "@id": "fiware:supportedProtocol",
+            "@type": "xsd:array"
+        },
+        "tags": {
+            "@id": "fiware:tags",
+            "@type": "xsd:array"
+        },
+        "temperature": {
+            "@id": "fiware:temperature",
+            "@type": "xsd:number"
+        },
+        "tpc": {
+            "@id": "fiware:tpc",
+            "@type": "xsd:number"
+        },
+        "tsp": {
+            "@id": "fiware:tsp",
+            "@type": "xsd:number"
+        },
+        "typeofLocation": {
+            "@id": "fiware:typeofLocation",
+            "@type": "xsd:string"
+        },
+        "value": {
+            "@id": "fiware:value",
+            "@type": "xsd:string"
+        },
+        "volatileOrganicCompoundsTotal": {
+            "@id": "fiware:volatileOrganicCompoundsTotal",
+            "@type": "xsd:number"
+        },
+        "windDirection": {
+            "@id": "fiware:windDirection",
+            "@type": "xsd:number"
+        },
+        "windSpeed": {
+            "@id": "fiware:windSpeed",
+            "@type": "xsd:number"
+        }
+    },
+    "@graph": [
+        {
+            "@id": "fiware:Device",
+            "@type": "rdfs:Class",
+            "rdfs:comment": [
+                {
+                    "@language": "en",
+                    "@value": "An apparatus (hardware + software + firmware) intended to accomplish a particular task (sensing the environment, actuating, etc.)."
+                }
+            ],
+            "rdfs:label": [
+                {
+                    "@language": "en",
+                    "@value": "Device"
+                }
+            ],
+            "rdfs:subClassOf": {
+                "@id": "schema:Thing"
+            }
+        },
+        {
+            "@id": "fiware:AirQualityObserved",
+            "@type": "rdfs:Class",
+            "rdfs:comment": [
+                {
+                    "@language": "en",
+                    "@value": ""
+                }
+            ],
+            "rdfs:label": [
+                {
+                    "@language": "en",
+                    "@value": "AirQualityObserved"
+                }
+            ],
+            "rdfs:subClassOf": {
+                "@id": "schema:Thing"
+            }
+        },
+        {
+            "@id": "fiware:Building",
+            "@type": "rdfs:Class",
+            "rdfs:comment": [
+                {
+                    "@language": "en",
+                    "@value": "Information on a given Building"
+                }
+            ],
+            "rdfs:label": [
+                {
+                    "@language": "en",
+                    "@value": "Building"
+                }
+            ],
+            "rdfs:subClassOf": {
+                "@id": "schema:Thing"
+            }
+        },
+        {
+            "@id": "fiware:CarbonFootprint",
+            "@type": "rdfs:Class",
+            "rdfs:comment": [
+                {
+                    "@language": "en",
+                    "@value": ""
+                }
+            ],
+            "rdfs:label": [
+                {
+                    "@language": "en",
+                    "@value": "CarbonFootprint"
+                }
+            ],
+            "rdfs:subClassOf": {
+                "@id": "schema:Thing"
+            }
+        },
+        {
+            "@id": "fiware:address",
+            "@type": "ngsi-ld:Property",
+            "rdfs:comment": [
+                {
+                    "@language": "en",
+                    "@value": "The mailing address"
+                }
+            ],
+            "rdfs:label": [
+                {
+                    "@language": "en",
+                    "@value": "address"
+                }
+            ]
+        },
+        {
+            "@id": "fiware:alternateName",
+            "@type": "ngsi-ld:Property",
+            "rdfs:comment": [
+                {
+                    "@language": "en",
+                    "@value": "An alternative name for this item"
+                }
+            ],
+            "rdfs:label": [
+                {
+                    "@language": "en",
+                    "@value": "alternateName"
+                }
+            ]
+        },
+        {
+            "@id": "fiware:areaServed",
+            "@type": "ngsi-ld:Property",
+            "rdfs:comment": [
+                {
+                    "@language": "en",
+                    "@value": "The geographic area where a service or offered item is provided"
+                }
+            ],
+            "rdfs:label": [
+                {
+                    "@language": "en",
+                    "@value": "areaServed"
+                }
+            ]
+        },
+        {
+            "@id": "fiware:batteryLevel",
+            "@type": "ngsi-ld:Property",
+            "rdfs:comment": [
+                {
+                    "@language": "en",
+                    "@value": "Device battery level. It must be equal to 1.0 when battery is full. 0.0 when battery is empty. -1 when transiently cannot be determined"
+                }
+            ],
+            "rdfs:label": [
+                {
+                    "@language": "en",
+                    "@value": "batteryLevel"
+                }
+            ]
+        },
+        {
+            "@id": "fiware:category",
+            "@type": "ngsi-ld:Property",
+            "rdfs:comment": [
+                {
+                    "@language": "en",
+                    "@value": "Sensor: A device that detects and responds to events or changes in the physical environment such as light, motion, or temperature changes. https://w3id.org/saref#Sensor. actuator : A device responsible for moving or controlling a mechanism or system. https://w3id.org/saref#Actuator. Meter : A device built to accurately detect and display a quantity in a form readable by a human being. Partially defined by SAREF. HVAC : Heating, Ventilation and Air Conditioning (HVAC) device that provides indoor environmental comfort. https://w3id.org/saref#HVAC. Network : A device used to connect other devices in a network, such as hub, switch or router in a LAN or Sensor network. (https://w3id.org/saref#Network. Multimedia : A device designed to display, store, record or play multimedia content such as audio, images, animation, video. Enum:'actuator, beacon, endgun, HVAC, implement, irrSection, irrSystem, meter, multimedia, network, sensor'. Raw category will be deprecated use deviceCategory instead to avoid conflict with other aqttributes named category"
+                }
+            ],
+            "rdfs:label": [
+                {
+                    "@language": "en",
+                    "@value": "category"
+                }
+            ]
+        },
+        {
+            "@id": "fiware:configuration",
+            "@type": "ngsi-ld:Property",
+            "rdfs:comment": [
+                {
+                    "@language": "en",
+                    "@value": "Device's technical configuration. This attribute is intended to be a array properties and their values which capture parameters which have to do with the configuration of a device (timeouts, reporting periods, etc.) and which are not currently covered by the standard attributes defined by this model"
+                }
+            ],
+            "rdfs:label": [
+                {
+                    "@language": "en",
+                    "@value": "configuration"
+                }
+            ]
+        },
+        {
+            "@id": "fiware:controlledAsset",
+            "@type": "ngsi-ld:Property",
+            "rdfs:comment": [
+                {
+                    "@language": "en",
+                    "@value": "List of the asset(s) (building, object, etc.) controlled by the device"
+                }
+            ],
+            "rdfs:label": [
+                {
+                    "@language": "en",
+                    "@value": "controlledAsset"
+                }
+            ]
+        },
+        {
+            "@id": "fiware:controlledProperty",
+            "@type": "ngsi-ld:Property",
+            "rdfs:comment": [
+                {
+                    "@language": "en",
+                    "@value": "Anything that can be sensed, measured or controlled by. Enum:'airPollution, atmosphericPressure, averageVelocity, batteryLife, batterySupply, cdom, conductance, conductivity, depth, eatingActivity, electricityConsumption, energy, fillingLevel, freeChlorine, gasConsumption, gateOpening, heading, humidity, light, location, milking, motion, movementActivity, noiseLevel, occupancy, orp, pH, power, precipitation, pressure, refractiveIndex, salinity, smoke, soilMoisture, solarRadiation, speed, tds, temperature, trafficFlow, tss, turbidity, waterConsumption, waterFlow, waterLevel, waterPollution, weatherConditions, weight, windDirection, windSpeed'"
+                }
+            ],
+            "rdfs:label": [
+                {
+                    "@language": "en",
+                    "@value": "controlledProperty"
+                }
+            ]
+        },
+        {
+            "@id": "fiware:dataProvider",
+            "@type": "ngsi-ld:Property",
+            "rdfs:comment": [
+                {
+                    "@language": "en",
+                    "@value": "A sequence of characters identifying the provider of the harmonised data entity"
+                }
+            ],
+            "rdfs:label": [
+                {
+                    "@language": "en",
+                    "@value": "dataProvider"
+                }
+            ]
+        },
+        {
+            "@id": "fiware:dateCreated",
+            "@type": "ngsi-ld:Property",
+            "rdfs:comment": [
+                {
+                    "@language": "en",
+                    "@value": "Entity creation timestamp. This will usually be allocated by the storage platform"
+                }
+            ],
+            "rdfs:label": [
+                {
+                    "@language": "en",
+                    "@value": "dateCreated"
+                }
+            ]
+        },
+        {
+            "@id": "fiware:dateFirstUsed",
+            "@type": "ngsi-ld:Property",
+            "rdfs:comment": [
+                {
+                    "@language": "en",
+                    "@value": "A timestamp which denotes when the device was first used"
+                }
+            ],
+            "rdfs:label": [
+                {
+                    "@language": "en",
+                    "@value": "dateFirstUsed"
+                }
+            ]
+        },
+        {
+            "@id": "fiware:dateInstalled",
+            "@type": "ngsi-ld:Property",
+            "rdfs:comment": [
+                {
+                    "@language": "en",
+                    "@value": "A timestamp which denotes when the device was installed (if it requires installation)"
+                }
+            ],
+            "rdfs:label": [
+                {
+                    "@language": "en",
+                    "@value": "dateInstalled"
+                }
+            ]
+        },
+        {
+            "@id": "fiware:dateLastCalibration",
+            "@type": "ngsi-ld:Property",
+            "rdfs:comment": [
+                {
+                    "@language": "en",
+                    "@value": "A timestamp which denotes when the last calibration of the device happened"
+                }
+            ],
+            "rdfs:label": [
+                {
+                    "@language": "en",
+                    "@value": "dateLastCalibration"
+                }
+            ]
+        },
+        {
+            "@id": "fiware:dateLastValueReported",
+            "@type": "ngsi-ld:Property",
+            "rdfs:comment": [
+                {
+                    "@language": "en",
+                    "@value": "A timestamp which denotes the last time when the device successfully reported data to the cloud"
+                }
+            ],
+            "rdfs:label": [
+                {
+                    "@language": "en",
+                    "@value": "dateLastValueReported"
+                }
+            ]
+        },
+        {
+            "@id": "fiware:dateManufactured",
+            "@type": "ngsi-ld:Property",
+            "rdfs:comment": [
+                {
+                    "@language": "en",
+                    "@value": "A timestamp which denotes when the device was manufactured"
+                }
+            ],
+            "rdfs:label": [
+                {
+                    "@language": "en",
+                    "@value": "dateManufactured"
+                }
+            ]
+        },
+        {
+            "@id": "fiware:dateModified",
+            "@type": "ngsi-ld:Property",
+            "rdfs:comment": [
+                {
+                    "@language": "en",
+                    "@value": "Timestamp of the last modification of the entity. This will usually be allocated by the storage platform"
+                }
+            ],
+            "rdfs:label": [
+                {
+                    "@language": "en",
+                    "@value": "dateModified"
+                }
+            ]
+        },
+        {
+            "@id": "fiware:dateObserved",
+            "@type": "ngsi-ld:Property",
+            "rdfs:comment": [
+                {
+                    "@language": "en",
+                    "@value": "Date of the observed entity defined by the user"
+                }
+            ],
+            "rdfs:label": [
+                {
+                    "@language": "en",
+                    "@value": "dateObserved"
+                }
+            ]
+        },
+        {
+            "@id": "fiware:depth",
+            "@type": "ngsi-ld:Property",
+            "rdfs:comment": [
+                {
+                    "@language": "en",
+                    "@value": "Location of this device represented by a depth from a starting point. All units are accepted in [CEFACT](https://www.unece.org/cefact.html) code"
+                }
+            ],
+            "rdfs:label": [
+                {
+                    "@language": "en",
+                    "@value": "depth"
+                }
+            ]
+        },
+        {
+            "@id": "fiware:description",
+            "@type": "ngsi-ld:Property",
+            "rdfs:comment": [
+                {
+                    "@language": "en",
+                    "@value": "A description of this item"
+                }
+            ],
+            "rdfs:label": [
+                {
+                    "@language": "en",
+                    "@value": "description"
+                }
+            ]
+        },
+        {
+            "@id": "fiware:deviceCategory",
+            "@type": "ngsi-ld:Property",
+            "rdfs:comment": [
+                {
+                    "@language": "en",
+                    "@value": "Sensor: A device that detects and responds to events or changes in the physical environment such as light, motion, or temperature changes. https://w3id.org/saref#Sensor. actuator : A device responsible for moving or controlling a mechanism or system. https://w3id.org/saref#Actuator. Meter : A device built to accurately detect and display a quantity in a form readable by a human being. Partially defined by SAREF. HVAC : Heating, Ventilation and Air Conditioning (HVAC) device that provides indoor environmental comfort. https://w3id.org/saref#HVAC. Network : A device used to connect other devices in a network, such as hub, switch or router in a LAN or Sensor network. (https://w3id.org/saref#Network. Multimedia : A device designed to display, store, record or play multimedia content such as audio, images, animation, video. Enum:'actuator, beacon, endgun, HVAC, implement, irrSection, irrSystem, meter, multimedia, network, sensor'. Raw category will be deprecated use deviceCategory instead to avoid conflict with other aqttributes named category"
+                }
+            ],
+            "rdfs:label": [
+                {
+                    "@language": "en",
+                    "@value": "deviceCategory"
+                }
+            ]
+        },
+        {
+            "@id": "fiware:deviceState",
+            "@type": "ngsi-ld:Property",
+            "rdfs:comment": [
+                {
+                    "@language": "en",
+                    "@value": "State of this device from an operational point of view. Its value can be vendor dependent"
+                }
+            ],
+            "rdfs:label": [
+                {
+                    "@language": "en",
+                    "@value": "deviceState"
+                }
+            ]
+        },
+        {
+            "@id": "fiware:distance",
+            "@type": "ngsi-ld:Property",
+            "rdfs:comment": [
+                {
+                    "@language": "en",
+                    "@value": "Location of this device represented by a distance from a starting point. All units are accepted in [CEFACT](https://www.unece.org/cefact.html) code"
+                }
+            ],
+            "rdfs:label": [
+                {
+                    "@language": "en",
+                    "@value": "distance"
+                }
+            ]
+        },
+        {
+            "@id": "fiware:dstAware",
+            "@type": "ngsi-ld:Property",
+            "rdfs:comment": [
+                {
+                    "@language": "en",
+                    "@value": "Indicates a device which is Daylight Savings Time Aware (True). In case it is then the Timestamp is automatically adjusted by the device to reflect DST changes. If not (False) the time adjustments must be taken care of by the user"
+                }
+            ],
+            "rdfs:label": [
+                {
+                    "@language": "en",
+                    "@value": "dstAware"
+                }
+            ]
+        },
+        {
+            "@id": "fiware:firmwareVersion",
+            "@type": "ngsi-ld:Property",
+            "rdfs:comment": [
+                {
+                    "@language": "en",
+                    "@value": "The firmware version of this device"
+                }
+            ],
+            "rdfs:label": [
+                {
+                    "@language": "en",
+                    "@value": "firmwareVersion"
+                }
+            ]
+        },
+        {
+            "@id": "fiware:hardwareVersion",
+            "@type": "ngsi-ld:Property",
+            "rdfs:comment": [
+                {
+                    "@language": "en",
+                    "@value": "The hardware version of this device"
+                }
+            ],
+            "rdfs:label": [
+                {
+                    "@language": "en",
+                    "@value": "hardwareVersion"
+                }
+            ]
+        },
+        {
+            "@id": "fiware:id",
+            "@type": "ngsi-ld:Property",
+            "rdfs:comment": [
+                {
+                    "@language": "en",
+                    "@value": "Unique identifier of the entity"
+                }
+            ],
+            "rdfs:label": [
+                {
+                    "@language": "en",
+                    "@value": "id"
+                }
+            ]
+        },
+        {
+            "@id": "fiware:ipAddress",
+            "@type": "ngsi-ld:Property",
+            "rdfs:comment": [
+                {
+                    "@language": "en",
+                    "@value": "List of IP address of the device. It can be a comma separated list of values if the device has more than one IP address"
+                }
+            ],
+            "rdfs:label": [
+                {
+                    "@language": "en",
+                    "@value": "ipAddress"
+                }
+            ]
+        },
+        {
+            "@id": "fiware:location",
+            "@type": "ngsi-ld:GeoProperty",
+            "rdfs:comment": [
+                {
+                    "@language": "en",
+                    "@value": "Geojson reference to the item. It can be Point, LineString, Polygon, MultiPoint, MultiLineString or MultiPolygon"
+                }
+            ],
+            "rdfs:label": [
+                {
+                    "@language": "en",
+                    "@value": "location"
+                }
+            ]
+        },
+        {
+            "@id": "fiware:macAddress",
+            "@type": "ngsi-ld:Property",
+            "rdfs:comment": [
+                {
+                    "@language": "en",
+                    "@value": "The MAC address of the device"
+                }
+            ],
+            "rdfs:label": [
+                {
+                    "@language": "en",
+                    "@value": "macAddress"
+                }
+            ]
+        },
+        {
+            "@id": "fiware:mcc",
+            "@type": "ngsi-ld:Property",
+            "rdfs:comment": [
+                {
+                    "@language": "en",
+                    "@value": "This property identifies the Mobile Country Code"
+                }
+            ],
+            "rdfs:label": [
+                {
+                    "@language": "en",
+                    "@value": "mcc"
+                }
+            ]
+        },
+        {
+            "@id": "fiware:mnc",
+            "@type": "ngsi-ld:Property",
+            "rdfs:comment": [
+                {
+                    "@language": "en",
+                    "@value": "This property identifies the Mobile Network Code (MNC) of the network the device is attached to. The MNC is used in combination with a Mobile Country Code (MCC) (also known as a 'MCC / MNC tuple') to uniquely identify a mobile phone operator/carrier using the GSM, CDMA, iDEN, TETRA and 3G / 4G public land mobile networks and some satellite mobile networks"
+                }
+            ],
+            "rdfs:label": [
+                {
+                    "@language": "en",
+                    "@value": "mnc"
+                }
+            ]
+        },
+        {
+            "@id": "fiware:name",
+            "@type": "ngsi-ld:Property",
+            "rdfs:comment": [
+                {
+                    "@language": "en",
+                    "@value": "The name of this item"
+                }
+            ],
+            "rdfs:label": [
+                {
+                    "@language": "en",
+                    "@value": "name"
+                }
+            ]
+        },
+        {
+            "@id": "fiware:osVersion",
+            "@type": "ngsi-ld:Property",
+            "rdfs:comment": [
+                {
+                    "@language": "en",
+                    "@value": "The version of the host operating system device"
+                }
+            ],
+            "rdfs:label": [
+                {
+                    "@language": "en",
+                    "@value": "osVersion"
+                }
+            ]
+        },
+        {
+            "@id": "fiware:owner",
+            "@type": "ngsi-ld:Property",
+            "rdfs:comment": [
+                {
+                    "@language": "en",
+                    "@value": "A List containing a JSON encoded sequence of characters referencing the unique Ids of the owner(s)"
+                }
+            ],
+            "rdfs:label": [
+                {
+                    "@language": "en",
+                    "@value": "owner"
+                }
+            ]
+        },
+        {
+            "@id": "fiware:provider",
+            "@type": "ngsi-ld:Property",
+            "rdfs:comment": [
+                {
+                    "@language": "en",
+                    "@value": "The provider of the device"
+                }
+            ],
+            "rdfs:label": [
+                {
+                    "@language": "en",
+                    "@value": "provider"
+                }
+            ]
+        },
+        {
+            "@id": "fiware:refDeviceModel",
+            "@type": "ngsi-ld:Relationship",
+            "rdfs:comment": [
+                {
+                    "@language": "en",
+                    "@value": "Model of the device"
+                }
+            ],
+            "rdfs:label": [
+                {
+                    "@language": "en",
+                    "@value": "refDeviceModel"
+                }
+            ]
+        },
+        {
+            "@id": "fiware:relativePosition",
+            "@type": "ngsi-ld:Property",
+            "rdfs:comment": [
+                {
+                    "@language": "en",
+                    "@value": "Location of this device in a coordinate system according to its local emplacement"
+                }
+            ],
+            "rdfs:label": [
+                {
+                    "@language": "en",
+                    "@value": "relativePosition"
+                }
+            ]
+        },
+        {
+            "@id": "fiware:rssi",
+            "@type": "ngsi-ld:Property",
+            "rdfs:comment": [
+                {
+                    "@language": "en",
+                    "@value": "Received signal strength indicator for a wireless enabled device. It must be expressed in dBm or mW, use unitcode to set it out."
+                }
+            ],
+            "rdfs:label": [
+                {
+                    "@language": "en",
+                    "@value": "rssi"
+                }
+            ]
+        },
+        {
+            "@id": "fiware:seeAlso",
+            "@type": "ngsi-ld:Property",
+            "rdfs:comment": [
+                {
+                    "@language": "en",
+                    "@value": "list of uri pointing to additional resources about the item"
+                }
+            ],
+            "rdfs:label": [
+                {
+                    "@language": "en",
+                    "@value": "seeAlso"
+                }
+            ]
+        },
+        {
+            "@id": "fiware:serialNumber",
+            "@type": "ngsi-ld:Property",
+            "rdfs:comment": [
+                {
+                    "@language": "en",
+                    "@value": "The serial number assigned by the manufacturer"
+                }
+            ],
+            "rdfs:label": [
+                {
+                    "@language": "en",
+                    "@value": "serialNumber"
+                }
+            ]
+        },
+        {
+            "@id": "fiware:softwareVersion",
+            "@type": "ngsi-ld:Property",
+            "rdfs:comment": [
+                {
+                    "@language": "en",
+                    "@value": "The software version of this device"
+                }
+            ],
+            "rdfs:label": [
+                {
+                    "@language": "en",
+                    "@value": "softwareVersion"
+                }
+            ]
+        },
+        {
+            "@id": "fiware:source",
+            "@type": "ngsi-ld:Property",
+            "rdfs:comment": [
+                {
+                    "@language": "en",
+                    "@value": "A sequence of characters giving the original source of the entity data as a URL. Recommended to be the fully qualified domain name of the source provider, or the URL to the source object"
+                }
+            ],
+            "rdfs:label": [
+                {
+                    "@language": "en",
+                    "@value": "source"
+                }
+            ]
+        },
+        {
+            "@id": "fiware:supportedProtocol",
+            "@type": "ngsi-ld:Property",
+            "rdfs:comment": [
+                {
+                    "@language": "en",
+                    "@value": "Supported protocol(s) or networks"
+                }
+            ],
+            "rdfs:label": [
+                {
+                    "@language": "en",
+                    "@value": "supportedProtocol"
+                }
+            ]
+        },
+        {
+            "@id": "fiware:value",
+            "@type": "ngsi-ld:Property",
+            "rdfs:comment": [
+                {
+                    "@language": "en",
+                    "@value": "A observed or reported value. For actuator devices, it is an attribute that allows a controlling application to change the actuation setting. For instance, a switch device which is currently _on_ can report a value 'on' of type 'Text'. Obviously, in order to toggle the referred switch, this attribute value will have to be changed to 'off'"
+                }
+            ],
+            "rdfs:label": [
+                {
+                    "@language": "en",
+                    "@value": "value"
+                }
+            ]
+        },
+        {
+            "@id": "fiware:address",
+            "@type": "ngsi-ld:Property",
+            "rdfs:comment": [
+                {
+                    "@language": "en",
+                    "@value": "The mailing address"
+                }
+            ],
+            "rdfs:label": [
+                {
+                    "@language": "en",
+                    "@value": "address"
+                }
+            ]
+        },
+        {
+            "@id": "fiware:alternateName",
+            "@type": "ngsi-ld:Property",
+            "rdfs:comment": [
+                {
+                    "@language": "en",
+                    "@value": "An alternative name for this item"
+                }
+            ],
+            "rdfs:label": [
+                {
+                    "@language": "en",
+                    "@value": "alternateName"
+                }
+            ]
+        },
+        {
+            "@id": "fiware:areaServed",
+            "@type": "ngsi-ld:Property",
+            "rdfs:comment": [
+                {
+                    "@language": "en",
+                    "@value": "The geographic area where a service or offered item is provided"
+                }
+            ],
+            "rdfs:label": [
+                {
+                    "@language": "en",
+                    "@value": "areaServed"
+                }
+            ]
+        },
+        {
+            "@id": "fiware:category",
+            "@type": "ngsi-ld:Property",
+            "rdfs:comment": [
+                {
+                    "@language": "en",
+                    "@value": "Category of the building. Enum:'apartments, bakehouse, barn, bridge, bungalow, bunker, cathedral, cabin, carport, chapel, church, civic, commercial, conservatory, construction, cowshed, detached, digester, dormitory, farm, farm_auxiliary, garage, garages, garbage_shed, grandstand, greenhouse, hangar, hospital, hotel, house, houseboat, hut, industrial, kindergarten, kiosk, mosque, office, parking, pavilion, public, residential, retail, riding_hall, roof, ruins, school, service, shed, shrine, stable, stadium, static_caravan, sty, synagogue, temple, terrace, train_station, transformer_tower, transportation, university, warehouse, water_tower'"
+                }
+            ],
+            "rdfs:label": [
+                {
+                    "@language": "en",
+                    "@value": "category"
+                }
+            ]
+        },
+        {
+            "@id": "fiware:collapseRisk",
+            "@type": "ngsi-ld:Property",
+            "rdfs:comment": [
+                {
+                    "@language": "en",
+                    "@value": "Probability of total collapse of the building"
+                }
+            ],
+            "rdfs:label": [
+                {
+                    "@language": "en",
+                    "@value": "collapseRisk"
+                }
+            ]
+        },
+        {
+            "@id": "fiware:containedInPlace",
+            "@type": "ngsi-ld:GeoProperty",
+            "rdfs:comment": [
+                {
+                    "@language": "en",
+                    "@value": "Geojson reference to the item. It can be Point, LineString, Polygon, MultiPoint, MultiLineString or MultiPolygon"
+                }
+            ],
+            "rdfs:label": [
+                {
+                    "@language": "en",
+                    "@value": "containedInPlace"
+                }
+            ]
+        },
+        {
+            "@id": "fiware:dataProvider",
+            "@type": "ngsi-ld:Property",
+            "rdfs:comment": [
+                {
+                    "@language": "en",
+                    "@value": "A sequence of characters identifying the provider of the harmonised data entity"
+                }
+            ],
+            "rdfs:label": [
+                {
+                    "@language": "en",
+                    "@value": "dataProvider"
+                }
+            ]
+        },
+        {
+            "@id": "fiware:dateCreated",
+            "@type": "ngsi-ld:Property",
+            "rdfs:comment": [
+                {
+                    "@language": "en",
+                    "@value": "Entity creation timestamp. This will usually be allocated by the storage platform"
+                }
+            ],
+            "rdfs:label": [
+                {
+                    "@language": "en",
+                    "@value": "dateCreated"
+                }
+            ]
+        },
+        {
+            "@id": "fiware:dateModified",
+            "@type": "ngsi-ld:Property",
+            "rdfs:comment": [
+                {
+                    "@language": "en",
+                    "@value": "Timestamp of the last modification of the entity. This will usually be allocated by the storage platform"
+                }
+            ],
+            "rdfs:label": [
+                {
+                    "@language": "en",
+                    "@value": "dateModified"
+                }
+            ]
+        },
+        {
+            "@id": "fiware:description",
+            "@type": "ngsi-ld:Property",
+            "rdfs:comment": [
+                {
+                    "@language": "en",
+                    "@value": "A description of this item"
+                }
+            ],
+            "rdfs:label": [
+                {
+                    "@language": "en",
+                    "@value": "description"
+                }
+            ]
+        },
+        {
+            "@id": "fiware:floorsAboveGround",
+            "@type": "ngsi-ld:Property",
+            "rdfs:comment": [
+                {
+                    "@language": "en",
+                    "@value": "Floors above the ground level"
+                }
+            ],
+            "rdfs:label": [
+                {
+                    "@language": "en",
+                    "@value": "floorsAboveGround"
+                }
+            ]
+        },
+        {
+            "@id": "fiware:floorsBelowGround",
+            "@type": "ngsi-ld:Property",
+            "rdfs:comment": [
+                {
+                    "@language": "en",
+                    "@value": "Floors below the ground level"
+                }
+            ],
+            "rdfs:label": [
+                {
+                    "@language": "en",
+                    "@value": "floorsBelowGround"
+                }
+            ]
+        },
+        {
+            "@id": "fiware:id",
+            "@type": "ngsi-ld:Property",
+            "rdfs:comment": [
+                {
+                    "@language": "en",
+                    "@value": "Unique identifier of the entity"
+                }
+            ],
+            "rdfs:label": [
+                {
+                    "@language": "en",
+                    "@value": "id"
+                }
+            ]
+        },
+        {
+            "@id": "fiware:location",
+            "@type": "ngsi-ld:GeoProperty",
+            "rdfs:comment": [
+                {
+                    "@language": "en",
+                    "@value": "Geojson reference to the item. It can be Point, LineString, Polygon, MultiPoint, MultiLineString or MultiPolygon"
+                }
+            ],
+            "rdfs:label": [
+                {
+                    "@language": "en",
+                    "@value": "location"
+                }
+            ]
+        },
+        {
+            "@id": "fiware:mapUrl",
+            "@type": "ngsi-ld:Relationship",
+            "rdfs:comment": [
+                {
+                    "@language": "en",
+                    "@value": "Reference to the map containing the building"
+                }
+            ],
+            "rdfs:label": [
+                {
+                    "@language": "en",
+                    "@value": "mapUrl"
+                }
+            ]
+        },
+        {
+            "@id": "fiware:name",
+            "@type": "ngsi-ld:Property",
+            "rdfs:comment": [
+                {
+                    "@language": "en",
+                    "@value": "The name of this item"
+                }
+            ],
+            "rdfs:label": [
+                {
+                    "@language": "en",
+                    "@value": "name"
+                }
+            ]
+        },
+        {
+            "@id": "fiware:occupier",
+            "@type": "ngsi-ld:Relationship",
+            "rdfs:comment": [
+                {
+                    "@language": "en",
+                    "@value": "Person or entity using the building"
+                }
+            ],
+            "rdfs:label": [
+                {
+                    "@language": "en",
+                    "@value": "occupier"
+                }
+            ]
+        },
+        {
+            "@id": "fiware:openingHours",
+            "@type": "ngsi-ld:Property",
+            "rdfs:comment": [
+                {
+                    "@language": "en",
+                    "@value": "Opening hours of this building"
+                }
+            ],
+            "rdfs:label": [
+                {
+                    "@language": "en",
+                    "@value": "openingHours"
+                }
+            ]
+        },
+        {
+            "@id": "fiware:owner",
+            "@type": "ngsi-ld:Property",
+            "rdfs:comment": [
+                {
+                    "@language": "en",
+                    "@value": "A List containing a JSON encoded sequence of characters referencing the unique Ids of the owner(s)"
+                }
+            ],
+            "rdfs:label": [
+                {
+                    "@language": "en",
+                    "@value": "owner"
+                }
+            ]
+        },
+        {
+            "@id": "fiware:peopleCapacity",
+            "@type": "ngsi-ld:Property",
+            "rdfs:comment": [
+                {
+                    "@language": "en",
+                    "@value": "Allowed people present at the building"
+                }
+            ],
+            "rdfs:label": [
+                {
+                    "@language": "en",
+                    "@value": "peopleCapacity"
+                }
+            ]
+        },
+        {
+            "@id": "fiware:peopleOccupancy",
+            "@type": "ngsi-ld:Property",
+            "rdfs:comment": [
+                {
+                    "@language": "en",
+                    "@value": "People present at the building"
+                }
+            ],
+            "rdfs:label": [
+                {
+                    "@language": "en",
+                    "@value": "peopleOccupancy"
+                }
+            ]
+        },
+        {
+            "@id": "fiware:seeAlso",
+            "@type": "ngsi-ld:Property",
+            "rdfs:comment": [
+                {
+                    "@language": "en",
+                    "@value": "list of uri pointing to additional resources about the item"
+                }
+            ],
+            "rdfs:label": [
+                {
+                    "@language": "en",
+                    "@value": "seeAlso"
+                }
+            ]
+        },
+        {
+            "@id": "fiware:source",
+            "@type": "ngsi-ld:Property",
+            "rdfs:comment": [
+                {
+                    "@language": "en",
+                    "@value": "A sequence of characters giving the original source of the entity data as a URL. Recommended to be the fully qualified domain name of the source provider, or the URL to the source object"
+                }
+            ],
+            "rdfs:label": [
+                {
+                    "@language": "en",
+                    "@value": "source"
+                }
+            ]
+        }
+    ]
+}
