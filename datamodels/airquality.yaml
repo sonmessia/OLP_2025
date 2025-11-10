@@ -1,0 +1,48 @@
+# Filename: airquality.yaml
+openapi: "3.0.0"
+info:
+  title: "Smart Air Quality & Carbon Footprint Data Models"
+  version: "1.0.0"
+  description: "Data Models for monitoring air quality and carbon footprint based on FIWARE Smart Data Models."
+
+paths: {} # We only define schemas, API paths are not needed.
+
+components:
+  schemas:
+    # --- Definition of entities ---
+
+    # 1. Device entity: Use standard definition
+    Device:
+      $ref: "https://smart-data-models.github.io/dataModel.Device/Device/model.yaml#/Device"
+
+    # 2. Building entity: Use standard definition
+    Building:
+      $ref: "https://smart-data-models.github.io/dataModel.Building/Building/model.yaml#/Building"
+
+    # 3. AirQualityObserved entity: Extended with relationships
+    AirQualityObserved:
+      allOf: # Inherit all properties from the standard model
+        - $ref: "https://smart-data-models.github.io/dataModel.Environment/AirQualityObserved/model.yaml#/AirQualityObserved"
+        - type: object
+          properties:
+            # Explicitly define 'refDevice' as a Relationship
+            refDevice:
+              description: "A reference to the device which made this observation."
+              x-ngsi: # Extension for NGSI-LD tool
+                type: "Relationship"
+                model: "https://smart-data-models.github.io/dataModel.Device/Device/model.yaml#/Device"
+              $ref: "https://smart-data-models.github.io/data-models/common-schema.json#/definitions/EntityIdentifierType"
+
+    # 4. CarbonFootprint entity: Extended with relationships
+    CarbonFootprint:
+      allOf: # Inherit all properties from the standard model
+        - $ref: "https://smart-data-models.github.io/dataModel.Environment/CarbonFootprint/model.yaml#/CarbonFootprint"
+        - type: object
+          properties:
+            # Explicitly define 'refBuilding' as a Relationship
+            refBuilding:
+              description: "A reference to the building this carbon footprint report belongs to."
+              x-ngsi: # Extension for NGSI-LD tool
+                type: "Relationship"
+                model: "https://smart-data-models.github.io/dataModel.Building/Building/model.yaml#/Building"
+              $ref: "https://smart-data-models.github.io/data-models/common-schema.json#/definitions/EntityIdentifierType"
