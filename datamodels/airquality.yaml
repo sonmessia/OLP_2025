@@ -1,0 +1,48 @@
+# Tên file: airquality.yaml
+openapi: "3.0.0"
+info:
+  title: "Smart Air Quality & Carbon Footprint Data Models"
+  version: "1.0.0"
+  description: "Data Models for monitoring air quality and carbon footprint based on FIWARE Smart Data Models."
+
+paths: {} # Chúng ta chỉ định nghĩa schemas, không cần API paths.
+
+components:
+  schemas:
+    # --- Định nghĩa các thực thể (Entities) ---
+
+    # 1. Thực thể Device: Lấy định nghĩa chuẩn
+    Device:
+      $ref: "https://smart-data-models.github.io/dataModel.Device/Device/model.yaml#/Device"
+
+    # 2. Thực thể Building: Lấy định nghĩa chuẩn
+    Building:
+      $ref: "https://smart-data-models.github.io/dataModel.Building/Building/model.yaml#/Building"
+
+    # 3. Thực thể AirQualityObserved: Mở rộng với mối quan hệ
+    AirQualityObserved:
+      allOf: # Kế thừa tất cả thuộc tính từ mô hình chuẩn
+        - $ref: "https://smart-data-models.github.io/dataModel.Environment/AirQualityObserved/model.yaml#/AirQualityObserved"
+        - type: object
+          properties:
+            # Định nghĩa rõ ràng 'refDevice' là một Relationship
+            refDevice:
+              description: "A reference to the device which made this observation."
+              x-ngsi: # Phần mở rộng dành cho công cụ NGSI-LD
+                type: "Relationship"
+                model: "https://smart-data-models.github.io/dataModel.Device/Device/model.yaml#/Device"
+              $ref: "https://smart-data-models.github.io/data-models/common-schema.json#/definitions/EntityIdentifierType"
+
+    # 4. Thực thể CarbonFootprint: Mở rộng với mối quan hệ
+    CarbonFootprint:
+      allOf: # Kế thừa tất cả thuộc tính từ mô hình chuẩn
+        - $ref: "https://smart-data-models.github.io/dataModel.Environment/CarbonFootprint/model.yaml#/CarbonFootprint"
+        - type: object
+          properties:
+            # Định nghĩa rõ ràng 'refBuilding' là một Relationship
+            refBuilding:
+              description: "A reference to the building this carbon footprint report belongs to."
+              x-ngsi: # Phần mở rộng dành cho công cụ NGSI-LD
+                type: "Relationship"
+                model: "https://smart-data-models.github.io/dataModel.Building/Building/model.yaml#/Building"
+              $ref: "https://smart-data-models.github.io/data-models/common-schema.json#/definitions/EntityIdentifierType"
