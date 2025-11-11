@@ -51,7 +51,7 @@ services:
     depends_on:
       - mongo-db
     healthcheck:
-      test: wget --spider -q http://orion:1026/version || exit 1
+      test: wget --spider -q http://fiware-orion:1026/version || exit 1
 
   ld-context:
     image: httpd:alpine

@@ -22,7 +22,7 @@ if (($# < 1)); then
 fi
 
 command="$1"
-file="agriculture.yaml"
+file="datamodels/airquality.yaml"
 if (($# == 2)); then
 	file="$2"
 fi
@@ -34,7 +34,7 @@ case "${command}" in
 "create")
 	export $(cat .env | grep "#" -v)
 	export $(cat .env | grep "#" -v)
-	docker build -t contextgen ./context-file-generator
+	docker build -t contextgen ./ld-context-files
 	;;
 "markdown")
 	echo "Creating Documentation for the Data Models"

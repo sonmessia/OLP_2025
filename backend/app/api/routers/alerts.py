@@ -1,29 +1,15 @@
-# File: backend/main.py
-
-from fastapi import FastAPI, Request, HTTPException
+from fastapi import APIRouter, Request, HTTPException
 import json
 
-# Khởi tạo ứng dụng FastAPI
-app = FastAPI(
-    title="OLP 2025 Core Backend Service",
-    description="Receives NGSI-LD notifications and handles business logic.",
-    version="1.0.0",
-)
+router = APIRouter(prefix="/api/alerts", tags=["alerts"])
 
 
-@app.get("/")
-def read_root():
-    """Endpoint cơ bản để kiểm tra service có đang chạy không"""
-    return {"message": "Core Backend Service is running!"}
-
-
-@app.post("/api/alerts/high-co")
+@router.post("/high-co")
 async def handle_high_co_alert(request: Request):
     """
     Endpoint này sẽ nhận thông báo từ Orion-LD khi có mức CO cao.
     """
     try:
-        # Nhận payload notification dưới dạng JSON
         notification_payload = await request.json()
 
         print("=" * 50)
