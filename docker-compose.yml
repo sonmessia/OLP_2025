@@ -29,6 +29,16 @@ services:
       timeout: 5s
       retries: 5
 
+  backend:
+    build: ./backend
+    container_name: backend
+    hostname: backend
+    networks:
+      - fiware_default
+    ports:
+      - "8000:8000"
+    restart: unless-stopped
+
   orion-ld:
     image: fiware/orion-ld
     container_name: fiware-orionld
@@ -41,7 +51,7 @@ services:
     depends_on:
       - mongo-db
     healthcheck:
-      test: wget --spider -q http://orion:1026/version || exit 1
+      test: wget --spider -q http://fiware-orion:1026/version || exit 1
 
   ld-context:
     image: httpd:alpine
