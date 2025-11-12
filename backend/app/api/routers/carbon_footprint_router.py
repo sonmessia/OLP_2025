@@ -1,5 +1,5 @@
 from fastapi import APIRouter, HTTPException
-from backend.app.services.carbon_footprint_service import CarbonFootprintService
+from app.services.carbon_footprint_service import CarbonFootprintService
 import requests
 
 router = APIRouter(prefix="/api/carbon-footprint", tags=["CarbonFootprint"])

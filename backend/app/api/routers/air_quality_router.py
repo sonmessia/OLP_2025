@@ -1,6 +1,6 @@
 import requests
 from fastapi import APIRouter, HTTPException
-from backend.app.services.air_quality_service import AirQualityService
+from app.services.air_quality_service import AirQualityService
 
 router = APIRouter(prefix="/api/air-quality", tags=["AirQualityObserved"])
 

@@ -1,5 +1,5 @@
 from fastapi import APIRouter, HTTPException
-from backend.app.services.water_quality_service import WaterQualityService
+from app.services.water_quality_service import WaterQualityService
 import requests
 
 router = APIRouter(prefix="/api/water-quality", tags=["WaterQualityObserved"])

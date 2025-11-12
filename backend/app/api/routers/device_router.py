@@ -1,5 +1,5 @@
 from fastapi import APIRouter, HTTPException
-from backend.app.services.device_service import DeviceService
+from app.services.device_service import DeviceService
 import requests
 
 router = APIRouter(prefix="/api/device", tags=["Device"])

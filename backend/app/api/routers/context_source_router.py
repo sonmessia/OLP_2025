@@ -1,8 +1,8 @@
 from fastapi import APIRouter, HTTPException
-from backend.app.services.context_source_service import ContextSourceService
+from app.services.context_source_service import ContextSourceService
 import requests
 
-router = APIRouter(prefix="/api/context-sources", tags=["ContextSources"])
+router = APIRouter(prefix="/api/csourceRegistrations", tags=["ContextSources"])
 
 @router.post("/")
 def create_context_source(context_source_data: dict):

@@ -1,5 +1,5 @@
 from fastapi import APIRouter, HTTPException
-from backend.app.services.building_service import BuildingService
+from app.services.building_service import BuildingService
 import requests
 
 router = APIRouter(prefix="/api/building", tags=["Building"])
