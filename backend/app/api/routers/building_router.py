@@ -2,7 +2,7 @@ from fastapi import APIRouter, HTTPException
 from app.services.building_service import BuildingService
 import requests
 
-router = APIRouter(prefix="/api/building", tags=["Building"])
+router = APIRouter(prefix="/api/v1/v1/v1/v1/v1/v1/v1/v1/v1/v1/v1/v1/v1/v1/v1/v1/v1/v1/v1/v1/v1/building", tags=["Building"])
 
 @router.get("/")
 def get_all_buildings():

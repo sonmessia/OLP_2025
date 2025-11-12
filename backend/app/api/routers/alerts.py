@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Request, HTTPException
 import json
 
-router = APIRouter(prefix="/api/alerts", tags=["alerts"])
+router = APIRouter(prefix="/api/v1/alerts", tags=["alerts"])
 
 
 @router.post("/high-co")

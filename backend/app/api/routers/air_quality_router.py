@@ -2,7 +2,8 @@ import requests
 from fastapi import APIRouter, HTTPException
 from app.services.air_quality_service import AirQualityService
 
-router = APIRouter(prefix="/api/air-quality", tags=["AirQualityObserved"])
+router = APIRouter(prefix="/api/v1/air-quality", tags=["AirQualityObserved"])
+
 
 @router.get("/")
 def get_all_air_quality():
@@ -11,12 +12,14 @@ def get_all_air_quality():
     except requests.HTTPError as e:
         raise HTTPException(status_code=e.response.status_code, detail=e.response.text)
 
+
 @router.get("/{entity_id}")
 def get_air_quality_by_id(entity_id: str):
     try:
         return AirQualityService.get_entity_by_id(entity_id)
     except requests.HTTPError as e:
         raise HTTPException(status_code=e.response.status_code, detail=e.response.text)
+
 
 @router.post("/")
 def create_air_quality(entity_data: dict):
@@ -25,12 +28,14 @@ def create_air_quality(entity_data: dict):
     except requests.HTTPError as e:
         raise HTTPException(status_code=e.response.status_code, detail=e.response.text)
 
+
 @router.patch("/{entity_id}")
 def update_air_quality(entity_id: str, update_data: dict):
     try:
         return AirQualityService.update_entity(entity_id, update_data)
     except requests.HTTPError as e:
         raise HTTPException(status_code=e.response.status_code, detail=e.response.text)
+
 
 @router.delete("/{entity_id}")
 def delete_air_quality(entity_id: str):
