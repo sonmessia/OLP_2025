@@ -11,6 +11,8 @@ from app.api.routers.subscription_router import router as subscription_router
 from app.api.routers.context_source_router import (
     router as context_source_router,
 )
+from app.api.routers.api_discovery_router import router as api_discovery_router
+from app.api.routers.batch_operations_router import router as batch_operations_router
 
 app = FastAPI(
     title="OLP 2025 Core Backend Service",
@@ -26,6 +28,8 @@ app.include_router(device_router)
 app.include_router(building_router)
 app.include_router(subscription_router)
 app.include_router(context_source_router)
+app.include_router(api_discovery_router)
+app.include_router(batch_operations_router)
 
 
 @app.get("/")

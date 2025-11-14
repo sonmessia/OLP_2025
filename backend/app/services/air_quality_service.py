@@ -1,120 +1,72 @@
-from typing import Optional, Dict, Any, List
+from typing import Optional, Dict, Any, List, Union
 from .base_service import BaseService
+import requests
 
 
 class AirQualityService(BaseService):
-    """Service for Air Quality Observed entities following FIWARE Orion-LD API"""
-    
-    @staticmethod
-    def get_all_entities(local: bool = True, limit: Optional[int] = None, 
-                        offset: Optional[int] = None, attrs: Optional[List[str]] = None,
-                        q: Optional[str] = None, count: bool = False):
-        """Get all Air Quality entities with advanced filtering"""
-        url = BaseService._get_url("entities")
-        headers = BaseService.DEFAULT_HEADERS
-        
-        params = BaseService._prepare_params(
-            local=local,
-            type="AirQualityObserved",
-            limit=limit,
-            offset=offset,
-            **({"attrs": ",".join(attrs)} if attrs else {}),
-            **({"q": q} if q else {}),
-            **({"count": "true"} if count else {})
-        )
-        
-        response = BaseService._make_request("GET", url, headers=headers, params=params)
-        return response.json() if not count else response.headers.get('X-Total-Count', 0)
+    """
+    Service layer for AirQualityObserved entities.
+    Provides high-level methods for CRUD operations.
+    """
 
-    @staticmethod
-    def get_entity_by_id(entity_id: str, local: bool = True, 
-                        attrs: Optional[List[str]] = None):
-        """Get Air Quality entity by ID"""
-        url = BaseService._get_url(f"entities/{entity_id}")
-        headers = BaseService.DEFAULT_HEADERS
-        
-        params = BaseService._prepare_params(
-            local=local,
-            **({"attrs": ",".join(attrs)} if attrs else {})
-        )
-        
-        response = BaseService._make_request("GET", url, headers=headers, params=params)
-        return response.json()
+    def __init__(
+        self, orion_url: Optional[str] = None, context_url: Optional[str] = None
+    ):
+        super().__init__(orion_url, context_url)
+        self.entity_type = "AirQualityObserved"
 
-    @staticmethod
-    def create_entity(entity_data: Dict[str, Any], local: bool = True):
-        """Create new Air Quality entity"""
-        url = BaseService._get_url("entities")
-        headers = BaseService.JSON_LD_HEADERS
-        params = BaseService._prepare_params(local=local)
-        
-        response = BaseService._make_request("POST", url, headers=headers, params=params, json_data=entity_data)
-        return response.json()
+    async def create(self, entity_data: Dict[str, Any]) -> requests.Response:
+        """
+        Create a new AirQualityObserved entity.
+        """
+        if "dataObserved" not in entity_data:
+            raise ValueError(
+                "dataObserved attribute is required for AirQualityObserved entity."
+            )
+        entity_data["type"] = self.entity_type
+        return await super().create_entity(entity_data)
 
-    @staticmethod
-    def update_entity_attributes(entity_id: str, update_data: Dict[str, Any], local: bool = True):
-        """Update specific attributes of Air Quality entity (PATCH)"""
-        url = BaseService._get_url(f"entities/{entity_id}/attrs")
-        headers = BaseService.JSON_LD_HEADERS
-        params = BaseService._prepare_params(local=local)
-        
-        response = BaseService._make_request("PATCH", url, headers=headers, params=params, json_data=update_data)
+    async def get_all(self, **kwargs) -> Union[List[Dict[str, Any]], int]:
+        """
+        Queries for AirQualityObserved entities.
+        It automatically adds the 'type=AirQualityObserved' filter to all queries.
+        """
+        kwargs["type"] = self.entity_type
+
+        return await self.query_entities(**kwargs)
+
+    async def batch_upsert(
+        self, entities: List[Dict[str, Any]], options: str = "update"
+    ) -> requests.Response:
+        """
+        Creates or updates a list of AirQualityObserved entities.
+        It automatically sets the 'type' for each entity in the batch.
+        """
+        for entity in entities:
+            entity["type"] = self.entity_type
+
+        return await super().batch_upsert(entities, options)
+
+    async def get_by_id(self, entity_id: str, **kwargs) -> Dict[str, Any]:
+        """Alias for the inherited get_entity_by_id method."""
+        return await super().get_entity_by_id(entity_id, **kwargs)
+
+    async def update_attrs(self, entity_id: str, update_data: Dict[str, Any]) -> int:
+        """Alias for the inherited update_entity_attributes method."""
+        response = await super().update_entity_attributes(entity_id, update_data)
         return response.status_code
 
-    @staticmethod
-    def replace_entity(entity_id: str, entity_data: Dict[str, Any], local: bool = True):
-        """Replace entire Air Quality entity (PUT)"""
-        url = BaseService._get_url(f"entities/{entity_id}")
-        headers = BaseService.JSON_LD_HEADERS
-        params = BaseService._prepare_params(local=local)
-        
-        response = BaseService._make_request("PUT", url, headers=headers, params=params, json_data=entity_data)
+    async def replace(self, entity_id: str, entity_data: Dict[str, Any]) -> int:
+        """Alias for the inherited replace_entity method."""
+        # Có thể thêm logic tự động gán type ở đây
+        entity_data["type"] = self.entity_type
+        response = await super().replace_entity(entity_id, entity_data)
         return response.status_code
 
-    @staticmethod
-    def add_attributes(entity_id: str, attributes_data: Dict[str, Any], local: bool = True):
-        """Add new attributes to Air Quality entity"""
-        url = BaseService._get_url(f"entities/{entity_id}/attrs")
-        headers = BaseService.JSON_LD_HEADERS
-        params = BaseService._prepare_params(local=local)
-        
-        response = BaseService._make_request("POST", url, headers=headers, params=params, json_data=attributes_data)
+    async def delete(self, entity_id: str) -> int:
+        """Alias for the inherited delete_entity method."""
+        response = await super().delete_entity(entity_id)
         return response.status_code
 
-    @staticmethod
-    def get_attribute_by_id(entity_id: str, attr_name: str, local: bool = True):
-        """Get specific attribute of Air Quality entity"""
-        url = BaseService._get_url(f"entities/{entity_id}/attrs/{attr_name}")
-        headers = BaseService.DEFAULT_HEADERS
-        params = BaseService._prepare_params(local=local)
-        
-        response = BaseService._make_request("GET", url, headers=headers, params=params)
-        return response.json()
 
-    @staticmethod
-    def update_attribute(entity_id: str, attr_name: str, attr_data: Dict[str, Any], local: bool = True):
-        """Update specific attribute of Air Quality entity"""
-        url = BaseService._get_url(f"entities/{entity_id}/attrs/{attr_name}")
-        headers = BaseService.JSON_LD_HEADERS
-        params = BaseService._prepare_params(local=local)
-        
-        response = BaseService._make_request("PATCH", url, headers=headers, params=params, json_data=attr_data)
-        return response.status_code
-
-    @staticmethod
-    def delete_attribute(entity_id: str, attr_name: str, local: bool = True):
-        """Delete specific attribute from Air Quality entity"""
-        url = BaseService._get_url(f"entities/{entity_id}/attrs/{attr_name}")
-        params = BaseService._prepare_params(local=local)
-        
-        response = BaseService._make_request("DELETE", url, params=params)
-        return response.status_code
-
-    @staticmethod
-    def delete_entity(entity_id: str, local: bool = True):
-        """Delete Air Quality entity"""
-        url = BaseService._get_url(f"entities/{entity_id}")
-        params = BaseService._prepare_params(local=local)
-        
-        response = BaseService._make_request("DELETE", url, params=params)
-        return response.status_code
+air_quality_service = AirQualityService()
