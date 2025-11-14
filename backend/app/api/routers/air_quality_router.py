@@ -19,8 +19,8 @@ class NgsiLdAttributePatch(BaseModel):
         default="Property", pattern="^(Property|Relationship|GeoProperty)$"
     )
     value: Optional[Any] = None
-    object: Optional[str] = None  # Dùng cho Relationship
-    observedAt: Optional[str] = None  # Nhận dưới dạng string để linh hoạt
+    object: Optional[str] = None
+    observedAt: Optional[str] = None
     unitCode: Optional[str] = None
 
     @model_validator(mode="after")
@@ -30,9 +30,6 @@ class NgsiLdAttributePatch(BaseModel):
                 'Either "value" or "object" must be provided for an attribute.'
             )
         return self
-
-
-# --- Các Endpoints API ---
 
 
 @router.get(
@@ -122,13 +119,14 @@ async def create_air_quality(
     """
     try:
         orion_response = await air_quality_service.create(entity_data)
-        # Thiết lập header Location, đây là một thực hành RESTful tốt
-        response.headers["Location"] = orion_response.headers.get("Location")
+        response.headers["Location"] = orion_response.headers.get("Location", "")
         return
-    except (httpx.HTTPStatusError, ValueError) as e:
-        detail = e.response.json() if hasattr(e, "response") else str(e)
-        status = e.response.status_code if hasattr(e, "response") else 422
+    except httpx.HTTPStatusError as e:
+        detail = e.response.json() if hasattr(e.response, "json") else str(e)
+        status = e.response.status_code
         raise HTTPException(status_code=status, detail=detail)
+    except ValueError as e:
+        raise HTTPException(status_code=422, detail=str(e))
 
 
 @router.patch(

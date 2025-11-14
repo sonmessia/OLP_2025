@@ -1,139 +1,167 @@
+from fastapi import APIRouter, HTTPException, Query, Body, Response
+from typing import Optional, List, Dict, Any, Union
+from pydantic import BaseModel, Field, model_validator
 import httpx
-from fastapi import APIRouter, HTTPException, Query
-from typing import Optional, List, Dict, Any
-from pydantic import BaseModel
-from app.services.device_service import DeviceService
+import datetime
+
+from app.services.device_service import device_service
 
 router = APIRouter(prefix="/api/v1/device", tags=["Device"])
 
 
-class AttributeRequest(BaseModel):
-    value: Any
-    type: Optional[str] = None
+class NgsiLdAttributePatch(BaseModel):
+    """
+    Model để xác thực cấu trúc của một thuộc tính khi cập nhật (PATCH).
+    Đảm bảo payload gửi đến Orion-LD luôn hợp lệ.
+    """
+
+    type: str = Field(
+        default="Property", pattern="^(Property|Relationship|GeoProperty)$"
+    )
+    value: Optional[Any] = None
+    object: Optional[str] = None
+    observedAt: Optional[str] = None
+    unitCode: Optional[str] = None
+
+    @model_validator(mode="after")
+    def check_value_or_object_exists(self) -> "NgsiLdAttributePatch":
+        if self.value is None and self.object is None:
+            raise ValueError(
+                'Either "value" or "object" must be provided for an attribute.'
+            )
+        return self
 
 
-@router.get("/")
+@router.get(
+    "/",
+    response_model=Union[List[Dict[str, Any]], int],
+    summary="Query Device Entities",
+)
 async def get_all_devices(
-    local: bool = Query(True, description="Include local entities"),
-    limit: Optional[int] = Query(None, description="Maximum number of results"),
-    offset: Optional[int] = Query(None, description="Number of results to skip"),
-    attrs: Optional[List[str]] = Query(None, description="Attributes to return"),
-    q: Optional[str] = Query(None, description="Query filter"),
-    count: bool = Query(False, description="Return total count"),
+    limit: Optional[int] = Query(
+        None, description="Maximum number of results to return per page."
+    ),
+    offset: Optional[int] = Query(None, description="The number of results to skip."),
+    attrs: Optional[str] = Query(
+        None, description="Comma-separated list of attributes to return."
+    ),
+    q: Optional[str] = Query(None, description="NGSI-LD query filter string."),
+    count: bool = Query(
+        False, description="If true, return only the total count of matching entities."
+    ),
+    format: str = Query(
+        "normalized", description="Response format: 'keyValues' or 'normalized'."
+    ),
+    local: Optional[bool] = Query(True, description="Query only local entities."),
 ):
+    """
+    Retrieve a list of Device entities based on query parameters.
+    """
     try:
-        return DeviceService.get_all_entities(
-            local=local, limit=limit, offset=offset, attrs=attrs, q=q, count=count
+        attrs_list = attrs.split(",") if attrs else None
+
+        result = await device_service.get_all(
+            limit=limit,
+            offset=offset,
+            attrs=attrs_list,
+            q=q,
+            count=count,
+            format=format,
+            local=local,
         )
-    except httpx.HTTPError as e:
-        raise HTTPException(status_code=getattr(e.response, 'status_code', 500), detail=str(e))
+        return result
+    except httpx.HTTPStatusError as e:
+        raise HTTPException(
+            status_code=e.response.status_code, detail=e.response.json()
+        )
+    except httpx.RequestError as e:
+        raise HTTPException(
+            status_code=503, detail={"error": "Service Unavailable", "detail": str(e)}
+        )
 
 
-@router.get("/{entity_id}")
+@router.get(
+    "/{entity_id:path}",
+    response_model=Dict[str, Any],
+    summary="Get Device Entity by ID",
+)
 async def get_device_by_id(
     entity_id: str,
-    local: bool = Query(True, description="Include local entities"),
-    attrs: Optional[List[str]] = Query(None, description="Attributes to return"),
+    attrs: Optional[str] = Query(
+        None, description="Comma-separated list of attributes to return."
+    ),
+    format: str = Query(
+        "keyValues", description="Response format: 'keyValues' or 'normalized'."
+    ),
 ):
+    """
+    Retrieve a single Device entity by its full URN.
+    """
     try:
-        return DeviceService.get_entity_by_id(entity_id, local=local, attrs=attrs)
-    except httpx.HTTPError as e:
-        raise HTTPException(status_code=getattr(e.response, 'status_code', 500), detail=str(e))
+        attrs_list = attrs.split(",") if attrs else None
+        return await device_service.get_entity_by_id(
+            entity_id, attrs=attrs_list, format=format
+        )
+    except httpx.HTTPStatusError as e:
+        raise HTTPException(
+            status_code=e.response.status_code, detail=e.response.json()
+        )
 
 
-@router.post("/")
-async def create_device(
-    entity_data: Dict[str, Any],
-    local: bool = Query(True, description="Create local entity"),
-):
+@router.post("/", status_code=201, summary="Create Device Entity")
+async def create_device(response: Response, entity_data: Dict[str, Any] = Body(...)):
+    """
+    Create a new Device entity.
+    """
     try:
-        return DeviceService.create_entity(entity_data, local=local)
-    except httpx.HTTPError as e:
-        raise HTTPException(status_code=getattr(e.response, 'status_code', 500), detail=str(e))
+        orion_response = await device_service.create_entity(entity_data)
+
+        response.headers["Location"] = orion_response.headers.get("Location", "")
+        return
+    except httpx.HTTPStatusError as e:
+        detail = e.response.json() if hasattr(e.response, "json") else str(e)
+        status = e.response.status_code
+        raise HTTPException(status_code=status, detail=detail)
+    except httpx.RequestError as e:
+        raise HTTPException(status_code=422, detail=str(e))
 
 
-@router.patch("/{entity_id}")
+@router.patch(
+    "/{entity_id:path}/attrs",
+    status_code=204,
+    summary="Update Entity Attributes (Partial Update)",
+)
 async def update_device_attributes(
-    entity_id: str,
-    update_data: Dict[str, Any],
-    local: bool = Query(True, description="Update local entity"),
+    entity_id: str, update_data: Dict[str, NgsiLdAttributePatch]
 ):
+    """
+    Update one or more attributes of a Device entity using
+    the NGSI-LD Partial Update specification (/attrs).
+    """
     try:
-        return DeviceService.update_entity_attributes(
-            entity_id, update_data, local=local
+        payload_to_send = {
+            key: value.model_dump(exclude_unset=True)
+            for key, value in update_data.items()
+        }
+        await device_service.update_entity_attributes(entity_id, payload_to_send)
+        return
+    except ValueError as e:
+        raise HTTPException(status_code=422, detail=str(e))
+    except httpx.HTTPStatusError as e:
+        raise HTTPException(
+            status_code=e.response.status_code, detail=e.response.json()
         )
-    except httpx.HTTPError as e:
-        raise HTTPException(status_code=getattr(e.response, 'status_code', 500), detail=str(e))
 
 
-@router.put("/{entity_id}")
-async def replace_device(
-    entity_id: str,
-    entity_data: Dict[str, Any],
-    local: bool = Query(True, description="Replace local entity"),
-):
+@router.delete("/{entity_id:path}", status_code=204, summary="Delete Device Entity")
+async def delete_device(entity_id: str):
+    """
+    Delete a Device entity by its ID.
+    """
     try:
-        return DeviceService.replace_entity(entity_id, entity_data, local=local)
-    except httpx.HTTPError as e:
-        raise HTTPException(status_code=getattr(e.response, 'status_code', 500), detail=str(e))
-
-
-@router.post("/{entity_id}/attrs")
-async def add_device_attributes(
-    entity_id: str,
-    attributes_data: Dict[str, Any],
-    local: bool = Query(True, description="Add to local entity"),
-):
-    try:
-        return DeviceService.add_attributes(entity_id, attributes_data, local=local)
-    except httpx.HTTPError as e:
-        raise HTTPException(status_code=getattr(e.response, 'status_code', 500), detail=str(e))
-
-
-@router.get("/{entity_id}/attrs/{attr_name}")
-async def get_device_attribute(
-    entity_id: str,
-    attr_name: str,
-    local: bool = Query(True, description="Get from local entity"),
-):
-    try:
-        return DeviceService.get_attribute_by_id(entity_id, attr_name, local=local)
-    except httpx.HTTPError as e:
-        raise HTTPException(status_code=getattr(e.response, 'status_code', 500), detail=str(e))
-
-
-@router.patch("/{entity_id}/attrs/{attr_name}")
-async def update_device_attribute(
-    entity_id: str,
-    attr_name: str,
-    attr_data: AttributeRequest,
-    local: bool = Query(True, description="Update local entity"),
-):
-    try:
-        return DeviceService.update_attribute(
-            entity_id, attr_name, attr_data.dict(), local=local
+        await device_service.delete_entity(entity_id)
+        return
+    except httpx.HTTPStatusError as e:
+        raise HTTPException(
+            status_code=e.response.status_code, detail=e.response.json()
         )
-    except httpx.HTTPError as e:
-        raise HTTPException(status_code=getattr(e.response, 'status_code', 500), detail=str(e))
-
-
-@router.delete("/{entity_id}/attrs/{attr_name}")
-async def delete_device_attribute(
-    entity_id: str,
-    attr_name: str,
-    local: bool = Query(True, description="Delete from local entity"),
-):
-    try:
-        return DeviceService.delete_attribute(entity_id, attr_name, local=local)
-    except httpx.HTTPError as e:
-        raise HTTPException(status_code=getattr(e.response, 'status_code', 500), detail=str(e))
-
-
-@router.delete("/{entity_id}")
-async def delete_device(
-    entity_id: str, local: bool = Query(True, description="Delete local entity")
-):
-    try:
-        return DeviceService.delete_entity(entity_id, local=local)
-    except httpx.HTTPError as e:
-        raise HTTPException(status_code=getattr(e.response, 'status_code', 500), detail=str(e))
