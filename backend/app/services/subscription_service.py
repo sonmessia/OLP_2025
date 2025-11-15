@@ -1,142 +1,417 @@
-from typing import Dict, Any, List, Optional, Union
-import requests
+# app/services/subscription_service.py
+from typing import Optional, Dict, Any, List, Union
 from .base_service import BaseService
+import httpx
+import logging
+
+logger = logging.getLogger(__name__)
 
 
 class SubscriptionService(BaseService):
     """
-    Service for NGSI-LD Subscription management.
+    Service layer for NGSI-LD Subscriptions.
+    Provides high-level methods for managing context subscriptions.
 
-    Subscriptions are the publish/subscribe (pub/sub) mechanism of NGSI-LD.
-    Instead of polling, applications can subscribe to events of interest and
-    receive notifications automatically when those events occur.
+    Subscriptions allow applications to be notified asynchronously when
+    context data changes, reducing the need for constant polling.
+
+    Usage:
+        # Context manager (recommended)
+        async with SubscriptionService() as service:
+            subscriptions = await service.get_all()
+
+        # Manual lifecycle
+        service = SubscriptionService()
+        try:
+            sub = await service.create_subscription(subscription_data)
+        finally:
+            await service.close()
+
+    Author: sonmessia
+    Created: 2025-11-15
     """
 
-    async def create_subscription(
-        self, subscription_data: Dict[str, Any]
-    ) -> requests.Response:
+    def __init__(
+        self, orion_url: Optional[str] = None, context_url: Optional[str] = None
+    ):
         """
-        Creates a new subscription. (POST /subscriptions/)
+        Initialize SubscriptionService.
 
-        The subscription payload should include:
-        - type: Always "Subscription"
-        - description: Human-readable description (optional)
-        - entities: Array of entities to monitor (required)
-        - watchedAttributes: Attributes to monitor (optional)
-        - q: Filter condition (optional)
-        - notification: Notification configuration (required)
-        - @context: Context URL (required)
+        Args:
+            orion_url: Orion-LD broker URL (default from env: ORION_LD_URL)
+            context_url: JSON-LD context URL (default from env: CONTEXT_URL)
+        """
+        super().__init__(orion_url, context_url)
+
+    async def create_subscription(
+        self,
+        description: str,
+        entities: List[Dict[str, str]],
+        notification_uri: str,
+        watched_attributes: Optional[List[str]] = None,
+        q: Optional[str] = None,
+        notification_format: str = "normalized",
+        notification_accept: str = "application/json",
+        notifier_info: Optional[List[Dict[str, str]]] = None,
+        expires_at: Optional[str] = None,
+        throttling: Optional[int] = None,
+        tenant: Optional[str] = None,
+    ) -> httpx.Response:
+        """
+        Create a new subscription.
+
+        Args:
+            description: Human-readable description of the subscription
+            entities: List of entity type/id patterns to watch
+                     [{"type": "Device"}, {"id": "urn:ngsi-ld:Device:001"}]
+            notification_uri: URI where notifications will be sent
+            watched_attributes: Specific attributes to watch for changes
+            q: Query filter (e.g., "temperature>25")
+            notification_format: Format of notification payload
+                               ('normalized', 'keyValues', 'x-ngsiv2-normalized')
+            notification_accept: Accept header for notifications
+            notifier_info: Additional notification metadata (for MQTT QoS, etc.)
+            expires_at: ISO8601 timestamp when subscription expires
+            throttling: Minimum time (seconds) between notifications
+            tenant: NGSI-LD tenant (if using multi-tenancy)
 
         Returns:
-            Response with status 201 and Location header containing subscription ID
-        """
-        subscription_data.setdefault("@context", self.CONTEXT_URL)
-        subscription_data.setdefault("type", "Subscription")
+            httpx.Response with status 201 and Location header
 
+        Examples:
+            # Simple subscription for device changes
+            response = await service.create_subscription(
+                description="Notify on device battery level changes",
+                entities=[{"type": "Device"}],
+                notification_uri="http://myapp:3000/notifications/devices",
+                watched_attributes=["batteryLevel"],
+                q="batteryLevel<0.2"
+            )
+
+            # Subscription with MQTT endpoint
+            response = await service.create_subscription(
+                description="Notify via MQTT",
+                entities=[{"type": "WaterQualityObserved"}],
+                notification_uri="mqtt://mosquitto:1883/water-quality",
+                watched_attributes=["pH", "turbidity"],
+                notification_format="keyValues",
+                notifier_info=[{"key": "MQTT-QoS", "value": "1"}]
+            )
+        """
+        subscription_data = {
+            "type": "Subscription",
+            "description": description,
+            "entities": entities,
+            "notification": {
+                "format": notification_format,
+                "endpoint": {"uri": notification_uri, "accept": notification_accept},
+            },
+        }
+
+        # Optional: watched attributes
+        if watched_attributes:
+            subscription_data["watchedAttributes"] = watched_attributes
+
+        # Optional: query filter
+        if q:
+            subscription_data["q"] = q
+
+        # Optional: notification attributes
+        if watched_attributes:
+            subscription_data["notification"]["attributes"] = watched_attributes
+
+        # Optional: notifier info (for MQTT QoS, etc.)
+        if notifier_info:
+            subscription_data["notification"]["endpoint"][
+                "notifierInfo"
+            ] = notifier_info
+
+        # Optional: expiration
+        if expires_at:
+            subscription_data["expiresAt"] = expires_at
+
+        # Optional: throttling
+        if throttling:
+            subscription_data["throttling"] = throttling
+
+        # Prepare headers
+        headers = self.LINK_HEADER.copy()
+        if tenant:
+            headers["NGSILD-Tenant"] = tenant
+
+        logger.info(f"Creating subscription: {description}")
         return await self._make_request(
-            "POST",
-            "subscriptions/",
-            headers=self.JSON_LD_CONTENT_HEADER,
-            json_payload=subscription_data,
+            "POST", "subscriptions", headers=headers, json_payload=subscription_data
         )
 
     async def get_all_subscriptions(
         self,
         limit: Optional[int] = None,
         offset: Optional[int] = None,
-        count: bool = False,
-    ) -> Union[List[Dict[str, Any]], int]:
+        tenant: Optional[str] = None,
+    ) -> List[Dict[str, Any]]:
         """
-        Retrieves a list of all active subscriptions. (GET /subscriptions/)
+        Get all subscriptions.
 
         Args:
-            limit: Maximum number of results to return per page
-            offset: Number of results to skip (for pagination)
-            count: If True, return only the count of subscriptions
+            limit: Maximum number of results
+            offset: Offset for pagination
+            tenant: NGSI-LD tenant
 
         Returns:
-            List of subscription objects or count (if count=True)
+            List of subscription objects
+
+        Example:
+            subscriptions = await service.get_all_subscriptions()
+            for sub in subscriptions:
+                print(f"{sub['description']}: {sub['id']}")
         """
         params = {}
-        if limit is not None:
+        if limit:
             params["limit"] = limit
-        if offset is not None:
+        if offset:
             params["offset"] = offset
-        if count:
-            params["count"] = count
+
+        headers = {}
+        if tenant:
+            headers["NGSILD-Tenant"] = tenant
 
         response = await self._make_request(
-            "GET", "subscriptions/", headers=self.LINK_HEADER, params=params
+            "GET", "subscriptions", headers=headers, params=params
         )
 
-        if count:
-            return int(response.headers.get("NGSILD-Results-Count", 0))
         return response.json()
 
-    async def get_subscription_by_id(self, subscription_id: str) -> Dict[str, Any]:
+    async def get_subscription(
+        self,
+        subscription_id: str,
+        tenant: Optional[str] = None,
+    ) -> Dict[str, Any]:
         """
-        Retrieves details of a specific subscription. (GET /subscriptions/{id})
-
-        This is useful for debugging as the response includes diagnostic information:
-        - status: Current status of the subscription
-        - timesSent: Number of notifications sent
-        - lastFailure: Timestamp of last failed notification
-        - lastSuccess: Timestamp of last successful notification
-        - lastFailureReason: Reason for last failure
+        Get details of a specific subscription.
 
         Args:
-            subscription_id: The ID of the subscription to retrieve
+            subscription_id: Subscription ID (URN)
+            tenant: NGSI-LD tenant
 
         Returns:
-            Subscription object with diagnostic information
+            Subscription object with notification status
+
+        Example:
+            sub = await service.get_subscription(
+                "urn:ngsi-ld:Subscription:5fd228838b9b83697b855a72"
+            )
+            print(f"Last notification: {sub['notification'].get('lastNotification')}")
         """
+        headers = {}
+        if tenant:
+            headers["NGSILD-Tenant"] = tenant
+
         response = await self._make_request(
-            "GET", f"subscriptions/{subscription_id}", headers=self.LINK_HEADER
+            "GET", f"subscriptions/{subscription_id}", headers=headers
         )
+
         return response.json()
 
     async def update_subscription(
-        self, subscription_id: str, update_data: Dict[str, Any]
-    ) -> requests.Response:
+        self,
+        subscription_id: str,
+        update_data: Dict[str, Any],
+        tenant: Optional[str] = None,
+    ) -> int:
         """
-        Updates an existing subscription. (PATCH /subscriptions/{id})
-
-        You only need to send the fields you want to change.
-        Common updates:
-        - description: Update the description
-        - notification.endpoint.uri: Change the notification URL
-        - watchedAttributes: Modify monitored attributes
-        - q: Update filter conditions
+        Update an existing subscription.
 
         Args:
-            subscription_id: The ID of the subscription to update
-            update_data: JSON-LD object with fields to update
+            subscription_id: Subscription ID (URN)
+            update_data: Partial subscription data to update
+            tenant: NGSI-LD tenant
 
         Returns:
-            Response with status 204 No Content
-        """
-        update_data.setdefault("@context", self.CONTEXT_URL)
+            HTTP status code (204 on success)
 
-        return await self._make_request(
+        Example:
+            # Update notification endpoint
+            await service.update_subscription(
+                "urn:ngsi-ld:Subscription:5fd228838b9b83697b855a72",
+                {
+                    "notification": {
+                        "endpoint": {
+                            "uri": "http://newserver:3000/notifications"
+                        }
+                    }
+                }
+            )
+        """
+        headers = {"Content-Type": "application/json"}
+        if tenant:
+            headers["NGSILD-Tenant"] = tenant
+
+        response = await self._make_request(
             "PATCH",
             f"subscriptions/{subscription_id}",
-            headers=self.JSON_LD_CONTENT_HEADER,
+            headers=headers,
             json_payload=update_data,
         )
 
-    async def delete_subscription(self, subscription_id: str) -> requests.Response:
-        """
-        Deletes (cancels) a subscription. (DELETE /subscriptions/{id})
+        return response.status_code
 
-        After deletion, no more notifications will be sent for this subscription.
+    async def delete_subscription(
+        self,
+        subscription_id: str,
+        tenant: Optional[str] = None,
+    ) -> int:
+        """
+        Delete a subscription.
 
         Args:
-            subscription_id: The ID of the subscription to delete
+            subscription_id: Subscription ID (URN)
+            tenant: NGSI-LD tenant
 
         Returns:
-            Response with status 204 No Content
+            HTTP status code (204 on success)
+
+        Example:
+            await service.delete_subscription(
+                "urn:ngsi-ld:Subscription:5fd228838b9b83697b855a72"
+            )
         """
-        return await self._make_request("DELETE", f"subscriptions/{subscription_id}")
+        headers = {}
+        if tenant:
+            headers["NGSILD-Tenant"] = tenant
+
+        response = await self._make_request(
+            "DELETE", f"subscriptions/{subscription_id}", headers=headers
+        )
+
+        return response.status_code
+
+    # Helper methods for common subscription patterns
+
+    async def subscribe_to_entity_changes(
+        self,
+        entity_type: str,
+        notification_uri: str,
+        attributes: Optional[List[str]] = None,
+        q: Optional[str] = None,
+        description: Optional[str] = None,
+    ) -> httpx.Response:
+        """
+        Create a subscription for entity type changes.
+
+        Args:
+            entity_type: Entity type to watch
+            notification_uri: Where to send notifications
+            attributes: Specific attributes to watch
+            q: Query filter
+            description: Subscription description
+
+        Returns:
+            httpx.Response with subscription ID
+
+        Example:
+            # Watch for low battery devices
+            await service.subscribe_to_entity_changes(
+                entity_type="Device",
+                notification_uri="http://myapp:3000/low-battery",
+                attributes=["batteryLevel"],
+                q="batteryLevel<0.2",
+                description="Low battery alert"
+            )
+        """
+        desc = description or f"Subscribe to {entity_type} changes"
+
+        return await self.create_subscription(
+            description=desc,
+            entities=[{"type": entity_type}],
+            notification_uri=notification_uri,
+            watched_attributes=attributes,
+            q=q,
+        )
+
+    async def subscribe_to_specific_entity(
+        self,
+        entity_id: str,
+        notification_uri: str,
+        attributes: Optional[List[str]] = None,
+        description: Optional[str] = None,
+    ) -> httpx.Response:
+        """
+        Create a subscription for a specific entity.
+
+        Args:
+            entity_id: Specific entity ID to watch
+            notification_uri: Where to send notifications
+            attributes: Specific attributes to watch
+            description: Subscription description
+
+        Returns:
+            httpx.Response with subscription ID
+
+        Example:
+            await service.subscribe_to_specific_entity(
+                entity_id="urn:ngsi-ld:Device:sensor001",
+                notification_uri="http://myapp:3000/sensor001-updates",
+                attributes=["temperature", "humidity"]
+            )
+        """
+        desc = description or f"Subscribe to {entity_id} changes"
+
+        return await self.create_subscription(
+            description=desc,
+            entities=[{"id": entity_id}],
+            notification_uri=notification_uri,
+            watched_attributes=attributes,
+        )
+
+    async def subscribe_with_mqtt(
+        self,
+        entity_type: str,
+        mqtt_broker: str,
+        mqtt_topic: str,
+        mqtt_qos: str = "1",
+        attributes: Optional[List[str]] = None,
+        q: Optional[str] = None,
+        description: Optional[str] = None,
+    ) -> httpx.Response:
+        """
+        Create an MQTT subscription.
+
+        Args:
+            entity_type: Entity type to watch
+            mqtt_broker: MQTT broker address (e.g., "mosquitto:1883")
+            mqtt_topic: MQTT topic to publish to
+            mqtt_qos: MQTT Quality of Service level
+            attributes: Specific attributes to watch
+            q: Query filter
+            description: Subscription description
+
+        Returns:
+            httpx.Response with subscription ID
+
+        Example:
+            await service.subscribe_with_mqtt(
+                entity_type="WaterQualityObserved",
+                mqtt_broker="mosquitto:1883",
+                mqtt_topic="/water-quality/alerts",
+                mqtt_qos="1",
+                attributes=["pH", "turbidity"],
+                q="pH<6.5|pH>8.5"
+            )
+        """
+        desc = description or f"MQTT subscription for {entity_type}"
+        mqtt_uri = f"mqtt://{mqtt_broker}/{mqtt_topic}"
+
+        return await self.create_subscription(
+            description=desc,
+            entities=[{"type": entity_type}],
+            notification_uri=mqtt_uri,
+            watched_attributes=attributes,
+            q=q,
+            notification_format="keyValues",
+            notifier_info=[{"key": "MQTT-QoS", "value": mqtt_qos}],
+        )
 
 
+# Singleton instance
 subscription_service = SubscriptionService()
