@@ -1,73 +1,147 @@
-# React + TypeScript + Vite
+# Clean Architecture Workflow for React/Redux/TypeScript
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## 1. Workflow Overview (Data Flow)
 
-Currently, two official plugins are available:
-
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
-
-## React Compiler
-
-The React Compiler is currently not compatible with SWC. See [this issue](https://github.com/vitejs/vite-plugin-react/issues/428) for tracking the progress.
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```
+         ┌───────────────────────┐
+         │    Presentation/UI    │
+         │  (Components, Pages)  │
+         └───────────┬───────────┘
+                     │ User Action
+                     ▼
+            ┌─────────────────────┐
+            │    Use Case         │
+            │   (Domain Layer)    │
+            └──────────┬──────────┘
+                       │ Calls
+                       ▼
+          ┌───────────────────────────┐
+          │  Repository Interface     │
+          │     (Domain Layer)        │
+          └────────────┬──────────────┘
+                       │ Implementation
+                       ▼
+     ┌────────────────────────────────────┐
+     │   Repository Implementation        │
+     │   (Infrastructure Layer)           │
+     └──────────────────┬─────────────────┘
+                         │ Calls API
+                         ▼
+            ┌────────────────────────┐
+            │        API Layer       │
+            │ (Axios/Fetch Rest API) │
+            └────────────┬───────────┘
+                         │ Returns DTO
+                         ▼
+               ┌──────────────────────┐
+               │        Mappers       │
+               │ (DTO → Model, Model → DTO)
+               └───────────┬──────────┘
+                           │ Clean data model
+                           ▼
+             ┌────────────────────────┐
+             │     Redux/Data Layer   │
+             │ (Slices, Store, State) │
+             └─────────────┬──────────┘
+                           │ Updates State
+                           ▼
+        ┌────────────────────────────────┐
+        │   Presentation/UI Re-renders   │
+        └────────────────────────────────┘
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+---
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+## 2. Folder Structure
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
 ```
+src/
+├── api/                     # Raw HTTP calls
+├── core/                    # App bootstrap (App.tsx, router)
+├── data/                    # Redux, DTOs, Mappers
+│   ├── redux/
+│   ├── dtos/
+│   └── mappers/
+├── domain/                  # Business logic, pure TS
+│   ├── models/
+│   └── use-cases/
+├── services/          # Repositories + External Services
+│   └── repositories/
+├── presentation/            # UI Layer
+│   ├── components/
+│   ├── pages/
+│   ├── containers/
+│   └── hooks/
+└── shared/                  # Utils, constants, config
+```
+
+---
+
+## 3. Layer Responsibilities
+
+### Domain Layer
+
+- Contains business rules.
+- Independent from React, Redux, API.
+- Includes:
+
+  - `models/` → Entities (User, Product…)
+  - `use-cases/` → Pure business actions
+
+### Data Layer
+
+- Handles global state & data normalization.
+- Includes:
+
+  - Redux slices
+  - DTO definitions
+  - Mappers (DTO ↔ Model)
+
+### Service Layer
+
+- Implements Repository Interfaces.
+- Connects business logic to external sources.
+
+### API Layer
+
+- Performs HTTP calls.
+- Contains no business logic.
+
+### Presentation Layer
+
+- UI Components
+- Pages & Views
+- Hooks & interactions
+
+---
+
+## 4. Example Workflow Description
+
+### Scenario: User clicks "Get Profile"
+
+1. **UI Component** dispatches `getUserProfile()` action.
+2. Action triggers a **Use Case**: `GetUserProfileUseCase`.
+3. Use Case calls **UserRepository Interface**.
+4. Infrastructure provides **UserRepositoryImpl**, which calls `user-api.ts`.
+5. `user-api.ts` returns a **DTO**.
+6. Mapper transforms DTO → Domain Model.
+7. Redux slice updates state with Model.
+8. UI re-renders automatically.
+
+---
+
+## 5. Benefits
+
+- Framework independent
+- Easy unit testing
+- High scalability
+- Separation of concerns
+- Stable business logic regardless of API/UI changes
+
+---
+
+## 6. Notes
+
+- Domain layer **never imports** from services, data, presentation.
+- API response changes **never affect business logic**.
+- Redux & UI are replaceable without touching domain.
