@@ -1,5 +1,5 @@
 # app/services/context_source_service.py
-from typing import Optional, Dict, Any, List, Union
+from typing import Optional, Dict, Any, List
 from .base_service import BaseService
 import httpx
 import logging
