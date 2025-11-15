@@ -2,8 +2,6 @@ import httpx
 from typing import Optional, Dict, Any, List, Union
 import logging
 import os
-from contextlib import asynccontextmanager
-
 logging.basicConfig(
     level=logging.INFO, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s"
 )
