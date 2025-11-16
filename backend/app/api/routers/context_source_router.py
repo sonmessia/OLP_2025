@@ -164,7 +164,7 @@ async def create_registration(
                 if e.response.headers.get("content-type") == "application/json"
                 else {"error": e.response.text}
             ),
-        )
+        ) from e
 
 
 @router.get("/", response_model=List[Dict[str, Any]])
@@ -187,7 +187,7 @@ async def get_all_registrations(
     except httpx.HTTPStatusError as e:
         raise HTTPException(
             status_code=e.response.status_code, detail=e.response.json()
-        )
+        ) from e
 
 
 @router.get("/{registration_id}", response_model=Dict[str, Any])
@@ -204,10 +204,10 @@ async def get_registration(registration_id: str, tenant: Optional[str] = Query(N
             raise HTTPException(
                 status_code=status.HTTP_404_NOT_FOUND,
                 detail={"error": "Registration not found"},
-            )
+            ) from e
         raise HTTPException(
             status_code=e.response.status_code, detail=e.response.json()
-        )
+        ) from e
 
 
 @router.patch("/{registration_id}", status_code=status.HTTP_204_NO_CONTENT)
@@ -233,10 +233,10 @@ async def update_registration(
             raise HTTPException(
                 status_code=status.HTTP_404_NOT_FOUND,
                 detail={"error": "Registration not found"},
-            )
+            ) from e
         raise HTTPException(
             status_code=e.response.status_code, detail=e.response.json()
-        )
+        ) from e
 
 
 @router.delete("/{registration_id}", status_code=status.HTTP_204_NO_CONTENT)
@@ -254,10 +254,10 @@ async def delete_registration(
             raise HTTPException(
                 status_code=status.HTTP_404_NOT_FOUND,
                 detail={"error": "Registration not found"},
-            )
+            ) from e
         raise HTTPException(
             status_code=e.response.status_code, detail=e.response.json()
-        )
+        ) from e
 
 
 # Quick registration endpoints
@@ -292,7 +292,7 @@ async def quick_redirect_registration(
     except httpx.HTTPStatusError as e:
         raise HTTPException(
             status_code=e.response.status_code, detail=e.response.json()
-        )
+        ) from e
 
 
 @router.post("/quick/federation", status_code=status.HTTP_201_CREATED)
@@ -324,7 +324,7 @@ async def quick_federation_registration(
     except httpx.HTTPStatusError as e:
         raise HTTPException(
             status_code=e.response.status_code, detail=e.response.json()
-        )
+        ) from e
 
 
 @router.post("/quick/device", status_code=status.HTTP_201_CREATED)
@@ -362,4 +362,4 @@ async def quick_device_registration(
     except httpx.HTTPStatusError as e:
         raise HTTPException(
             status_code=e.response.status_code, detail=e.response.json()
-        )
+        ) from e

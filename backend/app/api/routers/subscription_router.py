@@ -121,7 +121,7 @@ async def create_subscription(
                 if e.response.headers.get("content-type") == "application/json"
                 else {"error": e.response.text}
             ),
-        )
+        ) from e
 
 
 @router.get("/", response_model=List[Dict[str, Any]])
@@ -143,7 +143,7 @@ async def get_all_subscriptions(
     except httpx.HTTPStatusError as e:
         raise HTTPException(
             status_code=e.response.status_code, detail=e.response.json()
-        )
+        ) from e
 
 
 @router.get("/{subscription_id}", response_model=Dict[str, Any])
@@ -163,10 +163,10 @@ async def get_subscription(subscription_id: str, tenant: Optional[str] = Query(N
             raise HTTPException(
                 status_code=status.HTTP_404_NOT_FOUND,
                 detail={"error": "Subscription not found"},
-            )
+            ) from e
         raise HTTPException(
             status_code=e.response.status_code, detail=e.response.json()
-        )
+        ) from e
 
 
 @router.patch("/{subscription_id}", status_code=status.HTTP_204_NO_CONTENT)
@@ -193,10 +193,10 @@ async def update_subscription(
             raise HTTPException(
                 status_code=status.HTTP_404_NOT_FOUND,
                 detail={"error": "Subscription not found"},
-            )
+            ) from e
         raise HTTPException(
             status_code=e.response.status_code, detail=e.response.json()
-        )
+        ) from e
 
 
 @router.delete("/{subscription_id}", status_code=status.HTTP_204_NO_CONTENT)
@@ -214,10 +214,10 @@ async def delete_subscription(
             raise HTTPException(
                 status_code=status.HTTP_404_NOT_FOUND,
                 detail={"error": "Subscription not found"},
-            )
+            ) from e
         raise HTTPException(
             status_code=e.response.status_code, detail=e.response.json()
-        )
+        ) from e
 
 
 # Convenience endpoints
@@ -257,4 +257,4 @@ async def quick_subscribe_entity_type(
     except httpx.HTTPStatusError as e:
         raise HTTPException(
             status_code=e.response.status_code, detail=e.response.json()
-        )
+        ) from e

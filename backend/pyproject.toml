@@ -4,15 +4,15 @@ target-version = ['py39']
 include = '\.pyi?$'
 extend-exclude = '''
 /(
-  # directories
-  \.eggs
-  | \.git
-  | \.hg
-  | \.mypy_cache
-  | \.tox
-  | \.venv
-  | build
-  | dist
+  # directories
+  \.eggs
+  | \.git
+  | \.hg
+  | \.mypy_cache
+  | \.tox
+  | \.venv
+  | build
+  | dist
 )/
 '''
 
@@ -28,11 +28,9 @@ python_classes = ["Test*"]
 python_functions = ["test_*"]
 addopts = "-v --tb=short"
 
+
 [tool.ruff]
 line-length = 88
-
-select = ["I", "E", "F", "B"]
-ignore = ["E501"]
 
 exclude = [
   ".bzr",
@@ -45,5 +43,9 @@ exclude = [
   ".venv",
 ]
 
-[tool.ruff.isort]
-known-first-party = [".backend"]
+[tool.ruff.lint]
+select = ["I", "E", "F", "B"]
+ignore = ["E501"]
+
+[tool.ruff.lint.isort]
+known-first-party = ["backend"]

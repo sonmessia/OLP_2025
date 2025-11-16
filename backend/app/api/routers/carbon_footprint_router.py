@@ -1,9 +1,11 @@
-from fastapi import APIRouter, HTTPException, Query, Body, Response, status
-from typing import Optional, List, Dict, Any, Union
-from pydantic import BaseModel, Field, model_validator
-import httpx
 import logging
+from typing import Any, Dict, List, Optional, Union
 
+import httpx
+from fastapi import APIRouter, HTTPException, Query, Response, status
+from pydantic import BaseModel, Field, model_validator
+
+from app.models.CarbonFootprint import CarbonFootprint
 from app.services.carbon_footprint_service import carbon_footprint_service
 
 router = APIRouter(prefix="/api/v1/carbon-footprint", tags=["CarbonFootprint"])
@@ -116,18 +118,18 @@ async def get_all_carbon_footprint(
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail={"error": "Invalid query parameters", "message": str(e)},
-        )
+        ) from e
     except httpx.HTTPStatusError as e:
         logger.error(f"Orion-LD error: {e.response.status_code} - {e.response.text}")
         raise HTTPException(
             status_code=e.response.status_code, detail=e.response.json()
-        )
+        ) from e
     except httpx.RequestError as e:
         logger.error(f"Connection error: {str(e)}")
         raise HTTPException(
             status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
             detail={"error": "Service Unavailable"},
-        )
+        ) from e
 
 
 @router.get(
@@ -152,10 +154,10 @@ async def get_carbon_footprint_by_id(
             raise HTTPException(
                 status_code=status.HTTP_404_NOT_FOUND,
                 detail={"error": "Emission record not found", "entity_id": entity_id},
-            )
+            ) from e
         raise HTTPException(
             status_code=e.response.status_code, detail=e.response.json()
-        )
+        ) from e
 
 
 @router.post(
@@ -166,39 +168,36 @@ async def get_carbon_footprint_by_id(
 )
 async def create_carbon_footprint(
     response: Response,
-    entity_data: Dict[str, Any] = Body(
-        ...,
-        example={
-            "id": "urn:ngsi-ld:CarbonFootprint:Transport-Madrid-001",
-            "emissionDate": "2025-11-15T12:30:00Z",
-            "CO2eq": {"type": "Property", "value": 125.5, "unitCode": "KGM"},
-            "emissionSource": {"type": "Property", "value": "Transport"},
-        },
-    ),
+    entity_data: CarbonFootprint,
 ):
     """Create a new CarbonFootprint entity."""
     try:
-        orion_response = await carbon_footprint_service.create(entity_data)
+        # Convert Pydantic model to dict for service layer
+        entity_dict = entity_data.model_dump(exclude_unset=True)
+        orion_response = await carbon_footprint_service.create(entity_dict)
         response.headers["Location"] = orion_response.headers.get("Location", "")
         return {
             "message": "Emission record created successfully",
-            "id": entity_data.get("id"),
+            "id": entity_data.id,
         }
 
     except ValueError as e:
         raise HTTPException(
             status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
             detail={"error": "Validation error", "message": str(e)},
-        )
+        ) from e
     except httpx.HTTPStatusError as e:
         if e.response.status_code == 409:
             raise HTTPException(
                 status_code=status.HTTP_409_CONFLICT,
-                detail={"error": "Emission record already exists"},
-            )
+                detail={
+                    "error": "Emission record already exists",
+                    "id": entity_data.id,
+                },
+            ) from e
         raise HTTPException(
             status_code=e.response.status_code, detail=e.response.json()
-        )
+        ) from e
 
 
 @router.patch(
@@ -217,16 +216,16 @@ async def update_carbon_footprint_attributes(
     except ValueError as e:
         raise HTTPException(
             status_code=status.HTTP_422_UNPROCESSABLE_ENTITY, detail=str(e)
-        )
+        ) from e
     except httpx.HTTPStatusError as e:
         if e.response.status_code == 404:
             raise HTTPException(
                 status_code=status.HTTP_404_NOT_FOUND,
                 detail={"error": "Record not found"},
-            )
+            ) from e
         raise HTTPException(
             status_code=e.response.status_code, detail=e.response.json()
-        )
+        ) from e
 
 
 @router.put(
@@ -234,9 +233,7 @@ async def update_carbon_footprint_attributes(
     status_code=status.HTTP_204_NO_CONTENT,
     summary="Replace CarbonFootprint",
 )
-async def replace_carbon_footprint(
-    entity_id: str, entity_data: Dict[str, Any] = Body(...)
-):
+async def replace_carbon_footprint(entity_id: str, entity_data: CarbonFootprint):
     """Replace an entire CarbonFootprint entity."""
     try:
         await carbon_footprint_service.replace(entity_id, entity_data)
@@ -246,10 +243,10 @@ async def replace_carbon_footprint(
             raise HTTPException(
                 status_code=status.HTTP_404_NOT_FOUND,
                 detail={"error": "Record not found"},
-            )
+            ) from e
         raise HTTPException(
             status_code=e.response.status_code, detail=e.response.json()
-        )
+        ) from e
 
 
 @router.delete(
@@ -267,10 +264,10 @@ async def delete_carbon_footprint(entity_id: str):
             raise HTTPException(
                 status_code=status.HTTP_404_NOT_FOUND,
                 detail={"error": "Record not found"},
-            )
+            ) from e
         raise HTTPException(
             status_code=e.response.status_code, detail=e.response.json()
-        )
+        ) from e
 
 
 @router.delete(
@@ -286,7 +283,7 @@ async def delete_carbon_footprint_attribute(entity_id: str, attribute_name: str)
     except httpx.HTTPStatusError as e:
         raise HTTPException(
             status_code=e.response.status_code, detail=e.response.json()
-        )
+        ) from e
 
 
 # Batch Operations
@@ -301,7 +298,7 @@ async def batch_create_carbon_footprint(request: BatchOperationRequest):
     except httpx.HTTPStatusError as e:
         raise HTTPException(
             status_code=e.response.status_code, detail=e.response.json()
-        )
+        ) from e
 
 
 @router.post("/batch/upsert", status_code=status.HTTP_200_OK)
@@ -318,7 +315,7 @@ async def batch_upsert_carbon_footprint(
     except httpx.HTTPStatusError as e:
         raise HTTPException(
             status_code=e.response.status_code, detail=e.response.json()
-        )
+        ) from e
 
 
 @router.post("/batch/delete", status_code=status.HTTP_204_NO_CONTENT)
@@ -330,7 +327,7 @@ async def batch_delete_carbon_footprint(request: BatchDeleteRequest):
     except httpx.HTTPStatusError as e:
         raise HTTPException(
             status_code=e.response.status_code, detail=e.response.json()
-        )
+        ) from e
 
 
 # Convenience Endpoints
@@ -355,7 +352,7 @@ async def get_emissions_by_source(
         logger.error(f"Error in source search: {str(e)}")
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(e)
-        )
+        ) from e
 
 
 @router.get("/high-emissions", response_model=List[Dict[str, Any]])
@@ -373,7 +370,7 @@ async def get_high_emissions(
         logger.error(f"Error in high emissions search: {str(e)}")
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(e)
-        )
+        ) from e
 
 
 @router.get("/recent", response_model=List[Dict[str, Any]])
@@ -392,7 +389,7 @@ async def get_recent_emissions(
         logger.error(f"Error in recent emissions query: {str(e)}")
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(e)
-        )
+        ) from e
 
 
 @router.get("/location/nearby", response_model=List[Dict[str, Any]])
@@ -418,4 +415,4 @@ async def find_nearby_emissions(
         logger.error(f"Error in nearby search: {str(e)}")
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(e)
-        )
+        ) from e

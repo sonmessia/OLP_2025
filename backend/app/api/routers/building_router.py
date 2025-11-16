@@ -2,9 +2,10 @@ import logging
 from typing import Any, Dict, List, Optional, Union
 
 import httpx
-from fastapi import APIRouter, Body, HTTPException, Query, Response, status
+from fastapi import APIRouter, HTTPException, Query, Response, status
 from pydantic import BaseModel, Field, model_validator
 
+from app.models.Building import Building
 from app.services.building_service import building_service
 
 router = APIRouter(prefix="/api/v1/buildings", tags=["Building"])
@@ -112,18 +113,18 @@ async def get_all_buildings(
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail={"error": "Invalid query parameters", "message": str(e)},
-        )
+        ) from e
     except httpx.HTTPStatusError as e:
         logger.error(f"Orion-LD error: {e.response.status_code} - {e.response.text}")
         raise HTTPException(
             status_code=e.response.status_code, detail=e.response.json()
-        )
+        ) from e
     except httpx.RequestError as e:
         logger.error(f"Connection error: {str(e)}")
         raise HTTPException(
             status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
             detail={"error": "Service Unavailable"},
-        )
+        ) from e
 
 
 @router.get(
@@ -148,32 +149,37 @@ async def get_building_by_id(
             raise HTTPException(
                 status_code=status.HTTP_404_NOT_FOUND,
                 detail={"error": "Building not found", "entity_id": entity_id},
-            )
+            ) from e
         raise HTTPException(
             status_code=e.response.status_code, detail=e.response.json()
-        )
+        ) from e
 
 
 @router.post("/", status_code=status.HTTP_201_CREATED, summary="Create Building")
-async def create_building(response: Response, entity_data: Dict[str, Any] = Body(...)):
+async def create_building(
+    response: Response,
+    entity_data: Building,
+):
     """Create a new Building entity."""
     try:
-        orion_response = await building_service.create(entity_data)
+        # Convert Pydantic model to dict for service layer
+        entity_dict = entity_data.model_dump(exclude_unset=True)
+        orion_response = await building_service.create(entity_dict)
         response.headers["Location"] = orion_response.headers.get("Location", "")
-        return {"message": "Building created successfully", "id": entity_data.get("id")}
+        return {"message": "Building created successfully", "id": entity_data.id}
     except ValueError as e:
         raise HTTPException(
             status_code=status.HTTP_422_UNPROCESSABLE_ENTITY, detail=str(e)
-        )
+        ) from e
     except httpx.HTTPStatusError as e:
         if e.response.status_code == 409:
             raise HTTPException(
                 status_code=status.HTTP_409_CONFLICT,
-                detail={"error": "Building already exists"},
-            )
+                detail={"error": "Building already exists", "id": entity_data.id},
+            ) from e
         raise HTTPException(
             status_code=e.response.status_code, detail=e.response.json()
-        )
+        ) from e
 
 
 @router.patch(
@@ -192,16 +198,16 @@ async def update_building_attributes(
     except ValueError as e:
         raise HTTPException(
             status_code=status.HTTP_422_UNPROCESSABLE_ENTITY, detail=str(e)
-        )
+        ) from e
     except httpx.HTTPStatusError as e:
         if e.response.status_code == 404:
             raise HTTPException(
                 status_code=status.HTTP_404_NOT_FOUND,
                 detail={"error": "Building not found"},
-            )
+            ) from e
         raise HTTPException(
             status_code=e.response.status_code, detail=e.response.json()
-        )
+        ) from e
 
 
 @router.put(
@@ -209,7 +215,7 @@ async def update_building_attributes(
     status_code=status.HTTP_204_NO_CONTENT,
     summary="Replace Building",
 )
-async def replace_building(entity_id: str, entity_data: Dict[str, Any] = Body(...)):
+async def replace_building(entity_id: str, entity_data: Building):
     """Replace an entire Building entity."""
     try:
         await building_service.replace(entity_id, entity_data)
@@ -219,10 +225,10 @@ async def replace_building(entity_id: str, entity_data: Dict[str, Any] = Body(..
             raise HTTPException(
                 status_code=status.HTTP_404_NOT_FOUND,
                 detail={"error": "Building not found"},
-            )
+            ) from e
         raise HTTPException(
             status_code=e.response.status_code, detail=e.response.json()
-        )
+        ) from e
 
 
 @router.delete(
@@ -240,10 +246,10 @@ async def delete_building(entity_id: str):
             raise HTTPException(
                 status_code=status.HTTP_404_NOT_FOUND,
                 detail={"error": "Building not found"},
-            )
+            ) from e
         raise HTTPException(
             status_code=e.response.status_code, detail=e.response.json()
-        )
+        ) from e
 
 
 @router.delete(
@@ -259,7 +265,7 @@ async def delete_building_attribute(entity_id: str, attribute_name: str):
     except httpx.HTTPStatusError as e:
         raise HTTPException(
             status_code=e.response.status_code, detail=e.response.json()
-        )
+        ) from e
 
 
 # Batch Operations
@@ -274,7 +280,7 @@ async def batch_create_buildings(request: BatchOperationRequest):
     except httpx.HTTPStatusError as e:
         raise HTTPException(
             status_code=e.response.status_code, detail=e.response.json()
-        )
+        ) from e
 
 
 @router.post("/batch/upsert", status_code=status.HTTP_200_OK)
@@ -291,7 +297,7 @@ async def batch_upsert_buildings(
     except httpx.HTTPStatusError as e:
         raise HTTPException(
             status_code=e.response.status_code, detail=e.response.json()
-        )
+        ) from e
 
 
 @router.post("/batch/delete", status_code=status.HTTP_204_NO_CONTENT)
@@ -303,7 +309,7 @@ async def batch_delete_buildings(request: BatchDeleteRequest):
     except httpx.HTTPStatusError as e:
         raise HTTPException(
             status_code=e.response.status_code, detail=e.response.json()
-        )
+        ) from e
 
 
 # Convenience Endpoints
@@ -332,7 +338,7 @@ async def find_nearby_buildings(
         logger.error(f"Error in nearby search: {str(e)}")
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(e)
-        )
+        ) from e
 
 
 @router.get("/category/{category}", response_model=List[Dict[str, Any]])
@@ -350,7 +356,7 @@ async def get_buildings_by_category(
         logger.error(f"Error in category search: {str(e)}")
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(e)
-        )
+        ) from e
 
 
 @router.get("/tall", response_model=List[Dict[str, Any]])
@@ -368,4 +374,4 @@ async def get_tall_buildings(
         logger.error(f"Error in tall buildings search: {str(e)}")
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(e)
-        )
+        ) from e
