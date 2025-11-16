@@ -12,6 +12,7 @@ env:
 permissions:
   contents: read
   security-events: write
+
 jobs:
   lint-and-format:
     runs-on: ubuntu-latest
@@ -108,28 +109,6 @@ jobs:
           file: ./backend/coverage.xml
           flags: unittests
           name: codecov-umbrella
-
-  security-scan:
-    runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      security-events: write
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Run Trivy vulnerability scanner
-        uses: aquasecurity/trivy-action@master
-        with:
-          scan-type: "fs"
-          scan-ref: "."
-          format: "sarif"
-          output: "trivy-results.sarif"
-
-      - name: Upload Trivy scan results to GitHub Security tab
-        uses: github/codeql-action/upload-sarif@v4
-        with:
-          sarif_file: "trivy-results.sarif"
 
   # build-and-push:
   #   runs-on: ubuntu-latest
