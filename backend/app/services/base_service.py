@@ -1,7 +1,8 @@
-import httpx
-from typing import Optional, Dict, Any, List, Union
 import logging
 import os
+from typing import Any, Dict, List, Optional, Union
+
+import httpx
 
 logging.basicConfig(
     level=logging.INFO, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s"

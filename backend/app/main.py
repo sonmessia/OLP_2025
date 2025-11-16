@@ -1,15 +1,16 @@
 from fastapi import FastAPI
+
 from app.api.routers.air_quality_router import router as air_quality_router
+from app.api.routers.building_router import router as building_router
 from app.api.routers.carbon_footprint_router import (
     router as carbon_footprint_router,
 )
-from app.api.routers.water_quality_router import router as water_quality_router
-from app.api.routers.device_router import router as device_router
-from app.api.routers.building_router import router as building_router
-from app.api.routers.subscription_router import router as subscription_router
 from app.api.routers.context_source_router import (
     router as context_source_router,
 )
+from app.api.routers.device_router import router as device_router
+from app.api.routers.subscription_router import router as subscription_router
+from app.api.routers.water_quality_router import router as water_quality_router
 
 app = FastAPI(
     title="OLP 2025 Core Backend Service",

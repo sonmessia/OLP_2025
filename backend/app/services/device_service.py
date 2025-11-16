@@ -1,8 +1,10 @@
 # device_service.py
-from typing import Optional, Dict, Any, List, Union
-from .base_service import BaseService
-import httpx
 import logging
+from typing import Any, Dict, List, Optional, Union
+
+import httpx
+
+from .base_service import BaseService
 
 logger = logging.getLogger(__name__)
 

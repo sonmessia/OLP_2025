@@ -1,8 +1,10 @@
 # app/services/subscription_service.py
-from typing import Optional, Dict, Any, List
-from .base_service import BaseService
-import httpx
 import logging
+from typing import Any, Dict, List, Optional
+
+import httpx
+
+from .base_service import BaseService
 
 logger = logging.getLogger(__name__)
 

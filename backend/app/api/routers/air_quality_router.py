@@ -1,8 +1,9 @@
-from fastapi import APIRouter, HTTPException, Query, Body, Response, status
-from typing import Optional, List, Dict, Any, Union
-from pydantic import BaseModel, Field, model_validator
-import httpx
 import logging
+from typing import Any, Dict, List, Optional, Union
+
+import httpx
+from fastapi import APIRouter, Body, HTTPException, Query, Response, status
+from pydantic import BaseModel, Field, model_validator
 
 from app.services.air_quality_service import air_quality_service
 
