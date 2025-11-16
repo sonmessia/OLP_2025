@@ -98,7 +98,7 @@ jobs:
           MONGO_PORT: 27017
           MONGO_DB: test_db
         run: |
-          pytest backend/tests/ -v --cov=. --cov-report=xml
+          pytest tests/ -v --cov=. --cov-report=xml
 
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v3
