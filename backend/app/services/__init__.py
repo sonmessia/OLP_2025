@@ -6,19 +6,14 @@ from .device_service import DeviceService
 from .building_service import BuildingService
 from .subscription_service import SubscriptionService
 from .context_source_service import ContextSourceService
-from .batch_operations_service import BatchOperationsService
-from .api_discovery_service import ApiDiscoveryService, SystemService
 
 __all__ = [
-    'BaseService',
-    'AirQualityService',
-    'WaterQualityService', 
-    'CarbonFootprintService',
-    'DeviceService',
-    'BuildingService',
-    'SubscriptionService',
-    'ContextSourceService',
-    'BatchOperationsService',
-    'ApiDiscoveryService',
-    'SystemService'
+    "BaseService",
+    "AirQualityService",
+    "WaterQualityService",
+    "CarbonFootprintService",
+    "DeviceService",
+    "BuildingService",
+    "SubscriptionService",
+    "ContextSourceService",
 ]

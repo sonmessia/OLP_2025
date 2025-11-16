@@ -1,4 +1,3 @@
-# water_quality_router.py
 from fastapi import APIRouter, HTTPException, Query, Body, Response, status
 from typing import Optional, List, Dict, Any, Union
 from pydantic import BaseModel, Field, model_validator
