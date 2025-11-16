@@ -41,11 +41,8 @@ def mock_orion_response() -> Dict[str, Any]:
         "floorsAboveGround": {"type": "Property", "value": 5.0},
         "location": {
             "type": "GeoProperty",
-            "value": {
-                "type": "Point",
-                "coordinates": [-8.5, 41.2]
-            }
-        }
+            "value": {"type": "Point", "coordinates": [-8.5, 41.2]},
+        },
     }
 
 
@@ -58,10 +55,7 @@ def sample_building_data() -> Dict[str, Any]:
         "name": "Test Building",
         "category": ["office"],
         "floorsAboveGround": 5.0,
-        "location": {
-            "type": "Point",
-            "coordinates": [-8.5, 41.2]
-        }
+        "location": {"type": "Point", "coordinates": [-8.5, 41.2]},
     }
 
 
@@ -95,11 +89,8 @@ def mock_air_quality_data() -> Dict[str, Any]:
         "airQualityIndex": {"type": "Property", "value": 85.0},
         "location": {
             "type": "GeoProperty",
-            "value": {
-                "type": "Point",
-                "coordinates": [-8.5, 41.2]
-            }
-        }
+            "value": {"type": "Point", "coordinates": [-8.5, 41.2]},
+        },
     }
 
 
@@ -111,7 +102,10 @@ def mock_device_data() -> Dict[str, Any]:
         "type": "Device",
         "name": {"type": "Property", "value": "Temperature Sensor 001"},
         "deviceState": {"type": "Property", "value": "ok"},
-        "controlledAsset": {"type": "Relationship", "object": "urn:ngsi-ld:Building:test001"}
+        "controlledAsset": {
+            "type": "Relationship",
+            "object": "urn:ngsi-ld:Building:test001",
+        },
     }
 
 
@@ -123,7 +117,7 @@ def mock_carbon_footprint_data() -> Dict[str, Any]:
         "type": "CarbonFootprint",
         "co2Emissions": {"type": "Property", "value": 1500.5, "unitCode": "KGM"},
         "energyConsumption": {"type": "Property", "value": 2500.0, "unitCode": "KWH"},
-        "period": {"type": "Property", "value": "P1Y"}
+        "period": {"type": "Property", "value": "P1Y"},
     }
 
 
@@ -135,7 +129,7 @@ def mock_water_quality_data() -> Dict[str, Any]:
         "type": "WaterQualityObserved",
         "ph": {"type": "Property", "value": 7.2},
         "dissolvedOxygen": {"type": "Property", "value": 8.5, "unitCode": "MG/L"},
-        "turbidity": {"type": "Property", "value": 2.3, "unitCode": "NTU"}
+        "turbidity": {"type": "Property", "value": 2.3, "unitCode": "NTU"},
     }
 
 
@@ -150,9 +144,9 @@ def mock_subscription_data() -> Dict[str, Any]:
         "notification": {
             "endpoint": {
                 "uri": "http://localhost:8080/notification",
-                "accept": "application/json"
+                "accept": "application/json",
             }
-        }
+        },
     }
 
 
@@ -164,27 +158,25 @@ def mock_context_source_data() -> Dict[str, Any]:
         "type": "ContextSource",
         "name": {"type": "Property", "value": "Test Context Source"},
         "endpoint": {"type": "Property", "value": "http://example.com/ngsi-ld"},
-        "information": [
-            {"entities": [{"type": "Building"}]}
-        ]
+        "information": [{"entities": [{"type": "Building"}]}],
     }
 
 
 class MockAsyncContextManager:
     """Helper class for mocking async context managers."""
-    
+
     def __init__(self, return_value=None, side_effect=None):
         self.return_value = return_value
         self.side_effect = side_effect
         self.enter_calls = []
         self.exit_calls = []
-    
+
     async def __aenter__(self):
         self.enter_calls.append(True)
         if self.side_effect:
             raise self.side_effect
         return self.return_value
-    
+
     async def __aexit__(self, exc_type, exc_val, exc_tb):
         self.exit_calls.append((exc_type, exc_val, exc_tb))
         return False
@@ -194,7 +186,7 @@ def create_mock_response(
     status_code: int = 200,
     json_data: Any = None,
     headers: Dict[str, str] = None,
-    text: str = None
+    text: str = None,
 ) -> MagicMock:
     """Create a mock HTTP response with given parameters."""
     mock_response = MagicMock(spec=Response)
@@ -218,7 +210,7 @@ def assert_valid_ngsi_attribute(attr: Dict[str, Any]) -> None:
     """Assert that an attribute follows NGSI-LD format."""
     assert "type" in attr
     assert attr["type"] in ["Property", "Relationship", "GeoProperty"]
-    
+
     if attr["type"] == "Property":
         assert "value" in attr
     elif attr["type"] == "Relationship":
