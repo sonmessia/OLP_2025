@@ -7,8 +7,9 @@ Created: 2025-11-15
 
 import asyncio
 from datetime import datetime, timezone
-from typing import List, Dict, Any
-from backend.app.services.air_quality_service import AirQualityService
+from typing import Any, Dict, List
+
+from app.services.air_quality_service import AirQualityService
 
 
 def generate_sample_entities() -> List[Dict[str, Any]]:
@@ -224,7 +225,7 @@ async def create_entities_batch():
 
         try:
             response = await service.batch_create(entities)
-            print(f"✅ Batch create successful!")
+            print("✅ Batch create successful!")
             print(f"   Status: {response.status_code}")
 
             if response.content:

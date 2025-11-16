@@ -1,8 +1,12 @@
 # device_service.py
-from typing import Optional, Dict, Any, List, Union
-from .base_service import BaseService
-import httpx
 import logging
+from typing import Any, Dict, List, Optional, Union
+
+import httpx
+
+from app.models.Device import Device
+
+from .base_service import BaseService
 
 logger = logging.getLogger(__name__)
 
@@ -298,7 +302,9 @@ class DeviceService(BaseService):
         response = await super().update_entity_attributes(entity_id, update_data)
         return response.status_code
 
-    async def replace(self, entity_id: str, entity_data: Dict[str, Any]) -> int:
+    async def replace(
+        self, entity_id: str, entity_data: Union[Dict[str, Any], Device]
+    ) -> int:
         """
         Replace an entire Device entity.
 
@@ -309,8 +315,13 @@ class DeviceService(BaseService):
         Returns:
             HTTP status code (204 on success)
         """
-        entity_data["type"] = self.entity_type
-        response = await super().replace_entity(entity_id, entity_data)
+        if isinstance(entity_data, Device):
+            entity_dict = entity_data.model_dump(exclude_unset=True)
+        else:
+            entity_dict = entity_data
+
+        entity_dict["type"] = self.entity_type
+        response = await super().replace_entity(entity_id, entity_dict)
         return response.status_code
 
     async def delete(self, entity_id: str) -> int:

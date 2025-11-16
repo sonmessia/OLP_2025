@@ -1,7 +1,10 @@
-import httpx
-from typing import Optional, Dict, Any, List, Union
 import logging
 import os
+from typing import Any, Dict, List, Optional, Union
+
+import httpx
+from pydantic import BaseModel
+
 logging.basicConfig(
     level=logging.INFO, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s"
 )
@@ -195,24 +198,29 @@ class BaseService:
         return response.json()
 
     async def replace_entity(
-        self, entity_id: str, entity_data: Dict[str, Any]
+        self, entity_id: str, entity_data: Union[BaseModel, Dict[str, Any]]
     ) -> httpx.Response:
         """
         Replaces an entire entity. (PUT /entities/{id})
 
         Args:
             entity_id: The entity identifier
-            entity_data: Complete entity data (without id and type)
+            entity_data: Complete entity data (Pydantic model or dictionary)
 
         Returns:
             httpx.Response with status 204 on success
         """
-        entity_data.setdefault("@context", self.CONTEXT_URL)
+        # Convert Pydantic model to dictionary if needed and add context
+        if isinstance(entity_data, BaseModel):
+            entity_dict = entity_data.model_dump(exclude_unset=True)
+        else:
+            entity_dict = entity_data
+        entity_dict.setdefault("@context", self.CONTEXT_URL)
         return await self._make_request(
             "PUT",
             f"entities/{entity_id}",
             headers=self.JSON_LD_CONTENT_HEADER,
-            json_payload=entity_data,
+            json_payload=entity_dict,
         )
 
     async def delete_entity(self, entity_id: str) -> httpx.Response:
