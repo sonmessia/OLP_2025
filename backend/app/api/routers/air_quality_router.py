@@ -2,7 +2,7 @@ import logging
 from typing import Any, Dict, List, Optional, Union
 
 import httpx
-from fastapi import APIRouter, Body, HTTPException, Query, Response, status
+from fastapi import APIRouter, HTTPException, Query, Response, status
 from pydantic import BaseModel, Field, model_validator
 
 from app.models.AirQualityObserved import AirQualityObserved
@@ -41,7 +41,7 @@ class NgsiLdAttributePatch(BaseModel):
 class BatchOperationRequest(BaseModel):
     """Model for batch operations."""
 
-    entities: List[Dict[str, Any]] = Field(..., min_length=1)
+    entities: List[Dict[str, AirQualityObserved]] = Field(..., min_length=1)
 
 
 class BatchDeleteRequest(BaseModel):
@@ -278,23 +278,7 @@ async def create_air_quality(
 )
 async def update_air_quality_attributes(
     entity_id: str,
-    update_data: Dict[str, NgsiLdAttributePatch] = Body(
-        ...,
-        example={
-            "temperature": {
-                "type": "Property",
-                "value": 25.5,
-                "unitCode": "CEL",
-                "observedAt": "2025-11-15T12:30:00Z",
-            },
-            "pm25": {
-                "type": "Property",
-                "value": 15.2,
-                "unitCode": "UG/M3",
-                "observedAt": "2025-11-15T12:30:00Z",
-            },
-        },
-    ),
+    update_data: Dict[str, AirQualityObserved],
 ):
     """
     Update specific attributes of an AirQualityObserved entity.
