@@ -288,7 +288,9 @@ class CarbonFootprintService(BaseService):
         response = await super().update_entity_attributes(entity_id, update_data)
         return response.status_code
 
-    async def replace(self, entity_id: str, entity_data: Union[Dict[str, Any], CarbonFootprint]) -> int:
+    async def replace(
+        self, entity_id: str, entity_data: Union[Dict[str, Any], CarbonFootprint]
+    ) -> int:
         """
         Replace an entire CarbonFootprint entity.
 
