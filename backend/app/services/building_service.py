@@ -4,7 +4,7 @@ from typing import Any, Dict, List, Optional, Union
 
 import httpx
 
-from app.models import Building
+from app.models.Building import Building
 
 from .base_service import BaseService
 

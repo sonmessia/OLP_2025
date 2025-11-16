@@ -59,12 +59,12 @@ class ContextSourceService(BaseService):
         endpoint: str,
         mode: str = "inclusive",
         operations: Optional[List[str]] = None,
-        property_names: Optional[List[str]] = None,
-        relationship_names: Optional[List[str]] = None,
+        property_names: Optional[Any] = None,
+        relationship_names: Optional[Any] = None,
         expires_at: Optional[str] = None,
         management_interval: Optional[int] = None,
         management_timeout: Optional[int] = None,
-        context_source_info: Optional[List[Dict[str, str]]] = None,
+        context_source_info: Optional[Any] = None,
         tenant: Optional[str] = None,
     ) -> httpx.Response:
         """
@@ -130,7 +130,7 @@ class ContextSourceService(BaseService):
                 property_names=["temperature"]
             )
         """
-        registration_data = {
+        registration_data: Dict[str, Any] = {
             "type": "ContextSourceRegistration",
             "description": description,
             "information": [{"entities": entities}],
@@ -214,7 +214,7 @@ class ContextSourceService(BaseService):
             for reg in registrations:
                 print(f"{reg['description']}: {reg['mode']}")
         """
-        params = {}
+        params: Dict[str, Any] = {}
         if entity_type:
             params["type"] = entity_type
         if limit:

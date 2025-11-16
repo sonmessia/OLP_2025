@@ -50,11 +50,11 @@ class SubscriptionService(BaseService):
         description: str,
         entities: List[Dict[str, str]],
         notification_uri: str,
-        watched_attributes: Optional[List[str]] = None,
+        watched_attributes: Optional[Any] = None,
         q: Optional[str] = None,
         notification_format: str = "normalized",
         notification_accept: str = "application/json",
-        notifier_info: Optional[List[Dict[str, str]]] = None,
+        notifier_info: Optional[Any] = None,
         expires_at: Optional[str] = None,
         throttling: Optional[int] = None,
         tenant: Optional[str] = None,
@@ -100,7 +100,7 @@ class SubscriptionService(BaseService):
                 notifier_info=[{"key": "MQTT-QoS", "value": "1"}]
             )
         """
-        subscription_data = {
+        subscription_data: Dict[str, Any] = {
             "type": "Subscription",
             "description": description,
             "entities": entities,
