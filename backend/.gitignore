@@ -55,4 +55,3 @@ htmlcov/
 logs/
 
 # Docker
-.dockerignore
