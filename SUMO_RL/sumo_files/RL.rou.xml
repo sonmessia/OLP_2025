@@ -1,0 +1,12 @@
+<routes>
+    <vType id="car" vClass="passenger" maxSpeed="50" length="5" />
+    <vType id="bus" vClass="bus" maxSpeed="40" length="12" />
+
+    <route id="route_NS" edges="Edge_North Node2 Edge_South" />
+    <route id="route_WE" edges="Edge_West Node2 Edge_East" />
+
+    <flow id="flow_NS_cars" type="car" route="route_NS" begin="0" end="3600" period="5" />
+    
+    <flow id="flow_WE_buses" type="bus" route="route_WE" begin="0" end="3600" period="60" />
+    
+    </routes>
