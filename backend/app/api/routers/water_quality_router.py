@@ -1,10 +1,11 @@
-# water_quality_router.py
-from fastapi import APIRouter, HTTPException, Query, Body, Response, status
-from typing import Optional, List, Dict, Any, Union
-from pydantic import BaseModel, Field, model_validator
-import httpx
 import logging
+from typing import Any, Dict, List, Optional, Union
 
+import httpx
+from fastapi import APIRouter, HTTPException, Query, Response, status
+from pydantic import BaseModel, Field, model_validator
+
+from app.models.WaterQualityObserved import WaterQualityObserved
 from app.services.water_quality_service import water_quality_service
 
 router = APIRouter(prefix="/api/v1/water-quality", tags=["WaterQualityObserved"])
@@ -116,18 +117,18 @@ async def get_all_water_quality(
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail={"error": "Invalid query parameters", "message": str(e)},
-        )
+        ) from e
     except httpx.HTTPStatusError as e:
         logger.error(f"Orion-LD error: {e.response.status_code} - {e.response.text}")
         raise HTTPException(
             status_code=e.response.status_code, detail=e.response.json()
-        )
+        ) from e
     except httpx.RequestError as e:
         logger.error(f"Connection error: {str(e)}")
         raise HTTPException(
             status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
             detail={"error": "Service Unavailable"},
-        )
+        ) from e
 
 
 @router.get(
@@ -155,10 +156,10 @@ async def get_water_quality_by_id(
                     "error": "Water quality observation not found",
                     "entity_id": entity_id,
                 },
-            )
+            ) from e
         raise HTTPException(
             status_code=e.response.status_code, detail=e.response.json()
-        )
+        ) from e
 
 
 @router.post(
@@ -167,42 +168,32 @@ async def get_water_quality_by_id(
     summary="Create WaterQualityObserved",
     description="Create a new water quality observation. The 'dateObserved' field is required.",
 )
-async def create_water_quality(
-    response: Response,
-    entity_data: Dict[str, Any] = Body(
-        ...,
-        example={
-            "id": "urn:ngsi-ld:WaterQualityObserved:River-Madrid-001",
-            "dateObserved": "2025-11-15T12:37:09Z",
-            "pH": {"type": "Property", "value": 7.2},
-            "temperature": {"type": "Property", "value": 15.3, "unitCode": "CEL"},
-            "turbidity": {"type": "Property", "value": 5.2, "unitCode": "NTU"},
-        },
-    ),
-):
+async def create_water_quality(response: Response, entity_data: WaterQualityObserved):
     """Create a new WaterQualityObserved entity."""
     try:
-        orion_response = await water_quality_service.create(entity_data)
+        # Convert Pydantic model to dict for service layer
+        entity_dict = entity_data.model_dump(exclude_unset=True)
+        orion_response = await water_quality_service.create(entity_dict)
         response.headers["Location"] = orion_response.headers.get("Location", "")
         return {
             "message": "Water quality observation created successfully",
-            "id": entity_data.get("id"),
+            "id": entity_data.id,
         }
 
     except ValueError as e:
         raise HTTPException(
             status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
             detail={"error": "Validation error", "message": str(e)},
-        )
+        ) from e
     except httpx.HTTPStatusError as e:
         if e.response.status_code == 409:
             raise HTTPException(
                 status_code=status.HTTP_409_CONFLICT,
-                detail={"error": "Observation already exists"},
-            )
+                detail={"error": "Observation already exists", "id": entity_data.id},
+            ) from e
         raise HTTPException(
             status_code=e.response.status_code, detail=e.response.json()
-        )
+        ) from e
 
 
 @router.patch(
@@ -221,16 +212,16 @@ async def update_water_quality_attributes(
     except ValueError as e:
         raise HTTPException(
             status_code=status.HTTP_422_UNPROCESSABLE_ENTITY, detail=str(e)
-        )
+        ) from e
     except httpx.HTTPStatusError as e:
         if e.response.status_code == 404:
             raise HTTPException(
                 status_code=status.HTTP_404_NOT_FOUND,
                 detail={"error": "Observation not found"},
-            )
+            ) from e
         raise HTTPException(
             status_code=e.response.status_code, detail=e.response.json()
-        )
+        ) from e
 
 
 @router.put(
@@ -238,9 +229,7 @@ async def update_water_quality_attributes(
     status_code=status.HTTP_204_NO_CONTENT,
     summary="Replace WaterQualityObserved",
 )
-async def replace_water_quality(
-    entity_id: str, entity_data: Dict[str, Any] = Body(...)
-):
+async def replace_water_quality(entity_id: str, entity_data: WaterQualityObserved):
     """Replace an entire WaterQualityObserved entity."""
     try:
         await water_quality_service.replace(entity_id, entity_data)
@@ -250,10 +239,10 @@ async def replace_water_quality(
             raise HTTPException(
                 status_code=status.HTTP_404_NOT_FOUND,
                 detail={"error": "Observation not found"},
-            )
+            ) from e
         raise HTTPException(
             status_code=e.response.status_code, detail=e.response.json()
-        )
+        ) from e
 
 
 @router.delete(
@@ -271,10 +260,10 @@ async def delete_water_quality(entity_id: str):
             raise HTTPException(
                 status_code=status.HTTP_404_NOT_FOUND,
                 detail={"error": "Observation not found"},
-            )
+            ) from e
         raise HTTPException(
             status_code=e.response.status_code, detail=e.response.json()
-        )
+        ) from e
 
 
 @router.delete(
@@ -290,7 +279,7 @@ async def delete_water_quality_attribute(entity_id: str, attribute_name: str):
     except httpx.HTTPStatusError as e:
         raise HTTPException(
             status_code=e.response.status_code, detail=e.response.json()
-        )
+        ) from e
 
 
 # Batch Operations
@@ -305,7 +294,7 @@ async def batch_create_water_quality(request: BatchOperationRequest):
     except httpx.HTTPStatusError as e:
         raise HTTPException(
             status_code=e.response.status_code, detail=e.response.json()
-        )
+        ) from e
 
 
 @router.post("/batch/upsert", status_code=status.HTTP_200_OK)
@@ -322,7 +311,7 @@ async def batch_upsert_water_quality(
     except httpx.HTTPStatusError as e:
         raise HTTPException(
             status_code=e.response.status_code, detail=e.response.json()
-        )
+        ) from e
 
 
 @router.post("/batch/delete", status_code=status.HTTP_204_NO_CONTENT)
@@ -334,7 +323,7 @@ async def batch_delete_water_quality(request: BatchDeleteRequest):
     except httpx.HTTPStatusError as e:
         raise HTTPException(
             status_code=e.response.status_code, detail=e.response.json()
-        )
+        ) from e
 
 
 # Convenience Endpoints
@@ -362,12 +351,14 @@ async def get_poor_quality(
             format=format,
         )
     except ValueError as e:
-        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(e))
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST, detail=str(e)
+        ) from e
     except Exception as e:
         logger.error(f"Error in poor quality search: {str(e)}")
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(e)
-        )
+        ) from e
 
 
 @router.get("/contaminated/{contaminant}", response_model=List[Dict[str, Any]])
@@ -390,7 +381,7 @@ async def get_contaminated(
         logger.error(f"Error in contamination search: {str(e)}")
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(e)
-        )
+        ) from e
 
 
 @router.get("/recent", response_model=List[Dict[str, Any]])
@@ -409,7 +400,7 @@ async def get_recent_observations(
         logger.error(f"Error in recent observations query: {str(e)}")
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(e)
-        )
+        ) from e
 
 
 @router.get("/location/nearby", response_model=List[Dict[str, Any]])
@@ -435,4 +426,4 @@ async def find_nearby_observations(
         logger.error(f"Error in nearby search: {str(e)}")
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(e)
-        )
+        ) from e

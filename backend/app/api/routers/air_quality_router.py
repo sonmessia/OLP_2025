@@ -1,9 +1,11 @@
-from fastapi import APIRouter, HTTPException, Query, Body, Response, status
-from typing import Optional, List, Dict, Any, Union
-from pydantic import BaseModel, Field, model_validator
-import httpx
 import logging
+from typing import Any, Dict, List, Optional, Union
 
+import httpx
+from fastapi import APIRouter, HTTPException, Query, Response, status
+from pydantic import BaseModel, Field, model_validator
+
+from app.models.AirQualityObserved import AirQualityObserved
 from app.services.air_quality_service import air_quality_service
 
 router = APIRouter(prefix="/api/v1/air-quality", tags=["AirQualityObserved"])
@@ -39,7 +41,7 @@ class NgsiLdAttributePatch(BaseModel):
 class BatchOperationRequest(BaseModel):
     """Model for batch operations."""
 
-    entities: List[Dict[str, Any]] = Field(..., min_length=1)
+    entities: List[Dict[str, AirQualityObserved]] = Field(..., min_length=1)
 
 
 class BatchDeleteRequest(BaseModel):
@@ -144,7 +146,7 @@ async def get_all_air_quality(
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail={"error": "Invalid query parameters", "message": str(e)},
-        )
+        ) from e
     except httpx.HTTPStatusError as e:
         logger.error(f"Orion-LD error: {e.response.status_code} - {e.response.text}")
         raise HTTPException(
@@ -154,7 +156,7 @@ async def get_all_air_quality(
                 if e.response.headers.get("content-type") == "application/json"
                 else {"error": e.response.text}
             ),
-        )
+        ) from e
     except httpx.RequestError as e:
         logger.error(f"Connection error to Orion-LD: {str(e)}")
         raise HTTPException(
@@ -163,7 +165,7 @@ async def get_all_air_quality(
                 "error": "Service Unavailable",
                 "message": "Cannot connect to Orion-LD broker",
             },
-        )
+        ) from e
 
 
 @router.get(
@@ -204,7 +206,7 @@ async def get_air_quality_by_id(
             raise HTTPException(
                 status_code=status.HTTP_404_NOT_FOUND,
                 detail={"error": "Entity not found", "entity_id": entity_id},
-            )
+            ) from e
         raise HTTPException(
             status_code=e.response.status_code,
             detail=(
@@ -212,13 +214,13 @@ async def get_air_quality_by_id(
                 if e.response.headers.get("content-type") == "application/json"
                 else {"error": e.response.text}
             ),
-        )
+        ) from e
     except httpx.RequestError as e:
         logger.error(f"Connection error: {str(e)}")
         raise HTTPException(
             status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
             detail={"error": "Service Unavailable"},
-        )
+        ) from e
 
 
 @router.post(
@@ -229,19 +231,7 @@ async def get_air_quality_by_id(
 )
 async def create_air_quality(
     response: Response,
-    entity_data: Dict[str, Any] = Body(
-        ...,
-        example={
-            "id": "urn:ngsi-ld:AirQualityObserved:Madrid-001",
-            "dateObserved": "2025-11-15T10:31:41Z",
-            "temperature": {"type": "Property", "value": 25.5, "unitCode": "CEL"},
-            "pm25": {"type": "Property", "value": 35.2, "unitCode": "GQ"},
-            "location": {
-                "type": "GeoProperty",
-                "value": {"type": "Point", "coordinates": [-3.703790, 40.416775]},
-            },
-        },
-    ),
+    entity_data: AirQualityObserved,
 ):
     """
     Create a new AirQualityObserved entity.
@@ -253,21 +243,23 @@ async def create_air_quality(
     Returns a 201 status with Location header pointing to the created entity.
     """
     try:
-        orion_response = await air_quality_service.create(entity_data)
+        # Convert Pydantic model to dict for service layer
+        entity_dict = entity_data.model_dump(exclude_unset=True)
+        orion_response = await air_quality_service.create(entity_dict)
         response.headers["Location"] = orion_response.headers.get("Location", "")
-        return {"message": "Entity created successfully", "id": entity_data.get("id")}
+        return {"message": "Entity created successfully", "id": entity_data.id}
 
     except ValueError as e:
         raise HTTPException(
             status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
             detail={"error": "Validation error", "message": str(e)},
-        )
+        ) from e
     except httpx.HTTPStatusError as e:
         if e.response.status_code == 409:
             raise HTTPException(
                 status_code=status.HTTP_409_CONFLICT,
-                detail={"error": "Entity already exists", "id": entity_data.get("id")},
-            )
+                detail={"error": "Entity already exists", "id": entity_data.id},
+            ) from e
         raise HTTPException(
             status_code=e.response.status_code,
             detail=(
@@ -275,7 +267,7 @@ async def create_air_quality(
                 if e.response.headers.get("content-type") == "application/json"
                 else {"error": e.response.text}
             ),
-        )
+        ) from e
 
 
 @router.patch(
@@ -286,13 +278,7 @@ async def create_air_quality(
 )
 async def update_air_quality_attributes(
     entity_id: str,
-    update_data: Dict[str, NgsiLdAttributePatch] = Body(
-        ...,
-        example={
-            "temperature": {"type": "Property", "value": 26.8, "unitCode": "CEL"},
-            "pm25": {"type": "Property", "value": 42.1, "unitCode": "GQ"},
-        },
-    ),
+    update_data: Dict[str, AirQualityObserved],
 ):
     """
     Update specific attributes of an AirQualityObserved entity.
@@ -301,24 +287,21 @@ async def update_air_quality_attributes(
     existing attributes not mentioned in the request are preserved.
     """
     try:
-        payload_to_send = {
-            key: value.model_dump(exclude_unset=True)
-            for key, value in update_data.items()
-        }
-        await air_quality_service.update_attrs(entity_id, payload_to_send)
+        payload = {k: v.model_dump(exclude_unset=True) for k, v in update_data.items()}
+        await air_quality_service.update_attrs(entity_id, payload)
         return
 
     except ValueError as e:
         raise HTTPException(
             status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
             detail={"error": "Validation error", "message": str(e)},
-        )
+        ) from e
     except httpx.HTTPStatusError as e:
         if e.response.status_code == 404:
             raise HTTPException(
                 status_code=status.HTTP_404_NOT_FOUND,
                 detail={"error": "Entity not found", "entity_id": entity_id},
-            )
+            ) from e
         raise HTTPException(
             status_code=e.response.status_code,
             detail=(
@@ -326,7 +309,7 @@ async def update_air_quality_attributes(
                 if e.response.headers.get("content-type") == "application/json"
                 else {"error": e.response.text}
             ),
-        )
+        ) from e
 
 
 @router.put(
@@ -335,7 +318,7 @@ async def update_air_quality_attributes(
     summary="Replace Entity (Full Update)",
     description="Replace an entire AirQualityObserved entity with new data.",
 )
-async def replace_air_quality(entity_id: str, entity_data: Dict[str, Any] = Body(...)):
+async def replace_air_quality(entity_id: str, entity_data: AirQualityObserved):
     """
     Replace an entire entity. All existing attributes will be removed
     and replaced with the new data provided.
@@ -348,13 +331,13 @@ async def replace_air_quality(entity_id: str, entity_data: Dict[str, Any] = Body
         raise HTTPException(
             status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
             detail={"error": "Validation error", "message": str(e)},
-        )
+        ) from e
     except httpx.HTTPStatusError as e:
         if e.response.status_code == 404:
             raise HTTPException(
                 status_code=status.HTTP_404_NOT_FOUND,
                 detail={"error": "Entity not found", "entity_id": entity_id},
-            )
+            ) from e
         raise HTTPException(
             status_code=e.response.status_code,
             detail=(
@@ -362,7 +345,7 @@ async def replace_air_quality(entity_id: str, entity_data: Dict[str, Any] = Body
                 if e.response.headers.get("content-type") == "application/json"
                 else {"error": e.response.text}
             ),
-        )
+        ) from e
 
 
 @router.delete(
@@ -386,7 +369,7 @@ async def delete_air_quality(entity_id: str):
             raise HTTPException(
                 status_code=status.HTTP_404_NOT_FOUND,
                 detail={"error": "Entity not found", "entity_id": entity_id},
-            )
+            ) from e
         raise HTTPException(
             status_code=e.response.status_code,
             detail=(
@@ -394,7 +377,7 @@ async def delete_air_quality(entity_id: str):
                 if e.response.headers.get("content-type") == "application/json"
                 else {"error": e.response.text}
             ),
-        )
+        ) from e
 
 
 @router.delete(
@@ -418,7 +401,7 @@ async def delete_air_quality_attribute(entity_id: str, attribute_name: str):
             raise HTTPException(
                 status_code=status.HTTP_404_NOT_FOUND,
                 detail={"error": "Entity or attribute not found"},
-            )
+            ) from e
         raise HTTPException(
             status_code=e.response.status_code,
             detail=(
@@ -426,7 +409,7 @@ async def delete_air_quality_attribute(entity_id: str, attribute_name: str):
                 if e.response.headers.get("content-type") == "application/json"
                 else {"error": e.response.text}
             ),
-        )
+        ) from e
 
 
 # ==================== BATCH OPERATIONS ====================
@@ -456,7 +439,7 @@ async def batch_create_air_quality(request: BatchOperationRequest):
                 if e.response.headers.get("content-type") == "application/json"
                 else {"error": e.response.text}
             ),
-        )
+        ) from e
 
 
 @router.post(
@@ -492,7 +475,7 @@ async def batch_upsert_air_quality(
                 if e.response.headers.get("content-type") == "application/json"
                 else {"error": e.response.text}
             ),
-        )
+        ) from e
 
 
 @router.post(
@@ -525,7 +508,7 @@ async def batch_delete_air_quality(request: BatchDeleteRequest):
                 if e.response.headers.get("content-type") == "application/json"
                 else {"error": e.response.text}
             ),
-        )
+        ) from e
 
 
 # ==================== CONVENIENCE ENDPOINTS ====================
