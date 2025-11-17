@@ -1,41 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<!-- generated on 2025-11-17 14:54:24.197368 by Eclipse SUMO randomTrips.py v1_25_0+0000-ac6c5a6752d
-<configuration>
-    <net-file value="Nga6NguyenThaiSon.net.xml"/>
-    <route-file value="routes.rou.xmll"/>
-    <end value="100.0"/>
-</configuration>
--->
-
-<!-- generated on 2025-11-17T14:54:24.132741+07:00 by Eclipse SUMO duarouter 1.25.0
-<duarouterConfiguration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/duarouterConfiguration.xsd">
-
-    <input>
-        <net-file value="Nga6NguyenThaiSon.net.xml"/>
-        <route-files value="trips.trips.xml"/>
-    </input>
-
-    <output>
-        <output-file value="routes.rou.xmll"/>
-        <alternatives-output value="NUL"/>
-    </output>
-
-    <time>
-        <begin value="0"/>
-        <end value="100.0"/>
-    </time>
-
-    <report>
-        <no-warnings value="true"/>
-        <ignore-errors value="true"/>
-        <no-step-log value="true"/>
-    </report>
-
-</duarouterConfiguration>
+<!-- generated on 2025-11-17T19:19:52.583729+07:00 by Eclipse SUMO netedit 1.25.0
 -->
 
 <routes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/routes_file.xsd">
+    <!-- Vehicles, persons and containers (sorted by depart) -->
+    <trip id="t_0" depart="0.00" from="1116686584#1" to="404517252#0" via="1116686584#2 404516716#0 404516716#1"/>
     <vehicle id="0" depart="0.00">
         <route edges="32588982#6 -32588982#6 32583234#0 32583234#1 125294538 -125294538"/>
     </vehicle>

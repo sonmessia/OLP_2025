@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<!-- generated on 2025-11-17T14:59:22.182307+07:00 by Eclipse SUMO sumo 1.25.0
+<!-- generated on 2025-11-17T19:19:52.585521+07:00 by Eclipse SUMO sumo 1.25.0
 -->
 
 <sumoConfiguration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/sumoConfiguration.xsd">
@@ -8,6 +8,7 @@
     <input>
         <net-file value="Nga6NguyenThaiSon.net.xml"/>
         <route-files value="routes.rou.xml"/>
+        <additional-files value="Nga6NguyenThaiSon.add.xml"/>
     </input>
 
 </sumoConfiguration>

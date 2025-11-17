@@ -8,7 +8,8 @@
     <input>
         <net-file value="quangtrung.net.xml"/>
         <route-files value="routes.rou.xml"/>
-        <additional-files value="quangtrungcar.add.xml"/>
+        <additional-files value="eed.xml"/>
+        <additional-files value="probes.xml"/>
     </input>
 
 </sumoConfiguration>
