@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- generated on 2025-11-17T21:25:14.561681+07:00 by Eclipse SUMO GUI 1.25.0
+<sumoConfiguration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/sumoConfiguration.xsd">
+
+    <input>
+        <net-file value="D:\OLP\OLP_2025\SUMO_RL\sumo_files\Nga4ThuDuc\Nga4ThuDuc.net.xml"/>
+        <route-files value="D:\OLP\OLP_2025\SUMO_RL\sumo_files\Nga4ThuDuc\routes.rou.xml"/>
+        <additional-files value="D:\OLP\OLP_2025\SUMO_RL\sumo_files\Nga4ThuDuc\Nga4ThuDuc.add.xml"/>
+    </input>
+
+</sumoConfiguration>
+-->
+
+<instantE1 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/instant_e1_file.xsd">
+    <instantOut id="e1i_0" time="527.45" state="enter" vehID="137" speed="0.92" length="5.00" type="DEFAULT_VEHTYPE"/>
+    <instantOut id="e1i_0" time="528.00" state="stay" vehID="137" speed="0.92" length="5.00" type="DEFAULT_VEHTYPE"/>
+    <instantOut id="e1i_0" time="528.00" state="leave" vehID="137" speed="0.92" length="5.00" type="DEFAULT_VEHTYPE"/>
+    <instantOut id="e1i_0" time="530.87" state="enter" vehID="94" speed="5.06" length="5.00" type="DEFAULT_VEHTYPE"/>
+    <instantOut id="e1i_0" time="531.00" state="stay" vehID="94" speed="5.06" length="5.00" type="DEFAULT_VEHTYPE"/>
+    <instantOut id="e1i_0" time="531.00" state="leave" vehID="94" speed="5.06" length="5.00" type="DEFAULT_VEHTYPE"/>
+    <instantOut id="e1i_0" time="852.56" state="enter" vehID="117" speed="8.57" length="5.00" type="DEFAULT_VEHTYPE"/>
+    <instantOut id="e1i_0" time="853.00" state="stay" vehID="117" speed="8.57" length="5.00" type="DEFAULT_VEHTYPE"/>
+    <instantOut id="e1i_0" time="853.30" state="leave" vehID="117" speed="4.07" length="5.00" type="DEFAULT_VEHTYPE" occupancy="0.74"/>
+    <instantOut id="e1i_0" time="1369.92" state="enter" vehID="142" speed="7.52" length="5.00" type="DEFAULT_VEHTYPE" gap="516.62"/>
+    <instantOut id="e1i_0" time="1370.00" state="stay" vehID="142" speed="7.52" length="5.00" type="DEFAULT_VEHTYPE"/>
+    <instantOut id="e1i_0" time="1371.00" state="stay" vehID="142" speed="3.02" length="5.00" type="DEFAULT_VEHTYPE"/>
+    <instantOut id="e1i_0" time="1372.00" state="stay" vehID="142" speed="0.00" length="5.00" type="DEFAULT_VEHTYPE"/>
+    <instantOut id="e1i_0" time="1373.00" state="stay" vehID="142" speed="0.00" length="5.00" type="DEFAULT_VEHTYPE"/>
+    <instantOut id="e1i_0" time="1374.00" state="stay" vehID="142" speed="0.00" length="5.00" type="DEFAULT_VEHTYPE"/>
+    <instantOut id="e1i_0" time="1375.00" state="stay" vehID="142" speed="0.00" length="5.00" type="DEFAULT_VEHTYPE"/>
+    <instantOut id="e1i_0" time="1376.00" state="stay" vehID="142" speed="0.00" length="5.00" type="DEFAULT_VEHTYPE"/>
+    <instantOut id="e1i_0" time="1377.00" state="stay" vehID="142" speed="0.00" length="5.00" type="DEFAULT_VEHTYPE"/>
+    <instantOut id="e1i_0" time="1378.00" state="stay" vehID="142" speed="0.00" length="5.00" type="DEFAULT_VEHTYPE"/>
+    <instantOut id="e1i_0" time="1379.00" state="stay" vehID="142" speed="0.00" length="5.00" type="DEFAULT_VEHTYPE"/>
+    <instantOut id="e1i_0" time="1380.00" state="stay" vehID="142" speed="0.00" length="5.00" type="DEFAULT_VEHTYPE"/>
+    <instantOut id="e1i_0" time="1381.00" state="stay" vehID="142" speed="0.00" length="5.00" type="DEFAULT_VEHTYPE"/>
+    <instantOut id="e1i_0" time="1382.00" state="stay" vehID="142" speed="0.00" length="5.00" type="DEFAULT_VEHTYPE"/>
+    <instantOut id="e1i_0" time="1383.00" state="stay" vehID="142" speed="0.00" length="5.00" type="DEFAULT_VEHTYPE"/>
+    <instantOut id="e1i_0" time="1384.00" state="stay" vehID="142" speed="0.00" length="5.00" type="DEFAULT_VEHTYPE"/>
+    <instantOut id="e1i_0" time="1385.00" state="stay" vehID="142" speed="0.00" length="5.00" type="DEFAULT_VEHTYPE"/>
+    <instantOut id="e1i_0" time="1386.00" state="stay" vehID="142" speed="0.00" length="5.00" type="DEFAULT_VEHTYPE"/>
+    <instantOut id="e1i_0" time="1387.00" state="stay" vehID="142" speed="0.00" length="5.00" type="DEFAULT_VEHTYPE"/>
+    <instantOut id="e1i_0" time="1388.00" state="stay" vehID="142" speed="0.00" length="5.00" type="DEFAULT_VEHTYPE"/>
+    <instantOut id="e1i_0" time="1389.00" state="stay" vehID="142" speed="0.00" length="5.00" type="DEFAULT_VEHTYPE"/>
+    <instantOut id="e1i_0" time="1390.00" state="stay" vehID="142" speed="0.00" length="5.00" type="DEFAULT_VEHTYPE"/>
+    <instantOut id="e1i_0" time="1391.00" state="stay" vehID="142" speed="0.00" length="5.00" type="DEFAULT_VEHTYPE"/>
+    <instantOut id="e1i_0" time="1392.00" state="stay" vehID="142" speed="0.00" length="5.00" type="DEFAULT_VEHTYPE"/>
+    <instantOut id="e1i_0" time="1393.00" state="stay" vehID="142" speed="0.00" length="5.00" type="DEFAULT_VEHTYPE"/>
+    <instantOut id="e1i_0" time="1394.00" state="stay" vehID="142" speed="0.00" length="5.00" type="DEFAULT_VEHTYPE"/>
+    <instantOut id="e1i_0" time="1395.00" state="stay" vehID="142" speed="0.00" length="5.00" type="DEFAULT_VEHTYPE"/>
+    <instantOut id="e1i_0" time="1396.00" state="stay" vehID="142" speed="0.00" length="5.00" type="DEFAULT_VEHTYPE"/>
+    <instantOut id="e1i_0" time="1397.00" state="stay" vehID="142" speed="0.00" length="5.00" type="DEFAULT_VEHTYPE"/>
+    <instantOut id="e1i_0" time="1398.00" state="stay" vehID="142" speed="0.00" length="5.00" type="DEFAULT_VEHTYPE"/>
+    <instantOut id="e1i_0" time="1399.00" state="stay" vehID="142" speed="0.00" length="5.00" type="DEFAULT_VEHTYPE"/>
+    <instantOut id="e1i_0" time="1400.00" state="stay" vehID="142" speed="0.00" length="5.00" type="DEFAULT_VEHTYPE"/>
+    <instantOut id="e1i_0" time="1401.00" state="stay" vehID="142" speed="1.08" length="5.00" type="DEFAULT_VEHTYPE"/>
+    <instantOut id="e1i_0" time="1401.61" state="leave" vehID="142" speed="0.48" length="5.00" type="DEFAULT_VEHTYPE" occupancy="31.69"/>
+</instantE1>

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- generated on 2025-11-17T21:25:14.562777+07:00 by Eclipse SUMO GUI 1.25.0
+<sumoConfiguration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/sumoConfiguration.xsd">
+
+    <input>
+        <net-file value="D:\OLP\OLP_2025\SUMO_RL\sumo_files\Nga4ThuDuc\Nga4ThuDuc.net.xml"/>
+        <route-files value="D:\OLP\OLP_2025\SUMO_RL\sumo_files\Nga4ThuDuc\routes.rou.xml"/>
+        <additional-files value="D:\OLP\OLP_2025\SUMO_RL\sumo_files\Nga4ThuDuc\Nga4ThuDuc.add.xml"/>
+    </input>
+
+</sumoConfiguration>
+-->
+
+<instantE1 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/instant_e1_file.xsd">
+    <instantOut id="e1i_4" time="119.05" state="enter" vehID="110" speed="7.85" length="5.00" type="DEFAULT_VEHTYPE"/>
+    <instantOut id="e1i_4" time="119.69" state="leave" vehID="110" speed="7.85" length="5.00" type="DEFAULT_VEHTYPE" occupancy="0.64"/>
+</instantE1>
