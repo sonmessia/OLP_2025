@@ -18,34 +18,38 @@ class TrafficEnvironmentImpactService(BaseService):
     This service is designed to work with FIWARE Orion-LD context broker
     following NGSI-LD specifications for traffic environmental impact monitoring.
 
-    Usage:
-        # Context manager (recommended)
-        async with TrafficEnvironmentImpactService() as service:
-            entities = await service.get_all(limit=10)
-
-        # Manual lifecycle
-        service = TrafficEnvironmentImpactService()
+    Usage as singleton:
+        from app.services.traffic_enviroment_impact_service import traffic_environment_impact_service
+        await traffic_environment_impact_service.initialize()
         try:
-            entity = await service.get_by_id("urn:ngsi-ld:TrafficEnvironmentImpact:001")
+            entities = await traffic_environment_impact_service.get_all(limit=10)
         finally:
-            await service.close()
+            await traffic_environment_impact_service.close()
 
     Author: sonmessia
     Created: 2025-11-17
     """
 
+    _instance: Optional["TrafficEnvironmentImpactService"] = None
+
+    def __new__(cls, *args, **kwargs):
+        if cls._instance is None:
+            cls._instance = super().__new__(cls)
+        return cls._instance
+
     def __init__(
         self, orion_url: Optional[str] = None, context_url: Optional[str] = None
     ):
-        """
-        Initialize TrafficEnvironmentImpactService.
+        # Initialize only once
+        if not hasattr(self, "_initialized"):
+            super().__init__(orion_url, context_url)
+            self.entity_type = "TrafficEnvironmentImpact"
+            self._initialized = True
 
-        Args:
-            orion_url: Orion-LD broker URL (default from env: ORION_LD_URL)
-            context_url: JSON-LD context URL (default from env: CONTEXT_URL)
-        """
-        super().__init__(orion_url, context_url)
-        self.entity_type = "TrafficEnvironmentImpact"
+    async def initialize(self):
+        """Initialize the singleton service with HTTP client."""
+        await self._get_client()
+        logger.debug("TrafficEnvironmentImpactService singleton initialized")
 
     async def create(self, entity_data: Dict[str, Any]) -> httpx.Response:
         """
@@ -543,3 +547,6 @@ class TrafficEnvironmentImpactService(BaseService):
         """
         q = f'traffic.refTrafficFlowObserved=="{traffic_flow_id}"'
         return await self.get_all(q=q, limit=limit, **kwargs)
+
+
+traffic_environment_impact_service = TrafficEnvironmentImpactService()

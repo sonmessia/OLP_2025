@@ -10,7 +10,9 @@ from app.api.routers.context_source_router import (
 )
 from app.api.routers.device_router import router as device_router
 from app.api.routers.subscription_router import router as subscription_router
-from app.api.routers.traffic_environment_impact_router import router as traffic_environment_impact_router
+from app.api.routers.traffic_environment_impact_router import (
+    router as traffic_environment_impact_router,
+)
 from app.api.routers.water_quality_router import router as water_quality_router
 
 app = FastAPI(
