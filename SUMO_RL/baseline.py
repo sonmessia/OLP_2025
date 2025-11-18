@@ -15,19 +15,20 @@ else:
 import traci
 
 SUMO_CONFIG = [
-    'sumo-gui',
-    '-c', 'sumo_files/RL.sumocfg', # File .sumocfg này NÊN đã định nghĩa đèn cố định
+    'sumo',  # Không dùng GUI để chạy nhanh (đổi thành 'sumo-gui' nếu muốn xem)
+    '-c', 'sumo_files/Nga4ThuDuc/Nga4ThuDuc.sumocfg',  # Sử dụng scenario Nga4ThuDuc
     '--step-length', '0.1',
-    '--delay', '1000',
-    '--lateral-resolution', '0'
+    '--lateral-resolution', '0',
+    '--no-step-log', 'true',
+    '--no-warnings', 'true'
 ]
 
-# --- Cấu hình (Giống File 1 của bạn) ---
+# --- Cấu hình (Giống train_dqn.py) ---
 TOTAL_STEPS = 10000
 
-# IDs (SỬA LẠI CHO ĐÚNG)
-DETECTOR_IDS = ["Node1_2_EB_0", "Node1_2_EB_1", "Node1_2_EB_2", "Node2_7_SB_0", "Node2_7_SB_1", "Node2_7_SB_2"]
-TLS_ID = "Node2"
+# IDs từ scenario Nga4ThuDuc
+DETECTOR_IDS = ["e2_0", "e2_2"]  # Lane area detectors
+TLS_ID = "4066470692"  # Traffic light junction
 
 # --- Các hàm (Copy từ File 1) ---
 def get_queue_length(detector_id):
@@ -77,24 +78,39 @@ def run_baseline():
 
     traci.close()
     
-    # --- Vẽ Biểu đồ (Như File 1) ---
+    # --- Vẽ và Lưu Biểu đồ ---
     print("\nBaseline hoàn tất. Đang vẽ biểu đồ...")
 
+    # Biểu đồ Cumulative Reward
     plt.figure(figsize=(10, 6))
-    plt.plot(step_history, reward_history, label="Cumulative Reward")
+    plt.plot(step_history, reward_history, label="Cumulative Reward", color='red')
     plt.xlabel("Simulation Step")
     plt.ylabel("Cumulative Reward")
-    plt.title("Fixed Timing: Cumulative Reward over Steps")
+    plt.title("Baseline (Fixed Timing): Cumulative Reward over Steps")
+    plt.legend()
     plt.grid(True)
-    plt.show()
+    plt.savefig("baseline_reward.png", dpi=150, bbox_inches='tight')
+    print("✅ Đã lưu biểu đồ: baseline_reward.png")
+    plt.close()
 
+    # Biểu đồ Queue Length
     plt.figure(figsize=(10, 6))
-    plt.plot(step_history, queue_history, label="Total Queue Length")
+    plt.plot(step_history, queue_history, label="Total Queue Length", color='blue')
     plt.xlabel("Simulation Step")
     plt.ylabel("Total Queue Length")
-    plt.title("Fixed Timing: Queue Length over Steps")
+    plt.title("Baseline (Fixed Timing): Queue Length over Steps")
+    plt.legend()
     plt.grid(True)
-    plt.show()
+    plt.savefig("baseline_queue.png", dpi=150, bbox_inches='tight')
+    print("✅ Đã lưu biểu đồ: baseline_queue.png")
+    plt.close()
+    
+    print(f"\n=== KẾT QUẢ BASELINE ===")
+    print(f"Total Steps: {len(step_history) * 100}")
+    print(f"Final Cumulative Reward: {cumulative_reward:.2f}")
+    print(f"Average Queue Length: {np.mean(queue_history):.2f}")
+    print(f"Max Queue Length: {max(queue_history)}")
+    print(f"Min Queue Length: {min(queue_history)}")
 
 if __name__ == "__main__":
     run_baseline()

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<!-- generated on 2025-11-18T13:48:21.025555+07:00 by Eclipse SUMO sumo 1.25.0
+<!-- generated on 2025-11-18T15:34:36.967294+07:00 by Eclipse SUMO sumo 1.25.0
 <sumoConfiguration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/sumoConfiguration.xsd">
 
     <input>
@@ -10,20 +10,11 @@
     </input>
 
     <time>
-        <step-length value="0.1"/>
+        <step-length value="1"/>
     </time>
 
-    <processing>
-        <lateral-resolution value="0"/>
-    </processing>
-
-    <report>
-        <no-warnings value="true"/>
-        <no-step-log value="true"/>
-    </report>
-
     <traci_server>
-        <remote-port value="40381"/>
+        <remote-port value="34441"/>
     </traci_server>
 
 </sumoConfiguration>
@@ -33,5 +24,8 @@
     <interval begin="0.00" end="300.00" id="e1_3" nVehContrib="0" flow="0.00" occupancy="0.00" speed="-1.00" harmonicMeanSpeed="-1.00" length="-1.00" nVehEntered="0"/>
     <interval begin="300.00" end="600.00" id="e1_3" nVehContrib="0" flow="0.00" occupancy="0.00" speed="-1.00" harmonicMeanSpeed="-1.00" length="-1.00" nVehEntered="0"/>
     <interval begin="600.00" end="900.00" id="e1_3" nVehContrib="0" flow="0.00" occupancy="0.00" speed="-1.00" harmonicMeanSpeed="-1.00" length="-1.00" nVehEntered="0"/>
-    <interval begin="900.00" end="1000.00" id="e1_3" nVehContrib="0" flow="0.00" occupancy="0.00" speed="-1.00" harmonicMeanSpeed="-1.00" length="-1.00" nVehEntered="0"/>
+    <interval begin="900.00" end="1200.00" id="e1_3" nVehContrib="0" flow="0.00" occupancy="0.00" speed="-1.00" harmonicMeanSpeed="-1.00" length="-1.00" nVehEntered="0"/>
+    <interval begin="1200.00" end="1500.00" id="e1_3" nVehContrib="0" flow="0.00" occupancy="0.00" speed="-1.00" harmonicMeanSpeed="-1.00" length="-1.00" nVehEntered="0"/>
+    <interval begin="1500.00" end="1800.00" id="e1_3" nVehContrib="0" flow="0.00" occupancy="0.00" speed="-1.00" harmonicMeanSpeed="-1.00" length="-1.00" nVehEntered="0"/>
+    <interval begin="1800.00" end="2055.00" id="e1_3" nVehContrib="0" flow="0.00" occupancy="0.00" speed="-1.00" harmonicMeanSpeed="-1.00" length="-1.00" nVehEntered="0"/>
 </detector>

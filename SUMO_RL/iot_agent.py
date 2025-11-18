@@ -11,14 +11,14 @@ ORION_HOST = "http://localhost:1026/ngsi-ld/v1"
 AGENT_HOST = "http://localhost:4041" # Cổng mà agent này lắng nghe
 
 SUMO_CONFIG = [
-    'sumo-gui',
-    '-c', 'sumo_files/RL.sumocfg',
-    '--step-length', '0.1', # Giảm step-length để nhanh hơn
+    'sumo',  # Dùng sumo headless (không GUI) để chạy nhanh hơn
+    '-c', 'sumo_files/Nga4ThuDuc/Nga4ThuDuc.sumocfg',
+    '--step-length', '1',
 ]
-# Các ID này phải khớp với file .sumocfg của bạn
-EDGE_IDS = ["217609239#1", "33285483#6", "683902013#5", "211081657#2"]
-DETECTOR_IDS = ["det_1", "det_2", "det_3", "det_4", "det_5", "det_6"]
-TLS_ID = "cluster_5758101431_5758101433"
+# Các ID từ Nga4ThuDuc scenario
+EDGE_IDS = ["1106838009#1", "720360980", "720360983#1", "720360983#2"]  # Edges kết nối với junction
+DETECTOR_IDS = ["e2_0", "e2_2"]  # 2 detectors từ Nga4ThuDuc
+TLS_ID = "4066470692"  # Junction ID từ Nga4ThuDuc
 
 # --- Thiết lập Flask Server để nhận lệnh ---
 app = Flask(__name__)
@@ -71,14 +71,14 @@ def get_state_from_sumo():
     for edge in EDGE_IDS:
         total_pm25 += traci.edge.getPMxEmission(edge)
         
-    # State 8-tuple
+    # State 4-tuple (2 queues, 1 phase, 1 pm25)
     return (*queues, phase, total_pm25)
 
 def send_state_to_orion(state):
     """Gói state thành JSON-LD và gửi lên Orion."""
-    queues = state[:6]
-    phase = state[6]
-    pm25 = state[7]
+    queues = state[:2]  # 2 queue values
+    phase = state[2]
+    pm25 = state[3]
 
     # 1. Gửi dữ liệu Giao thông
     traffic_data = {

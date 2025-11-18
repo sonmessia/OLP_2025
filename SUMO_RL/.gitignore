@@ -10,9 +10,6 @@ venv/
 env/
 ENV/
 
-# DQN Model
-dqn_model.h5
-*.h5
 
 # SUMO outputs
 *.xml.gz

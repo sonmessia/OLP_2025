@@ -12,9 +12,9 @@ from threading import Thread
 ORION_HOST = "http://localhost:1026/ngsi-ld/v1"
 MODEL_PATH = "dqn_model.h5" # Tên file model đã huấn luyện
 ACTIONS = [0, 1] # 0 = Giữ pha, 1 = Đổi pha
-STATE_SIZE = 8 # 6 queues, 1 phase, 1 pm25
-TLS_ID = "Node2" # Sửa lại cho đúng
-NUM_PHASES = 4 # Sửa lại cho đúng
+STATE_SIZE = 4 # 2 queues, 1 phase, 1 pm25
+TLS_ID = "4066470692" # Junction ID từ Nga4ThuDuc
+NUM_PHASES = 2 # Nga4ThuDuc có 2 pha
 
 # --- Thiết lập Flask Server để nhận dữ liệu ---
 app = Flask(__name__)
@@ -27,7 +27,8 @@ def load_dqn_model(path, state_size, action_size):
         print(f"[AI Agent] Lỗi: Không tìm thấy model '{path}'. Hãy chạy train_dqn.py trước.")
         sys.exit(1)
     print(f"[AI Agent] Tải model từ {path}...")
-    return keras.models.load_model(path)
+    # Load model without compilation to avoid metric deserialization error
+    return keras.models.load_model(path, compile=False)
 
 def to_array(state_tuple):
     """Chuyển state tuple sang numpy array cho model."""
@@ -74,11 +75,11 @@ def parse_state_from_orion(data):
         if traffic_data['type'] != 'TrafficFlowObserved':
             traffic_data, env_data = env_data, traffic_data
             
-        queues = traffic_data['queues']['value']
+        queues = traffic_data['queues']['value']  # List of 2 queue values
         phase = traffic_data['phase']['value']
         pm25 = env_data['pm25']['value']
         
-        # Trả về state 8-tuple
+        # Trả về state 4-tuple (2 queues, 1 phase, 1 pm25)
         return (*queues, phase, pm25)
         
     except Exception as e:
@@ -105,7 +106,7 @@ def receive_notification():
     
     # 3. Gửi lệnh (nếu cần)
     if action == 1: # 1 = Đổi pha
-        current_phase = current_state[6]
+        current_phase = current_state[2]  # Phase is at index 2 (after 2 queues)
         next_phase = (current_phase + 1) % NUM_PHASES
         send_command_to_orion(TLS_ID, next_phase)
     else: # 0 = Giữ pha

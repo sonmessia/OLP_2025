@@ -14,17 +14,17 @@ else:
 import traci
 
 # --- Cấu hình Mô phỏng ---
-# File config này phải GIỐNG HỆT file bạn dùng để huấn luyện/demo
+# File config sử dụng scenario Nga4ThuDuc (giống với train_dqn.py)
 SUMO_CONFIG = [
-    'sumo-gui', # Dùng GUI để xem
-    '-c', 'sumo_files/RL.sumocfg',
+    'sumo', # Không dùng GUI để chạy nhanh hơn (đổi thành 'sumo-gui' nếu muốn xem)
+    '-c', 'sumo_files/Nga4ThuDuc/Nga4ThuDuc.sumocfg',
     '--step-length', '0.1',
-    '--lateral-resolution', '0'
+    '--lateral-resolution', '0',
+    '--no-step-log', 'true',
+    '--no-warnings', 'true'
 ]
-# LƯU Ý: File này phải chạy MỘT MÌNH.
-# Nó không tương thích khi chạy chung với iot_agent.py
-# Bạn phải chạy nó với 1 file config .sumocfg CÓ SẴN ĐÈN CỐ ĐỊNH
-# HOẶC chạy nó với 1 file đã KẾT NỐI VỚI AI.
+# LƯU Ý: File này đánh giá hiệu suất mô phỏng
+# Chạy độc lập để đo Average Travel Time
 
 # --- Biến ---
 depart_times = {}
