@@ -1,0 +1,293 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  padding: 20px;
+  min-height: 100vh;
+}
+
+.container {
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+header {
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+}
+
+h1 {
+  color: #333;
+  font-size: 2em;
+  margin-bottom: 10px;
+}
+
+.subtitle {
+  color: #666;
+  font-size: 1.1em;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 20px;
+  margin-bottom: 20px;
+}
+
+.card {
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.card h2 {
+  color: #333;
+  margin-bottom: 15px;
+  font-size: 1.3em;
+  border-bottom: 2px solid #667eea;
+  padding-bottom: 10px;
+}
+
+.status {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.status-indicator {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  margin-right: 10px;
+  animation: pulse 2s infinite;
+}
+
+.status-indicator.online {
+  background: #10b981;
+}
+
+.status-indicator.offline {
+  background: #ef4444;
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+.metric {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px;
+  background: #f9fafb;
+  border-radius: 5px;
+  margin-bottom: 8px;
+}
+
+.metric-label {
+  color: #666;
+  font-weight: 500;
+}
+
+.metric-value {
+  color: #333;
+  font-weight: 700;
+  font-size: 1.1em;
+}
+/* Thêm style cho đèn giao thông */
+.traffic-light {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
+  height: 120px;
+  width: 40px;
+  border: 1px solid #333;
+  border-radius: 8px;
+  background-color: #222;
+  margin: 10px auto;
+}
+
+.light {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  opacity: 0.1; /* Off state */
+  transition: opacity 0.3s;
+}
+
+.light.off {
+  background-color: #555;
+}
+
+.light.red {
+  background-color: red;
+  opacity: 1;
+  box-shadow: 0 0 10px red;
+}
+
+/* THÊM ĐOẠN CSS CHO ĐÈN VÀNG */
+.light.yellow {
+  background-color: yellow;
+  opacity: 1;
+  box-shadow: 0 0 10px yellow;
+}
+/* KẾT THÚC THÊM */
+
+.light.green {
+  background-color: green;
+  opacity: 1;
+  box-shadow: 0 0 10px green;
+}
+
+.chart-container {
+  height: 200px;
+  background: #f9fafb;
+  border-radius: 5px;
+  padding: 10px;
+  margin-top: 10px;
+  position: relative;
+  overflow: hidden;
+}
+
+.chart-bar {
+  position: absolute;
+  bottom: 0;
+  width: 20px;
+  background: linear-gradient(to top, #667eea, #764ba2);
+  border-radius: 3px 3px 0 0;
+  transition: height 0.5s ease;
+}
+
+.log-container {
+  background: #1e293b;
+  color: #e2e8f0;
+  padding: 15px;
+  border-radius: 5px;
+  font-family: "Courier New", monospace;
+  font-size: 0.9em;
+  max-height: 300px;
+  overflow-y: auto;
+  margin-top: 10px;
+}
+
+.log-entry {
+  margin-bottom: 5px;
+  padding: 5px;
+  border-left: 3px solid #667eea;
+  padding-left: 10px;
+}
+
+.log-entry.info {
+  border-left-color: #3b82f6;
+}
+
+.log-entry.success {
+  border-left-color: #10b981;
+}
+
+.log-entry.warning {
+  border-left-color: #f59e0b;
+}
+
+.log-entry.error {
+  border-left-color: #ef4444;
+}
+
+.timestamp {
+  color: #94a3b8;
+  margin-right: 10px;
+}
+
+button {
+  background: #667eea;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1em;
+  margin: 5px;
+  transition: background 0.3s;
+}
+
+button:hover {
+  background: #764ba2;
+}
+
+button:disabled {
+  background: #9ca3af;
+  cursor: not-allowed;
+}
+
+.controls {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.phase-display {
+  text-align: center;
+  font-size: 3em;
+  font-weight: bold;
+  color: #667eea;
+  margin: 20px 0;
+}
+
+.queue-bars {
+  display: flex;
+  gap: 20px;
+  margin-top: 15px;
+}
+
+.queue-bar-container {
+  flex: 1;
+}
+
+.queue-bar-label {
+  text-align: center;
+  margin-bottom: 5px;
+  font-weight: 500;
+  color: #666;
+}
+
+.queue-bar {
+  height: 150px;
+  background: #f3f4f6;
+  border-radius: 5px;
+  position: relative;
+  overflow: hidden;
+}
+
+.queue-bar-fill {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  background: linear-gradient(to top, #ef4444, #f59e0b);
+  transition: height 0.5s ease;
+  border-radius: 5px 5px 0 0;
+}
+
+.queue-bar-value {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 2em;
+  font-weight: bold;
+  color: #333;
+}
