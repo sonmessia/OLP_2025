@@ -3,3 +3,4 @@ requests    # Để nói chuyện với Orion-LD
 flask       # Để tạo API server lắng nghe
 tensorflow  # Để chạy mô hình DQN
 numpy
+matplotlib  # Để vẽ đồ thị kết quả training

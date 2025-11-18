@@ -1,5 +1,18 @@
 # FILE 5: train_dqn.py
 # Dùng để huấn luyện OFFLINE và tạo ra file 'dqn_model.h5'
+# 
+# CẤU TRÚC FILE SUMO:
+# - RL.net.xml: Mạng lưới đường (network) với junction cluster_5758101431_5758101433
+# - RL.rou.xml: Routes và flows cho các phương tiện
+# - RL.sumocfg: File cấu hình chính
+# - RL.add.xml: File additional chứa detectors và traffic light logic
+# - emission.add.xml: Emission classes cho xe
+#
+# JUNCTION ĐƯỢC ĐIỀU KHIỂN:
+# - ID: cluster_5758101431_5758101433 (type: priority -> được chuyển sang traffic_light trong RL.add.xml)
+# - Incoming edges: 683902013#5, 217609239#1 (2 lanes), 33285483#6, 211081657#2 (2 lanes)
+# - Detectors: det_1 đến det_6 (lane area detectors)
+# - Phases: 4 phases (NS Green, NS Yellow, EW Green, EW Yellow)
 
 import os
 import sys
@@ -23,7 +36,7 @@ import traci
 # Chạy không có GUI để huấn luyện nhanh hơn
 SUMO_CONFIG = [
     'sumo', # Thay 'sumo-gui' bằng 'sumo'
-    '-c', 'sumo_files/RL.sumocfg',
+    '-c', 'sumo_files/Nga4ThuDuc/Nga4ThuDuc.sumocfg',  # Sử dụng scenario Nga4ThuDuc
     '--step-length', '0.1',
     '--lateral-resolution', '0',
     '--no-step-log', 'true', # Tắt bớt log
@@ -33,7 +46,7 @@ SUMO_CONFIG = [
 # --- Cấu hình AI (Hyperparameters) ---
 TOTAL_STEPS = 10000
 ACTIONS = [0, 1]  # 0 = Giữ pha, 1 = Đổi pha
-STATE_SIZE = 8    # 6 queues, 1 phase, 1 pm25
+STATE_SIZE = 4    # 2 queues (e2_0, e2_2), 1 phase, 1 pm25
 ACTION_SIZE = len(ACTIONS)
 
 # Trọng số cho hàm Reward (ĐA MỤC TIÊU)
@@ -54,12 +67,14 @@ TARGET_UPDATE_FREQ = 100    # Số bước cập nhật Target Model
 MIN_GREEN_STEPS = 100 # 10 giây (100 steps * 0.1s)
 last_switch_step = -MIN_GREEN_STEPS
 
-# IDs (SỬA LẠI CHO ĐÚNG VỚI FILE .sumocfg)
-TLS_ID = "cluster_5758101431_5758101433"
-EDGE_IDS = ["217609239#1", "33285483#6", "683902013#5", "211081657#2"] # Các cạnh đi vào ngã tư
-# Sửa lại ID các cảm biến bạn vừa VẼ
-DETECTOR_IDS = ["det_1", "det_2", "det_3", "det_4", "det_5", "det_6"] # (Số lượng và tên phải khớp)
-NUM_PHASES = 4 # Sửa lại cho đúng
+# IDs (Đã được cập nhật từ file RL.net.xml và RL.add.xml)
+# LƯU Ý: Junction này là "priority" type, KHÔNG có traffic light
+# Chúng ta sẽ sử dụng scenario Nga4ThuDuc thay thế
+TLS_ID = "4066470692"  # Traffic light junction trong Nga4ThuDuc
+EDGE_IDS = ["720360980", "720360983#1", "1106838009#1"]  # Các edge đi vào ngã tư Nga4ThuDuc
+# Các detector từ file Nga4ThuDuc/Nga4ThuDuc.add.xml
+DETECTOR_IDS = ["e2_0", "e2_2"]  # Lane area detectors
+NUM_PHASES = 2  # Số pha đèn giao thông từ file network
 
 # --- Class ReplayBuffer (Cực kỳ quan trọng) ---
 class ReplayBuffer:
@@ -97,7 +112,7 @@ def to_array(state_tuple):
     return np.array(state_tuple, dtype=np.float32).reshape((1, -1))
 
 def get_state():
-    """Lấy state 8-tuple (6 queues, 1 phase, 1 pm25)."""
+    """Lấy state 4-tuple (2 queues, 1 phase, 1 pm25)."""
     queues = [traci.lanearea.getLastStepVehicleNumber(det) for det in DETECTOR_IDS]
     phase = traci.trafficlight.getPhase(TLS_ID)
     
@@ -112,11 +127,11 @@ def get_reward(state, last_state):
     """Hàm phần thưởng ĐA MỤC TIÊU."""
     
     # 1. Mục tiêu Giao thông (lấy từ state)
-    total_queue = sum(state[:6]) 
+    total_queue = sum(state[:2])  # Chỉ có 2 detectors
     reward_traffic = -float(total_queue)
     
     # 2. Mục tiêu Môi trường (lấy từ state)
-    total_pm25 = state[7]
+    total_pm25 = state[3]  # Index 3 trong state 4-tuple
     reward_env = -float(total_pm25) # Càng ô nhiễm càng bị phạt nặng
 
     # 3. Phần thưởng Tổng hợp
@@ -178,6 +193,8 @@ def train_model(main_model, target_model, replay_buffer):
 
 # --- Vòng lặp Huấn luyện Chính ---
 def main_loop():
+    global last_switch_step  # Khai báo global ở đầu hàm
+    
     print("\n=== Bắt đầu Huấn luyện DQN 'GreenWave' ===")
     
     # Khởi tạo models
@@ -195,7 +212,6 @@ def main_loop():
     state = get_state()
     
     for step in range(TOTAL_STEPS):
-        global last_switch_step
         current_simulation_step = step
         
         # 1. Chọn hành động

@@ -14,7 +14,7 @@ services:
       interval: 5s
       
   mongo:
-    image: mongo:4.4
+    image: mongo:4.4 
     hostname: mongo
     container_name: fiware-mongo
     expose:
