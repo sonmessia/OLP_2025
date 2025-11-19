@@ -3,463 +3,387 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <style></style>
-    <title>SUMO-RL Traffic Control Dashboard</title>
+    <title>GreenWave Traffic Control Center</title>
     <link rel="stylesheet" href="index.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    />
   </head>
   <body>
     <div class="container">
       <header>
-        <h1>🚦 SUMO-RL Traffic Control Dashboard</h1>
-        <p class="subtitle">
-          Real-time monitoring - Nga4ThuDuc Junction (4066470692)
-        </p>
+        <div>
+          <h1>🚦 GreenWave Control Center</h1>
+          <p class="subtitle">
+            Giao lộ: Ngã 4 Thủ Đức (ID: 4066470692) - Hybrid View
+          </p>
+        </div>
+        <div class="status-badge">
+          <div class="status-dot offline" id="sys-status"></div>
+          <span id="sys-status-text">Disconnected</span>
+        </div>
       </header>
 
       <div class="grid">
-        <!-- System Status -->
-        <div class="card">
-          <h2>System Status</h2>
-          <div class="status">
-            <div class="status-indicator online" id="orion-status"></div>
-            <span>Orion-LD Broker</span>
-          </div>
-          <div class="status">
-            <div class="status-indicator online" id="iot-status"></div>
-            <span>IoT Agent (Port 4041)</span>
-          </div>
-          <div class="status">
-            <div class="status-indicator online" id="ai-status"></div>
-            <span>AI Agent (Port 8080)</span>
-          </div>
-          <div class="status">
-            <div class="status-indicator online" id="sumo-status"></div>
-            <span>SUMO Simulation</span>
-          </div>
-        </div>
+        <div class="col-span-8">
+          <div class="card">
+            <h2>
+              <span><i class="fas fa-road"></i> Mô phỏng Giao thông</span>
+              <span style="font-size: 0.7em; color: #94a3b8" id="phase-badge"
+                >Phase: --</span
+              >
+            </h2>
 
-        <!-- Traffic Light Phase -->
-        <div class="card">
-          <h2>Current Traffic Light Phase</h2>
-          <div class="phase-display" id="current-phase">0</div>
-          <div class="traffic-light">
-            <div class="light off" id="light-red"></div>
-            <div class="light off" id="light-yellow"></div>
-            <div class="light off" id="light-green"></div>
-          </div>
-        </div>
-
-        <!-- AI Performance -->
-        <div class="card">
-          <h2>AI Performance</h2>
-          <div class="metric">
-            <span class="metric-label">Total Reward</span>
-            <span class="metric-value" id="total-reward">0</span>
-          </div>
-          <div class="metric">
-            <span class="metric-label">Avg Reward/Step</span>
-            <span class="metric-value" id="avg-reward">0.00</span>
-          </div>
-          <div class="metric">
-            <span class="metric-label">Steps</span>
-            <span class="metric-value" id="total-steps">0</span>
-          </div>
-          <div class="metric">
-            <span class="metric-label">Phase Changes</span>
-            <span class="metric-value" id="phase-changes">0</span>
-          </div>
-        </div>
-      </div>
-
-      <div class="grid">
-        <!-- Queue Status -->
-        <div class="card">
-          <h2>Queue Status</h2>
-          <div class="queue-bars">
-            <div class="queue-bar-container">
-              <div class="queue-bar-label">Detector e2_0</div>
-              <div class="queue-bar">
+            <div class="road-container">
+              <div class="road horizontal">
+                <div class="stop-line-h"></div>
+                <div class="lane-horizontal-container" id="lane-0-cars"></div>
+                <div class="traffic-light-mini h-loc" id="tl-0">
+                  <div class="bulb red"></div>
+                  <div class="bulb yellow"></div>
+                  <div class="bulb green"></div>
+                </div>
                 <div
-                  class="queue-bar-fill"
-                  id="queue-0-fill"
-                  style="height: 0%"
-                ></div>
-                <div class="queue-bar-value" id="queue-0-value">0</div>
+                  style="
+                    position: absolute;
+                    left: 10px;
+                    top: 10px;
+                    color: #64748b;
+                    font-size: 0.8em;
+                  "
+                >
+                  Làn e2_0 (Đông-Tây)
+                </div>
               </div>
-            </div>
-            <div class="queue-bar-container">
-              <div class="queue-bar-label">Detector e2_2</div>
-              <div class="queue-bar">
+
+              <div class="road vertical">
+                <div class="stop-line-v"></div>
+                <div class="lane-vertical-container" id="lane-2-cars"></div>
+                <div class="traffic-light-mini v-loc" id="tl-2">
+                  <div class="bulb red"></div>
+                  <div class="bulb yellow"></div>
+                  <div class="bulb green"></div>
+                </div>
                 <div
-                  class="queue-bar-fill"
-                  id="queue-2-fill"
-                  style="height: 0%"
-                ></div>
-                <div class="queue-bar-value" id="queue-2-value">0</div>
+                  style="
+                    position: absolute;
+                    bottom: 10px;
+                    right: 10px;
+                    color: #64748b;
+                    font-size: 0.8em;
+                    writing-mode: vertical-rl;
+                  "
+                >
+                  Làn e2_2 (Bắc-Nam)
+                </div>
               </div>
             </div>
           </div>
-          <div class="metric" style="margin-top: 15px">
-            <span class="metric-label">Total Queue</span>
-            <span class="metric-value" id="total-queue">0</span>
+
+          <div class="card">
+            <h2>Điều khiển</h2>
+            <div style="display: flex; gap: 10px">
+              <button onclick="sendPhaseCommand(0)">
+                <i class="fas fa-arrow-right"></i> Ưu tiên Đông-Tây
+              </button>
+              <button onclick="sendPhaseCommand(1)">
+                <i class="fas fa-arrow-up"></i> Ưu tiên Bắc-Nam
+              </button>
+              <button onclick="fetchOrionData()" style="background: #475569">
+                <i class="fas fa-sync"></i> Refresh
+              </button>
+            </div>
           </div>
         </div>
 
-        <!-- Environment Metrics -->
-        <div class="card">
-          <h2>Environment Metrics</h2>
-          <div class="metric">
-            <span class="metric-label">PM2.5 Emissions</span>
-            <span class="metric-value" id="pm25">0.00 mg</span>
+        <div class="col-span-4">
+          <div class="card">
+            <h2><i class="fas fa-chart-line"></i> Reward History</h2>
+            <div class="chart-container" id="reward-chart"></div>
+            <div
+              class="metric-row"
+              style="margin-top: 10px; background: none; padding: 0"
+            >
+              <span>Reward hiện tại:</span>
+              <span class="metric-value" id="ai-reward">0</span>
+            </div>
           </div>
-          <div class="metric">
-            <span class="metric-label">Vehicles in Simulation</span>
-            <span class="metric-value" id="vehicles">0</span>
+
+          <div class="card">
+            <h2><i class="fas fa-smog"></i> PM2.5 History</h2>
+            <div class="chart-container" id="pm25-chart"></div>
+            <div
+              class="metric-row"
+              style="margin-top: 10px; background: none; padding: 0"
+            >
+              <span>Nồng độ hiện tại:</span>
+              <span class="metric-value" id="pm25-text">0.00</span>
+            </div>
           </div>
-          <div class="metric">
-            <span class="metric-label">Simulation Time</span>
-            <span class="metric-value" id="sim-time">0.0s</span>
+
+          <div class="card">
+            <h2><i class="fas fa-table"></i> Dữ liệu chi tiết (Live)</h2>
+            <div class="table-wrapper">
+              <table class="data-table" id="data-log-table">
+                <thead>
+                  <tr>
+                    <th>Time</th>
+                    <th>Q_0</th>
+                    <th>Q_2</th>
+                    <th>Phase</th>
+                    <th>PM2.5</th>
+                  </tr>
+                </thead>
+                <tbody></tbody>
+              </table>
+            </div>
           </div>
-          <div class="chart-container" id="pm25-chart"></div>
-        </div>
 
-        <!-- Reward History -->
-        <div class="card">
-          <h2>Reward History</h2>
-          <div class="chart-container" id="reward-chart"></div>
-        </div>
-      </div>
-
-      <!-- Controls -->
-      <div class="card">
-        <h2>Controls</h2>
-        <div class="controls">
-          <button onclick="fetchOrionData()">🔄 Refresh Data</button>
-          <button onclick="sendPhaseCommand(0)">🔴 Force Phase 0</button>
-          <button onclick="sendPhaseCommand(1)">🟢 Force Phase 1</button>
-          <button onclick="clearLogs()">🗑️ Clear Logs</button>
-        </div>
-      </div>
-
-      <!-- Activity Log -->
-      <div class="card">
-        <h2>Activity Log</h2>
-        <div class="log-container" id="log-container">
-          <div class="log-entry info">
-            <span class="timestamp">[00:00:00]</span>
-            <span>Dashboard initialized</span>
+          <div class="card">
+            <h2>
+              Nhật ký hệ thống
+              <button
+                onclick="clearLogs()"
+                style="font-size: 0.6em; padding: 2px 6px; float: right"
+              >
+                Xóa
+              </button>
+            </h2>
+            <div class="log-container" id="log-container"></div>
           </div>
         </div>
       </div>
     </div>
 
     <script>
-      // Configuration
-      const ORION_HOST = "http://localhost:1026/ngsi-ld/v1";
+      const ORION_HOST = "http://localhost:8080/proxy/orion";
       const TLS_ID = "4066470692";
-      const UPDATE_INTERVAL = 2000; // 2 seconds
-      const DEMO_MODE = true; // Set to false when Orion is available
+      const UPDATE_INTERVAL = 2000;
 
-      // State
       let rewardHistory = [];
       let pm25History = [];
-      let totalSteps = 0;
-      let totalReward = 0;
-      let phaseChanges = 0;
-      let lastPhase = 0;
+      let lastPhase = -1;
 
-      // Initialize
       function init() {
-        addLog("Dashboard started", "success");
-        if (DEMO_MODE) {
-          addLog("Running in DEMO MODE with simulated data", "warning");
-          addLog("Set DEMO_MODE=false to connect to Orion", "info");
-        } else {
-          addLog("Connecting to Orion-LD at " + ORION_HOST, "info");
-        }
+        addLog("Hệ thống khởi động...");
         startAutoRefresh();
-        updateCharts();
-        fetchOrionData(); // Initial fetch
+        fetchOrionData();
       }
 
-      // Fetch data from Orion
       async function fetchOrionData() {
-        if (DEMO_MODE) {
-          // Demo mode with simulated data
-          const demoTrafficData = {
-            queues: {
-              value: [
-                Math.floor(Math.random() * 5),
-                Math.floor(Math.random() * 5),
-              ],
-            },
-            phase: { value: Math.floor(Math.random() * 3) },
-          };
-          const demoAirData = {
-            pm25: { value: Math.random() * 100 },
-          };
-          updateDashboard(demoTrafficData, demoAirData);
-          return;
-        }
-
         try {
-          // Fetch Traffic Flow data
-          const trafficResponse = await fetch(
-            `${ORION_HOST}/entities/urn:ngsi-ld:TrafficFlowObserved:${TLS_ID}`,
-            {
-              headers: { Accept: "application/json" },
-              mode: "cors",
-            }
-          );
+          const [trafficRes, airRes] = await Promise.all([
+            fetch(
+              `${ORION_HOST}/entities/urn:ngsi-ld:TrafficFlowObserved:${TLS_ID}`,
+              { headers: { Accept: "application/json" } }
+            ),
+            fetch(
+              `${ORION_HOST}/entities/urn:ngsi-ld:AirQualityObserved:${TLS_ID}`,
+              { headers: { Accept: "application/json" } }
+            ),
+          ]);
 
-          // Fetch Air Quality data
-          const airResponse = await fetch(
-            `${ORION_HOST}/entities/urn:ngsi-ld:AirQualityObserved:${TLS_ID}`,
-            {
-              headers: { Accept: "application/json" },
-              mode: "cors",
-            }
-          );
+          if (trafficRes.ok && airRes.ok) {
+            const trafficData = await trafficRes.json();
+            const airData = await airRes.json();
 
-          if (trafficResponse.ok && airResponse.ok) {
-            const trafficData = await trafficResponse.json();
-            const airData = await airResponse.json();
-
-            updateDashboard(trafficData, airData);
-            addLog("Data refreshed from Orion", "success");
-            updateSystemStatus(true);
+            updateUI(trafficData, airData);
+            updateStatus(true);
           } else {
-            addLog(
-              `Failed to fetch data: ${trafficResponse.status}, ${airResponse.status}`,
-              "error"
-            );
-            updateSystemStatus(false);
+            throw new Error("API Error");
           }
         } catch (error) {
-          addLog(`Connection error: ${error.message}`, "error");
-          addLog("Enable DEMO_MODE or check Orion connection", "warning");
-          updateSystemStatus(false);
+          updateStatus(false);
         }
       }
 
-      // Update dashboard with new data
-      function updateDashboard(trafficData, airData) {
-        // Extract data
+      function updateUI(trafficData, airData) {
         const queues = trafficData.queues?.value || [0, 0];
         const phase = trafficData.phase?.value || 0;
         const pm25 = airData.pm25?.value || 0;
 
-        // Update queues
-        updateQueue(0, queues[0]);
-        updateQueue(1, queues[1]);
-        document.getElementById("total-queue").textContent =
-          queues[0] + queues[1];
+        // --- 1. CẬP NHẬT TEXT & CHARTS ---
+        document.getElementById("pm25-text").textContent = pm25.toFixed(2);
 
-        // Update phase
-        updatePhase(phase);
+        const reward = -(queues[0] + queues[1]) * 0.6 - (pm25 / 100) * 0.4;
+        document.getElementById("ai-reward").textContent = reward.toFixed(2);
 
-        // Update PM2.5
-        document.getElementById("pm25").textContent = pm25.toFixed(2) + " mg";
-
-        // Update metrics
-        totalSteps++;
-        const reward = calculateReward(queues, pm25);
-        totalReward += reward;
         rewardHistory.push(reward);
         pm25History.push(pm25);
 
-        if (rewardHistory.length > 50) {
-          rewardHistory.shift();
-          pm25History.shift();
-        }
+        if (rewardHistory.length > 50) rewardHistory.shift();
+        if (pm25History.length > 50) pm25History.shift();
 
-        document.getElementById("total-reward").textContent =
-          totalReward.toFixed(0);
-        document.getElementById("avg-reward").textContent = (
-          totalReward / totalSteps
-        ).toFixed(2);
-        document.getElementById("total-steps").textContent = totalSteps;
+        drawChart("reward-chart", rewardHistory, true);
+        drawChart("pm25-chart", pm25History, false);
 
-        // Update phase changes
+        // --- 2. CẬP NHẬT VISUAL ROAD ---
+        updateVisualRoad(queues, phase);
+
+        // --- 3. CẬP NHẬT BẢNG LOG DỮ LIỆU (MỚI) ---
+        updateDataLogTable(queues, phase, pm25);
+
+        // --- 4. SYSTEM LOG ---
         if (phase !== lastPhase) {
-          phaseChanges++;
-          document.getElementById("phase-changes").textContent = phaseChanges;
-          addLog(`Phase changed: ${lastPhase} → ${phase}`, "info");
+          addLog(`Chuyển Phase: ${lastPhase} -> ${phase}`);
           lastPhase = phase;
         }
-
-        // Update charts
-        updateCharts();
-        updateSystemStatus(true);
       }
 
-      // Calculate reward
-      function calculateReward(queues, pm25) {
-        const queueLength = queues[0] + queues[1];
-        return 0.6 * -queueLength + 0.4 * (-pm25 / 1000);
+      // --- HÀM MỚI: CẬP NHẬT BẢNG DỮ LIỆU ---
+      function updateDataLogTable(queues, phase, pm25) {
+        const tbody = document.querySelector("#data-log-table tbody");
+        const row = document.createElement("tr");
+
+        // Lấy giờ phút giây hiện tại
+        const time = new Date().toLocaleTimeString("vi-VN", { hour12: false });
+
+        row.innerHTML = `
+              <td>${time}</td>
+              <td>${queues[0]}</td>
+              <td>${queues[1]}</td>
+              <td>
+                  <span style="color: ${phase === 0 ? "#10b981" : "#ef4444"}">
+                      ${phase}
+                  </span>
+              </td>
+              <td>${pm25.toFixed(1)}</td>
+          `;
+
+        // Thêm vào đầu bảng
+        tbody.prepend(row);
+
+        // Giới hạn giữ lại 20 dòng mới nhất để không lag
+        if (tbody.children.length > 20) {
+          tbody.lastChild.remove();
+        }
       }
 
-      // Update queue visualization
-      function updateQueue(index, value) {
-        const maxQueue = 10;
-        const percentage = Math.min((value / maxQueue) * 100, 100);
-
-        document.getElementById(
-          `queue-${index === 0 ? "0" : "2"}-fill`
-        ).style.height = percentage + "%";
-        document.getElementById(
-          `queue-${index === 0 ? "0" : "2"}-value`
-        ).textContent = value;
-      }
-
-      // Update traffic light phase
-      function updatePhase(phase) {
-        document.getElementById("current-phase").textContent = phase;
-
-        // Reset all lights
-        document.getElementById("light-red").className = "light off";
-        document.getElementById("light-yellow").className = "light off";
-        document.getElementById("light-green").className = "light off";
-
-        // Light up based on phase
+      // --- VISUAL ROAD ---
+      function updateVisualRoad(queues, phase) {
+        document.getElementById("phase-badge").textContent = `Phase: ${phase}`;
+        const setLight = (id, color) => {
+          const el = document.getElementById(id);
+          el.querySelector(".red").className = `bulb red ${
+            color === "red" ? "active" : ""
+          }`;
+          el.querySelector(".yellow").className = `bulb yellow ${
+            color === "yellow" ? "active" : ""
+          }`;
+          el.querySelector(".green").className = `bulb green ${
+            color === "green" ? "active" : ""
+          }`;
+        };
+        let hColor = "red",
+          vColor = "red";
         if (phase === 0) {
-          // Xanh
-          document.getElementById("light-green").className = "light green";
-          // Cập nhật trạng thái hiển thị
-          addLog(`Traffic Light Phase: Green (${phase})`, "success");
+          hColor = "green";
+          vColor = "red";
         } else if (phase === 1) {
-          // Đỏ
-          document.getElementById("light-red").className = "light red";
-          // Cập nhật trạng thái hiển thị
-          addLog(`Traffic Light Phase: Red (${phase})`, "error");
-        } else if (phase === 2) {
-          // Vàng (Phase chuyển tiếp)
-          document.getElementById("light-yellow").className = "light yellow";
-          // Cập nhật trạng thái hiển thị
-          addLog(
-            `Traffic Light Phase: Yellow (Transitioning) (${phase})`,
-            "warning"
-          );
+          hColor = "red";
+          vColor = "green";
+        } else {
+          hColor = "yellow";
+          vColor = "yellow";
+        }
+
+        setLight("tl-0", hColor);
+        setLight("tl-2", vColor);
+
+        renderLane("lane-0-cars", queues[0], "h-car", hColor === "green");
+        renderLane("lane-2-cars", queues[1], "v-car", vColor === "green");
+      }
+
+      function renderLane(containerId, count, carClass, isMoving) {
+        const container = document.getElementById(containerId);
+        container.innerHTML = "";
+        const displayCount = Math.min(count, 8);
+        for (let i = 0; i < displayCount; i++) {
+          const car = document.createElement("i");
+          car.className = `fas fa-car car-icon ${carClass}`;
+          if (isMoving) car.classList.add("moving");
+          container.appendChild(car);
+        }
+        if (count > 8) {
+          const plus = document.createElement("span");
+          plus.textContent = "+";
+          plus.style.color = "#94a3b8";
+          container.appendChild(plus);
         }
       }
 
-      // Update charts
-      function updateCharts() {
-        updateRewardChart();
-        updatePM25Chart();
-      }
-
-      function updateRewardChart() {
-        const container = document.getElementById("reward-chart");
+      // --- CHARTS ---
+      function drawChart(containerId, data, allowNegative) {
+        const container = document.getElementById(containerId);
         container.innerHTML = "";
+        let minVal = Math.min(...data);
+        if (!allowNegative) minVal = 0;
+        const absMax = Math.max(...data.map(Math.abs), 1);
 
-        const maxValue = Math.max(...rewardHistory.map(Math.abs), 1);
-        rewardHistory.forEach((reward, index) => {
+        data.forEach((val) => {
           const bar = document.createElement("div");
           bar.className = "chart-bar";
-          bar.style.left = `${(index / 50) * 100}%`;
-          bar.style.height = `${(Math.abs(reward) / maxValue) * 100}%`;
+          const height = (Math.abs(val) / absMax) * 90;
+          bar.style.height = `${height}%`;
+          if (allowNegative && val < 0) {
+            bar.style.background = "linear-gradient(to top, #ef4444, #f97316)";
+          } else {
+            bar.style.background = "linear-gradient(to top, #667eea, #764ba2)";
+          }
           container.appendChild(bar);
         });
       }
 
-      function updatePM25Chart() {
-        const container = document.getElementById("pm25-chart");
-        container.innerHTML = "";
-
-        const maxValue = Math.max(...pm25History, 1);
-        pm25History.forEach((pm25, index) => {
-          const bar = document.createElement("div");
-          bar.className = "chart-bar";
-          bar.style.left = `${(index / 50) * 100}%`;
-          bar.style.height = `${(pm25 / maxValue) * 100}%`;
-          container.appendChild(bar);
-        });
-      }
-
-      // Send phase change command
+      // --- UTILS ---
       async function sendPhaseCommand(phase) {
-        if (DEMO_MODE) {
-          addLog(`[DEMO] Phase change to ${phase} (not sent)`, "warning");
-          updatePhase(phase);
-          return;
-        }
-
         try {
-          const response = await fetch(
+          await fetch(
             `${ORION_HOST}/entities/urn:ngsi-ld:TrafficLight:${TLS_ID}/attrs`,
             {
               method: "PATCH",
               headers: { "Content-Type": "application/json" },
-              mode: "cors",
               body: JSON.stringify({
-                forcePhase: {
-                  type: "Property",
-                  value: phase,
-                },
+                forcePhase: { type: "Property", value: phase },
               }),
             }
           );
-
-          if (response.ok || response.status === 204) {
-            addLog(`Manual phase change to ${phase} sent`, "success");
-          } else {
-            addLog(`Failed to send phase command: ${response.status}`, "error");
-          }
-        } catch (error) {
-          addLog(`Error sending command: ${error.message}`, "error");
+          addLog(`Lệnh gửi: Phase ${phase}`);
+          setTimeout(fetchOrionData, 200);
+        } catch (e) {
+          addLog("Lỗi gửi lệnh");
         }
       }
 
-      // Update system status indicators
-      function updateSystemStatus(isOnline) {
-        const orionIndicator = document.getElementById("orion-status");
-        orionIndicator.className = `status-indicator ${
-          isOnline || DEMO_MODE ? "online" : "offline"
-        }`;
-
-        // Update other indicators based on demo mode
-        if (DEMO_MODE) {
-          document.getElementById("iot-status").className =
-            "status-indicator online";
-          document.getElementById("ai-status").className =
-            "status-indicator online";
-          document.getElementById("sumo-status").className =
-            "status-indicator online";
+      function updateStatus(isOnline) {
+        const el = document.getElementById("sys-status");
+        const txt = document.getElementById("sys-status-text");
+        if (isOnline) {
+          el.className = "status-dot online";
+          txt.textContent = "Connected";
+          txt.style.color = "#10b981";
+        } else {
+          el.className = "status-dot offline";
+          txt.textContent = "Offline";
+          txt.style.color = "#ef4444";
         }
       }
 
-      // Add log entry
-      function addLog(message, type = "info") {
-        const container = document.getElementById("log-container");
+      function addLog(msg) {
+        const box = document.getElementById("log-container");
         const entry = document.createElement("div");
-        entry.className = `log-entry ${type}`;
-
-        const now = new Date();
-        const timestamp = now.toTimeString().split(" ")[0];
-
-        entry.innerHTML = `<span class="timestamp">[${timestamp}]</span><span>${message}</span>`;
-        container.appendChild(entry);
-        container.scrollTop = container.scrollHeight;
-
-        // Keep only last 50 logs
-        while (container.children.length > 50) {
-          container.removeChild(container.firstChild);
-        }
+        entry.className = "log-entry";
+        entry.innerHTML = `<span>[${new Date().toLocaleTimeString()}]</span> ${msg}`;
+        box.prepend(entry);
       }
 
-      // Clear logs
       function clearLogs() {
         document.getElementById("log-container").innerHTML = "";
-        addLog("Logs cleared", "info");
       }
-
-      // Auto refresh
       function startAutoRefresh() {
         setInterval(fetchOrionData, UPDATE_INTERVAL);
       }
 
-      // Initialize on load
       window.onload = init;
     </script>
   </body>

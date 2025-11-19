@@ -1,128 +1,142 @@
 import os
+import sys
+import time
 import random
 import numpy as np
-import tensorflow as tf
-from tensorflow import keras
 import requests
 import json
 from flask import Flask, request, jsonify
+from flask_cors import CORS # Cần cài: pip install flask-cors
 from threading import Thread
 
-# --- Cấu hình ---
-ORION_HOST = "http://localhost:1026/ngsi-ld/v1"
-MODEL_PATH = "dqn_model.h5" # Tên file model đã huấn luyện
-ACTIONS = [0, 1] # 0 = Giữ pha, 1 = Đổi pha
-STATE_SIZE = 4 # 2 queues, 1 phase, 1 pm25
-TLS_ID = "4066470692" # Junction ID từ Nga4ThuDuc
-NUM_PHASES = 2 # Nga4ThuDuc có 2 pha
+# --- CẤU HÌNH ---
+# 1. Orion Broker (Database)
+ORION_URL = "http://localhost:1026/ngsi-ld/v1"
 
-# --- Thiết lập Flask Server để nhận dữ liệu ---
+# 2. Địa chỉ máy bạn (Để Orion gọi ngược lại báo tin)
+# Nếu chạy Docker Orion, phải dùng "http://host.docker.internal:8080"
+# Nếu chạy Linux thuần hoặc Native, dùng "http://localhost:8080"
+MY_NOTIFY_HOST = "http://host.docker.internal:8080" 
+
+MODEL_PATH = "dqn_model.h5"
+TLS_ID = "4066470692"
+NUM_PHASES = 2
+
 app = Flask(__name__)
+CORS(app) # <--- QUAN TRỌNG: Cho phép Dashboard kết nối
 
-# --- Tải Model & Logic AI ---
-def load_dqn_model(path, state_size, action_size):
-    """Tải mô hình Keras đã huấn luyện."""
-    # (Bạn có thể dùng lại hàm build_model từ File 3 và load_weights)
-    if not os.path.exists(path):
-        print(f"[AI Agent] Lỗi: Không tìm thấy model '{path}'. Hãy chạy train_dqn.py trước.")
-        sys.exit(1)
-    print(f"[AI Agent] Tải model từ {path}...")
-    # Load model without compilation to avoid metric deserialization error
-    return keras.models.load_model(path, compile=False)
+# --- AI LOGIC ---
+dqn_model = None
 
-def to_array(state_tuple):
-    """Chuyển state tuple sang numpy array cho model."""
-    return np.array(state_tuple, dtype=np.float32).reshape((1, -1))
-
-def get_action_from_policy(model, state_tuple):
-    """Chạy model để lấy quyết định (inference)."""
-    # Ở chế độ demo, chúng ta luôn "tham lam" (không khám phá)
-    state_array = to_array(state_tuple)
-    q_values = model.predict(state_array, verbose=0)[0]
-    return int(np.argmax(q_values))
-
-# --- Hàm NGSI-LD ---
-def send_command_to_orion(tls_id, next_phase):
-    """Gửi lệnh đổi pha đèn lên Orion Broker."""
-    headers = {'Content-Type': 'application/json'}
-    url = f"{ORION_HOST}/entities/urn:ngsi-ld:TrafficLight:{tls_id}/attrs"
-    
-    # Thuộc tính `forcePhase` là thuộc tính mà IoT Agent đang lắng nghe
-    command_data = {
-        "forcePhase": {
-            "type": "Property",
-            "value": next_phase
-        }
-    }
-    
+def load_model_safe():
+    global dqn_model
     try:
-        response = requests.patch(url, data=json.dumps(command_data), headers=headers)
-        if response.status_code == 204:
-            print(f"[AI Agent] Gửi lệnh thành công: Đổi pha {next_phase}")
+        import tensorflow as tf
+        from tensorflow import keras
+        if os.path.exists(MODEL_PATH):
+            print(f"[AI] Đang tải model {MODEL_PATH}...")
+            dqn_model = keras.models.load_model(MODEL_PATH, compile=False)
         else:
-            print(f"[AI Agent] Lỗi khi gửi lệnh: {response.status_code}")
-    except requests.exceptions.ConnectionError as e:
-        print(f"[AI Agent] Lỗi kết nối Orion: {e}")
-
-def parse_state_from_orion(data):
-    """Hàm này cực kỳ quan trọng: Dịch JSON-LD thành state tuple."""
-    try:
-        # Giả sử Orion gửi 2 thực thể trong 1 thông báo
-        traffic_data = data['data'][0]
-        env_data = data['data'][1]
-        
-        # Sắp xếp lại
-        if traffic_data['type'] != 'TrafficFlowObserved':
-            traffic_data, env_data = env_data, traffic_data
-            
-        queues = traffic_data['queues']['value']  # List of 2 queue values
-        phase = traffic_data['phase']['value']
-        pm25 = env_data['pm25']['value']
-        
-        # Trả về state 4-tuple (2 queues, 1 phase, 1 pm25)
-        return (*queues, phase, pm25)
-        
+            print("[AI] Không thấy file model. Chạy chế độ Random (Demo).")
     except Exception as e:
-        print(f"[AI Agent] Lỗi khi parse state: {e} | Data: {data}")
-        return None
+        print(f"[AI] Lỗi thư viện AI: {e}. Chạy chế độ Random.")
 
-# --- API Route chính: Nơi AI "lắng nghe" ---
+def get_action(state):
+    if dqn_model:
+        state_array = np.array(state, dtype=np.float32).reshape((1, -1))
+        return int(np.argmax(dqn_model.predict(state_array, verbose=0)[0]))
+    return random.choice([0, 1]) # Random nếu chưa có model
+
+# --- PROXY ROUTE (CẦU NỐI CHO DASHBOARD) ---
+# Dashboard sẽ gọi vào đây thay vì gọi trực tiếp Orion
+@app.route('/proxy/orion/<path:subpath>', methods=['GET'])
+def proxy_get(subpath):
+    try:
+        url = f"{ORION_URL}/{subpath}"
+        resp = requests.get(url, headers={"Accept": "application/json"})
+        return jsonify(resp.json()), resp.status_code
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+@app.route('/proxy/orion/<path:subpath>', methods=['PATCH'])
+def proxy_patch(subpath):
+    try:
+        url = f"{ORION_URL}/{subpath}"
+        resp = requests.patch(url, json=request.json, headers={"Content-Type": "application/json"})
+        return "", resp.status_code
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+# --- NOTIFY ROUTE (NHẬN DỮ LIỆU TỪ ORION) ---
 @app.route('/notify', methods=['POST'])
 def receive_notification():
-    """Lắng nghe trạng thái mới từ Orion (qua Subscription)."""
-    global dqn_model # Sử dụng model đã tải
-    
     data = request.json
+    # print("[AI] Nhận dữ liệu từ Orion...") # Uncomment để debug
     
-    # 1. Dịch JSON-LD thành State
-    current_state = parse_state_from_orion(data)
-    if current_state is None:
-        return jsonify({"status": "error", "message": "Invalid state data"}), 400
-    
-    print(f"[AI Agent] Nhận State: {current_state}")
-    
-    # 2. Ra quyết định (Inference)
-    action = get_action_from_policy(dqn_model, current_state)
-    
-    # 3. Gửi lệnh (nếu cần)
-    if action == 1: # 1 = Đổi pha
-        current_phase = current_state[2]  # Phase is at index 2 (after 2 queues)
-        next_phase = (current_phase + 1) % NUM_PHASES
-        send_command_to_orion(TLS_ID, next_phase)
-    else: # 0 = Giữ pha
-        print(f"[AI Agent] Quyết định: Giữ pha")
+    try:
+        # Logic parse dữ liệu từ Orion (Normalized format)
+        entities = data.get('data', [])
+        traffic_ent = next((e for e in entities if e['type'] == 'TrafficFlowObserved'), None)
+        air_ent = next((e for e in entities if e['type'] == 'AirQualityObserved'), None)
 
-    return jsonify({"status": "ok"}), 200
+        if traffic_ent and air_ent:
+            queues = traffic_ent['queues']['value']
+            phase = traffic_ent['phase']['value']
+            pm25 = air_ent['pm25']['value']
+            
+            state = (*queues, phase, pm25)
+            # print(f"[AI] State: {state}")
 
-# --- Hàm Main ---
+            # RA QUYẾT ĐỊNH
+            action = get_action(state)
+            
+            if action == 1: # Đổi pha
+                next_phase = (phase + 1) % NUM_PHASES
+                send_command(next_phase)
+                
+    except Exception as e:
+        print(f"[AI] Lỗi xử lý: {e}")
+        
+    return "OK", 200
+
+def send_command(next_phase):
+    url = f"{ORION_URL}/entities/urn:ngsi-ld:TrafficLight:{TLS_ID}/attrs"
+    data = {"forcePhase": {"type": "Property", "value": next_phase}}
+    try:
+        requests.patch(url, json=data, headers={'Content-Type': 'application/json'})
+        print(f"[AI] Đã gửi lệnh đổi sang Pha {next_phase}")
+    except Exception as e:
+        print(f"[AI] Lỗi gửi lệnh: {e}")
+
+# --- TỰ ĐỘNG ĐĂNG KÝ (SUBSCRIPTION) ---
+def setup_subscription():
+    time.sleep(5) # Đợi Orion khởi động xong
+    print("[Init] Đang tạo Subscription...")
+    
+    sub_url = f"{ORION_URL}/subscriptions/"
+    body = {
+        "description": "AI Agent Subscription",
+        "type": "Subscription",
+        "entities": [
+            {"id": f"urn:ngsi-ld:TrafficFlowObserved:{TLS_ID}", "type": "TrafficFlowObserved"},
+            {"id": f"urn:ngsi-ld:AirQualityObserved:{TLS_ID}", "type": "AirQualityObserved"}
+        ],
+        "notification": {
+            "endpoint": {"uri": f"{MY_NOTIFY_HOST}/notify", "accept": "application/json"}
+        }
+    }
+    try:
+        # Xóa sub cũ (nếu cần) - ở đây ta cứ tạo mới, Orion sẽ handle
+        requests.post(sub_url, json=body, headers={"Content-Type": "application/ld+json"})
+        print("[Init] Đăng ký thành công! Orion sẽ gửi dữ liệu về /notify")
+    except Exception as e:
+        print(f"[Init] Không thể kết nối Orion: {e}")
+
 if __name__ == "__main__":
-    # Tải model AI đã huấn luyện
-    dqn_model = load_dqn_model(MODEL_PATH, STATE_SIZE, ACTIONS[1]+1)
+    load_model_safe()
     
-    # (Bạn cần code để tạo Subscriptions cho Orion tại đây)
-    # Ví dụ: Sub 1: Báo cho AI (port 8080) khi `AirQualityObserved` thay đổi
-    # Ví dụ: Sub 2: Báo cho IoT Agent (port 4041) khi `TrafficLight` có lệnh
+    # Chạy luồng đăng ký riêng
+    Thread(target=setup_subscription).start()
     
-    # Khởi động server
-    print("[AI Agent] Khởi động server lắng nghe trạng thái tại http://localhost:8080/notify...")
+    print("🚀 AI Agent & Proxy đang chạy tại cổng 8080...")
     app.run(host='0.0.0.0', port=8080)
