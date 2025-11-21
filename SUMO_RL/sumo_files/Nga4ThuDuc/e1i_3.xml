@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- generated on 2025-11-19T20:20:57.669256+07:00 by Eclipse SUMO sumo 1.25.0
+<sumoConfiguration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/sumoConfiguration.xsd">
+
+    <input>
+        <net-file value="sumo_files/Nga4ThuDuc/Nga4ThuDuc.net.xml"/>
+        <route-files value="sumo_files/Nga4ThuDuc/routes.rou.xml"/>
+        <additional-files value="sumo_files/Nga4ThuDuc/Nga4ThuDuc.add.xml"/>
+    </input>
+
+    <time>
+        <step-length value="1"/>
+    </time>
+
+    <traci_server>
+        <remote-port value="59877"/>
+    </traci_server>
+
+</sumoConfiguration>
+-->
+
+<instantE1 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/instant_e1_file.xsd">
+    <instantOut id="e1i_3" time="54.73" state="enter" vehID="52" speed="5.23" length="5.00" type="car"/>
+    <instantOut id="e1i_3" time="55.00" state="stay" vehID="52" speed="5.23" length="5.00" type="car"/>
+    <instantOut id="e1i_3" time="55.46" state="leave" vehID="52" speed="7.78" length="5.00" type="car" occupancy="0.73"/>
+    <instantOut id="e1i_3" time="98.25" state="enter" vehID="85" speed="9.15" length="5.00" type="car" gap="42.79"/>
+    <instantOut id="e1i_3" time="98.79" state="leave" vehID="85" speed="9.15" length="5.00" type="car" occupancy="0.55"/>
+    <instantOut id="e1i_3" time="101.71" state="enter" vehID="75" speed="7.88" length="5.00" type="car" gap="2.91"/>
+    <instantOut id="e1i_3" time="102.00" state="stay" vehID="75" speed="7.88" length="5.00" type="car"/>
+    <instantOut id="e1i_3" time="102.65" state="leave" vehID="75" speed="4.11" length="5.00" type="car" occupancy="0.95"/>
+</instantE1>

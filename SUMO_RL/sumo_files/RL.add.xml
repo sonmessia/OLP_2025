@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<additional xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/additional_file.xsd">
+    <!-- Detectors for RL Training -->
+    
+    <!-- Lane Area Detectors (E2) - For Queue Detection -->
+    <laneAreaDetector id="det_1" lane="683902013#5_0" pos="0" length="50" period="300.00" file="NUL"/>
+    <laneAreaDetector id="det_2" lane="217609239#1_0" pos="0" length="50" period="300.00" file="NUL"/>
+    <laneAreaDetector id="det_3" lane="217609239#1_1" pos="0" length="50" period="300.00" file="NUL"/>
+    <laneAreaDetector id="det_4" lane="33285483#6_0" pos="0" length="50" period="300.00" file="NUL"/>
+    <laneAreaDetector id="det_5" lane="211081657#2_0" pos="0" length="50" period="300.00" file="NUL"/>
+    <laneAreaDetector id="det_6" lane="211081657#2_1" pos="0" length="50" period="300.00" file="NUL"/>
+    
+</additional>

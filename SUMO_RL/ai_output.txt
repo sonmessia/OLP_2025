@@ -1,0 +1,28 @@
+2025-11-18 14:55:52.412562: I external/local_xla/xla/tsl/cuda/cudart_stub.cc:31] Could not find cuda drivers on your machine, GPU will not be used.
+2025-11-18 14:55:52.413166: I tensorflow/core/util/port.cc:153] oneDNN custom operations are on. You may see slightly different numerical results due to floating-point round-off errors from different computation orders. To turn them off, set the environment variable `TF_ENABLE_ONEDNN_OPTS=0`.
+2025-11-18 14:55:52.458689: I tensorflow/core/platform/cpu_feature_guard.cc:210] This TensorFlow binary is optimized to use available CPU instructions in performance-critical operations.
+To enable the following instructions: AVX2 AVX_VNNI FMA, in other operations, rebuild TensorFlow with the appropriate compiler flags.
+2025-11-18 14:55:53.421882: I tensorflow/core/util/port.cc:153] oneDNN custom operations are on. You may see slightly different numerical results due to floating-point round-off errors from different computation orders. To turn them off, set the environment variable `TF_ENABLE_ONEDNN_OPTS=0`.
+2025-11-18 14:55:53.422122: I external/local_xla/xla/tsl/cuda/cudart_stub.cc:31] Could not find cuda drivers on your machine, GPU will not be used.
+WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+E0000 00:00:1763452553.905884 1450133 cuda_executor.cc:1309] INTERNAL: CUDA Runtime error: Failed call to cudaGetRuntimeVersion: Error loading CUDA libraries. GPU will not be used.: Error loading CUDA libraries. GPU will not be used.
+W0000 00:00:1763452553.912380 1450133 gpu_device.cc:2342] Cannot dlopen some GPU libraries. Please make sure the missing libraries mentioned above are installed properly if you would like to use GPU. Follow the guide at https://www.tensorflow.org/install/gpu for how to download and setup the required libraries for your platform.
+Skipping registering GPU devices...
+[AI Agent] Tải model từ dqn_model.h5...
+[AI Agent] Khởi động server lắng nghe trạng thái tại http://localhost:8080/notify...
+ * Serving Flask app 'ai_greenwave_agent'
+ * Debug mode: off
+[31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:8080
+ * Running on http://10.15.86.68:8080
+[33mPress CTRL+C to quit[0m
+127.0.0.1 - - [18/Nov/2025 14:56:08] "[33mGET / HTTP/1.1[0m" 404 -
+127.0.0.1 - - [18/Nov/2025 14:56:09] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+127.0.0.1 - - [18/Nov/2025 14:56:18] "[33mGET / HTTP/1.1[0m" 404 -
+127.0.0.1 - - [18/Nov/2025 14:56:19] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+127.0.0.1 - - [18/Nov/2025 14:56:21] "[33mGET /sw.js HTTP/1.1[0m" 404 -
+127.0.0.1 - - [18/Nov/2025 14:56:31] "[33mGET / HTTP/1.1[0m" 404 -
+127.0.0.1 - - [18/Nov/2025 14:56:55] "[31m[1mGET /notify HTTP/1.1[0m" 405 -
+127.0.0.1 - - [18/Nov/2025 14:56:57] "[33mGET /sw.js HTTP/1.1[0m" 404 -
+127.0.0.1 - - [18/Nov/2025 14:57:26] "[33mGET /sw.js HTTP/1.1[0m" 404 -
