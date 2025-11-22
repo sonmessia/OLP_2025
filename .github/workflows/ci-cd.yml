@@ -140,7 +140,7 @@ jobs:
   #     - name: Build and push Docker image
   #       uses: docker/build-push-action@v5
   #       with:
-  #         # SỬA: ./backend -> src/backend (Cập nhật context cho đúng cấu trúc mới)
+  #         # FIX: ./backend -> src/backend (Update context for new structure)
   #         context: src/backend
   #         push: true
   #         tags: ${{ steps.meta.outputs.tags }}
