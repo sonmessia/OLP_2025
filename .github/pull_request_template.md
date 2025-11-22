@@ -4,26 +4,26 @@ Proposed changes
 
 Types of changes
 
-[ ] 🐛 Bug fix (non-breaking change which fixes an issue)
+- [ ] 🐛 Bug fix (non-breaking change which fixes an issue)
 
-[ ] ✨ Feature (non-breaking change which adds functionality)
+- [ ] ✨ Feature (non-breaking change which adds functionality)
 
-[ ] 💥 Breaking change (fix or feature that would cause existing functionality to not work as expected)
+- [ ] 💥 Breaking change (fix or feature that would cause existing functionality to not work as expected)
 
-[ ] 📝 Docs (documentation only changes)
+- [ ] 📝 Docs (documentation only changes)
 
-[ ] ♻️ Refactor (code improvement without changing functionality)
+- [ ] ♻️ Refactor (code improvement without changing functionality)
 
 Checklist
 
-[ ] Docker build successful (src/backend)
+- [ ] Docker build successful (src/backend)
 
-[ ] All tests passing (pytest)
+- [ ] All tests passing (pytest)
 
-[ ] Code follows project standards (Black, Ruff, MyPy)
+- [ ] Code follows project standards (Black, Ruff, MyPy)
 
-[ ] Service boundaries maintained
+- [ ] Service boundaries maintained
 
-[ ] .env.example updated (if environment variables changed)
+- [ ] .env.example updated (if environment variables changed)
 
-[ ] No debug print statements left
+- [ ] No debug print statements left
