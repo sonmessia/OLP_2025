@@ -9,6 +9,7 @@ from app.api.routers.context_source_router import (
     router as context_source_router,
 )
 from app.api.routers.device_router import router as device_router
+from app.api.routers.road_segment_router import router as road_segment_router
 from app.api.routers.subscription_router import router as subscription_router
 from app.api.routers.traffic_environment_impact_router import (
     router as traffic_environment_impact_router,
@@ -16,7 +17,7 @@ from app.api.routers.traffic_environment_impact_router import (
 from app.api.routers.water_quality_router import router as water_quality_router
 
 app = FastAPI(
-    title="OLP 2025 Core Backend Service",
+    title="GreenWave Core Backend Service",
     description="Receives NGSI-LD notifications and handles business logic.",
     version="1.0.0",
 )
@@ -29,6 +30,7 @@ app.include_router(device_router)
 app.include_router(building_router)
 app.include_router(subscription_router)
 app.include_router(context_source_router)
+app.include_router(road_segment_router)
 
 
 @app.get("/")
