@@ -26,23 +26,22 @@ jobs:
           python-version: ${{ env.PYTHON_VERSION }}
 
       - name: Install dependencies (Black, MyPy, Ruff)
-        working-directory: .src/backend
+        working-directory: src/backend
         run: |
           python -m pip install --upgrade pip
           pip install black mypy ruff
-
           pip install -r requirements-dev.txt
 
       - name: Run Ruff Linting and Import Sorting check
-        working-directory: .src/backend
+        working-directory: src/backend
         run: ruff check .
 
       - name: Run Black formatting check
-        working-directory: .src/backend
+        working-directory: src/backend
         run: black --check .
 
       - name: Run MyPy type checking
-        working-directory: .src/backend
+        working-directory: src/backend
         run: mypy .
 
   test:
@@ -84,13 +83,13 @@ jobs:
           python-version: ${{ env.PYTHON_VERSION }}
 
       - name: Install dependencies
-        working-directory: .src/backend
+        working-directory: src/backend
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements-dev.txt
 
       - name: Run unit tests
-        working-directory: .src/backend
+        working-directory: src/backend
         env:
           POSTGRES_HOST: localhost
           POSTGRES_PORT: 5432
@@ -106,7 +105,7 @@ jobs:
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v3
         with:
-          file: .src/backend/coverage.xml
+          file: src/backend/coverage.xml
           flags: unittests
           name: codecov-umbrella
 
@@ -141,7 +140,8 @@ jobs:
   #     - name: Build and push Docker image
   #       uses: docker/build-push-action@v5
   #       with:
-  #         context: ./backend
+  #         # SỬA: ./backend -> src/backend (Cập nhật context cho đúng cấu trúc mới)
+  #         context: src/backend
   #         push: true
   #         tags: ${{ steps.meta.outputs.tags }}
   #         labels: ${{ steps.meta.outputs.labels }}
