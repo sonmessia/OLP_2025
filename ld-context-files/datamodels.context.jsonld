@@ -15,6 +15,8 @@
         },
         "CarbonFootprint": "fiware:CarbonFootprint",
         "Device": "fiware:Device",
+        "RoadSegment": "fiware:RoadSegment",
+        "TrafficEnvironmentImpact": "fiware:TrafficEnvironmentImpact",
         "address": "fiware:address",
         "addressCountry": {
             "@id": "fiware:addressCountry",
@@ -28,6 +30,10 @@
             "@id": "fiware:addressRegion",
             "@type": "xsd:string"
         },
+        "agency_name": {
+            "@id": "fiware:agency_name",
+            "@type": "xsd:string"
+        },
         "airQualityIndex": {
             "@id": "fiware:airQualityIndex",
             "@type": "xsd:number"
@@ -36,9 +42,17 @@
             "@id": "fiware:airQualityLevel",
             "@type": "xsd:string"
         },
+        "allowedVehicleType": {
+            "@id": "fiware:allowedVehicleType",
+            "@type": "xsd:array"
+        },
         "alternateName": {
             "@id": "fiware:alternateName",
             "@type": "xsd:string"
+        },
+        "annotations": {
+            "@id": "fiware:annotations",
+            "@type": "xsd:array"
         },
         "areaServed": {
             "@id": "fiware:areaServed",
@@ -52,8 +66,20 @@
             "@id": "fiware:batteryLevel",
             "@type": "xsd:undefined"
         },
+        "bridgeCount": {
+            "@id": "fiware:bridgeCount",
+            "@type": "xsd:number"
+        },
         "c6h6": {
             "@id": "fiware:c6h6",
+            "@type": "xsd:number"
+        },
+        "carriagewayLength": {
+            "@id": "fiware:carriagewayLength",
+            "@type": "xsd:number"
+        },
+        "carriagewayWidth": {
+            "@id": "fiware:carriagewayWidth",
             "@type": "xsd:number"
         },
         "category": {
@@ -67,6 +93,14 @@
         "charge": {
             "@id": "fiware:charge",
             "@type": "xsd:number"
+        },
+        "cityId": {
+            "@id": "fiware:cityId",
+            "@type": "xsd:string"
+        },
+        "cityName": {
+            "@id": "fiware:cityName",
+            "@type": "xsd:string"
         },
         "co": {
             "@id": "fiware:co",
@@ -84,6 +118,10 @@
             "@id": "fiware:collapseRisk",
             "@type": "xsd:number"
         },
+        "color": {
+            "@id": "fiware:color",
+            "@type": "xsd:string"
+        },
         "configuration": {
             "@id": "fiware:configuration",
             "@type": "xsd:array"
@@ -99,6 +137,38 @@
         "controlledProperty": {
             "@id": "fiware:controlledProperty",
             "@type": "xsd:array"
+        },
+        "culvertCount": {
+            "@id": "fiware:culvertCount",
+            "@type": "xsd:number"
+        },
+        "cyclePathLeftHeight": {
+            "@id": "fiware:cyclePathLeftHeight",
+            "@type": "xsd:number"
+        },
+        "cyclePathLeftWidth": {
+            "@id": "fiware:cyclePathLeftWidth",
+            "@type": "xsd:number"
+        },
+        "cyclePathMaterial": {
+            "@id": "fiware:cyclePathMaterial",
+            "@type": "xsd:string"
+        },
+        "cyclePathPlacement": {
+            "@id": "fiware:cyclePathPlacement",
+            "@type": "xsd:string"
+        },
+        "cyclePathRightHeight": {
+            "@id": "fiware:cyclePathRightHeight",
+            "@type": "xsd:number"
+        },
+        "cyclePathRightWidth": {
+            "@id": "fiware:cyclePathRightWidth",
+            "@type": "xsd:number"
+        },
+        "dataDescriptor": {
+            "@id": "fiware:dataDescriptor",
+            "@type": "@id"
         },
         "dataProvider": {
             "@id": "fiware:dataProvider",
@@ -134,6 +204,14 @@
         },
         "dateObserved": {
             "@id": "fiware:dateObserved",
+            "@type": "xs:dateTime"
+        },
+        "dateObservedFrom": {
+            "@id": "fiware:dateObservedFrom",
+            "@type": "xs:dateTime"
+        },
+        "dateObservedTo": {
+            "@id": "fiware:dateObservedTo",
             "@type": "xs:dateTime"
         },
         "depth": {
@@ -176,6 +254,14 @@
             "@id": "fiware:emissionSource",
             "@type": "xsd:string"
         },
+        "endKilometer": {
+            "@id": "fiware:endKilometer",
+            "@type": "xsd:number"
+        },
+        "endPoint": {
+            "@id": "fiware:endPoint",
+            "@type": "xsd:undefined"
+        },
         "firmwareVersion": {
             "@id": "fiware:firmwareVersion",
             "@type": "xsd:string"
@@ -192,9 +278,30 @@
             "@id": "fiware:hardwareVersion",
             "@type": "xsd:string"
         },
+        "image": {
+            "@id": "fiware:image",
+            "@type": "xs:anyURI"
+        },
         "ipAddress": {
             "@id": "fiware:ipAddress",
             "@type": "xsd:array"
+        },
+        "laneDirection": {
+            "@id": "fiware:laneDirection",
+            "@type": "xsd:string"
+        },
+        "laneId": {
+            "@id": "fiware:laneId",
+            "@type": "xsd:number"
+        },
+        "laneInfo": "fiware:laneInfo",
+        "laneUsage": {
+            "@id": "fiware:laneUsage",
+            "@type": "xsd:array"
+        },
+        "length": {
+            "@id": "fiware:length",
+            "@type": "xsd:number"
         },
         "location": {
             "@id": "fiware:location",
@@ -208,14 +315,47 @@
             "@id": "fiware:mapUrl",
             "@type": "@id"
         },
+        "maximumAllowedHeight": {
+            "@id": "fiware:maximumAllowedHeight",
+            "@type": "xsd:number"
+        },
+        "maximumAllowedSpeed": {
+            "@id": "fiware:maximumAllowedSpeed",
+            "@type": "xsd:number"
+        },
+        "maximumAllowedWeight": {
+            "@id": "fiware:maximumAllowedWeight",
+            "@type": "xsd:number"
+        },
+        "maximumAllowedWidth": {
+            "@id": "fiware:maximumAllowedWidth",
+            "@type": "xsd:number"
+        },
         "mcc": {
             "@id": "fiware:mcc",
             "@type": "xsd:string"
+        },
+        "medianHeight": {
+            "@id": "fiware:medianHeight",
+            "@type": "xsd:number"
+        },
+        "medianLength": {
+            "@id": "fiware:medianLength",
+            "@type": "xsd:number"
+        },
+        "medianWidth": {
+            "@id": "fiware:medianWidth",
+            "@type": "xsd:number"
+        },
+        "minimumAllowedSpeed": {
+            "@id": "fiware:minimumAllowedSpeed",
+            "@type": "xsd:number"
         },
         "mnc": {
             "@id": "fiware:mnc",
             "@type": "xsd:string"
         },
+        "municipalityInfo": "fiware:municipalityInfo",
         "name": {
             "@id": "fiware:name",
             "@type": "xsd:string"
@@ -258,6 +398,30 @@
         },
         "pb": {
             "@id": "fiware:pb",
+            "@type": "xsd:number"
+        },
+        "pedestrianPathLeftHeight": {
+            "@id": "fiware:pedestrianPathLeftHeight",
+            "@type": "xsd:number"
+        },
+        "pedestrianPathLeftWidth": {
+            "@id": "fiware:pedestrianPathLeftWidth",
+            "@type": "xsd:number"
+        },
+        "pedestrianPathMaterial": {
+            "@id": "fiware:pedestrianPathMaterial",
+            "@type": "xsd:string"
+        },
+        "pedestrianPathPlacement": {
+            "@id": "fiware:pedestrianPathPlacement",
+            "@type": "xsd:string"
+        },
+        "pedestrianPathRightHeight": {
+            "@id": "fiware:pedestrianPathRightHeight",
+            "@type": "xsd:number"
+        },
+        "pedestrianPathRightWidth": {
+            "@id": "fiware:pedestrianPathRightWidth",
             "@type": "xsd:number"
         },
         "peopleCapacity": {
@@ -320,6 +484,14 @@
             "@id": "fiware:refPointOfInterest",
             "@type": "@id"
         },
+        "refRoad": {
+            "@id": "fiware:refRoad",
+            "@type": "@id"
+        },
+        "refRoadSegment": {
+            "@id": "fiware:refRoadSegment",
+            "@type": "@id"
+        },
         "refWeatherObserved": {
             "@id": "fiware:refWeatherObserved",
             "@type": "@id"
@@ -339,6 +511,34 @@
         "reliability": {
             "@id": "fiware:reliability",
             "@type": "xsd:number"
+        },
+        "rightOfWayWidth": {
+            "@id": "fiware:rightOfWayWidth",
+            "@type": "xsd:number"
+        },
+        "roadClass": {
+            "@id": "fiware:roadClass",
+            "@type": "xsd:string"
+        },
+        "roadDirection": {
+            "@id": "fiware:roadDirection",
+            "@type": "xsd:string"
+        },
+        "roadId": {
+            "@id": "fiware:roadId",
+            "@type": "xsd:string"
+        },
+        "roadMaterial": {
+            "@id": "fiware:roadMaterial",
+            "@type": "xsd:string"
+        },
+        "roadName": {
+            "@id": "fiware:roadName",
+            "@type": "xsd:string"
+        },
+        "roadWork": {
+            "@id": "fiware:roadWork",
+            "@type": "xsd:string"
         },
         "rssi": {
             "@id": "fiware:rssi",
@@ -368,6 +568,26 @@
             "@id": "fiware:source",
             "@type": "xsd:string"
         },
+        "startKilometer": {
+            "@id": "fiware:startKilometer",
+            "@type": "xsd:number"
+        },
+        "startPoint": {
+            "@id": "fiware:startPoint",
+            "@type": "xsd:undefined"
+        },
+        "stateName": {
+            "@id": "fiware:stateName",
+            "@type": "xsd:string"
+        },
+        "status": {
+            "@id": "fiware:status",
+            "@type": "xsd:string"
+        },
+        "statusDescription": {
+            "@id": "fiware:statusDescription",
+            "@type": "xsd:string"
+        },
         "streetAddress": {
             "@id": "fiware:streetAddress",
             "@type": "xsd:string"
@@ -388,9 +608,29 @@
             "@id": "fiware:temperature",
             "@type": "xsd:number"
         },
+        "totalCyclePathWidth": {
+            "@id": "fiware:totalCyclePathWidth",
+            "@type": "xsd:number"
+        },
+        "totalLaneNumber": {
+            "@id": "fiware:totalLaneNumber",
+            "@type": "xsd:number"
+        },
+        "totalPedestrianPathLength": {
+            "@id": "fiware:totalPedestrianPathLength",
+            "@type": "xsd:number"
+        },
+        "totalPedestrianPathWidth": {
+            "@id": "fiware:totalPedestrianPathWidth",
+            "@type": "xsd:number"
+        },
         "tpc": {
             "@id": "fiware:tpc",
             "@type": "xsd:number"
+        },
+        "traffic": {
+            "@id": "fiware:traffic",
+            "@type": "xsd:array"
         },
         "tsp": {
             "@id": "fiware:tsp",
@@ -398,6 +638,10 @@
         },
         "typeofLocation": {
             "@id": "fiware:typeofLocation",
+            "@type": "xsd:string"
+        },
+        "ulbName": {
+            "@id": "fiware:ulbName",
             "@type": "xsd:string"
         },
         "value": {
@@ -408,6 +652,22 @@
             "@id": "fiware:volatileOrganicCompoundsTotal",
             "@type": "xsd:number"
         },
+        "wardId": {
+            "@id": "fiware:wardId",
+            "@type": "xsd:string"
+        },
+        "wardName": {
+            "@id": "fiware:wardName",
+            "@type": "xsd:string"
+        },
+        "wardNum": {
+            "@id": "fiware:wardNum",
+            "@type": "xsd:number"
+        },
+        "width": {
+            "@id": "fiware:width",
+            "@type": "xsd:number"
+        },
         "windDirection": {
             "@id": "fiware:windDirection",
             "@type": "xsd:number"
@@ -415,6 +675,14 @@
         "windSpeed": {
             "@id": "fiware:windSpeed",
             "@type": "xsd:number"
+        },
+        "zoneId": {
+            "@id": "fiware:zoneId",
+            "@type": "xsd:string"
+        },
+        "zoneName": {
+            "@id": "fiware:zoneName",
+            "@type": "xsd:string"
         }
     },
     "@graph": [
@@ -431,25 +699,6 @@
                 {
                     "@language": "en",
                     "@value": "Device"
-                }
-            ],
-            "rdfs:subClassOf": {
-                "@id": "schema:Thing"
-            }
-        },
-        {
-            "@id": "fiware:AirQualityObserved",
-            "@type": "rdfs:Class",
-            "rdfs:comment": [
-                {
-                    "@language": "en",
-                    "@value": ""
-                }
-            ],
-            "rdfs:label": [
-                {
-                    "@language": "en",
-                    "@value": "AirQualityObserved"
                 }
             ],
             "rdfs:subClassOf": {
@@ -476,6 +725,25 @@
             }
         },
         {
+            "@id": "fiware:AirQualityObserved",
+            "@type": "rdfs:Class",
+            "rdfs:comment": [
+                {
+                    "@language": "en",
+                    "@value": ""
+                }
+            ],
+            "rdfs:label": [
+                {
+                    "@language": "en",
+                    "@value": "AirQualityObserved"
+                }
+            ],
+            "rdfs:subClassOf": {
+                "@id": "schema:Thing"
+            }
+        },
+        {
             "@id": "fiware:CarbonFootprint",
             "@type": "rdfs:Class",
             "rdfs:comment": [
@@ -488,6 +756,44 @@
                 {
                     "@language": "en",
                     "@value": "CarbonFootprint"
+                }
+            ],
+            "rdfs:subClassOf": {
+                "@id": "schema:Thing"
+            }
+        },
+        {
+            "@id": "fiware:RoadSegment",
+            "@type": "rdfs:Class",
+            "rdfs:comment": [
+                {
+                    "@language": "en",
+                    "@value": "This entity contains a harmonised geographic and contextual description of a road segment. A collection of road segments are used to describe a Road."
+                }
+            ],
+            "rdfs:label": [
+                {
+                    "@language": "en",
+                    "@value": "RoadSegment"
+                }
+            ],
+            "rdfs:subClassOf": {
+                "@id": "schema:Thing"
+            }
+        },
+        {
+            "@id": "fiware:TrafficEnvironmentImpact",
+            "@type": "rdfs:Class",
+            "rdfs:comment": [
+                {
+                    "@language": "en",
+                    "@value": ""
+                }
+            ],
+            "rdfs:label": [
+                {
+                    "@language": "en",
+                    "@value": "TrafficEnvironmentImpact"
                 }
             ],
             "rdfs:subClassOf": {
@@ -1563,6 +1869,1030 @@
                 {
                     "@language": "en",
                     "@value": "source"
+                }
+            ]
+        },
+        {
+            "@id": "fiware:address",
+            "@type": "ngsi-ld:Property",
+            "rdfs:comment": [
+                {
+                    "@language": "en",
+                    "@value": "The mailing address"
+                }
+            ],
+            "rdfs:label": [
+                {
+                    "@language": "en",
+                    "@value": "address"
+                }
+            ]
+        },
+        {
+            "@id": "fiware:agency_name",
+            "@type": "ngsi-ld:Property",
+            "rdfs:comment": [
+                {
+                    "@language": "en",
+                    "@value": "The agency_name field contains the full name of the agency or organisation responsible for maintenance of the entity under consideration. SameAs: 'agency_name' field from GTFS Static Field Definition - agency.txt (https://developers.google.com/transit/gtfs/reference#agencytxt)"
+                }
+            ],
+            "rdfs:label": [
+                {
+                    "@language": "en",
+                    "@value": "agency_name"
+                }
+            ]
+        },
+        {
+            "@id": "fiware:allowedVehicleType",
+            "@type": "ngsi-ld:Property",
+            "rdfs:comment": [
+                {
+                    "@language": "en",
+                    "@value": "Vehicle type(s) allowed to transit through this road segment. Enum:'agriculturalVehicle, bicycle, bus, car, caravan, carWithCaravan, carWithTrailer, constructionOrMaintenanceVehicle, lorry, moped, motorcycle, motorcycleWithSideCar, motorscooter, tanker, trailer, van, anyVehicle'. Allowed values: The following values defined by _VehicleTypeEnum_, [DATEX 2 version 2.3](http://d2docs.ndwcloud.nu/):"
+                }
+            ],
+            "rdfs:label": [
+                {
+                    "@language": "en",
+                    "@value": "allowedVehicleType"
+                }
+            ]
+        },
+        {
+            "@id": "fiware:alternateName",
+            "@type": "ngsi-ld:Property",
+            "rdfs:comment": [
+                {
+                    "@language": "en",
+                    "@value": "An alternative name for this item"
+                }
+            ],
+            "rdfs:label": [
+                {
+                    "@language": "en",
+                    "@value": "alternateName"
+                }
+            ]
+        },
+        {
+            "@id": "fiware:annotations",
+            "@type": "ngsi-ld:Property",
+            "rdfs:comment": [
+                {
+                    "@language": "en",
+                    "@value": "Annotations about the item"
+                }
+            ],
+            "rdfs:label": [
+                {
+                    "@language": "en",
+                    "@value": "annotations"
+                }
+            ]
+        },
+        {
+            "@id": "fiware:areaServed",
+            "@type": "ngsi-ld:Property",
+            "rdfs:comment": [
+                {
+                    "@language": "en",
+                    "@value": "The geographic area where a service or offered item is provided"
+                }
+            ],
+            "rdfs:label": [
+                {
+                    "@language": "en",
+                    "@value": "areaServed"
+                }
+            ]
+        },
+        {
+            "@id": "fiware:bridgeCount",
+            "@type": "ngsi-ld:Property",
+            "rdfs:comment": [
+                {
+                    "@language": "en",
+                    "@value": "Number of bridges in the road segment corresponding to this observation. Takes 0 (zero) as the value when the road segment has no bridges"
+                }
+            ],
+            "rdfs:label": [
+                {
+                    "@language": "en",
+                    "@value": "bridgeCount"
+                }
+            ]
+        },
+        {
+            "@id": "fiware:carriagewayLength",
+            "@type": "ngsi-ld:Property",
+            "rdfs:comment": [
+                {
+                    "@language": "en",
+                    "@value": "Total length of the carriage way of the road segment corresponding to this observation"
+                }
+            ],
+            "rdfs:label": [
+                {
+                    "@language": "en",
+                    "@value": "carriagewayLength"
+                }
+            ]
+        },
+        {
+            "@id": "fiware:carriagewayWidth",
+            "@type": "ngsi-ld:Property",
+            "rdfs:comment": [
+                {
+                    "@language": "en",
+                    "@value": "Total width of the carriage way of the road segment corresponding to this observation"
+                }
+            ],
+            "rdfs:label": [
+                {
+                    "@language": "en",
+                    "@value": "carriagewayWidth"
+                }
+            ]
+        },
+        {
+            "@id": "fiware:category",
+            "@type": "ngsi-ld:Property",
+            "rdfs:comment": [
+                {
+                    "@language": "en",
+                    "@value": "Allows to convey extra characteristics of a road segment. Enum:'oneway, toll, link'.  `oneway`: Flags whether the road segment can only be used in one direction. If not present it means road segment can be used in both directions (forwards and backwards). See also [http://wiki.openstreetmap.org/wiki/Key:oneway](http://wiki.openstreetmap.org/wiki/Key:oneway). `toll` : Flags whether the road segment is under toll fees. `link` : Flags whether this road segment is an auxiliary link segment for exiting or entering a road. See [https://wiki.openstreetmap.org/wiki/Tag:highway%3Dmotorway_link](https://wiki.openstreetmap.org/wiki/Tag:highway%3Dmotorway_link). Any other value meaningful to an application"
+                }
+            ],
+            "rdfs:label": [
+                {
+                    "@language": "en",
+                    "@value": "category"
+                }
+            ]
+        },
+        {
+            "@id": "fiware:color",
+            "@type": "ngsi-ld:Property",
+            "rdfs:comment": [
+                {
+                    "@language": "en",
+                    "@value": "The color of the product"
+                }
+            ],
+            "rdfs:label": [
+                {
+                    "@language": "en",
+                    "@value": "color"
+                }
+            ]
+        },
+        {
+            "@id": "fiware:culvertCount",
+            "@type": "ngsi-ld:Property",
+            "rdfs:comment": [
+                {
+                    "@language": "en",
+                    "@value": "Number of culverts prevalent in the trace of the road corresponding to this observation"
+                }
+            ],
+            "rdfs:label": [
+                {
+                    "@language": "en",
+                    "@value": "culvertCount"
+                }
+            ]
+        },
+        {
+            "@id": "fiware:cyclePathLeftHeight",
+            "@type": "ngsi-ld:Property",
+            "rdfs:comment": [
+                {
+                    "@language": "en",
+                    "@value": "Height of the cycle track on the left edge of the road corresponding to this observation"
+                }
+            ],
+            "rdfs:label": [
+                {
+                    "@language": "en",
+                    "@value": "cyclePathLeftHeight"
+                }
+            ]
+        },
+        {
+            "@id": "fiware:cyclePathLeftWidth",
+            "@type": "ngsi-ld:Property",
+            "rdfs:comment": [
+                {
+                    "@language": "en",
+                    "@value": "Width of the cycle track on the left edge of the road corresponding to this observation"
+                }
+            ],
+            "rdfs:label": [
+                {
+                    "@language": "en",
+                    "@value": "cyclePathLeftWidth"
+                }
+            ]
+        },
+        {
+            "@id": "fiware:cyclePathMaterial",
+            "@type": "ngsi-ld:Property",
+            "rdfs:comment": [
+                {
+                    "@language": "en",
+                    "@value": "Construction material used for laying the cycle path on the sides of the road corresponding to this observation"
+                }
+            ],
+            "rdfs:label": [
+                {
+                    "@language": "en",
+                    "@value": "cyclePathMaterial"
+                }
+            ]
+        },
+        {
+            "@id": "fiware:cyclePathRightHeight",
+            "@type": "ngsi-ld:Property",
+            "rdfs:comment": [
+                {
+                    "@language": "en",
+                    "@value": "Height of the cycle track on the right edge of the road corresponding to this observation"
+                }
+            ],
+            "rdfs:label": [
+                {
+                    "@language": "en",
+                    "@value": "cyclePathRightHeight"
+                }
+            ]
+        },
+        {
+            "@id": "fiware:cyclePathRightWidth",
+            "@type": "ngsi-ld:Property",
+            "rdfs:comment": [
+                {
+                    "@language": "en",
+                    "@value": "Width of the cycle track on the right edge of the road corresponding to this observation"
+                }
+            ],
+            "rdfs:label": [
+                {
+                    "@language": "en",
+                    "@value": "cyclePathRightWidth"
+                }
+            ]
+        },
+        {
+            "@id": "fiware:dataDescriptor",
+            "@type": "ngsi-ld:Relationship",
+            "rdfs:comment": [
+                {
+                    "@language": "en",
+                    "@value": "URI pointing to the data-descriptor entity"
+                }
+            ],
+            "rdfs:label": [
+                {
+                    "@language": "en",
+                    "@value": "dataDescriptor"
+                }
+            ]
+        },
+        {
+            "@id": "fiware:dataProvider",
+            "@type": "ngsi-ld:Property",
+            "rdfs:comment": [
+                {
+                    "@language": "en",
+                    "@value": "A sequence of characters identifying the provider of the harmonised data entity"
+                }
+            ],
+            "rdfs:label": [
+                {
+                    "@language": "en",
+                    "@value": "dataProvider"
+                }
+            ]
+        },
+        {
+            "@id": "fiware:dateCreated",
+            "@type": "ngsi-ld:Property",
+            "rdfs:comment": [
+                {
+                    "@language": "en",
+                    "@value": "Entity creation timestamp. This will usually be allocated by the storage platform"
+                }
+            ],
+            "rdfs:label": [
+                {
+                    "@language": "en",
+                    "@value": "dateCreated"
+                }
+            ]
+        },
+        {
+            "@id": "fiware:dateModified",
+            "@type": "ngsi-ld:Property",
+            "rdfs:comment": [
+                {
+                    "@language": "en",
+                    "@value": "Timestamp of the last modification of the entity. This will usually be allocated by the storage platform"
+                }
+            ],
+            "rdfs:label": [
+                {
+                    "@language": "en",
+                    "@value": "dateModified"
+                }
+            ]
+        },
+        {
+            "@id": "fiware:description",
+            "@type": "ngsi-ld:Property",
+            "rdfs:comment": [
+                {
+                    "@language": "en",
+                    "@value": "A description of this item"
+                }
+            ],
+            "rdfs:label": [
+                {
+                    "@language": "en",
+                    "@value": "description"
+                }
+            ]
+        },
+        {
+            "@id": "fiware:endKilometer",
+            "@type": "ngsi-ld:Property",
+            "rdfs:comment": [
+                {
+                    "@language": "en",
+                    "@value": "The kilometer number (measured from the road's start point) where this road segment ends."
+                }
+            ],
+            "rdfs:label": [
+                {
+                    "@language": "en",
+                    "@value": "endKilometer"
+                }
+            ]
+        },
+        {
+            "@id": "fiware:endPoint",
+            "@type": "ngsi-ld:GeoProperty",
+            "rdfs:comment": [
+                {
+                    "@language": "en",
+                    "@value": "Geojson reference to the item. It can be Point, LineString, Polygon, MultiPoint, MultiLineString or MultiPolygon"
+                }
+            ],
+            "rdfs:label": [
+                {
+                    "@language": "en",
+                    "@value": "endPoint"
+                }
+            ]
+        },
+        {
+            "@id": "fiware:id",
+            "@type": "ngsi-ld:Property",
+            "rdfs:comment": [
+                {
+                    "@language": "en",
+                    "@value": "Unique identifier of the entity"
+                }
+            ],
+            "rdfs:label": [
+                {
+                    "@language": "en",
+                    "@value": "id"
+                }
+            ]
+        },
+        {
+            "@id": "fiware:image",
+            "@type": "ngsi-ld:Property",
+            "rdfs:comment": [
+                {
+                    "@language": "en",
+                    "@value": "An image of the item"
+                }
+            ],
+            "rdfs:label": [
+                {
+                    "@language": "en",
+                    "@value": "image"
+                }
+            ]
+        },
+        {
+            "@id": "fiware:laneInfo",
+            "@type": "ngsi-ld:Property",
+            "rdfs:comment": [
+                {
+                    "@language": "en",
+                    "@value": "Describes the aspects of lanes of the road corresponding to this observation"
+                }
+            ],
+            "rdfs:label": [
+                {
+                    "@language": "en",
+                    "@value": "laneInfo"
+                }
+            ]
+        },
+        {
+            "@id": "fiware:laneUsage",
+            "@type": "ngsi-ld:Property",
+            "rdfs:comment": [
+                {
+                    "@language": "en",
+                    "@value": "This attribute can be used to convey specific parameters describing each lane. It must contain a string per road segment lane. The element 0 of the array must contain the information of lane 1, and so on. Format of the referred string must be: <lane_direction>, <lane_minimumAllowedSpeed>, <lane_maximumAllowedSpeed>, <lane_maximumAllowedHeight>, <lane_maximumAllowedWeight>. <lane_direction> is a text string with the following allowed values: `forward`. The lane is currently used in the `forwards` direction. `backward`. The lane is currently used in the `backwards` direction. The only mandatory parameter is `lane_direction`. If not specified, the rest of parameters can be assumed to be equal to those specified at entity level"
+                }
+            ],
+            "rdfs:label": [
+                {
+                    "@language": "en",
+                    "@value": "laneUsage"
+                }
+            ]
+        },
+        {
+            "@id": "fiware:length",
+            "@type": "ngsi-ld:Property",
+            "rdfs:comment": [
+                {
+                    "@language": "en",
+                    "@value": "Total length of this road segment in kilometers"
+                }
+            ],
+            "rdfs:label": [
+                {
+                    "@language": "en",
+                    "@value": "length"
+                }
+            ]
+        },
+        {
+            "@id": "fiware:location",
+            "@type": "ngsi-ld:GeoProperty",
+            "rdfs:comment": [
+                {
+                    "@language": "en",
+                    "@value": "Geojson reference to the item. It can be Point, LineString, Polygon, MultiPoint, MultiLineString or MultiPolygon"
+                }
+            ],
+            "rdfs:label": [
+                {
+                    "@language": "en",
+                    "@value": "location"
+                }
+            ]
+        },
+        {
+            "@id": "fiware:maximumAllowedHeight",
+            "@type": "ngsi-ld:Property",
+            "rdfs:comment": [
+                {
+                    "@language": "en",
+                    "@value": "Maximum allowed height for vehicles transiting this road segment"
+                }
+            ],
+            "rdfs:label": [
+                {
+                    "@language": "en",
+                    "@value": "maximumAllowedHeight"
+                }
+            ]
+        },
+        {
+            "@id": "fiware:maximumAllowedSpeed",
+            "@type": "ngsi-ld:Property",
+            "rdfs:comment": [
+                {
+                    "@language": "en",
+                    "@value": "Maximum allowed speed plying the road segment. More restrictive limits might be applied to specific vehicle types (trucks, caravans, etc.)"
+                }
+            ],
+            "rdfs:label": [
+                {
+                    "@language": "en",
+                    "@value": "maximumAllowedSpeed"
+                }
+            ]
+        },
+        {
+            "@id": "fiware:maximumAllowedWeight",
+            "@type": "ngsi-ld:Property",
+            "rdfs:comment": [
+                {
+                    "@language": "en",
+                    "@value": "Maximum allowed weight for vehicles transiting this road segment"
+                }
+            ],
+            "rdfs:label": [
+                {
+                    "@language": "en",
+                    "@value": "maximumAllowedWeight"
+                }
+            ]
+        },
+        {
+            "@id": "fiware:maximumAllowedWidth",
+            "@type": "ngsi-ld:Property",
+            "rdfs:comment": [
+                {
+                    "@language": "en",
+                    "@value": "Maximum allowed width for vehicles using the entity corresponding to this observation"
+                }
+            ],
+            "rdfs:label": [
+                {
+                    "@language": "en",
+                    "@value": "maximumAllowedWidth"
+                }
+            ]
+        },
+        {
+            "@id": "fiware:medianHeight",
+            "@type": "ngsi-ld:Property",
+            "rdfs:comment": [
+                {
+                    "@language": "en",
+                    "@value": "Height of the median or central reservation in the road corresponding to this observation"
+                }
+            ],
+            "rdfs:label": [
+                {
+                    "@language": "en",
+                    "@value": "medianHeight"
+                }
+            ]
+        },
+        {
+            "@id": "fiware:medianLength",
+            "@type": "ngsi-ld:Property",
+            "rdfs:comment": [
+                {
+                    "@language": "en",
+                    "@value": "Length of the median or central reservation in the road corresponding to this observation"
+                }
+            ],
+            "rdfs:label": [
+                {
+                    "@language": "en",
+                    "@value": "medianLength"
+                }
+            ]
+        },
+        {
+            "@id": "fiware:medianWidth",
+            "@type": "ngsi-ld:Property",
+            "rdfs:comment": [
+                {
+                    "@language": "en",
+                    "@value": "Width of the median or central reservation in the road corresponding to this observation"
+                }
+            ],
+            "rdfs:label": [
+                {
+                    "@language": "en",
+                    "@value": "medianWidth"
+                }
+            ]
+        },
+        {
+            "@id": "fiware:minimumAllowedSpeed",
+            "@type": "ngsi-ld:Property",
+            "rdfs:comment": [
+                {
+                    "@language": "en",
+                    "@value": "Minimum allowed speed while transiting this road segment"
+                }
+            ],
+            "rdfs:label": [
+                {
+                    "@language": "en",
+                    "@value": "minimumAllowedSpeed"
+                }
+            ]
+        },
+        {
+            "@id": "fiware:municipalityInfo",
+            "@type": "ngsi-ld:Property",
+            "rdfs:comment": [
+                {
+                    "@language": "en",
+                    "@value": "Municipality information corresponding to this observation"
+                }
+            ],
+            "rdfs:label": [
+                {
+                    "@language": "en",
+                    "@value": "municipalityInfo"
+                }
+            ]
+        },
+        {
+            "@id": "fiware:name",
+            "@type": "ngsi-ld:Property",
+            "rdfs:comment": [
+                {
+                    "@language": "en",
+                    "@value": "The name of this item"
+                }
+            ],
+            "rdfs:label": [
+                {
+                    "@language": "en",
+                    "@value": "name"
+                }
+            ]
+        },
+        {
+            "@id": "fiware:owner",
+            "@type": "ngsi-ld:Property",
+            "rdfs:comment": [
+                {
+                    "@language": "en",
+                    "@value": "A List containing a JSON encoded sequence of characters referencing the unique Ids of the owner(s)"
+                }
+            ],
+            "rdfs:label": [
+                {
+                    "@language": "en",
+                    "@value": "owner"
+                }
+            ]
+        },
+        {
+            "@id": "fiware:pedestrianPathLeftHeight",
+            "@type": "ngsi-ld:Property",
+            "rdfs:comment": [
+                {
+                    "@language": "en",
+                    "@value": "Height of the walkway placed on the left edge of the road corresponding to this observation"
+                }
+            ],
+            "rdfs:label": [
+                {
+                    "@language": "en",
+                    "@value": "pedestrianPathLeftHeight"
+                }
+            ]
+        },
+        {
+            "@id": "fiware:pedestrianPathLeftWidth",
+            "@type": "ngsi-ld:Property",
+            "rdfs:comment": [
+                {
+                    "@language": "en",
+                    "@value": "Width of the walkway placed on the left edge of the road corresponding to this observation"
+                }
+            ],
+            "rdfs:label": [
+                {
+                    "@language": "en",
+                    "@value": "pedestrianPathLeftWidth"
+                }
+            ]
+        },
+        {
+            "@id": "fiware:pedestrianPathMaterial",
+            "@type": "ngsi-ld:Property",
+            "rdfs:comment": [
+                {
+                    "@language": "en",
+                    "@value": "Construction material used for laying the walkway / footpath on the sides of the road corresponding to this observation"
+                }
+            ],
+            "rdfs:label": [
+                {
+                    "@language": "en",
+                    "@value": "pedestrianPathMaterial"
+                }
+            ]
+        },
+        {
+            "@id": "fiware:pedestrianPathPlacement",
+            "@type": "ngsi-ld:Property",
+            "rdfs:comment": [
+                {
+                    "@language": "en",
+                    "@value": "Describes the presence and placement of pedestrian along the road segment corresponding to this observation. Enum:'RIGHT, LEFT, BOTH, NOT_AVAILABLE'"
+                }
+            ],
+            "rdfs:label": [
+                {
+                    "@language": "en",
+                    "@value": "pedestrianPathPlacement"
+                }
+            ]
+        },
+        {
+            "@id": "fiware:pedestrianPathRightHeight",
+            "@type": "ngsi-ld:Property",
+            "rdfs:comment": [
+                {
+                    "@language": "en",
+                    "@value": "Height of the walkway placed on the right edge of the road corresponding to this observation"
+                }
+            ],
+            "rdfs:label": [
+                {
+                    "@language": "en",
+                    "@value": "pedestrianPathRightHeight"
+                }
+            ]
+        },
+        {
+            "@id": "fiware:pedestrianPathRightWidth",
+            "@type": "ngsi-ld:Property",
+            "rdfs:comment": [
+                {
+                    "@language": "en",
+                    "@value": "Width of the walkway placed on the right edge of the road corresponding to this observation"
+                }
+            ],
+            "rdfs:label": [
+                {
+                    "@language": "en",
+                    "@value": "pedestrianPathRightWidth"
+                }
+            ]
+        },
+        {
+            "@id": "fiware:refRoad",
+            "@type": "ngsi-ld:Relationship",
+            "rdfs:comment": [
+                {
+                    "@language": "en",
+                    "@value": "Road to which this road segment belongs to"
+                }
+            ],
+            "rdfs:label": [
+                {
+                    "@language": "en",
+                    "@value": "refRoad"
+                }
+            ]
+        },
+        {
+            "@id": "fiware:rightOfWayWidth",
+            "@type": "ngsi-ld:Property",
+            "rdfs:comment": [
+                {
+                    "@language": "en",
+                    "@value": "Right of Way (RoW) is the total land area available for the roadway. Its width accommodates for carriages way + other necessities + future extension, along the road's alignment"
+                }
+            ],
+            "rdfs:label": [
+                {
+                    "@language": "en",
+                    "@value": "rightOfWayWidth"
+                }
+            ]
+        },
+        {
+            "@id": "fiware:roadDirection",
+            "@type": "ngsi-ld:Property",
+            "rdfs:comment": [
+                {
+                    "@language": "en",
+                    "@value": "Represents the direction the road is heading to. Enum:' ['N, S, E, W'. The values N,S,E,W represent North,South,East,West respectively"
+                }
+            ],
+            "rdfs:label": [
+                {
+                    "@language": "en",
+                    "@value": "roadDirection"
+                }
+            ]
+        },
+        {
+            "@id": "fiware:roadId",
+            "@type": "ngsi-ld:Property",
+            "rdfs:comment": [
+                {
+                    "@language": "en",
+                    "@value": "Unique internal representation of the road corresponding to this observation"
+                }
+            ],
+            "rdfs:label": [
+                {
+                    "@language": "en",
+                    "@value": "roadId"
+                }
+            ]
+        },
+        {
+            "@id": "fiware:roadMaterial",
+            "@type": "ngsi-ld:Property",
+            "rdfs:comment": [
+                {
+                    "@language": "en",
+                    "@value": "The construction material used for laying the carriageway corresponding to this observation. For eg. concrete, earthen, tar etc"
+                }
+            ],
+            "rdfs:label": [
+                {
+                    "@language": "en",
+                    "@value": "roadMaterial"
+                }
+            ]
+        },
+        {
+            "@id": "fiware:roadName",
+            "@type": "ngsi-ld:Property",
+            "rdfs:comment": [
+                {
+                    "@language": "en",
+                    "@value": "The name of the road corresponding to this observation"
+                }
+            ],
+            "rdfs:label": [
+                {
+                    "@language": "en",
+                    "@value": "roadName"
+                }
+            ]
+        },
+        {
+            "@id": "fiware:seeAlso",
+            "@type": "ngsi-ld:Property",
+            "rdfs:comment": [
+                {
+                    "@language": "en",
+                    "@value": "list of uri pointing to additional resources about the item"
+                }
+            ],
+            "rdfs:label": [
+                {
+                    "@language": "en",
+                    "@value": "seeAlso"
+                }
+            ]
+        },
+        {
+            "@id": "fiware:source",
+            "@type": "ngsi-ld:Property",
+            "rdfs:comment": [
+                {
+                    "@language": "en",
+                    "@value": "A sequence of characters giving the original source of the entity data as a URL. Recommended to be the fully qualified domain name of the source provider, or the URL to the source object"
+                }
+            ],
+            "rdfs:label": [
+                {
+                    "@language": "en",
+                    "@value": "source"
+                }
+            ]
+        },
+        {
+            "@id": "fiware:startKilometer",
+            "@type": "ngsi-ld:Property",
+            "rdfs:comment": [
+                {
+                    "@language": "en",
+                    "@value": "The kilometer number (measured from the road's start point) where this road segment starts."
+                }
+            ],
+            "rdfs:label": [
+                {
+                    "@language": "en",
+                    "@value": "startKilometer"
+                }
+            ]
+        },
+        {
+            "@id": "fiware:startPoint",
+            "@type": "ngsi-ld:GeoProperty",
+            "rdfs:comment": [
+                {
+                    "@language": "en",
+                    "@value": "Geojson reference to the item. It can be Point, LineString, Polygon, MultiPoint, MultiLineString or MultiPolygon"
+                }
+            ],
+            "rdfs:label": [
+                {
+                    "@language": "en",
+                    "@value": "startPoint"
+                }
+            ]
+        },
+        {
+            "@id": "fiware:status",
+            "@type": "ngsi-ld:Property",
+            "rdfs:comment": [
+                {
+                    "@language": "en",
+                    "@value": "Specific driving conditions on the roadsegment. Use statusDescription for additional information. Enum: ‘open, closed, limited’.  `open`: the roadsegment can be used in full intended capacity, `closed`: no traffic is possible, e.g. due to roadworks, an open bridge or lock, or any other event preventing traffic. `limited`: traffic is possible, but not in the full capacity"
+                }
+            ],
+            "rdfs:label": [
+                {
+                    "@language": "en",
+                    "@value": "status"
+                }
+            ]
+        },
+        {
+            "@id": "fiware:statusDescription",
+            "@type": "ngsi-ld:Property",
+            "rdfs:comment": [
+                {
+                    "@language": "en",
+                    "@value": "Additional information to the status attribute"
+                }
+            ],
+            "rdfs:label": [
+                {
+                    "@language": "en",
+                    "@value": "statusDescription"
+                }
+            ]
+        },
+        {
+            "@id": "fiware:totalCyclePathWidth",
+            "@type": "ngsi-ld:Property",
+            "rdfs:comment": [
+                {
+                    "@language": "en",
+                    "@value": "Total width of the cycle track present in the road corresponding to this observation"
+                }
+            ],
+            "rdfs:label": [
+                {
+                    "@language": "en",
+                    "@value": "totalCyclePathWidth"
+                }
+            ]
+        },
+        {
+            "@id": "fiware:totalLaneNumber",
+            "@type": "ngsi-ld:Property",
+            "rdfs:comment": [
+                {
+                    "@language": "en",
+                    "@value": "Total number of lanes offered by this road segment"
+                }
+            ],
+            "rdfs:label": [
+                {
+                    "@language": "en",
+                    "@value": "totalLaneNumber"
+                }
+            ]
+        },
+        {
+            "@id": "fiware:totalPedestrianPathLength",
+            "@type": "ngsi-ld:Property",
+            "rdfs:comment": [
+                {
+                    "@language": "en",
+                    "@value": "Total length of the walkway present in the road corresponding to this observation"
+                }
+            ],
+            "rdfs:label": [
+                {
+                    "@language": "en",
+                    "@value": "totalPedestrianPathLength"
+                }
+            ]
+        },
+        {
+            "@id": "fiware:totalPedestrianPathWidth",
+            "@type": "ngsi-ld:Property",
+            "rdfs:comment": [
+                {
+                    "@language": "en",
+                    "@value": "Total width of the walkway present in the road corresponding to this observation"
+                }
+            ],
+            "rdfs:label": [
+                {
+                    "@language": "en",
+                    "@value": "totalPedestrianPathWidth"
+                }
+            ]
+        },
+        {
+            "@id": "fiware:width",
+            "@type": "ngsi-ld:Property",
+            "rdfs:comment": [
+                {
+                    "@language": "en",
+                    "@value": "Road's segment width."
+                }
+            ],
+            "rdfs:label": [
+                {
+                    "@language": "en",
+                    "@value": "width"
                 }
             ]
         }
