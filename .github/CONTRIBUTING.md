@@ -34,7 +34,7 @@ git clone https://github.com/YOUR-USERNAME/GreenWave.git
 ### Add Upstream Remote
 
 ```bash
-git remote add upstream https://github.com/ORIGINAL-OWNER/greenwave.git
+git remote add upstream https://github.com/ORIGINAL-OWNER/GreenWave.git
 ```
 
 ### Auto Line Ending Configuration
@@ -65,7 +65,7 @@ git config --global core.autocrlf input
 
 5. **Create a Pull Request**: Submit your changes for review
 
-For the branching strategy, please refer to the Git Flow model.
+For the branching strategy, please refer to the [Git Flow](https://nvie.com/posts/a-successful-git-branching-model/) model.
 
 ## Coding Standards
 
