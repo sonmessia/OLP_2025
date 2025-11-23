@@ -1,147 +1,135 @@
-# Clean Architecture Workflow for React/Redux/TypeScript
+# GreenWave Digital Twin - Frontend
 
-## 1. Workflow Overview (Data Flow)
+Frontend application cho hệ thống giám sát và điều khiển giao thông thông minh.
 
-```
-         ┌───────────────────────┐
-         │    Presentation/UI    │
-         │  (Components, Pages)  │
-         └───────────┬───────────┘
-                     │ User Action
-                     ▼
-            ┌─────────────────────┐
-            │    Use Case         │
-            │   (Domain Layer)    │
-            └──────────┬──────────┘
-                       │ Calls
-                       ▼
-          ┌───────────────────────────┐
-          │  Repository Interface     │
-          │     (Domain Layer)        │
-          └────────────┬──────────────┘
-                       │ Implementation
-                       ▼
-     ┌────────────────────────────────────┐
-     │   Repository Implementation        │
-     │   (Infrastructure Layer)           │
-     └──────────────────┬─────────────────┘
-                         │ Calls API
-                         ▼
-            ┌────────────────────────┐
-            │        API Layer       │
-            │ (Axios/Fetch Rest API) │
-            └────────────┬───────────┘
-                         │ Returns DTO
-                         ▼
-               ┌──────────────────────┐
-               │        Mappers       │
-               │ (DTO → Model, Model → DTO)
-               └───────────┬──────────┘
-                           │ Clean data model
-                           ▼
-             ┌────────────────────────┐
-             │     Redux/Data Layer   │
-             │ (Slices, Store, State) │
-             └─────────────┬──────────┘
-                           │ Updates State
-                           ▼
-        ┌────────────────────────────────┐
-        │   Presentation/UI Re-renders   │
-        └────────────────────────────────┘
+## Tính Năng
+
+- ✅ **Digital Twin Visualization**: Hiển thị bản đồ giao thông real-time với Leaflet
+- ✅ **Area Selection**: Chọn và khóa góc nhìn vào khu vực cụ thể
+- ✅ **Real-time Updates**: WebSocket connection để nhận dữ liệu real-time
+- ✅ **Traffic Control**: Điều khiển pha đèn giao thông
+- ✅ **Statistics Dashboard**: Hiển thị thống kê giao thông và chất lượng không khí
+
+## Tech Stack
+
+- **React 19** + **TypeScript**
+- **Redux Toolkit** - State management
+- **Leaflet** - Interactive maps
+- **TailwindCSS** - Styling
+- **Vite** - Build tool
+- **WebSocket** - Real-time communication
+
+## Cài Đặt
+
+```bash
+npm install
 ```
 
----
+## Cấu Hình
 
-## 2. Folder Structure
+Tạo file `.env`:
+
+```env
+VITE_API_URL=http://localhost:3001
+VITE_WS_URL=ws://localhost:8765
+VITE_ORION_URL=http://localhost:1026/ngsi-ld/v1
+```
+
+## Chạy Development
+
+```bash
+npm run dev
+```
+
+Mở http://localhost:5173
+
+## Build Production
+
+```bash
+npm run build
+npm run preview
+```
+
+## Cấu Trúc Theo Clean Architecture
 
 ```
 src/
-├── api/                     # Raw HTTP calls
-├── core/                    # App bootstrap (App.tsx, router)
-├── data/                    # Redux, DTOs, Mappers
+├── presentation/        # UI Layer
+│   ├── pages/
+│   │   └── DigitalTwinPage.tsx
+│   ├── components/
+│   │   └── feature/
+│   │       ├── TrafficMap.tsx
+│   │       ├── AreaSelector.tsx
+│   │       ├── TrafficStats.tsx
+│   │       └── TrafficControl.tsx
+│   ├── hooks/
+│   │   └── useWebSocket.ts
+│   └── App.tsx
+│
+├── domain/              # Business Logic
+│   ├── models/
+│   │   └── simulation.types.ts
+│   └── use-cases/
+│
+├── data/                # Data Layer
 │   ├── redux/
 │   ├── dtos/
 │   └── mappers/
-├── domain/                  # Business logic, pure TS
-│   ├── models/
-│   └── use-cases/
-├── services/          # Repositories + External Services
-│   └── repositories/
-├── presentation/            # UI Layer
-│   ├── components/
-│   ├── pages/
-│   ├── containers/
-│   └── hooks/
-└── shared/                  # Utils, constants, config
+│
+└── services/            # External Services
+    └── repositories/
 ```
 
----
+## Components
 
-## 3. Layer Responsibilities
+### TrafficMap
 
-### Domain Layer
+Bản đồ Leaflet hiển thị:
 
-- Contains business rules.
-- Independent from React, Redux, API.
-- Includes:
+- Vehicles với rotation theo góc
+- Traffic lights với màu sắc theo trạng thái
+- Locked view vào khu vực được chọn
 
-  - `models/` → Entities (User, Product…)
-  - `use-cases/` → Pure business actions
+### AreaSelector
 
-### Data Layer
+Chọn khu vực giám sát:
 
-- Handles global state & data normalization.
-- Includes:
+- Ngã Tư Thủ Đức
+- Ngã Tư Hàng Xanh
+- (Có thể thêm nhiều khu vực)
 
-  - Redux slices
-  - DTO definitions
-  - Mappers (DTO ↔ Model)
+### TrafficStats
 
-### Service Layer
+Hiển thị thống kê:
 
-- Implements Repository Interfaces.
-- Connects business logic to external sources.
+- Hàng đợi xe (queues)
+- Pha đèn hiện tại
+- PM2.5 (chất lượng không khí)
+- AI Reward Score
 
-### API Layer
+### TrafficControl
 
-- Performs HTTP calls.
-- Contains no business logic.
+Điều khiển đèn giao thông:
 
-### Presentation Layer
+- Pha 0: Đông-Tây
+- Pha 1: Bắc-Nam
+- Pha 2: Chuyển tiếp
 
-- UI Components
-- Pages & Views
-- Hooks & interactions
+## WebSocket Integration
 
----
+```typescript
+const { isConnected, lastMessage, sendCommand } = useWebSocket({
+  url: "ws://localhost:8765",
+  onMessage: (data) => {
+    // Handle simulation update
+  },
+});
 
-## 4. Example Workflow Description
+// Send command
+sendCommand({ type: "setPhase", phase: 1 });
+```
 
-### Scenario: User clicks "Get Profile"
+## License
 
-1. **UI Component** dispatches `getUserProfile()` action.
-2. Action triggers a **Use Case**: `GetUserProfileUseCase`.
-3. Use Case calls **UserRepository Interface**.
-4. Infrastructure provides **UserRepositoryImpl**, which calls `user-api.ts`.
-5. `user-api.ts` returns a **DTO**.
-6. Mapper transforms DTO → Domain Model.
-7. Redux slice updates state with Model.
-8. UI re-renders automatically.
-
----
-
-## 5. Benefits
-
-- Framework independent
-- Easy unit testing
-- High scalability
-- Separation of concerns
-- Stable business logic regardless of API/UI changes
-
----
-
-## 6. Notes
-
-- Domain layer **never imports** from services, data, presentation.
-- API response changes **never affect business logic**.
-- Redux & UI are replaceable without touching domain.
+MIT
