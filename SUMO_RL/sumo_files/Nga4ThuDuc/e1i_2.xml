@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<!-- generated on 2025-11-19T20:20:57.668998+07:00 by Eclipse SUMO sumo 1.25.0
+<!-- generated on 2025-11-22T21:57:20.506770+07:00 by Eclipse SUMO sumo 1.25.0
 <sumoConfiguration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/sumoConfiguration.xsd">
 
     <input>
@@ -14,7 +14,7 @@
     </time>
 
     <traci_server>
-        <remote-port value="59877"/>
+        <remote-port value="60091"/>
     </traci_server>
 
 </sumoConfiguration>
@@ -303,6 +303,4 @@
     <instantOut id="e1i_2" time="785.98" state="enter" vehID="143" speed="12.62" length="5.00" type="car" gap="364.52"/>
     <instantOut id="e1i_2" time="786.00" state="stay" vehID="143" speed="12.62" length="5.00" type="car"/>
     <instantOut id="e1i_2" time="786.47" state="leave" vehID="143" speed="10.15" length="5.00" type="car" occupancy="0.49"/>
-    <instantOut id="e1i_2" time="1112.42" state="enter" vehID="194" speed="15.09" length="5.00" type="car" gap="325.95"/>
-    <instantOut id="e1i_2" time="1112.75" state="leave" vehID="194" speed="15.09" length="5.00" type="car" occupancy="0.33"/>
 </instantE1>
