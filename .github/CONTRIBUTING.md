@@ -75,27 +75,28 @@ For the branching strategy, please refer to the [Git Flow](https://nvie.com/post
 - Maintain service boundaries - IoT Agents should not directly access the database
 - Follow .editorconfig (or pyproject.toml) settings for code formatting (Black/Ruff)
 - Prefer explicit variable names over mathematical abbreviations (e.g., `traffic_density` instead of `td`)
-- Use Python dataclasses or Pydantic models for data structures
+- Use Pydantic models for data structures
 - Use docstrings (Google style) for all classes and methods
 
 ### Example
 
 ```python
-from dataclasses import dataclass
+from pydantic import BaseModel, validator
 from typing import List, Optional
 
 class TrafficDomainException(Exception):
     """Custom exception for traffic domain errors."""
     pass
 
-@dataclass
-class Intersection:
+class Intersection(BaseModel):
     id: str
     connected_roads: List[str]
 
-    def __post_init__(self):
-        if not self.id:
+    @validator('id')
+    def id_must_not_be_empty(cls, v):
+        if not v:
             raise TrafficDomainException("Intersection ID cannot be empty.")
+        return v
 
 class TrafficService:
     def get_intersection(self, intersection_id: str) -> Intersection:
