@@ -1,0 +1,51 @@
+[tool.black]
+line-length = 88
+target-version = ['py39']
+include = '\.pyi?$'
+extend-exclude = '''
+/(
+  # directories
+  \.eggs
+  | \.git
+  | \.hg
+  | \.mypy_cache
+  | \.tox
+  | \.venv
+  | build
+  | dist
+)/
+'''
+
+[tool.mypy]
+python_version = "3.9"
+ignore_missing_imports = true
+warn_unreachable = true
+
+[tool.pytest.ini_options]
+testpaths = ["../tests"]
+python_files = ["test_*.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
+addopts = "-v --tb=short"
+
+
+[tool.ruff]
+line-length = 88
+
+exclude = [
+  ".bzr",
+  ".direnv",
+  ".eggs",
+  "build",
+  "dist",
+  "__pycache__",
+  "venv",
+  ".venv",
+]
+
+[tool.ruff.lint]
+select = ["I", "E", "F", "B"]
+ignore = ["E501"]
+
+[tool.ruff.lint.isort]
+known-first-party = ["backend"]

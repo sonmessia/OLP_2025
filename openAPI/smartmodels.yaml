@@ -1,9 +1,9 @@
-# Filename: airquality.yaml
+# Filename: smartmodels.yaml
 openapi: "3.0.0"
 info:
-  title: "Smart Air Quality & Carbon Footprint Data Models"
+  title: "Smart Data Models"
   version: "1.0.0"
-  description: "Data Models for monitoring air quality and carbon footprint based on FIWARE Smart Data Models."
+  description: "Data Models for monitoring air quality, carbon footprint and traffic impact based on FIWARE Smart Data Models."
 
 paths: {} # We only define schemas, API paths are not needed.
 
@@ -45,4 +45,22 @@ components:
               x-ngsi: # Extension for NGSI-LD tool
                 type: "Relationship"
                 model: "https://smart-data-models.github.io/dataModel.Building/Building/model.yaml#/Building"
+              $ref: "https://smart-data-models.github.io/data-models/common-schema.json#/definitions/EntityIdentifierType"
+    # 5. RoadSegment entity: Represents a road segment
+    RoadSegment:
+      $ref: "https://smart-data-models.github.io/dataModel.Transportation/RoadSegment/model.yaml#/RoadSegment"
+
+    #6. TrafficEnvironmentImpact entity: Describes the environmental impact of traffic.
+
+    TrafficEnvironmentImpact:
+      allOf:
+        - $ref: "https://smart-data-models.github.io/dataModel.Environment/TrafficEnvironmentImpact/model.yaml#/TrafficEnvironmentImpact"
+        - type: object
+          properties:
+            # Define the relationship to the road segment it is describing.
+            refRoadSegment:
+              description: "A reference to the road segment where the traffic impact is measured."
+              x-ngsi:
+                type: "Relationship"
+                model: "https://smart-data-models.github.io/dataModel.Transportation/RoadSegment/model.yaml#/RoadSegment"
               $ref: "https://smart-data-models.github.io/data-models/common-schema.json#/definitions/EntityIdentifierType"
