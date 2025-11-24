@@ -1,0 +1,34 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+
+# Virtual Environment
+venv/
+env/
+ENV/
+
+
+# SUMO outputs
+*.xml.gz
+*.log
+tripinfo.xml
+summary.xml
+detector.xml
+e1_*.xml
+e2_*.xml
+e1i_*.xml
+eed.xml
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
