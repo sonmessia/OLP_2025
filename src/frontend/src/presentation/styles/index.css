@@ -91,3 +91,544 @@
 .dark ::-webkit-scrollbar-thumb:hover {
   background-color: rgba(107, 114, 128, 0.8);
 }
+
+/* Glassmorphism Effects */
+.glass-effect {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.glass-card {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+}
+
+.glass-card-heavy {
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  box-shadow: 0 15px 50px 0 rgba(31, 38, 135, 0.5);
+}
+
+.glass-button {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  transition: all 0.3s ease;
+}
+
+.glass-button:hover {
+  background: rgba(255, 255, 255, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  transform: translateY(-2px);
+  box-shadow: 0 10px 30px 0 rgba(31, 38, 135, 0.4);
+}
+
+/* Eco-Futurism Gradients */
+.eco-gradient-primary {
+  background: linear-gradient(135deg, var(--color-greenwave-primary-light) 0%, var(--color-greenwave-primary-dark) 100%);
+}
+
+.eco-gradient-secondary {
+  background: linear-gradient(135deg, var(--color-greenwave-secondary-light) 0%, var(--color-greenwave-secondary-dark) 100%);
+}
+
+.tech-gradient {
+  background: linear-gradient(135deg, var(--color-traffic-info) 0%, var(--color-greenwave-primary-light) 50%, var(--color-greenwave-primary-dark) 100%);
+}
+
+.warning-gradient {
+  background: linear-gradient(135deg, var(--color-traffic-red) 0%, var(--color-traffic-yellow) 100%);
+}
+
+/* Glow Effects */
+.glow-green {
+  box-shadow: 0 0 20px rgba(16, 124, 65, 0.5);
+}
+
+.glow-blue {
+  box-shadow: 0 0 20px rgba(59, 130, 246, 0.5);
+}
+
+.glow-red {
+  box-shadow: 0 0 20px rgba(217, 35, 47, 0.5);
+}
+
+.glow-yellow {
+  box-shadow: 0 0 20px rgba(251, 191, 36, 0.5);
+}
+
+/* Floating Animation */
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  25% {
+    transform: translateY(-10px) rotate(1deg);
+  }
+  50% {
+    transform: translateY(-20px) rotate(0deg);
+  }
+  75% {
+    transform: translateY(-10px) rotate(-1deg);
+  }
+}
+
+.float-animation {
+  animation: float 6s ease-in-out infinite;
+}
+
+.float-animation-slow {
+  animation: float 8s ease-in-out infinite;
+}
+
+.float-animation-reverse {
+  animation: float 7s ease-in-out infinite reverse;
+}
+
+/* Pulse Animation */
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.7;
+    transform: scale(0.95);
+  }
+}
+
+.pulse-animation {
+  animation: pulse 2s ease-in-out infinite;
+}
+
+/* Particle Animation */
+@keyframes particle-float {
+  0% {
+    transform: translateY(100vh) rotate(0deg);
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  90% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(-100vh) rotate(360deg);
+    opacity: 0;
+  }
+}
+
+.particle {
+  position: absolute;
+  pointer-events: none;
+  animation: particle-float 15s linear infinite;
+}
+
+/* Shimmer Effect */
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+.shimmer {
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.1) 45%,
+    rgba(255, 255, 255, 0.2) 50%,
+    rgba(255, 255, 255, 0.1) 55%,
+    transparent 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 3s infinite;
+}
+
+/* Fractured Glass Effect */
+.fractured-glass {
+  position: relative;
+  overflow: hidden;
+}
+
+.fractured-glass::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image:
+    linear-gradient(45deg, transparent 48%, rgba(255, 255, 255, 0.1) 50%, transparent 52%),
+    linear-gradient(-45deg, transparent 48%, rgba(255, 255, 255, 0.05) 50%, transparent 52%),
+    linear-gradient(90deg, transparent 48%, rgba(255, 255, 255, 0.08) 50%, transparent 52%);
+  background-size: 20px 20px, 30px 30px, 15px 15px;
+  pointer-events: none;
+}
+
+/* Foggy Effect */
+.foggy-effect {
+  position: relative;
+}
+
+.foggy-effect::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: radial-gradient(
+    ellipse at center,
+    rgba(128, 128, 128, 0.1) 0%,
+    rgba(128, 128, 128, 0.05) 40%,
+    transparent 70%
+  );
+  pointer-events: none;
+}
+
+/* Pipeline Connection Animation */
+@keyframes flow-pulse {
+  0%, 100% {
+    opacity: 0.3;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+.pipeline-flow {
+  background: linear-gradient(90deg,
+    transparent 0%,
+    var(--color-greenwave-primary-light) 25%,
+    var(--color-traffic-info) 50%,
+    var(--color-greenwave-primary-light) 75%,
+    transparent 100%
+  );
+  background-size: 200% 100%;
+  animation: flow-pulse 3s ease-in-out infinite;
+}
+
+/* Custom Scrollbar for Dark Theme */
+.dark .glass-card::-webkit-scrollbar {
+  width: 6px;
+}
+
+.dark .glass-card::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.dark .glass-card::-webkit-scrollbar-thumb {
+  background-color: rgba(255, 255, 255, 0.2);
+  border-radius: 3px;
+}
+
+.dark .glass-card::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(255, 255, 255, 0.3);
+}
+
+/* Responsive Glass Effects */
+@media (max-width: 768px) {
+  .glass-card {
+    background: rgba(255, 255, 255, 0.03);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  .glass-card-heavy {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+}
+
+/* Pipeline Animation Keyframes */
+@keyframes flow-pulse {
+  0% {
+    background-position: -200% 0;
+    opacity: 0.3;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    background-position: 200% 0;
+    opacity: 0.3;
+  }
+}
+
+@keyframes orbit-particle {
+  0% {
+    transform: rotate(0deg) translateX(20px) rotate(0deg);
+    opacity: 1;
+  }
+  100% {
+    transform: rotate(360deg) translateX(20px) rotate(-360deg);
+    opacity: 1;
+  }
+}
+
+@keyframes rotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes pulse-core {
+  0%, 100% {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: translate(-50%, -50%) scale(1.2);
+    opacity: 0.8;
+  }
+}
+
+/* Landing Page Slider Styles */
+.slider::-webkit-slider-thumb {
+  appearance: none;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--color-greenwave-primary-light) 0%, var(--color-traffic-info) 100%);
+  cursor: pointer;
+  border: 2px solid white;
+  box-shadow: 0 0 15px rgba(16, 124, 65, 0.5);
+}
+
+.slider::-moz-range-thumb {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--color-greenwave-primary-light) 0%, var(--color-traffic-info) 100%);
+  cursor: pointer;
+  border: 2px solid white;
+  box-shadow: 0 0 15px rgba(16, 124, 65, 0.5);
+}
+
+/* Glass Card Hover Effect */
+.glass-card {
+  position: relative;
+  overflow: hidden;
+}
+
+.glass-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+  transition: left 0.5s;
+}
+
+.glass-card:hover::before {
+  left: 100%;
+}
+
+/* Hero Section Animations */
+.pollution-container {
+  position: relative;
+  overflow: hidden;
+}
+
+.pollution-smoke {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(
+    to top,
+    rgba(75, 85, 99, 0.4) 0%,
+    rgba(107, 114, 128, 0.3) 30%,
+    rgba(156, 163, 175, 0.2) 60%,
+    transparent 100%
+  );
+  animation: smoke-drift 8s ease-in-out infinite;
+  filter: blur(2px);
+}
+
+.pollution-smoke::before,
+.pollution-smoke::after {
+  content: '';
+  position: absolute;
+  width: 60%;
+  height: 40%;
+  background: radial-gradient(
+    ellipse at center,
+    rgba(75, 85, 99, 0.3) 0%,
+    transparent 70%
+  );
+  border-radius: 50%;
+}
+
+.pollution-smoke::before {
+  top: 30%;
+  left: 10%;
+  animation: smoke-pulse 6s ease-in-out infinite;
+}
+
+.pollution-smoke::after {
+  top: 50%;
+  right: 15%;
+  animation: smoke-pulse 8s ease-in-out infinite reverse;
+}
+
+/* Car Animations */
+.car-animation {
+  animation: car-drive 8s linear infinite;
+}
+
+.car-animation-reverse {
+  animation: car-drive-reverse 10s linear infinite;
+}
+
+.car-animation-delay {
+  animation: car-drive 12s linear infinite 2s;
+}
+
+@keyframes car-drive {
+  0% {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  90% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(calc(100vw + 100%));
+    opacity: 0;
+  }
+}
+
+@keyframes car-drive-reverse {
+  0% {
+    transform: translateX(100%) rotate(180deg);
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  90% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(calc(-100vw - 100%)) rotate(180deg);
+    opacity: 0;
+  }
+}
+
+@keyframes smoke-drift {
+  0%, 100% {
+    transform: translateY(0) scale(1);
+    opacity: 0.6;
+  }
+  50% {
+    transform: translateY(-10px) scale(1.05);
+    opacity: 0.8;
+  }
+}
+
+@keyframes smoke-pulse {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 0.3;
+  }
+  50% {
+    transform: scale(1.2);
+    opacity: 0.5;
+  }
+}
+
+/* Green Wave Effect */
+.green-wave {
+  z-index: 2;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 0;
+  background: linear-gradient(
+    to top,
+    rgba(16, 124, 65, 0.6) 0%,
+    rgba(16, 124, 65, 0.4) 30%,
+    rgba(16, 124, 65, 0.2) 60%,
+    transparent 100%
+  );
+  transition: all 1.5s cubic-bezier(0.4, 0, 0.2, 1);
+  transform: translateY(100%);
+}
+
+.get-started-btn:hover ~ .pollution-container .green-wave {
+  height: 100%;
+  transform: translateY(0);
+}
+
+/* Green Wave Sweep Animation */
+.get-started-btn:hover ~ .pollution-container .green-wave::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(16, 124, 65, 0.8) 45%,
+    rgba(59, 130, 246, 0.6) 50%,
+    rgba(16, 124, 65, 0.8) 55%,
+    transparent 100%
+  );
+  animation: wave-sweep 2s ease-out;
+}
+
+@keyframes wave-sweep {
+  0% {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  90% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+}
+
+.wave-sweep {
+  animation: wave-sweep 2s ease-out;
+}
+
+/* Clean Air Effect on Hover */
+.get-started-btn:hover ~ .pollution-container .pollution-smoke {
+  opacity: 0.1;
+  filter: blur(4px);
+  transform: scale(0.95);
+}
+
+.get-started-btn:hover ~ .pollution-container img {
+  filter: brightness(1.1) contrast(1.2) saturate(1.3);
+  transform: scale(1.02);
+  transition: all 1.5s ease-out;
+}
