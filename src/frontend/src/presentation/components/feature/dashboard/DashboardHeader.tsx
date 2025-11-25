@@ -1,9 +1,16 @@
 import React, { useState } from "react";
-import { Moon, Sun, User, Leaf } from "lucide-react";
+import { Moon, Sun, User, Leaf, Monitor, Cpu, Wind } from "lucide-react";
+import { useNavigate, useLocation } from "react-router-dom";
 
 interface DashboardHeaderProps {
   onThemeToggle?: () => void;
   isDarkMode?: boolean;
+}
+
+interface NavItem {
+  label: string;
+  path: string;
+  icon: React.ElementType;
 }
 
 export const DashboardHeader: React.FC<DashboardHeaderProps> = ({
@@ -11,6 +18,26 @@ export const DashboardHeader: React.FC<DashboardHeaderProps> = ({
   isDarkMode = false,
 }) => {
   const [isProfileOpen, setIsProfileOpen] = useState(false);
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const navItems: NavItem[] = [
+    {
+      label: "Dashboard",
+      path: "/admin",
+      icon: Monitor,
+    },
+    {
+      label: "Quản lý Thiết bị",
+      path: "/devices",
+      icon: Cpu,
+    },
+    {
+      label: "Giám sát Không khí",
+      path: "/air-quality",
+      icon: Wind,
+    },
+  ];
 
   return (
     <header className="bg-white dark:bg-gray-800 border-b-2 border-gray-200 dark:border-gray-700 px-6 py-2">
@@ -25,10 +52,33 @@ export const DashboardHeader: React.FC<DashboardHeaderProps> = ({
               GreenWave
             </h1>
             <p className="text-xs md:text-sm text-gray-600 dark:text-gray-400">
-              Dashboard Quản lý Giao thông
+              Hệ thống Điều phối Giao thông Thông minh
             </p>
           </div>
         </div>
+
+        {/* Navigation Menu */}
+        <nav className="hidden lg:flex items-center gap-2">
+          {navItems.map((item) => {
+            const Icon = item.icon;
+            const isActive = location.pathname === item.path;
+
+            return (
+              <button
+                key={item.path}
+                onClick={() => navigate(item.path)}
+                className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-colors ${
+                  isActive
+                    ? 'bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-300'
+                    : 'text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700'
+                }`}
+              >
+                <Icon className="w-4 h-4" />
+                <span className="text-sm font-medium">{item.label}</span>
+              </button>
+            );
+          })}
+        </nav>
 
         {/* Right Section */}
         <div className="flex items-center gap-4">
