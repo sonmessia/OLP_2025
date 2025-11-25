@@ -62,7 +62,7 @@ const getAQIState = (value: number) => {
 export const AQIGauge: React.FC<AQIGaugeProps> = ({
   value,
   isDarkMode,
-  size = 180,
+  size = 140,
 }) => {
   const { color, label, description, Icon, bgClass, textClass } =
     getAQIState(value);
@@ -103,26 +103,29 @@ export const AQIGauge: React.FC<AQIGaugeProps> = ({
     <div
       className={`
       relative flex flex-col items-center justify-center
-      bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-4
+      bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-3
       border border-gray-100 dark:border-gray-700
       transition-all duration-300
     `}
     >
-      <h3 className="text-xs font-semibold text-gray-400 dark:text-gray-500 mb-4 uppercase tracking-widest">
+      <h3 className="hidden md:block text-xs font-semibold text-gray-400 dark:text-gray-500 md:mb-2 uppercase tracking-widest">
         Chỉ số AQI
       </h3>
 
       <div
-        className="relative mb-2"
+        className="relative md:mb-1"
         style={{ width: size, height: size / 1.8 }}
       >
         <Doughnut data={data} options={options} />
 
         {/* Center Content */}
         <div className="absolute inset-0 flex flex-col items-center justify-end pb-0">
-          <Icon className={`w-6 h-6 ${textClass}`} strokeWidth={2.5} />
+          <Icon
+            className={`hidden md:block w-5 h-5 ${textClass}`}
+            strokeWidth={2.5}
+          />
           <span
-            className={`text-4xl font-black ${textClass} tracking-tight leading-none`}
+            className={`text-xl md:text-3xl font-black ${textClass} tracking-tight leading-none`}
           >
             {value}
           </span>
@@ -130,12 +133,12 @@ export const AQIGauge: React.FC<AQIGaugeProps> = ({
       </div>
 
       <div
-        className={`mt-2 px-6 py-2 rounded-full ${bgClass} transition-colors duration-300`}
+        className={`mt-1 px-4 py-1 rounded-full ${bgClass} transition-colors duration-300`}
       >
-        <span className={`text-base font-bold ${textClass}`}>{label}</span>
+        <span className={`text-sm font-bold ${textClass}`}>{label}</span>
       </div>
 
-      <p className="text-xs text-gray-400 dark:text-gray-500 mt-3 font-medium text-center max-w-[150px]">
+      <p className="hidden md:block text-[10px] text-gray-400 dark:text-gray-500 mt-2 font-medium text-center max-w-[120px]">
         {description}
       </p>
     </div>

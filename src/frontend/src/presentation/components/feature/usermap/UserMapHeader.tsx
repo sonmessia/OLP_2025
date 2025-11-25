@@ -29,19 +29,19 @@ export const UserMapHeader: React.FC<UserMapHeaderProps> = ({
   };
 
   return (
-    <header className="h-18 bg-white dark:bg-gray-800 shadow-lg border-b border-gray-200 dark:border-gray-700 px-4 py-3">
+    <header className="h-18 bg-white dark:bg-gray-800 shadow-lg border-b border-gray-200 dark:border-gray-700 px-2 md:px-4 py-3">
       <div className="flex items-center justify-between h-full">
         {/* Logo and Title */}
-        <div className="flex items-center space-x-4">
+        <div className="flex items-center space-x-2 md:space-x-4">
           <div className="flex items-center space-x-2">
             <div className="w-8 h-8 bg-green-600 rounded-lg flex items-center justify-center">
               <Wind className="w-5 h-5 text-white" />
             </div>
             <div>
-              <h1 className="text-xl font-bold text-gray-900 dark:text-white">
+              <h1 className="text-sm md:text-xl font-bold text-gray-900 dark:text-white">
                 GreenWave
               </h1>
-              <p className="text-xs text-gray-500 dark:text-gray-400">
+              <p className="text-xs text-gray-500 dark:text-gray-400 hidden sm:block">
                 Bản đồ chất lượng không khí
               </p>
             </div>
@@ -49,7 +49,7 @@ export const UserMapHeader: React.FC<UserMapHeaderProps> = ({
         </div>
 
         {/* Search Bar */}
-        <div className="flex-1 max-w-xl mx-8">
+        <div className="flex-1 max-w-xl mx-2 md:mx-8">
           <div className="relative">
             <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
               <Search className="h-5 w-5 text-gray-400" />
