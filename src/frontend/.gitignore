@@ -24,3 +24,4 @@ dist-ssr
 *.sw?
 
 FRONT_END.MD
+COMMIT_GUIDE.md

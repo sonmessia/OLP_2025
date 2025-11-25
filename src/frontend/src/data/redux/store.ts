@@ -1,11 +1,8 @@
 // src/infrastructure/store/store.ts
 import { configureStore } from "@reduxjs/toolkit";
-import sensorReducer from "./sensorSlice";
 
 export const store = configureStore({
-  reducer: {
-    sensors: sensorReducer,
-  },
+  reducer: {},
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
       serializableCheck: {
