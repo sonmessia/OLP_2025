@@ -9,4 +9,31 @@
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+
+  /* GreenWave Color Palette - Light Mode */
+  --color-greenwave-primary: #107c41;
+  --color-greenwave-secondary: #e8f5e9;
+  --color-greenwave-accent: #ffffff;
+  --color-text-main: #1f2937;
+  --color-text-muted: #6b7280;
+}
+
+/* Dark Mode */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-greenwave-primary: #4caf50;
+    --color-greenwave-secondary: #1b5e20;
+    --color-greenwave-accent: #121212;
+    --color-text-main: #e0e0e0;
+    --color-text-muted: #9e9e9e;
+  }
+}
+
+/* Manual Dark Mode Class Override */
+.dark {
+  --color-greenwave-primary: #4caf50;
+  --color-greenwave-secondary: #1b5e20;
+  --color-greenwave-accent: #121212;
+  --color-text-main: #e0e0e0;
+  --color-text-muted: #9e9e9e;
 }
