@@ -1,13 +1,20 @@
-// src/core/App.tsx
+// src/presentation/App.tsx
 import React from "react";
 import { Provider } from "react-redux";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { store } from "../data/redux/store";
 import { ManagerDashboard } from "./pages/ManagerDashboard";
+import { UserMap } from "./pages/UserMap";
 
 const App: React.FC = () => {
   return (
     <Provider store={store}>
-      <ManagerDashboard />
+      <Router>
+        <Routes>
+          <Route path="/" element={<UserMap />} />
+          <Route path="/admin" element={<ManagerDashboard />} />
+        </Routes>
+      </Router>
     </Provider>
   );
 };
