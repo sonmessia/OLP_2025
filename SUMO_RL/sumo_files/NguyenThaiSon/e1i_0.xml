@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- generated on 2025-11-17T19:19:53.711917+07:00 by Eclipse SUMO GUI 1.25.0
+<sumoConfiguration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/sumoConfiguration.xsd">
+
+    <input>
+        <net-file value="D:\OLP\OLP_2025\SUMO_RL\sumo_files\NguyenThaiSon\Nga6NguyenThaiSon.net.xml"/>
+        <route-files value="D:\OLP\OLP_2025\SUMO_RL\sumo_files\NguyenThaiSon\routes.rou.xml"/>
+        <additional-files value="D:\OLP\OLP_2025\SUMO_RL\sumo_files\NguyenThaiSon\Nga6NguyenThaiSon.add.xml"/>
+    </input>
+
+</sumoConfiguration>
+-->
+
+<instantE1 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/instant_e1_file.xsd">
+    <instantOut id="e1i_0" time="9.34" state="enter" vehID="1" speed="9.91" length="5.00" type="DEFAULT_VEHTYPE"/>
+    <instantOut id="e1i_0" time="9.84" state="leave" vehID="1" speed="9.91" length="5.00" type="DEFAULT_VEHTYPE" occupancy="0.50"/>
+    <instantOut id="e1i_0" time="51.43" state="enter" vehID="23" speed="6.51" length="5.00" type="DEFAULT_VEHTYPE" gap="41.59"/>
+    <instantOut id="e1i_0" time="52.00" state="stay" vehID="23" speed="6.51" length="5.00" type="DEFAULT_VEHTYPE"/>
+    <instantOut id="e1i_0" time="52.35" state="leave" vehID="23" speed="3.74" length="5.00" type="DEFAULT_VEHTYPE" occupancy="0.92"/>
+    <instantOut id="e1i_0" time="68.57" state="enter" vehID="53" speed="8.55" length="5.00" type="DEFAULT_VEHTYPE" gap="16.22"/>
+    <instantOut id="e1i_0" time="69.00" state="stay" vehID="53" speed="8.55" length="5.00" type="DEFAULT_VEHTYPE"/>
+    <instantOut id="e1i_0" time="69.32" state="leave" vehID="53" speed="4.11" length="5.00" type="DEFAULT_VEHTYPE" occupancy="0.75"/>
+    <instantOut id="e1i_0" time="100.22" state="enter" vehID="96" speed="10.29" length="5.00" type="DEFAULT_VEHTYPE" gap="30.90"/>
+    <instantOut id="e1i_0" time="100.70" state="leave" vehID="96" speed="10.29" length="5.00" type="DEFAULT_VEHTYPE" occupancy="0.49"/>
+    <instantOut id="e1i_0" time="104.67" state="enter" vehID="80" speed="10.70" length="5.00" type="DEFAULT_VEHTYPE" gap="3.97"/>
+    <instantOut id="e1i_0" time="105.00" state="stay" vehID="80" speed="10.70" length="5.00" type="DEFAULT_VEHTYPE"/>
+    <instantOut id="e1i_0" time="105.23" state="leave" vehID="80" speed="6.38" length="5.00" type="DEFAULT_VEHTYPE" occupancy="0.56"/>
+    <instantOut id="e1i_0" time="151.50" state="enter" vehID="86" speed="8.08" length="5.00" type="DEFAULT_VEHTYPE" gap="46.27"/>
+    <instantOut id="e1i_0" time="152.00" state="stay" vehID="86" speed="8.08" length="5.00" type="DEFAULT_VEHTYPE"/>
+    <instantOut id="e1i_0" time="152.24" state="leave" vehID="86" speed="3.79" length="5.00" type="DEFAULT_VEHTYPE" occupancy="0.75"/>
+</instantE1>

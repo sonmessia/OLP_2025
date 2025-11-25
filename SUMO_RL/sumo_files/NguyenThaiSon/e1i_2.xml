@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- generated on 2025-11-17T19:19:53.712678+07:00 by Eclipse SUMO GUI 1.25.0
+<sumoConfiguration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/sumoConfiguration.xsd">
+
+    <input>
+        <net-file value="D:\OLP\OLP_2025\SUMO_RL\sumo_files\NguyenThaiSon\Nga6NguyenThaiSon.net.xml"/>
+        <route-files value="D:\OLP\OLP_2025\SUMO_RL\sumo_files\NguyenThaiSon\routes.rou.xml"/>
+        <additional-files value="D:\OLP\OLP_2025\SUMO_RL\sumo_files\NguyenThaiSon\Nga6NguyenThaiSon.add.xml"/>
+    </input>
+
+</sumoConfiguration>
+-->
+
+<instantE1 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/instant_e1_file.xsd">
+    <instantOut id="e1i_2" time="36.31" state="enter" vehID="21" speed="8.44" length="5.00" type="DEFAULT_VEHTYPE"/>
+    <instantOut id="e1i_2" time="36.90" state="leave" vehID="21" speed="8.44" length="5.00" type="DEFAULT_VEHTYPE" occupancy="0.59"/>
+    <instantOut id="e1i_2" time="68.37" state="enter" vehID="46" speed="5.29" length="5.00" type="DEFAULT_VEHTYPE" gap="31.47"/>
+    <instantOut id="e1i_2" time="69.00" state="stay" vehID="46" speed="5.29" length="5.00" type="DEFAULT_VEHTYPE"/>
+    <instantOut id="e1i_2" time="69.95" state="leave" vehID="46" speed="1.78" length="5.00" type="DEFAULT_VEHTYPE" occupancy="1.58"/>
+</instantE1>
