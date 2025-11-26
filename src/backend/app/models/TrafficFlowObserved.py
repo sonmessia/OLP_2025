@@ -21,8 +21,8 @@ class TrafficFlowObserved(BaseModel):
     avgSpeed: Optional[float] = Field(None, description="Average speed in m/s", ge=0.0)
     refRoadSegment: Optional[Union[str, AnyUrl]] = Field(None, description="Reference to RoadSegment entity")
 
-    class Config:
-        schema_extra = {
+    model_config = {
+        "json_schema_extra": {
             "example": {
                 "id": "urn:ngsi-ld:TrafficFlowObserved:4066470692",
                 "type": "TrafficFlowObserved",
@@ -34,3 +34,4 @@ class TrafficFlowObserved(BaseModel):
                 "refRoadSegment": "urn:ngsi-ld:RoadSegment:4066470692",
             }
         }
+    }
