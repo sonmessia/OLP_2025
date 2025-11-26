@@ -1,3 +1,8 @@
+# Copyright (c) 2025 Green Wave Team
+#
+# This software is released under the MIT License.
+# https://opensource.org/licenses/MIT
+
 from fastapi import FastAPI
 
 from app.api.routers.air_quality_router import router as air_quality_router

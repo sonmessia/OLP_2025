@@ -1,3 +1,8 @@
+# Copyright (c) 2025 Green Wave Team
+#
+# This software is released under the MIT License.
+# https://opensource.org/licenses/MIT
+
 from .air_quality_service import AirQualityService
 from .base_service import BaseService
 from .building_service import BuildingService
