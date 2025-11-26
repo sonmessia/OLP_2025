@@ -53,7 +53,9 @@ const MapController: React.FC<{
   return null;
 };
 
-export const PollutionMap: React.FC<PollutionMapProps> = ({ hotspots }) => {
+export const PollutionMap: React.FC<
+  PollutionMapProps & { onHotspotSelect?: (hotspot: PollutionHotspot) => void }
+> = ({ hotspots, onHotspotSelect }) => {
   // Default center (Ho Chi Minh City)
   const defaultCenter: [number, number] = [10.8231, 106.6297];
   const center: [number, number] =
@@ -283,6 +285,9 @@ export const PollutionMap: React.FC<PollutionMapProps> = ({ hotspots }) => {
               weight={2}
               opacity={1}
               fillOpacity={0.7}
+              eventHandlers={{
+                click: () => onHotspotSelect?.(hotspot),
+              }}
             >
               <Popup>
                 <div className="p-2">

@@ -45,11 +45,11 @@ export const KPICard: React.FC<KPICardProps> = ({ kpi }) => {
   const getTrendIcon = () => {
     switch (kpi.trend) {
       case "up":
-        return <TrendingUp className="w-4 h-4" />;
+        return <TrendingUp className="w-3 h-3" />;
       case "down":
-        return <TrendingDown className="w-4 h-4" />;
+        return <TrendingDown className="w-3 h-3" />;
       default:
-        return <Minus className="w-4 h-4" />;
+        return <Minus className="w-3 h-3" />;
     }
   };
 
@@ -63,37 +63,37 @@ export const KPICard: React.FC<KPICardProps> = ({ kpi }) => {
 
   return (
     <div
-      className={`rounded-xl border-2 p-2 md:px-6 md:py-2 transition-all hover:shadow-lg ${
+      className={`rounded-lg border p-3 transition-all hover:shadow-md ${
         colorClasses[kpi.color]
       }`}
     >
       <div className="flex items-start justify-between">
-        <div className="flex-1">
-          <p className="text-sm font-medium text-gray-600 dark:text-gray-400 mb-1">
+        <div className="flex-1 min-w-0">
+          <p className="text-xs font-semibold text-gray-600 dark:text-gray-400 truncate">
             {kpi.title}
           </p>
-          <div className="flex items-baseline gap-2">
-            <h3 className="text-2xl font-bold text-gray-900 dark:text-white">
+          <div className="flex items-baseline gap-1.5 mt-1">
+            <h3 className="text-xl font-bold text-gray-900 dark:text-white leading-none">
               {kpi.value.toLocaleString()}
             </h3>
-            <span className="text-sm text-gray-500 dark:text-gray-400">
+            <span className="text-xs text-gray-500 dark:text-gray-400">
               {kpi.unit}
             </span>
           </div>
-          <div className={`flex items-center gap-1 mt-2 ${getTrendColor()}`}>
-            {getTrendIcon()}
-            <span className="text-sm font-medium">
-              {kpi.trendValue > 0 ? "+" : ""}
-              {kpi.trendValue}%
-            </span>
-          </div>
+        </div>
+        <div className={`flex items-center gap-1 mt-1.5 ${getTrendColor()}`}>
+          {getTrendIcon()}
+          <span className="text-xs font-medium">
+            {kpi.trendValue > 0 ? "+" : ""}
+            {kpi.trendValue}%
+          </span>
         </div>
         <div
-          className={`p-3 rounded-lg bg-white/50 dark:bg-black/20 ${
+          className={`p-2 rounded-md bg-white/60 dark:bg-black/20 ml-3 ${
             iconColorClasses[kpi.color]
           }`}
         >
-          <IconComponent className="w-6 h-6" />
+          <IconComponent className="w-5 h-5" />
         </div>
       </div>
     </div>

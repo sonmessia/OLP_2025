@@ -5,6 +5,7 @@ import { MonitoringChart } from "../components/feature/dashboard/MonitoringChart
 import { RewardChart } from "../components/feature/dashboard/RewardChart";
 import { PollutionMap } from "../components/feature/dashboard/PollutionMap";
 import { AlertPanel } from "../components/feature/dashboard/AlertPanel";
+import { ManualControlPanel } from "../components/feature/dashboard/ManualControlPanel";
 import type {
   DashboardStateModel,
   KPICardModel,
@@ -26,7 +27,7 @@ const generateMockData = (): DashboardStateModel => {
   const kpis: KPICardModel[] = [
     {
       id: "1",
-      title: "Thời gian chờ TB",
+      title: "Thời gian chờ",
       value: 45,
       unit: "giây",
       trend: "down",
@@ -36,7 +37,7 @@ const generateMockData = (): DashboardStateModel => {
     },
     {
       id: "2",
-      title: "PM2.5 TB",
+      title: "PM2.5",
       value: 35,
       unit: "μg/m³",
       trend: "down",
@@ -46,7 +47,7 @@ const generateMockData = (): DashboardStateModel => {
     },
     {
       id: "3",
-      title: "Số xe qua nút",
+      title: "Số xe",
       value: 1248,
       unit: "xe/h",
       trend: "up",
@@ -202,12 +203,12 @@ const generateMockData = (): DashboardStateModel => {
 export const ManagerDashboard: React.FC = () => {
   // Initialize dark mode from localStorage or system preference
   const getInitialDarkMode = () => {
-    if (typeof window !== 'undefined') {
-      const stored = localStorage.getItem('darkMode');
+    if (typeof window !== "undefined") {
+      const stored = localStorage.getItem("darkMode");
       if (stored !== null) {
-        return stored === 'true';
+        return stored === "true";
       }
-      return window.matchMedia('(prefers-color-scheme: dark)').matches;
+      return window.matchMedia("(prefers-color-scheme: dark)").matches;
     }
     return false;
   };
@@ -215,6 +216,9 @@ export const ManagerDashboard: React.FC = () => {
   const [isDarkMode, setIsDarkMode] = useState(getInitialDarkMode);
   const [dashboardData, setDashboardData] = useState<DashboardStateModel>(
     generateMockData()
+  );
+  const [selectedSensor, setSelectedSensor] = useState<PollutionHotspot | null>(
+    null
   );
 
   // Apply dark mode class on mount
@@ -238,7 +242,7 @@ export const ManagerDashboard: React.FC = () => {
   const handleThemeToggle = () => {
     const newDarkMode = !isDarkMode;
     setIsDarkMode(newDarkMode);
-    localStorage.setItem('darkMode', newDarkMode.toString());
+    localStorage.setItem("darkMode", newDarkMode.toString());
   };
 
   return (
@@ -249,26 +253,37 @@ export const ManagerDashboard: React.FC = () => {
       />
 
       <main className="p-4">
-        {/* KPI Cards - Top Row (20% Height) */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 md:gap-6 gap-2 md:mb-4 mb-2">
-          {dashboardData.kpis.map((kpi) => (
-            <KPICard key={kpi.id} kpi={kpi} />
-          ))}
-        </div>
-
-        {/* Bottom Row (40% Height) */}
+        {/* Top Section: Map & Controls */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
-          {/* Pollution Map - 65% */}
-          <div className="lg:col-span-2 h-[500px]">
-            <PollutionMap hotspots={dashboardData.pollutionHotspots} />
+          <div className="lg:col-span-2">
+            {/* KPI Cards */}
+            <div className="grid grid-cols-2 lg:grid-cols-4 md:gap-6 gap-2 mb-2">
+              {dashboardData.kpis.map((kpi) => (
+                <KPICard key={kpi.id} kpi={kpi} />
+              ))}
+            </div>
+            {/* Pollution Map */}
+            <div className="h-[600px]">
+              <PollutionMap
+                hotspots={dashboardData.pollutionHotspots}
+                onHotspotSelect={setSelectedSensor}
+              />
+            </div>
           </div>
 
-          {/* Alert Panel - 35% */}
-          <div className="h-[500px]">
-            <AlertPanel
-              alerts={dashboardData.alerts}
-              interventions={dashboardData.interventions}
-            />
+          {/* Right Column: Alerts & Manual Control */}
+          <div className="flex flex-col gap-6 h-full">
+            {/* Alert Panel */}
+            <div className="h-[350px]">
+              <AlertPanel
+                alerts={dashboardData.alerts}
+                interventions={dashboardData.interventions}
+              />
+            </div>
+            {/* Manual Control Panel */}
+            <div className="flex-1 min-h-[300px]">
+              <ManualControlPanel selectedSensor={selectedSensor} />
+            </div>
           </div>
         </div>
 
