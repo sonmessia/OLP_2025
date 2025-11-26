@@ -14,10 +14,9 @@ from threading import Thread
 ORION_URL = "http://localhost:1026/ngsi-ld/v1"
 
 # 2. Địa chỉ máy bạn (Để Orion gọi ngược lại báo tin)
-# Nếu chạy Docker Orion, phải dùng "http://host.docker.internal:5000"
-# Nếu chạy Linux thuần hoặc Native, dùng "http://localhost:5000"
-MY_NOTIFY_HOST = "http://host.docker.internal:5000" 
-
+# Docker on Linux: Use gateway IP to reach host
+# For other setups: use "http://localhost:5000" or "http://host.docker.internal:5000"
+MY_NOTIFY_HOST = "http://172.20.0.1:5000"
 MODEL_PATH = "dqn_model.h5"
 TLS_ID = "4066470692"
 NUM_PHASES = 2
