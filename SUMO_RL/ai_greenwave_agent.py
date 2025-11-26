@@ -14,9 +14,9 @@ from threading import Thread
 ORION_URL = "http://localhost:1026/ngsi-ld/v1"
 
 # 2. Địa chỉ máy bạn (Để Orion gọi ngược lại báo tin)
-# Nếu chạy Docker Orion, phải dùng "http://host.docker.internal:8080"
-# Nếu chạy Linux thuần hoặc Native, dùng "http://localhost:8080"
-MY_NOTIFY_HOST = "http://host.docker.internal:8080" 
+# Nếu chạy Docker Orion, phải dùng "http://host.docker.internal:5000"
+# Nếu chạy Linux thuần hoặc Native, dùng "http://localhost:5000"
+MY_NOTIFY_HOST = "http://host.docker.internal:5000" 
 
 MODEL_PATH = "dqn_model.h5"
 TLS_ID = "4066470692"
@@ -201,5 +201,5 @@ if __name__ == "__main__":
     # Chạy luồng đăng ký riêng
     Thread(target=setup_subscription).start()
     
-    print("🚀 AI Agent & Proxy đang chạy tại cổng 8080...")
-    app.run(host='0.0.0.0', port=8080)
+    print("🚀 AI Agent & Proxy đang chạy tại cổng 5000...")
+    app.run(host='0.0.0.0', port=5000)
