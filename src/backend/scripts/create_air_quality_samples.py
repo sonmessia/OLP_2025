@@ -1,3 +1,8 @@
+# Copyright (c) 2025 Green Wave Team
+# 
+# This software is released under the MIT License.
+# https://opensource.org/licenses/MIT
+
 """
 Script to create 5 sample AirQualityObserved entities for testing.
 
