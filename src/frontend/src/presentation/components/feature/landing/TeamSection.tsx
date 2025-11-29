@@ -1,16 +1,16 @@
 import React from "react";
-import thaiAnhAI from "../../../../assets/team/thaianh.png";
+import thaiAnhAI from "../../../../assets/team/thaianh.jpg";
 import sonCloud from "../../../../assets/team/son.jpg";
 import huynhMinhTri from "../../../../assets/team/tri.jpg";
 
 const teamMembers = [
   {
-    name: "Thái Anh AI",
+    name: "Thái Anh 36",
     role: "AI & Data Engineer",
     imageUrl: thaiAnhAI,
   },
   {
-    name: "Sơn Cloud",
+    name: "Hoàng Sơn",
     role: "Backend & Architect",
     imageUrl: sonCloud,
   },
