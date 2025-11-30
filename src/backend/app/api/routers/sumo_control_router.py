@@ -98,19 +98,57 @@ async def connect_to_simulation(request: ConnectSimulationRequest):
 @router.post("/start")
 async def start_simulation(request: StartSimulationRequest):
     """
-    Start new SUMO simulation (requires SUMO_HOME in container)
+    Start SUMO simulation
     
-    DEPRECATED: Use /connect instead for better compatibility
-    This endpoint requires SUMO installed in backend container.
+    IMPORTANT: This requires SUMO to be started externally on the host.
+    The backend will connect to it via TraCI.
+    
+    Steps:
+    1. Dashboard calls this endpoint
+    2. User needs to manually start SUMO with:
+       sumo-gui -c <config> --remote-port 8813 --start
+    3. OR use the start script: python scripts/start_sumo.py <scenario>
+    4. Backend will attempt to connect
+    
+    For now, this endpoint will try to connect to an existing SUMO instance.
     """
-    # Try to use TraCIConnector first (connect to existing)
-    return await connect_to_simulation(
-        ConnectSimulationRequest(
-            host="localhost",
+    global traci_connector
+    
+    try:
+        # Create connector if not exists
+        if traci_connector is None:
+            traci_connector = TraCIConnector()
+        
+        # Try to connect to existing SUMO (host must start it)
+        # Use bridge IP for Docker -> Host communication
+        success = traci_connector.connect(
+            host="172.17.0.1",  # Docker bridge IP to reach host
             port=request.port,
             scenario=request.scenario
         )
-    )
+        
+        if not success:
+            raise HTTPException(
+                status_code=500,
+                detail=f"Failed to connect to SUMO. Please start SUMO manually with: sumo-gui -c <config> --remote-port {request.port} --start"
+            )
+        
+        # Get initial state
+        state = traci_connector.get_traffic_state()
+        scenario_info = traci_connector.get_scenario_info()
+        
+        return {
+            "status": "connected",
+            "message": f"Successfully connected to SUMO running scenario {request.scenario}",
+            **scenario_info,
+            "initial_state": state
+        }
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Failed to start/connect SUMO: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
 
 
 @router.post("/stop")

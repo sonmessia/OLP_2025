@@ -1,35 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<!-- generated on 2025-11-29T20:30:05.697995+07:00 by Eclipse SUMO sumo 1.25.0
+<!-- generated on 2025-11-30T22:56:26.320401+07:00 by Eclipse SUMO sumo 1.25.0
 <sumoConfiguration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/sumoConfiguration.xsd">
 
     <input>
-        <net-file value="sumo_files/Nga4ThuDuc/Nga4ThuDuc.net.xml"/>
-        <route-files value="sumo_files/Nga4ThuDuc/routes.rou.xml"/>
-        <additional-files value="sumo_files/Nga4ThuDuc/Nga4ThuDuc.add.xml"/>
+        <net-file value="Nga4ThuDuc.net.xml"/>
+        <route-files value="routes.rou.xml"/>
+        <additional-files value="Nga4ThuDuc.add.xml"/>
     </input>
 
     <time>
-        <step-length value="0.1"/>
+        <step-length value="1.0"/>
     </time>
 
-    <processing>
-        <lateral-resolution value="0"/>
-    </processing>
-
-    <report>
-        <no-warnings value="true"/>
-        <no-step-log value="true"/>
-    </report>
-
     <traci_server>
-        <remote-port value="40177"/>
+        <remote-port value="8813"/>
     </traci_server>
 
 </sumoConfiguration>
 -->
 
 <detector xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/det_e1_file.xsd">
-    <interval begin="0.00" end="300.00" id="e1_2" nVehContrib="1" flow="12.00" occupancy="0.23" speed="7.11" harmonicMeanSpeed="7.11" length="5.00" nVehEntered="1"/>
-    <interval begin="300.00" end="360.00" id="e1_2" nVehContrib="0" flow="0.00" occupancy="0.00" speed="-1.00" harmonicMeanSpeed="-1.00" length="-1.00" nVehEntered="0"/>
+    <interval begin="0.00" end="180.00" id="e1_2" nVehContrib="1" flow="20.00" occupancy="0.48" speed="5.83" harmonicMeanSpeed="5.83" length="5.00" nVehEntered="1"/>
 </detector>

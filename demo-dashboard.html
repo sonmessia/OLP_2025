@@ -452,6 +452,12 @@
                     <option value="NguyenThaiSon">Ngã 6 Nguyễn Thái Sơn (6-way)</option>
                     <option value="QuangTrung">Quang Trung (Complex)</option>
                 </select>
+                <div style="margin-top: 8px; padding: 8px; background: #fef3c7; border-left: 3px solid #f59e0b; border-radius: 3px; font-size: 0.85rem; color: #92400e;">
+                    <strong>⚠️ To change scenario:</strong><br>
+                    1. Click "Stop SUMO" if connected<br>
+                    2. Start new SUMO on host with chosen scenario<br>
+                    3. Click "Start SUMO" to reconnect
+                </div>
             </div>
             <div style="background: #f3f4f6; padding: 15px; border-radius: 5px; margin: 15px 0;">
                 <div style="font-size: 0.9rem; color: #6b7280;">
@@ -727,27 +733,74 @@
         }
 
         // ===== CONTROL FUNCTIONS =====
-        function startSimulation() {
+        async function startSimulation() {
             if (!isRunning) {
-                isRunning = true;
-                document.getElementById('systemStatus').textContent = '● SIMULATION RUNNING';
-                document.getElementById('systemStatus').style.background = '#10b981';
-                addLog('Simulation started');
-                
-                // Start all intervals
-                window.updateInterval = setInterval(() => {
-                    updateTrafficMetrics();
-                    updateTime();
-                }, 1000 / simulationSpeed);
+                // Check if SUMO is connected first
+                try {
+                    const statusResponse = await fetch(`${BACKEND_URL}/sumo/status`);
+                    const statusData = await statusResponse.json();
+                    
+                    if (!statusData.connected) {
+                        addLog('❌ SUMO not connected. Click "Start SUMO" first!');
+                        alert('Please connect to SUMO first by clicking "Start SUMO" button above.');
+                        return;
+                    }
+                    
+                    isRunning = true;
+                    document.getElementById('systemStatus').textContent = '● SIMULATION RUNNING';
+                    document.getElementById('systemStatus').style.background = '#10b981';
+                    addLog('✅ Simulation started - Running SUMO steps');
+                    
+                    // Start SUMO step loop
+                    window.sumoStepInterval = setInterval(async () => {
+                        try {
+                            const stepResponse = await fetch(`${BACKEND_URL}/sumo/step`, {
+                                method: 'POST'
+                            });
+                            
+                            if (stepResponse.ok) {
+                                const stepData = await stepResponse.json();
+                                
+                                // Update UI with real SUMO data
+                                const state = stepData.state;
+                                document.getElementById('simTime').textContent = stepData.time.toFixed(1);
+                                document.getElementById('avgSpeed').textContent = state.avg_speed.toFixed(1);
+                                document.getElementById('vehicleCount').textContent = state.vehicle_count;
+                                document.getElementById('currentPhase').textContent = state.current_phase;
+                                
+                                // Update chart
+                                const time = new Date().toLocaleTimeString('vi-VN', { 
+                                    hour: '2-digit', 
+                                    minute: '2-digit', 
+                                    second: '2-digit' 
+                                });
+                                trafficData.labels.push(time);
+                                trafficData.datasets[0].data.push(state.vehicle_count);
+                                trafficData.datasets[1].data.push(state.avg_speed);
 
-                window.phaseInterval = setInterval(() => {
-                    updateTrafficLight();
-                    addLog(`Traffic light changed to ${phaseNames[currentPhaseIndex]}`);
-                }, 5000 / simulationSpeed);
-
-                window.envInterval = setInterval(() => {
-                    updateEnvironmentalMetrics();
-                }, 3000 / simulationSpeed);
+                                if (trafficData.labels.length > 20) {
+                                    trafficData.labels.shift();
+                                    trafficData.datasets[0].data.shift();
+                                    trafficData.datasets[1].data.shift();
+                                }
+                                trafficFlowChart.update('none');
+                                
+                                // Log phase changes
+                                if (state.current_phase !== window.lastPhase) {
+                                    const phaseName = phaseNames[state.current_phase] || `Phase ${state.current_phase}`;
+                                    addLog(`Traffic light changed to ${phaseName}`);
+                                    window.lastPhase = state.current_phase;
+                                }
+                            }
+                        } catch (error) {
+                            console.error('Step error:', error);
+                        }
+                    }, 1000 / simulationSpeed);
+                    
+                } catch (error) {
+                    addLog(`❌ Error starting simulation: ${error.message}`);
+                    alert('Cannot connect to backend. Make sure it is running.');
+                }
             }
         }
 
@@ -756,8 +809,14 @@
                 isRunning = false;
                 document.getElementById('systemStatus').textContent = '● SIMULATION PAUSED';
                 document.getElementById('systemStatus').style.background = '#f59e0b';
-                addLog('Simulation paused');
+                addLog('⏸ Simulation paused');
                 
+                // Clear SUMO step interval
+                if (window.sumoStepInterval) {
+                    clearInterval(window.sumoStepInterval);
+                }
+                
+                // Clear old intervals if they exist
                 clearInterval(window.updateInterval);
                 clearInterval(window.phaseInterval);
                 clearInterval(window.envInterval);
@@ -807,27 +866,51 @@
 
         async function checkSumoStatus() {
             try {
-                const response = await fetch(`${BACKEND_URL}/sumo/status`);
+                const controller = new AbortController();
+                const timeoutId = setTimeout(() => controller.abort(), 3000); // 3s timeout
+                
+                const response = await fetch(`${BACKEND_URL}/sumo/status`, {
+                    signal: controller.signal
+                });
+                clearTimeout(timeoutId);
+                
                 if (response.ok) {
                     const data = await response.json();
-                    if (data.running) {
+                    if (data.connected) {  // Changed from data.running to data.connected
                         document.getElementById('sumoStatus').textContent = '🟢 Connected';
                         document.getElementById('sumoStatus').style.color = '#10b981';
-                        document.getElementById('currentScenario').textContent = data.description;
-                        document.getElementById('currentTlsId').textContent = data.tls_id;
+                        document.getElementById('currentScenario').textContent = data.description || data.scenario;
+                        document.getElementById('currentTlsId').textContent = data.tls_id || '-';
                         
-                        // Start fetching real-time data
-                        fetchSumoState();
+                        // Start fetching real-time data if not already running
+                        if (!window.sumoStateInterval) {
+                            window.sumoStateInterval = setInterval(fetchSumoState, 1000);
+                        }
                     } else {
                         document.getElementById('sumoStatus').textContent = '⚫ Not Running';
                         document.getElementById('sumoStatus').style.color = '#ef4444';
                         document.getElementById('currentScenario').textContent = 'Not running';
                         document.getElementById('currentTlsId').textContent = '-';
+                        
+                        // Stop fetching if SUMO disconnected
+                        if (window.sumoStateInterval) {
+                            clearInterval(window.sumoStateInterval);
+                            window.sumoStateInterval = null;
+                        }
                     }
                 }
             } catch (error) {
-                document.getElementById('sumoStatus').textContent = '⚫ Backend Offline';
-                document.getElementById('sumoStatus').style.color = '#6b7280';
+                // Only show offline if it's not just a timeout during transition
+                if (error.name !== 'AbortError') {
+                    document.getElementById('sumoStatus').textContent = '⚫ Backend Offline';
+                    document.getElementById('sumoStatus').style.color = '#6b7280';
+                }
+                
+                // Stop fetching on network errors
+                if (window.sumoStateInterval) {
+                    clearInterval(window.sumoStateInterval);
+                    window.sumoStateInterval = null;
+                }
             }
         }
 
@@ -873,7 +956,29 @@
 
         async function startSumoSimulation() {
             const scenario = document.getElementById('scenarioSelect').value;
-            addLog(`Starting SUMO simulation with scenario: ${scenario}...`);
+            
+            // Step 1: Check if there's an existing connection and stop it first
+            try {
+                const statusResponse = await fetch(`${BACKEND_URL}/sumo/status`);
+                if (statusResponse.ok) {
+                    const statusData = await statusResponse.json();
+                    if (statusData.connected && statusData.scenario !== scenario) {
+                        addLog(`⚠️ Disconnecting from ${statusData.scenario} first...`);
+                        await stopSumoSimulation();
+                        await new Promise(resolve => setTimeout(resolve, 1000));
+                    }
+                }
+            } catch (error) {
+                console.log('Status check failed:', error);
+            }
+            
+            // Step 2: Show instructions for starting SUMO on host
+            addLog(`📋 INSTRUCTIONS: Start SUMO on your host machine first!`);
+            addLog(`   Run this command in a terminal:`);
+            addLog(`   cd /home/thaianh/OLP2025/OLP_2025`);
+            addLog(`   nohup sumo -c src/backend/app/sumo_rl/sumo_files/${scenario}/*.sumocfg --remote-port 8813 --step-length 1.0 &`);
+            addLog(``);
+            addLog(`🔌 Attempting to connect to SUMO at port 8813...`);
             
             try {
                 const response = await fetch(`${BACKEND_URL}/sumo/start`, {
@@ -883,40 +988,49 @@
                     },
                     body: JSON.stringify({
                         scenario: scenario,
-                        gui: true,
+                        gui: false,  // Changed to false since we start SUMO manually
                         port: 8813
                     })
                 });
                 
                 if (response.ok) {
                     const data = await response.json();
-                    addLog(`✅ SUMO started successfully: ${data.description}`);
-                    addLog(`Traffic Light ID: ${data.tls_id}`);
+                    addLog(`✅ Connected to SUMO successfully!`);
+                    addLog(`   Scenario: ${data.description}`);
+                    addLog(`   Traffic Light ID: ${data.tls_id}`);
+                    addLog(`   Vehicles: ${data.initial_state?.vehicle_count || 0}`);
                     
                     document.getElementById('sumoStatus').textContent = '🟢 Connected';
                     document.getElementById('sumoStatus').style.color = '#10b981';
                     document.getElementById('currentScenario').textContent = data.description;
                     document.getElementById('currentTlsId').textContent = data.tls_id;
                     
-                    // Auto-start dashboard updates
-                    if (!isRunning) {
-                        startSimulation();
-                    }
-                    
                     // Start real-time data fetching
+                    if (window.sumoStateInterval) {
+                        clearInterval(window.sumoStateInterval);
+                    }
                     window.sumoStateInterval = setInterval(fetchSumoState, 1000);
+                    
+                    addLog(`💡 Now click "▶ Start" button to begin simulation`);
                 } else {
                     const error = await response.json();
-                    addLog(`❌ Failed to start SUMO: ${error.detail}`);
+                    addLog(`❌ Connection failed: ${error.detail}`);
+                    addLog(`⚠️ Make sure SUMO is running on host with:`);
+                    addLog(`   lsof -i :8813  (should show SUMO listening)`);
                 }
             } catch (error) {
-                addLog(`❌ Error: ${error.message}`);
-                alert('Cannot connect to backend. Make sure FastAPI is running on http://localhost:8000');
+                addLog(`❌ Network error: ${error.message}`);
+                addLog(`⚠️ Check if backend is running: docker ps | grep backend`);
             }
         }
 
         async function stopSumoSimulation() {
-            addLog('Stopping SUMO simulation...');
+            addLog('🛑 Disconnecting from SUMO...');
+            
+            // Stop simulation first
+            if (isRunning) {
+                pauseSimulation();
+            }
             
             try {
                 const response = await fetch(`${BACKEND_URL}/sumo/stop`, {
@@ -924,24 +1038,29 @@
                 });
                 
                 if (response.ok) {
-                    addLog('✅ SUMO stopped successfully');
+                    addLog('✅ Disconnected successfully');
                     
                     document.getElementById('sumoStatus').textContent = '⚫ Not Running';
                     document.getElementById('sumoStatus').style.color = '#ef4444';
                     document.getElementById('currentScenario').textContent = 'Not running';
                     document.getElementById('currentTlsId').textContent = '-';
                     
-                    // Stop real-time data fetching
+                    // Stop all intervals
                     if (window.sumoStateInterval) {
                         clearInterval(window.sumoStateInterval);
+                        window.sumoStateInterval = null;
+                    }
+                    if (window.sumoStepInterval) {
+                        clearInterval(window.sumoStepInterval);
+                        window.sumoStepInterval = null;
                     }
                     
-                    pauseSimulation();
+                    addLog('💡 You can now start a different scenario');
                 } else {
-                    addLog('❌ Failed to stop SUMO');
+                    addLog('⚠️ Backend already disconnected');
                 }
             } catch (error) {
-                addLog(`❌ Error: ${error.message}`);
+                addLog(`⚠️ Disconnect error (may already be disconnected): ${error.message}`);
             }
         }
 

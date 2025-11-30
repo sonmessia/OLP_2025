@@ -1,17 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<!-- generated on 2025-11-17T19:19:53.714035+07:00 by Eclipse SUMO GUI 1.25.0
+<!-- generated on 2025-11-30T21:59:54.059461+07:00 by Eclipse SUMO sumo 1.25.0
 <sumoConfiguration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/sumoConfiguration.xsd">
 
     <input>
-        <net-file value="D:\OLP\OLP_2025\SUMO_RL\sumo_files\NguyenThaiSon\Nga6NguyenThaiSon.net.xml"/>
-        <route-files value="D:\OLP\OLP_2025\SUMO_RL\sumo_files\NguyenThaiSon\routes.rou.xml"/>
-        <additional-files value="D:\OLP\OLP_2025\SUMO_RL\sumo_files\NguyenThaiSon\Nga6NguyenThaiSon.add.xml"/>
+        <net-file value="/home/thaianh/OLP2025/OLP_2025/src/backend/app/sumo_rl/sumo_files/NguyenThaiSon/Nga6NguyenThaiSon.net.xml"/>
+        <route-files value="/home/thaianh/OLP2025/OLP_2025/src/backend/app/sumo_rl/sumo_files/NguyenThaiSon/routes.rou.xml"/>
+        <additional-files value="/home/thaianh/OLP2025/OLP_2025/src/backend/app/sumo_rl/sumo_files/NguyenThaiSon/Nga6NguyenThaiSon.add.xml"/>
     </input>
+
+    <traci_server>
+        <remote-port value="8813"/>
+    </traci_server>
 
 </sumoConfiguration>
 -->
 
 <detector xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/det_e2_file.xsd">
-   <interval begin="0.00" end="298.00" id="e2_2" sampledSeconds="35.51" nVehEntered="3" nVehLeft="3" nVehSeen="3" meanSpeed="1.27" meanTimeLoss="11.29" meanOccupancy="2.10" maxOccupancy="50.81" meanMaxJamLengthInVehicles="0.09" meanMaxJamLengthInMeters="0.14" maxJamLengthInVehicles="2" maxJamLengthInMeters="7.59" jamLengthInVehiclesSum="27" jamLengthInMetersSum="41.87" meanHaltingDuration="7.00" maxHaltingDuration="7.00" haltingDurationSum="7.00" meanIntervalHaltingDuration="7.00" maxIntervalHaltingDuration="7.00" intervalHaltingDurationSum="7.00" startedHalts="2.00" meanVehicleNumber="0.13" maxVehicleNumber="2" />
 </detector>
