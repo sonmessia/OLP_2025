@@ -1,8 +1,0 @@
-<additional>
-    <routeProbe 
-        id="LVViet_VNGiap" 
-        route="723249849#1 1272225923#0 1272225923#1 1272225923#2 1137128326 720361263 1270139985 218227253#0 218227253#1 218227253#2" 
-        freq="600" 
-        file="route_probe_output.xml"
-    />
-</additional>
