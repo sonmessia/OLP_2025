@@ -7,7 +7,7 @@ import type * as Preset from "@docusaurus/preset-classic";
 const config: Config = {
   title: "GreenWave",
   tagline: "GreenWave get your way to a better environment",
-  favicon: "img/logo.png",
+  favicon: "img/",
 
   // Future flags, see https://docusaurus.io/docs/api/docusaurus-config#future
   future: {
