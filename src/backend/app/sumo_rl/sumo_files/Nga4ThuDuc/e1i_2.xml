@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<!-- generated on 2025-11-30T22:56:26.320996+07:00 by Eclipse SUMO sumo 1.25.0
+<!-- generated on 2025-12-01T19:43:52.896850+07:00 by Eclipse SUMO GUI 1.25.0
 <sumoConfiguration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/sumoConfiguration.xsd">
 
     <input>
@@ -16,6 +16,11 @@
     <traci_server>
         <remote-port value="8813"/>
     </traci_server>
+
+    <gui_only>
+        <gui-settings-file value="viewsettings.xml"/>
+        <start value="true"/>
+    </gui_only>
 
 </sumoConfiguration>
 -->
@@ -61,4 +66,40 @@
     <instantOut id="e1i_2" time="177.03" state="leave" vehID="124" speed="2.71" length="5.00" type="car" occupancy="26.70"/>
     <instantOut id="e1i_2" time="178.98" state="enter" vehID="115" speed="2.67" length="5.00" type="car" gap="1.95"/>
     <instantOut id="e1i_2" time="179.00" state="stay" vehID="115" speed="2.67" length="5.00" type="car"/>
+    <instantOut id="e1i_2" time="180.00" state="stay" vehID="115" speed="3.85" length="5.00" type="car"/>
+    <instantOut id="e1i_2" time="180.58" state="leave" vehID="115" speed="1.91" length="5.00" type="car" occupancy="1.60"/>
+    <instantOut id="e1i_2" time="185.01" state="enter" vehID="152" speed="0.15" length="5.00" type="car" gap="4.43"/>
+    <instantOut id="e1i_2" time="186.00" state="stay" vehID="152" speed="0.15" length="5.00" type="car"/>
+    <instantOut id="e1i_2" time="187.00" state="stay" vehID="152" speed="0.09" length="5.00" type="car"/>
+    <instantOut id="e1i_2" time="188.00" state="stay" vehID="152" speed="0.03" length="5.00" type="car"/>
+    <instantOut id="e1i_2" time="189.00" state="stay" vehID="152" speed="0.01" length="5.00" type="car"/>
+    <instantOut id="e1i_2" time="190.00" state="stay" vehID="152" speed="0.00" length="5.00" type="car"/>
+    <instantOut id="e1i_2" time="191.00" state="stay" vehID="152" speed="0.00" length="5.00" type="car"/>
+    <instantOut id="e1i_2" time="192.00" state="stay" vehID="152" speed="0.00" length="5.00" type="car"/>
+    <instantOut id="e1i_2" time="193.00" state="stay" vehID="152" speed="0.00" length="5.00" type="car"/>
+    <instantOut id="e1i_2" time="194.00" state="stay" vehID="152" speed="0.00" length="5.00" type="car"/>
+    <instantOut id="e1i_2" time="195.00" state="stay" vehID="152" speed="0.00" length="5.00" type="car"/>
+    <instantOut id="e1i_2" time="196.00" state="stay" vehID="152" speed="0.00" length="5.00" type="car"/>
+    <instantOut id="e1i_2" time="197.00" state="stay" vehID="152" speed="0.00" length="5.00" type="car"/>
+    <instantOut id="e1i_2" time="198.00" state="stay" vehID="152" speed="0.00" length="5.00" type="car"/>
+    <instantOut id="e1i_2" time="199.00" state="stay" vehID="152" speed="0.00" length="5.00" type="car"/>
+    <instantOut id="e1i_2" time="200.00" state="stay" vehID="152" speed="0.00" length="5.00" type="car"/>
+    <instantOut id="e1i_2" time="201.00" state="stay" vehID="152" speed="0.00" length="5.00" type="car"/>
+    <instantOut id="e1i_2" time="202.00" state="stay" vehID="152" speed="0.00" length="5.00" type="car"/>
+    <instantOut id="e1i_2" time="203.00" state="stay" vehID="152" speed="0.00" length="5.00" type="car"/>
+    <instantOut id="e1i_2" time="204.00" state="stay" vehID="152" speed="0.00" length="5.00" type="car"/>
+    <instantOut id="e1i_2" time="205.00" state="stay" vehID="152" speed="0.00" length="5.00" type="car"/>
+    <instantOut id="e1i_2" time="206.00" state="stay" vehID="152" speed="0.00" length="5.00" type="car"/>
+    <instantOut id="e1i_2" time="207.00" state="stay" vehID="152" speed="0.00" length="5.00" type="car"/>
+    <instantOut id="e1i_2" time="208.00" state="stay" vehID="152" speed="0.00" length="5.00" type="car"/>
+    <instantOut id="e1i_2" time="209.00" state="stay" vehID="152" speed="0.00" length="5.00" type="car"/>
+    <instantOut id="e1i_2" time="210.00" state="stay" vehID="152" speed="0.00" length="5.00" type="car"/>
+    <instantOut id="e1i_2" time="211.00" state="stay" vehID="152" speed="0.00" length="5.00" type="car"/>
+    <instantOut id="e1i_2" time="212.00" state="stay" vehID="152" speed="0.00" length="5.00" type="car"/>
+    <instantOut id="e1i_2" time="213.00" state="stay" vehID="152" speed="0.00" length="5.00" type="car"/>
+    <instantOut id="e1i_2" time="214.00" state="stay" vehID="152" speed="0.00" length="5.00" type="car"/>
+    <instantOut id="e1i_2" time="215.00" state="stay" vehID="152" speed="0.00" length="5.00" type="car"/>
+    <instantOut id="e1i_2" time="216.00" state="stay" vehID="152" speed="0.00" length="5.00" type="car"/>
+    <instantOut id="e1i_2" time="217.00" state="stay" vehID="152" speed="0.00" length="5.00" type="car"/>
+    <instantOut id="e1i_2" time="218.00" state="stay" vehID="152" speed="0.00" length="5.00" type="car"/>
 </instantE1>

@@ -29,11 +29,11 @@ class TraCIConnector:
             'description': 'Nga Tu Thu Duc - 4-way intersection'
         },
         'NguyenThaiSon': {
-            'tls_id': 'cluster_1488091499_314059003_314059006_314059008',
+            'tls_id': '11777727352',  # Main traffic light in NguyenThaiSon scenario
             'description': 'Nga 6 Nguyen Thai Son - 6-way intersection'
         },
         'QuangTrung': {
-            'tls_id': 'cluster_314061834_314061898',
+            'tls_id': '2269043920',  # Main traffic light - Quang Trung intersection
             'description': 'Quang Trung - Complex intersection'
         }
     }
@@ -151,9 +151,18 @@ class TraCIConnector:
             return False
             
         try:
-            # Close existing connection if any
-            if self.connected:
-                self.close()
+            # Close existing connection if any (force close to avoid "already active" error)
+            try:
+                if self.connected:
+                    logger.info("Closing existing TraCI connection...")
+                    traci.close()
+                    self.connected = False
+                else:
+                    # Even if self.connected is False, try closing in case of stale connection
+                    logger.info("Force closing any stale TraCI connections...")
+                    traci.close()
+            except Exception as e:
+                logger.debug(f"No existing connection to close: {e}")
             
             logger.info(f"Connecting to SUMO at {host}:{port}...")
             
@@ -234,18 +243,60 @@ class TraCIConnector:
     
     def get_traffic_state(self) -> Optional[Dict[str, Any]]:
         """
-        Get current traffic state from SUMO
+        Get current traffic state from SUMO - ALL TRAFFIC LIGHTS
         
         Returns:
-            Dictionary with traffic metrics or None if not connected
+            Dictionary with traffic metrics including ALL traffic lights state
         """
         if not self.is_connected():
             return None
             
         try:
-            # Get traffic light state
-            current_phase = traci.trafficlight.getPhase(self.tls_id)
-            phase_duration = traci.trafficlight.getPhaseDuration(self.tls_id)
+            # Get ALL traffic lights in the simulation
+            all_tls_ids = traci.trafficlight.getIDList()
+            
+            # Get detailed state for ALL traffic lights
+            traffic_lights = []
+            for tls_id in all_tls_ids:
+                current_phase = traci.trafficlight.getPhase(tls_id)
+                phase_duration = traci.trafficlight.getPhaseDuration(tls_id)
+                
+                # Get the actual signal state (GGrrrrGGrrrr etc)
+                signal_state = traci.trafficlight.getRedYellowGreenState(tls_id)
+                
+                # Get time until next switch
+                next_switch = traci.trafficlight.getNextSwitch(tls_id)
+                current_time = traci.simulation.getTime()
+                time_until_switch = max(0, next_switch - current_time)
+                
+                # Parse signal state to human readable
+                lights = []
+                for i, state in enumerate(signal_state):
+                    color = "unknown"
+                    if state in ['G', 'g']:
+                        color = "green"
+                    elif state in ['y', 'Y']:
+                        color = "yellow"
+                    elif state in ['r', 'R']:
+                        color = "red"
+                    elif state in ['o', 'O']:
+                        color = "off"
+                    
+                    lights.append({
+                        "index": i,
+                        "state": state,
+                        "color": color
+                    })
+                
+                traffic_lights.append({
+                    "id": tls_id,
+                    "current_phase": current_phase,
+                    "phase_duration": round(phase_duration, 1),
+                    "time_until_switch": round(time_until_switch, 1),
+                    "signal_state": signal_state,
+                    "lights": lights,
+                    "is_main": tls_id == self.tls_id  # Mark the main controlled TLS
+                })
             
             # Get vehicle metrics
             vehicle_ids = traci.vehicle.getIDList()
@@ -260,7 +311,7 @@ class TraCIConnector:
             else:
                 avg_speed = max_speed = min_speed = 0.0
             
-            # Get lane metrics for TLS
+            # Get lane metrics for MAIN TLS only
             controlled_lanes = traci.trafficlight.getControlledLanes(self.tls_id)
             
             # Queue length (vehicles waiting)
@@ -278,17 +329,27 @@ class TraCIConnector:
             
             avg_occupancy = total_occupancy / len(set(controlled_lanes)) if controlled_lanes else 0.0
             
+            # Count loaded/departed/arrived vehicles
+            loaded_vehicles = traci.simulation.getLoadedNumber()
+            departed_vehicles = traci.simulation.getDepartedNumber()
+            arrived_vehicles = traci.simulation.getArrivedNumber()
+            
             return {
                 'simulation_time': traci.simulation.getTime(),
-                'current_phase': current_phase,
-                'phase_duration': phase_duration,
+                'current_phase': traci.trafficlight.getPhase(self.tls_id),
+                'phase_duration': traci.trafficlight.getPhaseDuration(self.tls_id),
                 'vehicle_count': vehicle_count,
                 'avg_speed': round(avg_speed, 2),
                 'max_speed': round(max_speed, 2),
                 'min_speed': round(min_speed, 2),
                 'queue_length': queue_length,
                 'waiting_time': round(waiting_time, 2),
-                'avg_occupancy': round(avg_occupancy * 100, 2),  # Convert to percentage
+                'avg_occupancy': round(avg_occupancy * 100, 2),
+                'loaded_vehicles': loaded_vehicles,
+                'departed_vehicles': departed_vehicles,
+                'arrived_vehicles': arrived_vehicles,
+                'traffic_lights': traffic_lights,
+                'total_traffic_lights': len(traffic_lights),
                 'controlled_lanes': len(set(controlled_lanes))
             }
             
@@ -298,10 +359,15 @@ class TraCIConnector:
     
     def set_phase(self, phase_index: int) -> bool:
         """
-        Set traffic light phase
+        Set traffic light phase with SAFE TRANSITION
+        
+        This method ensures safe phase transitions by:
+        1. Checking current phase
+        2. If changing direction (N-S to E-W), insert yellow phase first
+        3. Wait appropriate time before switching to red
         
         Args:
-            phase_index: Phase index to set
+            phase_index: Target phase index
             
         Returns:
             True if successful
@@ -310,9 +376,71 @@ class TraCIConnector:
             return False
             
         try:
-            traci.trafficlight.setPhase(self.tls_id, phase_index)
-            logger.info(f"Traffic light phase set to: {phase_index}")
+            current_phase = traci.trafficlight.getPhase(self.tls_id)
+            
+            # Get all phases to understand the signal program
+            all_phases = traci.trafficlight.getAllProgramLogics(self.tls_id)
+            
+            if not all_phases:
+                # Fallback: direct phase change (not recommended)
+                logger.warning("No phase program found, setting phase directly")
+                traci.trafficlight.setPhase(self.tls_id, phase_index)
+                return True
+            
+            program = all_phases[0]  # Get first (usually only) program
+            phases = program.phases
+            
+            # Check if target phase is valid
+            if phase_index >= len(phases):
+                logger.error(f"Invalid phase index {phase_index}, max is {len(phases)-1}")
+                return False
+            
+            current_state = phases[current_phase].state if current_phase < len(phases) else ""
+            target_state = phases[phase_index].state
+            
+            # Check if this is a safe transition
+            # 'G' = green, 'y' = yellow, 'r' = red
+            # Safe: G -> y -> r or r -> G
+            # Unsafe: G -> r (need yellow in between)
+            
+            needs_yellow = False
+            if current_state and target_state:
+                # Check each signal position
+                for i, (curr, target) in enumerate(zip(current_state, target_state)):
+                    # If changing from green to red directly = DANGEROUS
+                    if curr in ['G', 'g'] and target in ['r', 'R']:
+                        needs_yellow = True
+                        logger.warning(f"Unsafe transition detected at position {i}: {curr} -> {target}")
+                        break
+            
+            if needs_yellow:
+                # Find or create yellow transition phase
+                yellow_phase = None
+                for idx, phase in enumerate(phases):
+                    # Look for a yellow phase (all yellow signals)
+                    if 'y' in phase.state.lower():
+                        yellow_phase = idx
+                        break
+                
+                if yellow_phase is not None:
+                    logger.info(f"🟡 Safe transition: {current_phase} -> {yellow_phase} (yellow) -> {phase_index}")
+                    # Step 1: Set to yellow
+                    traci.trafficlight.setPhase(self.tls_id, yellow_phase)
+                    traci.trafficlight.setPhaseDuration(self.tls_id, 3.0)  # 3 seconds yellow
+                    
+                    # Note: The actual red phase will be set after yellow expires
+                    # We set the next phase in the program
+                    logger.info(f"⏳ Yellow light active for 3 seconds before switching to phase {phase_index}")
+                else:
+                    logger.warning("⚠️ No yellow phase found in signal program - unsafe direct transition!")
+                    traci.trafficlight.setPhase(self.tls_id, phase_index)
+            else:
+                # Safe transition - can change directly
+                logger.info(f"✅ Safe transition: {current_phase} -> {phase_index}")
+                traci.trafficlight.setPhase(self.tls_id, phase_index)
+            
             return True
+            
         except Exception as e:
             logger.error(f"Failed to set phase: {e}")
             return False

@@ -1,20 +1,32 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<!-- generated on 2025-11-30T21:59:54.058793+07:00 by Eclipse SUMO sumo 1.25.0
+<!-- generated on 2025-12-01T18:23:16.454433+07:00 by Eclipse SUMO GUI 1.25.0
 <sumoConfiguration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/sumoConfiguration.xsd">
 
     <input>
-        <net-file value="/home/thaianh/OLP2025/OLP_2025/src/backend/app/sumo_rl/sumo_files/NguyenThaiSon/Nga6NguyenThaiSon.net.xml"/>
-        <route-files value="/home/thaianh/OLP2025/OLP_2025/src/backend/app/sumo_rl/sumo_files/NguyenThaiSon/routes.rou.xml"/>
-        <additional-files value="/home/thaianh/OLP2025/OLP_2025/src/backend/app/sumo_rl/sumo_files/NguyenThaiSon/Nga6NguyenThaiSon.add.xml"/>
+        <net-file value="Nga6NguyenThaiSon.net.xml"/>
+        <route-files value="routes.rou.xml"/>
+        <additional-files value="Nga6NguyenThaiSon.add.xml"/>
     </input>
+
+    <time>
+        <step-length value="1.0"/>
+    </time>
 
     <traci_server>
         <remote-port value="8813"/>
     </traci_server>
 
+    <gui_only>
+        <quit-on-end value="true"/>
+        <start value="true"/>
+    </gui_only>
+
 </sumoConfiguration>
 -->
 
 <instantE1 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/instant_e1_file.xsd">
+    <instantOut id="e1i_1" time="40.14" state="enter" vehID="35" speed="5.15" length="5.00" type="DEFAULT_VEHTYPE"/>
+    <instantOut id="e1i_1" time="41.00" state="stay" vehID="35" speed="5.15" length="5.00" type="DEFAULT_VEHTYPE"/>
+    <instantOut id="e1i_1" time="41.34" state="leave" vehID="35" speed="1.62" length="5.00" type="DEFAULT_VEHTYPE" occupancy="1.21"/>
 </instantE1>

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<!-- generated on 2025-11-30T22:56:26.321370+07:00 by Eclipse SUMO sumo 1.25.0
+<!-- generated on 2025-12-01T19:43:52.897265+07:00 by Eclipse SUMO GUI 1.25.0
 <sumoConfiguration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/sumoConfiguration.xsd">
 
     <input>
@@ -17,9 +17,14 @@
         <remote-port value="8813"/>
     </traci_server>
 
+    <gui_only>
+        <gui-settings-file value="viewsettings.xml"/>
+        <start value="true"/>
+    </gui_only>
+
 </sumoConfiguration>
 -->
 
 <detector xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/det_e2_file.xsd">
-   <interval begin="0.00" end="180.00" id="e2_2" sampledSeconds="166.52" nVehEntered="13" nVehLeft="12" nVehSeen="13" meanSpeed="1.04" meanTimeLoss="12.01" meanOccupancy="24.77" maxOccupancy="57.12" meanMaxJamLengthInVehicles="0.81" meanMaxJamLengthInMeters="2.94" maxJamLengthInVehicles="2" maxJamLengthInMeters="8.21" jamLengthInVehiclesSum="146" jamLengthInMetersSum="529.19" meanHaltingDuration="64.00" maxHaltingDuration="64.00" haltingDurationSum="64.00" meanIntervalHaltingDuration="64.00" maxIntervalHaltingDuration="64.00" intervalHaltingDurationSum="64.00" startedHalts="3.00" meanVehicleNumber="0.98" maxVehicleNumber="2" />
+   <interval begin="0.00" end="219.00" id="e2_2" sampledSeconds="215.70" nVehEntered="19" nVehLeft="19" nVehSeen="19" meanSpeed="1.28" meanTimeLoss="10.48" meanOccupancy="28.09" maxOccupancy="68.72" meanMaxJamLengthInVehicles="0.74" meanMaxJamLengthInMeters="2.75" maxJamLengthInVehicles="2" maxJamLengthInMeters="10.00" jamLengthInVehiclesSum="162" jamLengthInMetersSum="601.64" meanHaltingDuration="10.88" maxHaltingDuration="64.00" haltingDurationSum="87.00" meanIntervalHaltingDuration="10.88" maxIntervalHaltingDuration="64.00" intervalHaltingDurationSum="87.00" startedHalts="10.00" meanVehicleNumber="1.06" maxVehicleNumber="2" />
 </detector>

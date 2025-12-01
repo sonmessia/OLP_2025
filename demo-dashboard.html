@@ -126,6 +126,93 @@
             color: #1f2937;
         }
 
+        .tls-card {
+            background: #f9fafb;
+            border-radius: 8px;
+            padding: 12px;
+            margin-bottom: 12px;
+            border-left: 4px solid #3b82f6;
+        }
+
+        .tls-card.main {
+            border-left-color: #10b981;
+            background: #f0fdf4;
+        }
+
+        .tls-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .tls-id {
+            font-weight: bold;
+            font-size: 0.9rem;
+            color: #374151;
+        }
+
+        .tls-countdown {
+            background: #3b82f6;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-weight: bold;
+            font-size: 0.85rem;
+        }
+
+        .tls-countdown.warning {
+            background: #f59e0b;
+        }
+
+        .tls-countdown.critical {
+            background: #ef4444;
+            animation: pulse 1s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .lights-row {
+            display: flex;
+            gap: 4px;
+            margin: 8px 0;
+            flex-wrap: wrap;
+        }
+
+        .signal-light {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            border: 2px solid #d1d5db;
+        }
+
+        .signal-light.green {
+            background: #10b981;
+            box-shadow: 0 0 10px #10b981;
+        }
+
+        .signal-light.yellow {
+            background: #f59e0b;
+            box-shadow: 0 0 10px #f59e0b;
+        }
+
+        .signal-light.red {
+            background: #ef4444;
+            box-shadow: 0 0 10px #ef4444;
+        }
+
+        .signal-light.off {
+            background: #6b7280;
+        }
+
+        .tls-info {
+            font-size: 0.85rem;
+            color: #6b7280;
+        }
+
         .chart-container {
             grid-column: 1 / -1;
         }
@@ -331,6 +418,55 @@
                 </div>
             </div>
 
+            <!-- All Traffic Lights Status -->
+            <div class="card">
+                <h2>🚦 All Traffic Lights (<span id="totalTLS">0</span>)</h2>
+                <div id="allTrafficLights" style="max-height: 400px; overflow-y: auto;">
+                    <div style="text-align: center; color: #6b7280; padding: 20px;">
+                        Not connected to SUMO
+                    </div>
+                </div>
+            </div>
+
+            <!-- Vehicle Statistics -->
+            <div class="card">
+                <h2>🚗 Vehicle Statistics</h2>
+                <div class="metric">
+                    <div class="metric-label">Active Vehicles</div>
+                    <div>
+                        <span class="metric-value" id="activeVehicles">0</span>
+                    </div>
+                </div>
+                <div class="metric">
+                    <div class="metric-label">Loaded/Departed</div>
+                    <div>
+                        <span class="metric-value" id="loadedVehicles">0</span>
+                        <span class="metric-unit">/ </span>
+                        <span class="metric-value" id="departedVehicles">0</span>
+                    </div>
+                </div>
+                <div class="metric">
+                    <div class="metric-label">Arrived (Completed)</div>
+                    <div>
+                        <span class="metric-value winner" id="arrivedVehicles">0</span>
+                    </div>
+                </div>
+                <div class="metric">
+                    <div class="metric-label">Queue Length</div>
+                    <div>
+                        <span class="metric-value" id="queueLength">0</span>
+                        <span class="metric-unit">vehicles</span>
+                    </div>
+                </div>
+                <div class="metric">
+                    <div class="metric-label">Total Waiting Time</div>
+                    <div>
+                        <span class="metric-value" id="waitingTime">0</span>
+                        <span class="metric-unit">seconds</span>
+                    </div>
+                </div>
+            </div>
+
             <!-- Model Performance -->
             <div class="card">
                 <h2>🎯 Model Performance</h2>
@@ -492,6 +628,58 @@
                 <input type="range" min="1" max="10" value="1" 
                        style="width: 100%;" 
                        oninput="updateSpeed(this.value)">
+            </div>
+        </div>
+
+        <!-- AI Traffic Control Panel -->
+        <div class="card" id="aiControlPanel">
+            <h2>🧠 AI Traffic Control (Smart)</h2>
+            <div style="background: #fef3c7; padding: 12px; border-radius: 5px; margin-bottom: 15px; font-size: 0.9rem;">
+                <strong>💡 Thuật toán thông minh:</strong>
+                <ul style="margin: 8px 0 0 20px; line-height: 1.6;">
+                    <li>Phân tích MỖI đèn giao thông riêng lẻ</li>
+                    <li>Tính ưu tiên dựa trên mật độ xe, queue, waiting time</li>
+                    <li>CHỈ cho xanh ở hướng cần thiết (không toàn bộ xanh!)</li>
+                    <li>Tránh xung đột giao thông tự động</li>
+                </ul>
+            </div>
+            
+            <div class="action-buttons" style="margin-bottom: 15px;">
+                <button id="btnEnableAI" class="btn-success" onclick="enableAIControl()" style="flex: 2;">
+                    🤖 Enable AI Control
+                </button>
+                <button id="btnDisableAI" class="btn-secondary" onclick="disableAIControl()" style="display: none; flex: 1;">
+                    ⏹ Disable
+                </button>
+            </div>
+            
+            <div id="aiStatus" style="display: none;">
+                <div class="metric">
+                    <div class="metric-label">AI Status</div>
+                    <div>
+                        <span class="metric-value winner" id="aiStatusText">🟢 Active</span>
+                    </div>
+                </div>
+                <div class="metric">
+                    <div class="metric-label">Controlled Traffic Lights</div>
+                    <div>
+                        <span class="metric-value" id="aiNumTLS">0</span>
+                        <span class="metric-unit">lights</span>
+                    </div>
+                </div>
+                <div class="metric">
+                    <div class="metric-label">Last Decision</div>
+                    <div>
+                        <span class="metric-value" id="aiLastDecision" style="font-size: 0.85rem;">Waiting...</span>
+                    </div>
+                </div>
+                <div class="metric">
+                    <div class="metric-label">Actions Taken</div>
+                    <div>
+                        <span class="metric-value" id="aiActionCount">0</span>
+                        <span class="metric-unit">switches</span>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -853,7 +1041,7 @@
         
         async function fetchBackendStatus() {
             try {
-                const response = await fetch(`${BACKEND_URL}/sumo-rl/status`);
+                const response = await fetch(`${BACKEND_URL}/sumo/status`);
                 if (response.ok) {
                     const data = await response.json();
                     console.log('Backend status:', data);
@@ -921,14 +1109,32 @@
                     const data = await response.json();
                     
                     // Update metrics with real SUMO data
-                    document.getElementById('avgSpeed').textContent = data.avg_speed.toFixed(1);
-                    document.getElementById('vehicleCount').textContent = data.vehicle_count;
-                    document.getElementById('occupancy').textContent = Math.round(data.occupancy);
-                    document.getElementById('occupancyBar').style.width = Math.round(data.occupancy) + '%';
-                    document.getElementById('occupancyBar').textContent = Math.round(data.occupancy) + '%';
+                    document.getElementById('avgSpeed').textContent = data.avg_speed ? data.avg_speed.toFixed(1) : '0';
+                    document.getElementById('vehicleCount').textContent = data.vehicle_count || 0;
+                    
+                    const occupancy = data.avg_occupancy || 0;
+                    document.getElementById('occupancy').textContent = Math.round(occupancy);
+                    document.getElementById('occupancyBar').style.width = Math.round(occupancy) + '%';
+                    document.getElementById('occupancyBar').textContent = Math.round(occupancy) + '%';
+                    
+                    // Update NEW vehicle statistics
+                    if (data.loaded_vehicles !== undefined) {
+                        document.getElementById('activeVehicles').textContent = data.vehicle_count || 0;
+                        document.getElementById('loadedVehicles').textContent = data.loaded_vehicles || 0;
+                        document.getElementById('departedVehicles').textContent = data.departed_vehicles || 0;
+                        document.getElementById('arrivedVehicles').textContent = data.arrived_vehicles || 0;
+                        document.getElementById('queueLength').textContent = data.queue_length || 0;
+                        document.getElementById('waitingTime').textContent = data.waiting_time ? data.waiting_time.toFixed(1) : '0';
+                    }
                     
                     // Update traffic light phase
-                    document.getElementById('currentPhase').textContent = data.current_phase;
+                    document.getElementById('currentPhase').textContent = data.current_phase || '0';
+                    
+                    // Update ALL TRAFFIC LIGHTS display
+                    if (data.traffic_lights && data.traffic_lights.length > 0) {
+                        updateAllTrafficLights(data.traffic_lights);
+                        document.getElementById('totalTLS').textContent = data.total_traffic_lights || data.traffic_lights.length;
+                    }
                     
                     // Update chart with real data
                     const time = new Date().toLocaleTimeString('vi-VN', { 
@@ -1024,6 +1230,63 @@
             }
         }
 
+        // Function to update all traffic lights display
+        function updateAllTrafficLights(trafficLights) {
+            const container = document.getElementById('allTrafficLights');
+            
+            if (!trafficLights || trafficLights.length === 0) {
+                container.innerHTML = '<div style="text-align: center; color: #6b7280; padding: 20px;">No traffic lights data</div>';
+                return;
+            }
+            
+            let html = '';
+            
+            trafficLights.forEach(tls => {
+                const isMain = tls.is_main;
+                const timeUntilSwitch = tls.time_until_switch || 0;
+                
+                // Determine countdown color
+                let countdownClass = '';
+                if (timeUntilSwitch < 5) {
+                    countdownClass = 'critical';
+                } else if (timeUntilSwitch < 10) {
+                    countdownClass = 'warning';
+                }
+                
+                // Build lights HTML
+                let lightsHtml = '';
+                if (tls.lights && tls.lights.length > 0) {
+                    tls.lights.forEach(light => {
+                        lightsHtml += `<div class="signal-light ${light.color}" title="Signal ${light.index}: ${light.state}"></div>`;
+                    });
+                } else {
+                    lightsHtml = '<div style="color: #6b7280; font-size: 0.85rem;">No signal data</div>';
+                }
+                
+                html += `
+                    <div class="tls-card ${isMain ? 'main' : ''}">
+                        <div class="tls-header">
+                            <div class="tls-id">
+                                ${isMain ? '⭐ ' : ''}TLS: ${tls.id}
+                            </div>
+                            <div class="tls-countdown ${countdownClass}">
+                                ⏱️ ${timeUntilSwitch.toFixed(1)}s
+                            </div>
+                        </div>
+                        <div class="lights-row">
+                            ${lightsHtml}
+                        </div>
+                        <div class="tls-info">
+                            Phase ${tls.current_phase} • Duration: ${tls.phase_duration ? tls.phase_duration.toFixed(1) : '0'}s
+                            ${isMain ? ' • <strong>Main Control</strong>' : ''}
+                        </div>
+                    </div>
+                `;
+            });
+            
+            container.innerHTML = html;
+        }
+
         async function stopSumoSimulation() {
             addLog('🛑 Disconnecting from SUMO...');
             
@@ -1062,6 +1325,118 @@
             } catch (error) {
                 addLog(`⚠️ Disconnect error (may already be disconnected): ${error.message}`);
             }
+        }
+
+        // ===== AI TRAFFIC CONTROL =====
+        let aiControlEnabled = false;
+        let aiStepInterval = null;
+        let aiActionCount = 0;
+
+        async function enableAIControl() {
+            addLog('🧠 Enabling AI Traffic Control...');
+            
+            try {
+                const response = await fetch(`${BACKEND_URL}/sumo/ai-control`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    addLog(`✅ AI Control enabled!`);
+                    addLog(`   Traffic Lights: ${data.num_traffic_lights}`);
+                    addLog(`   Algorithm: ${data.algorithm}`);
+                    data.features.forEach(f => addLog(`   ✓ ${f}`));
+                    
+                    aiControlEnabled = true;
+                    aiActionCount = 0;
+                    
+                    // Update UI
+                    document.getElementById('btnEnableAI').style.display = 'none';
+                    document.getElementById('btnDisableAI').style.display = 'block';
+                    document.getElementById('aiStatus').style.display = 'block';
+                    document.getElementById('aiNumTLS').textContent = data.num_traffic_lights;
+                    document.getElementById('aiStatusText').textContent = '🟢 Active';
+                    document.getElementById('aiActionCount').textContent = '0';
+                    
+                    // Start AI control loop (runs every 2 seconds)
+                    aiStepInterval = setInterval(performAIStep, 2000);
+                    
+                    addLog('🤖 AI is now controlling traffic lights based on real-time data!');
+                } else {
+                    const error = await response.json();
+                    addLog(`❌ Failed to enable AI: ${error.detail}`);
+                    addLog(`⚠️ Make sure SUMO simulation is connected first!`);
+                }
+            } catch (error) {
+                addLog(`❌ AI Control error: ${error.message}`);
+            }
+        }
+
+        async function performAIStep() {
+            if (!aiControlEnabled) return;
+            
+            try {
+                const response = await fetch(`${BACKEND_URL}/sumo/ai-step`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    
+                    // Count actions (switches)
+                    const switches = data.decisions.filter(d => d.action === 'switch').length;
+                    const holds = data.decisions.filter(d => d.action === 'hold').length;
+                    
+                    if (switches > 0) {
+                        aiActionCount += switches;
+                        document.getElementById('aiActionCount').textContent = aiActionCount;
+                        
+                        // Log significant decisions
+                        data.decisions.forEach(d => {
+                            if (d.action === 'switch') {
+                                const tlsShort = d.tls_id.substring(0, 8);
+                                addLog(`🚦 TLS ${tlsShort}: Phase ${d.from_phase}→${d.to_phase}`);
+                            }
+                        });
+                        
+                        document.getElementById('aiLastDecision').textContent = 
+                            `${switches} switched, ${holds} held (t=${data.simulation_time.toFixed(0)}s)`;
+                    } else {
+                        // Just update time without logging
+                        document.getElementById('aiLastDecision').textContent = 
+                            `All holding optimal phases (t=${data.simulation_time.toFixed(0)}s)`;
+                    }
+                } else {
+                    console.error('AI step failed');
+                }
+            } catch (error) {
+                console.error('AI step error:', error);
+            }
+        }
+
+        function disableAIControl() {
+            addLog('🛑 Disabling AI Traffic Control...');
+            
+            aiControlEnabled = false;
+            
+            if (aiStepInterval) {
+                clearInterval(aiStepInterval);
+                aiStepInterval = null;
+            }
+            
+            // Update UI
+            document.getElementById('btnEnableAI').style.display = 'block';
+            document.getElementById('btnDisableAI').style.display = 'none';
+            document.getElementById('aiStatus').style.display = 'none';
+            document.getElementById('aiStatusText').textContent = '⚫ Disabled';
+            
+            addLog('✅ AI Control disabled - Manual control restored');
         }
 
         // ===== INITIALIZE =====
