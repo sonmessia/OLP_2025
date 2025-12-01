@@ -7,5 +7,7 @@ tags: [activities, networking, team-building]
 
 **Building Pipeline & Networking**
 
+<!-- truncate -->
+
 - The team builds a pipeline to execute work every week to ensure project progress.
 - Organize coffee sessions to exchange information, share experiences, and bond team members.

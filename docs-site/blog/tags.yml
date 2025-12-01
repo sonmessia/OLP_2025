@@ -42,3 +42,8 @@ kick-off:
   label: Kick off
   permalink: /kick-off
   description: Announcements and details about the kick-off events and opening ceremonies.
+
+ai-hackathon:
+  label: AI Hackathon
+  permalink: /ai-hackathon
+  description: Information about AI hackathon events, coding challenges, and rules.

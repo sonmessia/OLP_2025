@@ -9,6 +9,8 @@ tags: [olp-2025, problem-statement]
 
 During this period, teams will focus intensely on analyzing the problem statement and researching technical documentation on **NGSI-LD Smart Data Models** and **Orion Context Broker** to propose optimal solutions.
 
+<!-- truncate -->
+
 ### Problem Requirements
 
 Assuming the role of a technology solution provider for **City X**, teams need to find ideas and build IT applications (Web or Mobile) to support the community and management agencies. The product must be operable and usable on the Internet environment.
