@@ -11,3 +11,4 @@ numpy==1.24.3
 tensorflow==2.15.0
 matplotlib==3.7.5
 traci==1.19.0  # TraCI client for SUMO
+pydantic_settings==2.1.0
