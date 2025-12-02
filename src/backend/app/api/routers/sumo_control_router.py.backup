@@ -1,0 +1,310 @@
+"""
+SUMO Control Router
+API endpoints để control SUMO simulation và lấy real-time data
+Hỗ trợ 2 modes:
+1. Connect to existing SUMO (recommended - không cần SUMO_HOME)
+2. Start new SUMO instance (cần SUMO_HOME)
+
+Updated: 2025-11-30 - Added TraCI connector support
+"""
+from fastapi import APIRouter, HTTPException
+from pydantic import BaseModel
+from typing import Optional, Dict, Any
+import logging
+
+from app.sumo_rl.agents.traci_connector import TraCIConnector
+
+router = APIRouter(prefix="/sumo", tags=["SUMO Control"])
+logger = logging.getLogger(__name__)
+
+# Global TraCI connector instance (singleton)
+traci_connector: Optional[TraCIConnector] = None
+
+
+class ConnectSimulationRequest(BaseModel):
+    """Connect to running SUMO instance"""
+    host: str = "localhost"
+    port: int = 8813
+    scenario: str = "Nga4ThuDuc"
+
+
+class StartSimulationRequest(BaseModel):
+    """Start new SUMO instance (requires SUMO_HOME)"""
+    scenario: str = "Nga4ThuDuc"
+    gui: bool = True
+    port: int = 8813
+
+
+class SetPhaseRequest(BaseModel):
+    phase_index: int
+
+
+# --- SUMO Control Endpoints ---
+
+@router.post("/connect")
+async def connect_to_simulation(request: ConnectSimulationRequest):
+    """
+    Connect to running SUMO simulation (RECOMMENDED)
+    
+    Prerequisites:
+    1. Start SUMO manually with TraCI:
+       sumo-gui -c <config> --remote-port 8813 --start
+    
+    2. Call this endpoint to connect
+    
+    Scenarios:
+    - Nga4ThuDuc: Ngã tư Thủ Đức (4-way intersection)
+    - NguyenThaiSon: Ngã 6 Nguyễn Thái Sơn (6-way intersection)
+    - QuangTrung: Quang Trung (Complex intersection)
+    """
+    global traci_connector
+    
+    try:
+        # Create connector if not exists
+        if traci_connector is None:
+            traci_connector = TraCIConnector()
+        
+        # Connect to SUMO
+        success = traci_connector.connect(
+            host=request.host,
+            port=request.port,
+            scenario=request.scenario
+        )
+        
+        if not success:
+            raise HTTPException(
+                status_code=500,
+                detail="Failed to connect to SUMO. Make sure SUMO is running with --remote-port 8813"
+            )
+        
+        # Get initial state
+        state = traci_connector.get_traffic_state()
+        scenario_info = traci_connector.get_scenario_info()
+        
+        return {
+            "status": "connected",
+            "message": "Successfully connected to SUMO",
+            **scenario_info,
+            "initial_state": state
+        }
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Failed to connect to SUMO: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@router.post("/start")
+async def start_simulation(request: StartSimulationRequest):
+    """
+    Start SUMO simulation
+    
+    IMPORTANT: This requires SUMO to be started externally on the host.
+    The backend will connect to it via TraCI.
+    
+    Steps:
+    1. Dashboard calls this endpoint
+    2. User needs to manually start SUMO with:
+       sumo-gui -c <config> --remote-port 8813 --start
+    3. OR use the start script: python scripts/start_sumo.py <scenario>
+    4. Backend will attempt to connect
+    
+    For now, this endpoint will try to connect to an existing SUMO instance.
+    """
+    global traci_connector
+    
+    try:
+        # Create connector if not exists
+        if traci_connector is None:
+            traci_connector = TraCIConnector()
+        
+        # Try to connect to existing SUMO (host must start it)
+        # Use bridge IP for Docker -> Host communication
+        success = traci_connector.connect(
+            host="172.17.0.1",  # Docker bridge IP to reach host
+            port=request.port,
+            scenario=request.scenario
+        )
+        
+        if not success:
+            raise HTTPException(
+                status_code=500,
+                detail=f"Failed to connect to SUMO. Please start SUMO manually with: sumo-gui -c <config> --remote-port {request.port} --start"
+            )
+        
+        # Get initial state
+        state = traci_connector.get_traffic_state()
+        scenario_info = traci_connector.get_scenario_info()
+        
+        return {
+            "status": "connected",
+            "message": f"Successfully connected to SUMO running scenario {request.scenario}",
+            **scenario_info,
+            "initial_state": state
+        }
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Failed to start/connect SUMO: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@router.post("/stop")
+async def stop_simulation():
+    """Disconnect from SUMO simulation"""
+    global traci_connector
+    
+    try:
+        if traci_connector is None or not traci_connector.is_connected():
+            raise HTTPException(status_code=400, detail="No simulation connected")
+        
+        traci_connector.close()
+        
+        return {"status": "disconnected"}
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Failed to disconnect: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@router.post("/step")
+async def simulation_step():
+    """Execute one simulation step"""
+    global traci_connector
+    
+    try:
+        if traci_connector is None or not traci_connector.is_connected():
+            raise HTTPException(status_code=400, detail="No simulation connected")
+        
+        sim_time = traci_connector.step()
+        if sim_time is None:
+            raise HTTPException(status_code=500, detail="Failed to step simulation")
+        
+        state = traci_connector.get_traffic_state()
+        
+        return {
+            "status": "ok",
+            "time": sim_time,
+            "state": state
+        }
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Failed to step simulation: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@router.get("/state")
+async def get_current_state():
+    """
+    Get current traffic state from SUMO
+    Returns real-time metrics: vehicle count, speed, occupancy, etc.
+    """
+    global traci_connector
+    
+    try:
+        if traci_connector is None or not traci_connector.is_connected():
+            raise HTTPException(status_code=400, detail="No simulation connected")
+        
+        state = traci_connector.get_traffic_state()
+        
+        if state is None:
+            raise HTTPException(status_code=500, detail="Failed to get traffic state")
+        
+        return state
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Failed to get state: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@router.post("/set-phase")
+async def set_traffic_light_phase(request: SetPhaseRequest):
+    """
+    Manually set traffic light phase
+    
+    Phase indices:
+    - 0: North-South Green
+    - 1: North-South Yellow
+    - 2: East-West Green
+    - 3: East-West Yellow
+    """
+    global traci_connector
+    
+    try:
+        if traci_connector is None or not traci_connector.is_connected():
+            raise HTTPException(status_code=400, detail="No simulation connected")
+        
+        success = traci_connector.set_phase(request.phase_index)
+        
+        if not success:
+            raise HTTPException(status_code=500, detail="Failed to set phase")
+        
+        state = traci_connector.get_traffic_state()
+        
+        return {
+            "status": "ok",
+            "phase_index": request.phase_index,
+            "current_phase": state['current_phase'] if state else None
+        }
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Failed to set phase: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@router.get("/scenarios")
+async def list_scenarios():
+    """List all available SUMO scenarios"""
+    return {
+        "scenarios": [
+            {
+                "id": "Nga4ThuDuc",
+                "name": "Ngã Tư Thủ Đức",
+                "description": "4-way intersection in Thu Duc",
+                "tls_id": "4066470692"
+            },
+            {
+                "id": "NguyenThaiSon",
+                "name": "Ngã 6 Nguyễn Thái Sơn",
+                "description": "6-way intersection on Nguyen Thai Son street",
+                "tls_id": "cluster_1488091499_314059003_314059004_314059006_314059008"
+            },
+            {
+                "id": "QuangTrung",
+                "name": "Quang Trung",
+                "description": "Complex intersection on Quang Trung street",
+                "tls_id": "cluster_314061834_314061898"
+            }
+        ]
+    }
+
+
+@router.get("/status")
+async def get_simulation_status():
+    """Get SUMO simulation connection status"""
+    global traci_connector
+    
+    if traci_connector is None or not traci_connector.is_connected():
+        return {
+            "connected": False,
+            "scenario": None,
+            "message": "Not connected to SUMO. Start SUMO with: sumo-gui -c <config> --remote-port 8813 --start"
+        }
+    
+    info = traci_connector.get_scenario_info()
+    state = traci_connector.get_traffic_state()
+    
+    return {
+        **info,
+        "current_state": state
+    }

@@ -1,0 +1,23 @@
+<additional>
+    <entryExitDetector 
+        id="KV_Nga_5_Chuong_Son" 
+        file="travel_time_nga5.xml" 
+        freq="600"
+    >
+        
+        <entry edge="721740700#1"/>  
+        <entry edge="721952218"/>  
+        <entry edge="-359550390#0"/>
+        <entry edge="10938999693"/>
+        <entry edge="4672043489"/>
+        <entry edge="478799008#2"/>
+        <entry edge="1177467978"/>
+        <entry edge="7134752935"/>
+        
+        <exit edge="721744350"/>   
+        <exit edge="721740699"/>   
+        <exit edge="721952221#1"/>
+        <exit edge="359550390#0"/>
+        
+    </entryExitDetector>
+</additional>
