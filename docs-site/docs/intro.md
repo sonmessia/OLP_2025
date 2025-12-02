@@ -70,80 +70,15 @@ The system revolves around **Smart Data Models**:
 
 ### Start your site
 
-**Context Broker**
-
-Run the following command to start the context broker:
+Run the following command to start all services (Context Broker, Backend, Frontend, and Documentation):
 
 ```bash
 docker compose up -d
 ```
 
-**Backend**
+Once the services are up and running, you can access them at the following addresses:
 
-Navigate to the backend directory:
-
-```bash
-cd src/backend
-```
-
-Install dependencies:
-
-```bash
-pip install -r requirements.txt
-```
-
-Create the `.env` file from the example:
-
-```bash
-cp .env.example .env
-```
-
-Start the backend service:
-
-```bash
-uvicorn app.main:app --reload
-```
-
-**Frontend**
-
-Navigate to the frontend directory:
-
-```bash
-cd src/frontend
-```
-
-Install libraries:
-
-```bash
-npm i
-```
-
-Create the `.env` file from the example:
-
-```bash
-cp .env.example .env
-```
-
-Run the application:
-
-```bash
-npm run dev
-```
-
-This command builds your website locally and serves it through a development server, ready for you to view at http://localhost:5173/.
-
-**Documentation Site**
-
-Navigate to the docs directory:
-
-```bash
-cd docs-site
-```
-
-Run the documentation site:
-
-```bash
-npm run start
-```
-
-The `npm run start` command builds your website locally and serves it through a development server, ready for you to view at http://localhost:3000/.
+- **Frontend**: [http://localhost:5173](http://localhost:5173)
+- **Documentation**: [http://localhost:3000](http://localhost:3000)
+- **Backend API**: [http://localhost:8000](http://localhost:8000)
+- **Context Broker**: [http://localhost:1026](http://localhost:1026)
