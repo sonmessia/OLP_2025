@@ -11,7 +11,16 @@ import {
 } from "lucide-react";
 
 interface KPICardProps {
-  kpi: KPICardModel;
+  kpi?: KPICardModel;
+  title?: string;
+  metrics?: Array<{
+    label: string;
+    value: string;
+    unit?: string;
+  }>;
+  showProgress?: boolean;
+  progressValue?: number;
+  progressColor?: string;
 }
 
 const colorClasses = {
@@ -41,7 +50,67 @@ const iconComponents: Record<
   Brain,
 };
 
-export const KPICard: React.FC<KPICardProps> = ({ kpi }) => {
+export const KPICard: React.FC<KPICardProps> = ({
+  kpi,
+  title,
+  metrics,
+  showProgress,
+  progressValue,
+  progressColor = "bg-blue-500"
+}) => {
+  // Handle metrics array mode (for Air Quality Dashboard)
+  if (metrics) {
+    return (
+      <div
+        className={`rounded-lg border p-4 transition-all hover:shadow-md ${
+          colorClasses.blue
+        }`}
+      >
+        <div className="flex flex-col">
+          <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
+            {title}
+          </h3>
+
+          <div className="space-y-3">
+            {metrics.map((metric, index) => (
+              <div key={index} className="flex items-baseline justify-between">
+                <span className="text-sm text-gray-600 dark:text-gray-400">
+                  {metric.label}
+                </span>
+                <div className="flex items-baseline gap-1">
+                  <span className="text-xl font-bold text-gray-900 dark:text-white">
+                    {metric.value}
+                  </span>
+                  {metric.unit && (
+                    <span className="text-sm text-gray-600 dark:text-gray-400">
+                      {metric.unit}
+                    </span>
+                  )}
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {showProgress && progressValue !== undefined && (
+            <div className="mt-4">
+              <div className="w-full bg-gray-200 rounded-full h-2 overflow-hidden">
+                <div
+                  className={`h-full transition-all duration-300 ${progressColor}`}
+                  style={{ width: `${Math.min(progressValue, 100)}%` }}
+                />
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
+    );
+  }
+
+  // Handle single KPI mode (original functionality)
+  if (!kpi) {
+    return null;
+  }
+
   const getTrendIcon = () => {
     switch (kpi.trend) {
       case "up":
@@ -81,7 +150,7 @@ export const KPICard: React.FC<KPICardProps> = ({ kpi }) => {
             </span>
           </div>
         </div>
-        <div className={`flex items-center gap-1 mt-1.5 ${getTrendColor()}`}>
+        <div className="flex items-center gap-1 mt-1.5">
           {getTrendIcon()}
           <span className="text-xs font-medium">
             {kpi.trendValue > 0 ? "+" : ""}

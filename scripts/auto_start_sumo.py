@@ -55,11 +55,23 @@ def start_sumo(scenario='Nga4ThuDuc', gui=False, port=8813):
     # Build SUMO command
     sumo_binary = 'sumo-gui' if gui else 'sumo'
     
+    # Try to find full path to binary on Windows to avoid ambiguity
+    if os.name == 'nt':
+        try:
+            result = subprocess.run(['where', sumo_binary], capture_output=True, text=True)
+            if result.returncode == 0:
+                found_path = result.stdout.strip().split('\n')[0]
+                if found_path:
+                    sumo_binary = found_path
+        except:
+            pass
+            
     cmd = [
         sumo_binary,
         '-c', config_file,
         '--remote-port', str(port),
-        '--step-length', '1.0'
+        '--step-length', '1.0',
+        '--start'
     ]
     
     print(f"🚦 Starting SUMO...")
@@ -75,10 +87,9 @@ def start_sumo(scenario='Nga4ThuDuc', gui=False, port=8813):
     
     try:
         # Start SUMO
+        # Removed stdout=subprocess.DEVNULL to see output in console
         sumo_process = subprocess.Popen(
             cmd,
-            stdout=subprocess.DEVNULL,
-            stderr=subprocess.PIPE,
             cwd=os.path.dirname(config_file)
         )
         

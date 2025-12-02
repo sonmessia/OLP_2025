@@ -1,121 +1,275 @@
-# 🚦 Green Wave AI - Hệ Thống Điều Khiển Giao Thông Thông Minh
+# 🚦 Smart AI Traffic Control System
 
-## 📋 Tổng Quan
+**OLP 2025** - Intelligent Traffic Light Management using SUMO, FIWARE, and Priority-Based AI Algorithm
 
-Module **Green Wave AI** là trái tim của hệ thống giao thông thông minh OLP 2025. Được phát triển bởi **Thái Anh**, module này thay thế các hệ thống đèn tín hiệu cố định (fixed-time) bằng một hệ thống AI thích ứng thời gian thực (Adaptive AI), sử dụng Deep Reinforcement Learning (DQN) để tối ưu hóa luồng giao thông, giảm ùn tắc và khí thải.
-
----
-
-## 🌟 Các Tính Năng Chính (Thai Anh's Contributions)
-
-Dưới đây là tổng hợp các tính năng và cải tiến kỹ thuật đã được triển khai:
-
-### 1. 🧠 AI Traffic Control (Điều khiển thông minh)
-
-- **Cơ chế Multi-Agent:** Mỗi đèn giao thông được điều khiển bởi một AI Agent độc lập, cho phép xử lý các giao lộ phức tạp (như Ngã 6 Nguyễn Thái Sơn) mà không bị xung đột.
-- **Smart Priority Algorithm:** Thay vì chỉ dùng DQN thuần túy, hệ thống kết hợp thuật toán ưu tiên dựa trên trọng số:
-  - **30%** Mật độ xe (Occupancy)
-  - **40%** Số lượng xe chờ (Queue Length)
-  - **30%** Thời gian chờ tích lũy (Waiting Time)
-- **Real-time Adaptation:** Phân tích dữ liệu giao thông mỗi 2 giây để đưa ra quyết định chuyển pha đèn phù hợp nhất.
-
-### 2. 🛡️ Safety First (An toàn là trên hết)
-
-- **Safe Phase Transition:** Hệ thống **tự động chèn pha đèn vàng** (3 giây) khi chuyển từ Xanh sang Đỏ, ngăn chặn việc thay đổi tín hiệu đột ngột gây nguy hiểm.
-- **Countdown Timer:** Tích hợp bộ đếm ngược (Countdown) hiển thị trên Dashboard trước khi đổi pha, giúp người tham gia giao thông (mô phỏng) và người giám sát có sự chuẩn bị.
-- **Minimum Green Time:** Đảm bảo thời gian đèn xanh tối thiểu (10s) để tránh hiện tượng đèn nhấp nháy liên tục (oscillation).
-
-### 3. 🔄 Robust Scenario Switching (Chuyển đổi kịch bản linh hoạt)
-
-- **Hot-Swapping:** Cho phép chuyển đổi giữa các kịch bản mô phỏng (Ngã 4 Thủ Đức, Ngã 6 Nguyễn Thái Sơn, Quang Trung) ngay trên Dashboard mà không cần khởi động lại Backend.
-- **Auto Cleanup:** Tự động dọn dẹp các process SUMO cũ, giải phóng port 8813 và xử lý các kết nối TraCI bị treo ("Connection already active").
-- **Dynamic Configuration:** Tự động load cấu hình đường (net), đèn (tls), và luồng xe (routes) tương ứng với từng kịch bản.
-
-### 4. 📊 Real-time Monitoring & Dashboard
-
-- **Live Metrics:** Cung cấp API trả về dữ liệu thời gian thực: số lượng xe, độ dài hàng đợi, tốc độ trung bình, trạng thái từng đèn.
-- **Visual Feedback:** Hiển thị trạng thái đèn (Xanh/Đỏ/Vàng) trực quan trên Dashboard đồng bộ với Simulation.
+[![CI/CD](https://github.com/sonmessia/OLP_2025/actions/workflows/ci-cd.yml/badge.svg)](https://github.com/sonmessia/OLP_2025/actions)
+[![Docker](https://img.shields.io/badge/docker-ready-blue.svg)](https://www.docker.com/)
+[![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 
 ---
 
-## 🔄 Luồng Logic & Kiến Trúc (Architecture Pipeline)
+## 🎯 Features
 
-Hệ thống hoạt động theo mô hình **Event-Driven Microservices** xoay quanh Orion-LD Context Broker.
-
-![Event-Driven Microservices](./img/Event-Driven.png)
-
-### Chi Tiết Các Bước Xử Lý:
-
-1.  **Thu thập dữ liệu (Observation):**
-
-    - Các cảm biến ảo (E2 Detectors) trong SUMO đo đạc thông số.
-    - `IoT Agent` đọc dữ liệu qua TraCI và cập nhật entity `TrafficFlowObserved` lên Orion-LD.
-
-2.  **Ra quyết định (Decision Making):**
-
-    - Orion-LD gửi thông báo (Notification) đến `AI Agent` khi có dữ liệu mới.
-    - `AI Agent` trích xuất đặc trưng (State): `[queue_length, occupancy, current_phase, waiting_time]`.
-    - Mô hình DQN (hoặc thuật toán Smart Priority) tính toán pha đèn tối ưu (Action).
-    - `AI Agent` cập nhật entity `TrafficLight` trên Orion với lệnh chuyển pha mới.
-
-3.  **Thực thi (Execution):**
-    - Orion-LD gửi thông báo lệnh đến `IoT Agent`.
-    - `IoT Agent` nhận lệnh, kiểm tra an toàn (Safe Transition).
-    - Nếu cần chuyển pha: Thực hiện Countdown -> Chuyển Vàng -> Chuyển Pha Mới thông qua TraCI.
+- **🧠 Smart AI Traffic Controller**: Priority-based algorithm analyzing each traffic light independently
+- **📊 Real-time Dashboard**: Monitor traffic flow, vehicle count, and AI decisions
+- **🌐 FIWARE Integration**: Context broker for IoT data management
+- **🚗 SUMO Simulation**: 3 real-world scenarios (Nga4ThuDuc, NguyenThaiSon, QuangTrung)
+- **🐳 Fully Dockerized**: Run anywhere with Docker
+- **🔄 Live Scenario Switching**: Change scenarios on-the-fly via dashboard
 
 ---
 
-## 🔌 API Reference
+## 🚀 Quick Start (3 Steps)
 
-Các API chính được xây dựng trong `sumo_control_router.py` và `traffic_light_router.py`.
+### 1️⃣ Clone & Configure
 
-### 🎮 Simulation Control (`/sumo`)
+```bash
+git clone https://github.com/sonmessia/OLP_2025.git
+cd OLP_2025
+cp .env.example .env
+```
 
-| Method | Endpoint          | Mô tả                                                                 |
-| ------ | ----------------- | --------------------------------------------------------------------- |
-| `POST` | `/sumo/start`     | Khởi động kịch bản SUMO mới (Auto kill cũ, start mới, connect TraCI). |
-| `POST` | `/sumo/stop`      | Dừng mô phỏng và ngắt kết nối.                                        |
-| `POST` | `/sumo/connect`   | Kết nối lại với một SUMO instance đang chạy sẵn.                      |
-| `GET`  | `/sumo/state`     | Lấy trạng thái toàn bộ hệ thống (xe, đèn, metrics) thời gian thực.    |
-| `GET`  | `/sumo/scenarios` | Lấy danh sách các kịch bản hỗ trợ (Nga4ThuDuc, NguyenThaiSon...).     |
+### 2️⃣ Start Services
 
-### 🚦 Traffic Light Control (`/sumo`)
+```bash
+# Linux/macOS: Allow GUI access
+xhost +local:docker
 
-| Method | Endpoint                    | Mô tả                                                             |
-| ------ | --------------------------- | ----------------------------------------------------------------- |
-| `POST` | `/sumo/ai-control`          | **Kích hoạt chế độ AI.** Bắt đầu phân tích và điều khiển tự động. |
-| `POST` | `/sumo/set-phase`           | Chuyển pha thủ công (có tự động chèn đèn vàng).                   |
-| `POST` | `/sumo/set-phase-countdown` | Chuyển pha thủ công với bộ đếm ngược an toàn.                     |
-| `GET`  | `/sumo/phases`              | Lấy danh sách các pha đèn khả dụng của kịch bản hiện tại.         |
+# Start all services
+docker-compose up -d --build
+```
 
-### 🤖 AI & IoT Internal (`/sumo-rl`)
+### 3️⃣ Open Dashboard
 
-| Method | Endpoint              | Mô tả                                                        |
-| ------ | --------------------- | ------------------------------------------------------------ |
-| `POST` | `/sumo-rl/ai/notify`  | Webhook nhận dữ liệu từ Orion để AI xử lý.                   |
-| `POST` | `/sumo-rl/iot/notify` | Webhook nhận lệnh từ Orion để IoT Agent thực thi xuống SUMO. |
-| `GET`  | `/sumo-rl/model-info` | Xem thông tin model DQN đang sử dụng (architecture, params). |
+**Browser:** [http://localhost:3001/demo-dashboard.html](http://localhost:3001/demo-dashboard.html)
+
+**That's it!** 🎉
 
 ---
 
-## 📂 Cấu Trúc Dữ Liệu (Data Models)
+## 📦 System Architecture
 
-### `TrafficFlowObserved`
+```
+┌─────────────────┐     ┌──────────────┐     ┌─────────────┐
+│  Web Dashboard  │────▶│  Backend API │────▶│    SUMO     │
+│  (Port 3001)    │     │  (Port 8000) │     │ (Port 8813) │
+└─────────────────┘     └──────────────┘     └─────────────┘
+                              │
+                              ▼
+                        ┌──────────────┐
+                        │ FIWARE Orion │
+                        │  (Port 1026) │
+                        └──────────────┘
+```
 
-Entity chứa thông tin quan sát được từ giao thông.
+**Services:**
 
-- `vehicleCount`: Tổng số xe trong khu vực quan sát.
-- `avgSpeed`: Tốc độ trung bình.
-- `queues`: Mảng chứa độ dài hàng đợi của từng làn đường.
-
-### `TrafficLight` (Managed by Orion)
-
-Entity đại diện cho trạng thái đèn giao thông.
-
-- `currentPhase`: Pha hiện tại (index).
-- `state`: Chuỗi trạng thái đèn (ví dụ: "GGGrrrGGGrrr").
-- `forcePhase`: Command từ AI để yêu cầu chuyển pha.
+- **Backend**: FastAPI (Python 3.9)
+- **SUMO**: Traffic simulation with TraCI
+- **Orion-LD**: FIWARE context broker
+- **QuantumLeap**: Time-series data
+- **PostgreSQL + MongoDB**: Data storage
 
 ---
 
-> **Note:** Tài liệu này được tổng hợp dựa trên source code và các tài liệu kỹ thuật hiện có của dự án OLP 2025.
+## 🎮 Usage
+
+### Start SUMO Simulation
+
+1. Open dashboard: `http://localhost:3001/demo-dashboard.html`
+2. Select scenario: **Nga4ThuDuc** / **NguyenThaiSon** / **QuangTrung**
+3. Click **"Start SUMO"**
+4. Enable **"AI Traffic Control"**
+
+### AI Control Features
+
+- **Independent TLS Analysis**: Each traffic light controlled separately
+- **Priority Metrics**:
+  - Occupancy (30%)
+  - Queue Length (40%)
+  - Waiting Time (30%)
+- **Real-time Decisions**: Dashboard shows AI actions every 2 seconds
+
+### API Endpoints
+
+```bash
+# Check SUMO connection
+curl http://localhost:8000/sumo/status
+
+# Enable AI control
+curl -X POST http://localhost:8000/sumo/ai-control
+
+# Execute AI decision step
+curl -X POST http://localhost:8000/sumo/ai-step
+```
+
+---
+
+## 📚 Documentation
+
+- **[Deployment Guide](DEPLOYMENT_GUIDE.md)** - Deploy on any machine (Linux/macOS/Windows/Cloud)
+- **[AI Traffic Control Guide](AI_TRAFFIC_CONTROL_GUIDE.md)** - Algorithm details and usage
+- **[Scenario Switching Guide](SCENARIO_SWITCHING_GUIDE.md)** - Manage multiple scenarios
+- **[Dashboard Quickstart](DASHBOARD_QUICKSTART.md)** - UI walkthrough
+
+---
+
+## 🛠️ Development
+
+### Local Development Setup
+
+```bash
+# Install Python dependencies
+cd src/backend
+python3 -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
+pip install -r requirements-dev.txt
+
+# Install SUMO (Ubuntu/Debian)
+sudo add-apt-repository ppa:sumo/stable
+sudo apt-get update
+sudo apt-get install sumo sumo-tools sumo-doc
+
+# Run backend
+uvicorn app.main:app --reload
+
+# Run SUMO starter service
+python3 scripts/sumo_starter_service.py
+```
+
+### Code Quality
+
+```bash
+# Format code
+black src/backend/app/
+
+# Lint
+ruff check src/backend/app/
+
+# Type check
+mypy src/backend/app/
+
+# Run tests
+pytest src/backend/tests/
+```
+
+---
+
+## 🌍 Platform Support
+
+| Platform    | GUI Support      | Status     |
+| ----------- | ---------------- | ---------- |
+| **Linux**   | ✅ Native X11    | ✅ Tested  |
+| **macOS**   | ✅ XQuartz       | ✅ Tested  |
+| **Windows** | ✅ WSL2 + VcXsrv | ⚠️ Partial |
+| **Cloud**   | ❌ Headless only | ✅ Works   |
+
+**See [DEPLOYMENT_GUIDE.md](DEPLOYMENT_GUIDE.md) for platform-specific instructions.**
+
+---
+
+## 🔧 Troubleshooting
+
+### SUMO GUI doesn't show
+
+```bash
+# Linux
+xhost +local:docker
+docker-compose restart sumo-simulation
+
+# macOS
+open -a XQuartz
+xhost + $(ipconfig getifaddr en0)
+```
+
+### Port conflicts
+
+```bash
+# Check ports
+lsof -i :8000  # Backend
+lsof -i :8813  # SUMO
+
+# Change ports in docker-compose.yaml
+```
+
+### Connection errors
+
+```bash
+# Restart all services
+docker-compose down
+docker-compose up -d
+
+# Check logs
+docker-compose logs -f
+```
+
+---
+
+## 📊 Scenarios
+
+### 1. Nga4ThuDuc
+
+- **Vehicles**: 200
+- **Traffic Lights**: 7
+- **Main Intersection**: 4066470692
+
+### 2. NguyenThaiSon
+
+- **Vehicles**: 200
+- **Traffic Lights**: 7
+- **Main Intersection**: 11777727352
+
+### 3. QuangTrung
+
+- **Vehicles**: 300
+- **Traffic Lights**: 11
+- **Main Intersection**: 2269043920
+
+---
+
+## 🤝 Contributing
+
+```bash
+# Create feature branch
+git checkout -b feat/your-feature
+
+# Make changes and commit
+git add .
+git commit -m "feat: Add your feature"
+
+# Push and create PR
+git push origin feat/your-feature
+```
+
+**Before submitting PR:**
+
+- [ ] Tests pass: `pytest`
+- [ ] Code formatted: `black .`
+- [ ] No lint errors: `ruff check .`
+- [ ] Type hints valid: `mypy .`
+
+---
+
+## 📝 License
+
+MIT License - see [LICENSE](LICENSE) file
+
+---
+
+## 🙏 Acknowledgments
+
+- **SUMO**: [Eclipse SUMO](https://www.eclipse.org/sumo/)
+- **FIWARE**: [FIWARE Foundation](https://www.fiware.org/)
+- **Team**: OLP 2025 Contributors
+
+---
+
+## 📧 Contact
+
+- **GitHub Issues**: [Report bugs](https://github.com/sonmessia/OLP_2025/issues)
+- **Pull Requests**: [Contribute](https://github.com/sonmessia/OLP_2025/pulls)
+
+---
+
+**⭐ Star this repo if you find it useful!**

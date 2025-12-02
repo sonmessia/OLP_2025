@@ -1,8 +1,22 @@
 // src/infrastructure/store/store.ts
 import { configureStore } from "@reduxjs/toolkit";
+import sumoReducer from "./sumoSlice";
+
+// Initial state
+const initialState = {};
+
+// Basic reducers
+const rootReducer = {
+  // Add your reducers here as you create them
+  // Example:
+  // auth: authReducer,
+  // sensors: sensorsReducer,
+  // airQuality: airQualityReducer,
+  sumo: sumoReducer,
+};
 
 export const store = configureStore({
-  reducer: {},
+  reducer: rootReducer,
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
       serializableCheck: {
@@ -10,8 +24,17 @@ export const store = configureStore({
         ignoredActions: [
           "sensors/fetchAll/fulfilled",
           "sensors/refresh/fulfilled",
+          "sumo/fetchStatus/fulfilled",
+          "sumo/startSimulation/fulfilled",
+          "sumo/fetchState/fulfilled",
+          "sumo/performAIStep/fulfilled",
         ],
-        ignoredPaths: ["sensors.sensors", "sensors.selectedSensor"],
+        ignoredPaths: [
+          "sensors.sensors",
+          "sensors.selectedSensor",
+          "sumo.lastUpdated",
+          "sumo.aiControlState.lastDecisionTime",
+        ],
       },
     }),
 });

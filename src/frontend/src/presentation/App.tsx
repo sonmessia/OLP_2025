@@ -7,7 +7,7 @@ import { ManagerDashboard } from "./pages/ManagerDashboard";
 import { UserMap } from "./pages/UserMap";
 import LandingPage from "./pages/LandingPage";
 import { DeviceManagementPage } from "./pages/DeviceManagementPage";
-
+import { ControlTrafficPage } from "./pages/ControlTrafficPage";
 const App: React.FC = () => {
   return (
     <Provider store={store}>
@@ -17,6 +17,7 @@ const App: React.FC = () => {
           <Route path="/admin" element={<ManagerDashboard />} />
           <Route path="/introduce" element={<LandingPage />} />
           <Route path="/devices" element={<DeviceManagementPage />} />
+          <Route path="/control" element={<ControlTrafficPage />} />
         </Routes>
       </Router>
     </Provider>

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Moon, Sun, User, Leaf, Monitor, Cpu, Wind } from "lucide-react";
+import { Moon, Sun, User, Leaf, Monitor, Cpu, Route } from "lucide-react";
 import { useNavigate, useLocation } from "react-router-dom";
 
 interface DashboardHeaderProps {
@@ -28,14 +28,14 @@ export const DashboardHeader: React.FC<DashboardHeaderProps> = ({
       icon: Monitor,
     },
     {
+      label: "Điều phối giao thông",
+      path: "/control",
+      icon: Route,
+    },
+    {
       label: "Quản lý Thiết bị",
       path: "/devices",
       icon: Cpu,
-    },
-    {
-      label: "Giám sát Không khí",
-      path: "/air-quality",
-      icon: Wind,
     },
   ];
 
@@ -69,8 +69,8 @@ export const DashboardHeader: React.FC<DashboardHeaderProps> = ({
                 onClick={() => navigate(item.path)}
                 className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-colors ${
                   isActive
-                    ? 'bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-300'
-                    : 'text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700'
+                    ? "bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-300"
+                    : "text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700"
                 }`}
               >
                 <Icon className="w-4 h-4" />
