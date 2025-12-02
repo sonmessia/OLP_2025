@@ -208,3 +208,6 @@ __marimo__/
 
 # Tạm bỏ qua tất cả các tệp ẩn và thư mục cache bên trong thư mục tests/
 tests/.*
+
+# Bỏ qua các thư viện node
+**/node_modules/**

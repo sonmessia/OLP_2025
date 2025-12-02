@@ -1,0 +1,369 @@
+/* index.css - PHIÊN BẢN HYBRID */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  background: #1e293b;
+  color: #e2e8f0;
+  padding: 20px;
+  min-height: 100vh;
+}
+
+.container {
+  max-width: 1600px; /* Mở rộng chiều ngang để chứa đủ biểu đồ */
+  margin: 0 auto;
+}
+
+header {
+  background: #334155;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+  margin-bottom: 25px;
+  border-bottom: 4px solid #667eea;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+h1 {
+  color: #fff;
+  font-size: 1.8em;
+  margin: 0;
+}
+
+.subtitle {
+  color: #94a3b8;
+  font-size: 0.9em;
+  margin-top: 5px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: 20px;
+  margin-bottom: 20px;
+}
+
+.col-span-8 {
+  grid-column: span 8;
+}
+.col-span-4 {
+  grid-column: span 4;
+}
+
+@media (max-width: 1024px) {
+  .col-span-8,
+  .col-span-4 {
+    grid-column: span 12;
+  }
+}
+
+.card {
+  background: #334155;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+  border: 1px solid #475569;
+  margin-bottom: 20px; /* Thêm margin bottom để các card không dính nhau */
+}
+
+.card h2 {
+  color: #e2e8f0;
+  margin-bottom: 15px;
+  font-size: 1.2em;
+  border-bottom: 1px solid #475569;
+  padding-bottom: 10px;
+  display: flex;
+  justify-content: space-between;
+}
+
+/* --- VISUALIZATION: NGÃ TƯ (ROAD) --- */
+.road-container {
+  background: #0f172a;
+  border-radius: 8px;
+  padding: 20px;
+  position: relative;
+  height: 500px; /* Tăng chiều cao chút cho thoáng */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 2px solid #475569;
+  overflow: hidden;
+}
+
+.road {
+  position: absolute;
+  background: #1e293b;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.road.horizontal {
+  width: 100%;
+  height: 120px;
+  border-top: 2px dashed #64748b;
+  border-bottom: 2px dashed #64748b;
+}
+
+.road.vertical {
+  height: 100%;
+  width: 120px;
+  border-left: 2px dashed #64748b;
+  border-right: 2px dashed #64748b;
+  z-index: 1;
+}
+
+.lane-horizontal-container {
+  position: absolute;
+  left: 20px;
+  width: 40%;
+  height: 100%;
+  display: flex;
+  flex-direction: row-reverse;
+  align-items: center;
+  gap: 5px;
+}
+.stop-line-h {
+  position: absolute;
+  right: 45%;
+  height: 100%;
+  width: 6px;
+  background: #e2e8f0;
+  z-index: 2;
+}
+
+.lane-vertical-container {
+  position: absolute;
+  bottom: 20px;
+  height: 40%;
+  width: 100%;
+  display: flex;
+  flex-direction: column-reverse;
+  align-items: center;
+  gap: 5px;
+}
+.stop-line-v {
+  position: absolute;
+  top: 45%;
+  width: 100%;
+  height: 6px;
+  background: #e2e8f0;
+  z-index: 2;
+}
+
+.traffic-light-mini {
+  position: absolute;
+  background: #000;
+  padding: 5px;
+  border-radius: 4px;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  border: 1px solid #64748b;
+  z-index: 10;
+}
+.traffic-light-mini.h-loc {
+  top: 38%;
+  left: 40%;
+  transform: translateY(-150%);
+}
+.traffic-light-mini.v-loc {
+  top: 60%;
+  right: 38%;
+  transform: translateX(150%);
+}
+
+.bulb {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: #333;
+}
+.bulb.red.active {
+  background: #ef4444;
+  box-shadow: 0 0 8px #ef4444;
+}
+.bulb.yellow.active {
+  background: #f59e0b;
+  box-shadow: 0 0 8px #f59e0b;
+}
+.bulb.green.active {
+  background: #10b981;
+  box-shadow: 0 0 8px #10b981;
+}
+
+.car-icon {
+  font-size: 20px;
+  transition: all 0.5s ease;
+}
+.car-icon.h-car {
+  transform: rotate(0deg);
+  color: #60a5fa;
+}
+.car-icon.v-car {
+  transform: rotate(-90deg);
+  color: #f472b6;
+}
+.moving {
+  animation: shake 0.5s infinite;
+  color: #fff !important;
+}
+@keyframes shake {
+  0% {
+    transform: translate(1px, 1px);
+  }
+  50% {
+    transform: translate(-1px, -1px);
+  }
+  100% {
+    transform: translate(1px, -1px);
+  }
+}
+
+/* --- CHARTS (BIỂU ĐỒ CŨ - Đã được phục hồi) --- */
+.chart-container {
+  height: 150px; /* Chiều cao biểu đồ */
+  background: #0f172a;
+  border-radius: 5px;
+  padding: 10px;
+  margin-top: 10px;
+  position: relative;
+  overflow: hidden;
+  border: 1px solid #475569;
+  display: flex;
+  align-items: flex-end; /* Căn đáy */
+  gap: 2px;
+}
+
+.chart-bar {
+  flex: 1; /* Tự động chia đều chiều rộng */
+  background: linear-gradient(to top, #667eea, #764ba2);
+  border-radius: 2px 2px 0 0;
+  transition: height 0.3s ease;
+  min-width: 4px;
+}
+
+/* --- METRICS & LOGS --- */
+.metric-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px;
+  background: #1e293b;
+  border-radius: 6px;
+  margin-bottom: 10px;
+}
+.metric-value {
+  font-size: 1.4em;
+  font-weight: bold;
+  color: #667eea;
+}
+
+.status-badge {
+  display: flex;
+  align-items: center;
+  background: #1e293b;
+  padding: 5px 10px;
+  border-radius: 20px;
+  border: 1px solid #475569;
+}
+.status-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  margin-right: 8px;
+}
+.status-dot.online {
+  background: #10b981;
+  box-shadow: 0 0 5px #10b981;
+}
+.status-dot.offline {
+  background: #ef4444;
+}
+
+button {
+  background: #4f46e5;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 500;
+}
+button:hover {
+  background: #4338ca;
+}
+
+.log-container {
+  height: 120px;
+  overflow-y: auto;
+  background: #0f172a;
+  border: 1px solid #334155;
+  padding: 10px;
+  font-family: monospace;
+  font-size: 0.85em;
+}
+.log-entry {
+  margin-bottom: 4px;
+  color: #94a3b8;
+}
+
+/* --- TABLE DATA LOG STYLES (MỚI) --- */
+.table-wrapper {
+  max-height: 250px; /* Chiều cao tối đa, có thanh cuộn */
+  overflow-y: auto;
+  border: 1px solid #475569;
+  border-radius: 6px;
+}
+
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: "Courier New", monospace;
+  font-size: 0.85em;
+}
+
+.data-table th {
+  background: #0f172a;
+  color: #94a3b8;
+  padding: 10px;
+  text-align: center;
+  font-weight: 600;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  border-bottom: 2px solid #475569;
+}
+
+.data-table td {
+  padding: 8px;
+  text-align: center;
+  border-bottom: 1px solid #334155;
+  color: #e2e8f0;
+}
+
+.data-table tr:nth-child(even) {
+  background-color: #1e293b;
+}
+
+.data-table tr:hover {
+  background-color: #334155;
+}
+
+/* Scrollbar đẹp hơn cho bảng */
+.table-wrapper::-webkit-scrollbar {
+  width: 6px;
+}
+.table-wrapper::-webkit-scrollbar-track {
+  background: #0f172a;
+}
+.table-wrapper::-webkit-scrollbar-thumb {
+  background: #475569;
+  border-radius: 3px;
+}
