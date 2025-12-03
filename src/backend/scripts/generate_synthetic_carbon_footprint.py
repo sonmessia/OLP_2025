@@ -7,10 +7,10 @@ Generates realistic carbon footprint data with NGSI-LD format
 """
 
 import asyncio
+import sys
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Dict, List
-import sys
 
 # Add parent directory to Python path so we can import app modules
 sys.path.insert(0, str(Path(__file__).parent.parent))

@@ -7,10 +7,10 @@ Generates realistic traffic impact data with NGSI-LD format
 """
 
 import asyncio
-from datetime import datetime, timezone
-from typing import Any, Dict, List
 import sys
+from datetime import datetime, timezone
 from pathlib import Path
+from typing import Any, Dict, List
 
 # Add parent directory to Python path so we can import app modules
 sys.path.insert(0, str(Path(__file__).parent.parent))

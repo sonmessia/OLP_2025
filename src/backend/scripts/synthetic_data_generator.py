@@ -25,7 +25,6 @@ Usage:
 Press Ctrl+C to stop the generator gracefully.
 """
 
-import asyncio
 import logging
 import signal
 import sys
@@ -46,12 +45,10 @@ from app.models.TrafficEnvironmentImpact import (
     Type6 as TrafficType,
 )
 from app.models.WaterQualityObserved import Type6 as WaterType
-from app.services.base_service import BaseService
 
 # Configure logging
 logging.basicConfig(
-    level=logging.INFO,
-    format="%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+    level=logging.INFO, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s"
 )
 logger = logging.getLogger(__name__)
 

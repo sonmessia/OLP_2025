@@ -782,7 +782,7 @@ async def continuous_generation(generator, models_to_process, interval_seconds):
                 print(f"\n📊 {model_name}: {len(entities)} entities generated")
 
                 # Show key metrics for each entity type
-                for i, entity in enumerate(
+                for _i, entity in enumerate(
                     entities[:1], 1
                 ):  # Show first entity details
                     if model_name == "TrafficEnvironmentImpact":
