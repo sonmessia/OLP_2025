@@ -9,15 +9,15 @@ import {
   clearAuthState,
 } from "../data/redux/authSlice";
 import { UserRole } from "../domain/models/AuthModels";
-import { ManagerDashboard } from "./pages/ManagerDashboard";
-import { UserMap } from "./pages/UserMap";
-import LandingPage from "./pages/LandingPage";
-import { DeviceManagementPage } from "./pages/DeviceManagementPage";
-import { ControlTrafficPage } from "./pages/ControlTrafficPage";
-import LoginPage from "./pages/LoginPage";
-import RegisterPage from "./pages/RegisterPage";
-import AreaManagerPage from "./pages/AreaManagerPage";
-import UnauthorizedPage from "./pages/UnauthorizedPage";
+import { ManagerDashboard } from "./pages/admin/ManagerDashboard";
+import { UserMap } from "./pages/user/UserMap";
+import LandingPage from "./pages/common/LandingPage";
+import { DeviceManagementPage } from "./pages/admin/DeviceManagementPage";
+import { ControlTrafficPage } from "./pages/admin/ControlTrafficPage";
+import LoginPage from "./pages/auth/LoginPage";
+import RegisterPage from "./pages/auth/RegisterPage";
+import AreaManagerPage from "./pages/admin/AreaManagerPage";
+import UnauthorizedPage from "./pages/auth/UnauthorizedPage";
 import ProtectedRoute from "./components/common/ProtectedRoute";
 
 const AppContent: React.FC = () => {

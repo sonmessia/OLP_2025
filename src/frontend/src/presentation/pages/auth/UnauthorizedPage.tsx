@@ -1,7 +1,7 @@
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
-import type { RootState } from "../../data/redux/store";
+import type { RootState } from "../../../data/redux/store";
 
 const UnauthorizedPage: React.FC = () => {
   const { user } = useSelector((state: RootState) => state.auth);

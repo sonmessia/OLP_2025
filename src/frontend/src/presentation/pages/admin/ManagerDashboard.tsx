@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { DashboardHeader } from "../components/feature/dashboard/DashboardHeader";
-import { KPICard } from "../components/feature/dashboard/KPICard";
-import { MonitoringChart } from "../components/feature/dashboard/MonitoringChart";
-import { RewardChart } from "../components/feature/dashboard/RewardChart";
-import { PollutionMap } from "../components/feature/dashboard/PollutionMap";
-import { AlertPanel } from "../components/feature/dashboard/AlertPanel";
-import { ManualControlPanel } from "../components/feature/dashboard/ManualControlPanel";
+import { DashboardHeader } from "../../components/feature/dashboard/DashboardHeader";
+import { KPICard } from "../../components/feature/dashboard/KPICard";
+import { MonitoringChart } from "../../components/feature/dashboard/MonitoringChart";
+import { RewardChart } from "../../components/feature/dashboard/RewardChart";
+import { PollutionMap } from "../../components/feature/dashboard/PollutionMap";
+import { AlertPanel } from "../../components/feature/dashboard/AlertPanel";
+import { ManualControlPanel } from "../../components/feature/dashboard/ManualControlPanel";
 import type {
   DashboardStateModel,
   KPICardModel,
@@ -14,7 +14,7 @@ import type {
   PollutionHotspot,
   AlertLog,
   InterventionAction,
-} from "../../domain/models/DashboardModel";
+} from "../../../domain/models/DashboardModel";
 
 // Mock data generator (will be replaced with real API calls)
 const generateMockData = (): DashboardStateModel => {

@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import type { AppDispatch } from "../../data/redux/store";
-import { login, clearError } from "../../data/redux/authSlice";
-import type { RootState } from "../../data/redux/store";
-import type { LoginCredentials } from "../../domain/models/AuthModels";
+import type { AppDispatch } from "../../../data/redux/store";
+import { login, clearError } from "../../../data/redux/authSlice";
+import type { RootState } from "../../../data/redux/store";
+import type { LoginCredentials } from "../../../domain/models/AuthModels";
 
 const LoginPage: React.FC = () => {
   const [credentials, setCredentials] = useState<LoginCredentials>({

@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { UserMapHeader } from "../components/feature/usermap/UserMapHeader";
-import { UserMapView } from "../components/feature/usermap/UserMapView";
-import { HealthInsightPanel } from "../components/feature/usermap/HealthInsightPanel";
-import { AQIGauge } from "../components/feature/usermap/AQIGauge";
-import type { AirQualityObservedModel } from "../../domain/models/AirQualityObservedModel";
-import type { LocationModel } from "../../domain/models/CommonModels";
-import { GeoJSONType } from "../../domain/models/CommonModels";
+import { UserMapHeader } from "../../components/feature/usermap/UserMapHeader";
+import { UserMapView } from "../../components/feature/usermap/UserMapView";
+import { HealthInsightPanel } from "../../components/feature/usermap/HealthInsightPanel";
+import { AQIGauge } from "../../components/feature/usermap/AQIGauge";
+import type { AirQualityObservedModel } from "../../../domain/models/AirQualityObservedModel";
+import type { LocationModel } from "../../../domain/models/CommonModels";
+import { GeoJSONType } from "../../../domain/models/CommonModels";
 
 // Mock data for demonstration
 const generateMockAirQualityData = (): AirQualityObservedModel[] => [

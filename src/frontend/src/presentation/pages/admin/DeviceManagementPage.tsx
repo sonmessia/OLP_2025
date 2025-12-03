@@ -3,14 +3,14 @@ import {
   DeviceType,
   DeviceStatus,
   DeviceFactory,
-} from "../../domain/models/DeviceModels";
-import type { DeviceModel } from "../../domain/models/DeviceModels";
-import { DashboardHeader } from "../components/feature/dashboard/DashboardHeader";
+} from "../../../domain/models/DeviceModels";
+import type { DeviceModel } from "../../../domain/models/DeviceModels";
+import { DashboardHeader } from "../../components/feature/dashboard/DashboardHeader";
 import {
   FilterBar,
   DeviceCard,
   DeviceWizard,
-} from "../components/feature/devices";
+} from "../../components/feature/devices";
 import { Plus, Map, WifiOff } from "lucide-react";
 
 interface DeviceFilters {

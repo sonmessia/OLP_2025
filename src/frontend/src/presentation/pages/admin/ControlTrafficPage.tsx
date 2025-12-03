@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from "react";
-import { useAppDispatch, useAppSelector } from "../../data/redux/hooks";
-import { fetchSumoStatus, fetchSumoState } from "../../data/redux/sumoSlice";
-import AuthHeader from "../components/common/AuthHeader";
-import { SumoControlPanel } from "../components/feature/sumo/SumoControlPanel";
-import { TrafficMetrics } from "../components/feature/sumo/TrafficMetrics";
-import { TrafficLightsDisplay } from "../components/feature/sumo/TrafficLightsDisplay";
-import { AIControlPanel } from "../components/feature/sumo/AIControlPanel";
-import { SystemLogs } from "../components/feature/sumo/SystemLogs";
-import { TrafficFlowChart } from "../components/feature/sumo/TrafficFlowChart";
-import { SimulationControlPanel } from "../components/feature/sumo/SimulationControlPanel";
+import { useAppDispatch, useAppSelector } from "../../../data/redux/hooks";
+import { fetchSumoStatus, fetchSumoState } from "../../../data/redux/sumoSlice";
+import AuthHeader from "../../components/common/AuthHeader";
+import { SumoControlPanel } from "../../components/feature/sumo/SumoControlPanel";
+import { TrafficMetrics } from "../../components/feature/sumo/TrafficMetrics";
+import { TrafficLightsDisplay } from "../../components/feature/sumo/TrafficLightsDisplay";
+import { AIControlPanel } from "../../components/feature/sumo/AIControlPanel";
+import { SystemLogs } from "../../components/feature/sumo/SystemLogs";
+import { TrafficFlowChart } from "../../components/feature/sumo/TrafficFlowChart";
+import { SimulationControlPanel } from "../../components/feature/sumo/SimulationControlPanel";
 
 export const ControlTrafficPage: React.FC = () => {
   const dispatch = useAppDispatch();
