@@ -6,10 +6,39 @@ Created: 2025-11-15
 """
 
 import asyncio
+import os
+import sys
 from datetime import datetime, timezone
+from pathlib import Path
 from typing import Any, Dict, List
 
+# Add parent directory to Python path so we can import app modules
+sys.path.insert(0, str(Path(__file__).parent.parent))
+
 from app.services.air_quality_service import AirQualityService
+
+# Detect if running inside Docker and set appropriate ORION_LD_URL
+# def _detect_orion_url():
+#     """Detect the appropriate Orion URL based on the runtime environment."""
+#     # Check if we're running inside Docker
+#     if os.path.exists("/.dockerenv"):
+#         return "http://fiware-orionld:1026/ngsi-ld/v1"
+#
+#     # Check if the Docker hostname is resolvable
+#     try:
+#         import socket
+#
+#         socket.gethostbyname("fiware-orionld")
+#         return "http://fiware-orionld:1026/ngsi-ld/v1"
+#     except socket.gaierror:
+#         pass
+#
+#     # Fallback to localhost
+#     return "http://localhost:1026/ngsi-ld/v1"
+
+
+# Set the environment variable before importing the service
+# os.environ["ORION_LD_URL"] = _detect_orion_url()
 
 
 def generate_sample_entities() -> List[Dict[str, Any]]:
@@ -299,6 +328,7 @@ async def main():
     print("  AirQualityObserved Sample Data Creator")
     print("  Author: sonmessia")
     print(f"  Date: {datetime.now(timezone.utc).strftime('%Y-%m-%d %H:%M:%S UTC')}")
+    print(f"  Orion URL: {os.environ.get('ORION_LD_URL', 'Not set')}")
     print("=" * 80)
     print()
 
