@@ -12,13 +12,13 @@ from app.api.routers.context_source_router import (
 from app.api.routers.device_router import router as device_router
 from app.api.routers.road_segment_router import router as road_segment_router
 from app.api.routers.subscription_router import router as subscription_router
+from app.api.routers.sumo_control_router import router as sumo_control_router
 from app.api.routers.traffic_environment_impact_router import (
     router as traffic_environment_impact_router,
 )
 from app.api.routers.traffic_flow_router import router as traffic_flow_router
 from app.api.routers.traffic_light_router import router as traffic_light_router
 from app.api.routers.water_quality_router import router as water_quality_router
-from app.api.routers.sumo_control_router import router as sumo_control_router
 
 app = FastAPI(
     title="GreenWave Core Backend Service",

@@ -9,6 +9,7 @@ __author__ = "OLP 2025 Team"
 # Export main components
 from app.sumo_rl.agents.ai_agent import AIGreenWaveAgent
 from app.sumo_rl.agents.iot_agent import IoTAgent
+
 # from app.sumo_rl.environment.sumo_env import SumoEnvironment  # TODO: Create this file if needed
 from app.sumo_rl.models.dqn_model import DQNModel
 

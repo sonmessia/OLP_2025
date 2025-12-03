@@ -36,10 +36,14 @@ async def get_all_traffic_flow(
         )
     except httpx.HTTPStatusError as e:
         logger.error(f"HTTP error retrieving traffic flow entities: {e.response.text}")
-        raise HTTPException(status_code=e.response.status_code, detail=e.response.text) from e
+        raise HTTPException(
+            status_code=e.response.status_code, detail=e.response.text
+        ) from e
     except Exception as e:
         logger.error(f"Unexpected error: {str(e)}")
-        raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(e)) from e
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(e)
+        ) from e
 
 
 @router.get("/{entity_id}", response_model=Dict[str, Any])
@@ -48,10 +52,17 @@ async def get_traffic_flow_by_id(entity_id: str):
         return await traffic_flow_service.get_by_id(entity_id=entity_id)
     except httpx.HTTPStatusError as e:
         if e.response.status_code == 404:
-            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"TrafficFlowObserved {entity_id} not found") from e
-        raise HTTPException(status_code=e.response.status_code, detail=e.response.text) from e
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail=f"TrafficFlowObserved {entity_id} not found",
+            ) from e
+        raise HTTPException(
+            status_code=e.response.status_code, detail=e.response.text
+        ) from e
     except Exception as e:
-        raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(e)) from e
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(e)
+        ) from e
 
 
 @router.post("/", status_code=status.HTTP_201_CREATED)
@@ -60,9 +71,13 @@ async def create_traffic_flow(entity_data: Dict[str, Any]):
         response = await traffic_flow_service.create(entity_data)
         return Response(status_code=response.status_code, content=response.text)
     except httpx.HTTPStatusError as e:
-        raise HTTPException(status_code=e.response.status_code, detail=e.response.text) from e
+        raise HTTPException(
+            status_code=e.response.status_code, detail=e.response.text
+        ) from e
     except Exception as e:
-        raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(e)) from e
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(e)
+        ) from e
 
 
 @router.patch("/{entity_id}", status_code=status.HTTP_204_NO_CONTENT)
@@ -71,9 +86,13 @@ async def patch_traffic_flow(entity_id: str, attrs: Dict[str, Any]):
         response = await traffic_flow_service.update(entity_id, attrs)
         return Response(status_code=response.status_code, content=response.text)
     except httpx.HTTPStatusError as e:
-        raise HTTPException(status_code=e.response.status_code, detail=e.response.text) from e
+        raise HTTPException(
+            status_code=e.response.status_code, detail=e.response.text
+        ) from e
     except Exception as e:
-        raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(e)) from e
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(e)
+        ) from e
 
 
 @router.delete("/{entity_id}", status_code=status.HTTP_204_NO_CONTENT)
@@ -82,6 +101,10 @@ async def delete_traffic_flow(entity_id: str):
         response = await traffic_flow_service.delete(entity_id)
         return Response(status_code=response.status_code, content=response.text)
     except httpx.HTTPStatusError as e:
-        raise HTTPException(status_code=e.response.status_code, detail=e.response.text) from e
+        raise HTTPException(
+            status_code=e.response.status_code, detail=e.response.text
+        ) from e
     except Exception as e:
-        raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(e)) from e
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(e)
+        ) from e

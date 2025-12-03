@@ -124,9 +124,9 @@ class SubscriptionService(BaseService):
 
         # Optional: notifier info (for MQTT QoS, etc.)
         if notifier_info:
-            subscription_data["notification"]["endpoint"][
-                "notifierInfo"
-            ] = notifier_info
+            subscription_data["notification"]["endpoint"]["notifierInfo"] = (
+                notifier_info
+            )
 
         # Optional: expiration
         if expires_at:

@@ -155,9 +155,9 @@ class ContextSourceService(BaseService):
             registration_data["information"][0]["propertyNames"] = property_names
 
         if relationship_names:
-            registration_data["information"][0][
-                "relationshipNames"
-            ] = relationship_names
+            registration_data["information"][0]["relationshipNames"] = (
+                relationship_names
+            )
 
         # Management settings
         if management_interval or management_timeout:

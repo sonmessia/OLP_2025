@@ -23,7 +23,9 @@ class TrafficFlowObservedService(BaseService):
             cls._instance = super().__new__(cls)
         return cls._instance
 
-    def __init__(self, orion_url: Optional[str] = None, context_url: Optional[str] = None):
+    def __init__(
+        self, orion_url: Optional[str] = None, context_url: Optional[str] = None
+    ):
         if not hasattr(self, "_initialized"):
             super().__init__(orion_url, context_url)
             self.entity_type = "TrafficFlowObserved"
@@ -43,10 +45,14 @@ class TrafficFlowObservedService(BaseService):
     async def get_by_id(self, entity_id: str, **kwargs) -> Dict[str, Any]:
         return await super().get_entity_by_id(entity_id=entity_id, **kwargs)
 
-    async def update(self, entity_id: str, attrs_data: Dict[str, Any]) -> httpx.Response:
+    async def update(
+        self, entity_id: str, attrs_data: Dict[str, Any]
+    ) -> httpx.Response:
         return await super().update_entity_attributes(entity_id, attrs_data)
 
-    async def replace(self, entity_id: str, entity_data: Union[TrafficFlowObserved, Dict[str, Any]]) -> httpx.Response:
+    async def replace(
+        self, entity_id: str, entity_data: Union[TrafficFlowObserved, Dict[str, Any]]
+    ) -> httpx.Response:
         if isinstance(entity_data, TrafficFlowObserved):
             entity_data = entity_data.model_dump(exclude_unset=True)
         entity_data["type"] = self.entity_type
