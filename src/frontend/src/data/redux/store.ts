@@ -1,24 +1,30 @@
 // src/infrastructure/store/store.ts
 import { configureStore } from "@reduxjs/toolkit";
 import sumoReducer from "./sumoSlice";
-
-// Initial state
-const initialState = {};
+import authReducer from "./authSlice";
 
 // Basic reducers
 const rootReducer = {
+  auth: authReducer,
   // Add your reducers here as you create them
-  // Example:
-  // auth: authReducer,
   // sensors: sensorsReducer,
   // airQuality: airQualityReducer,
   sumo: sumoReducer,
 };
 
+import { sumoApi } from "../../api/sumoApi";
+import { authApi } from "../../api/authApi";
+
 export const store = configureStore({
   reducer: rootReducer,
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
+      thunk: {
+        extraArgument: {
+          sumoApi,
+          authApi,
+        },
+      },
       serializableCheck: {
         // Ignore Date objects in state
         ignoredActions: [

@@ -12,21 +12,10 @@ import type {
   SumoSimulationState,
   AIControlState,
   AIStepResult,
-  ScenarioInfo,
   SumoConfiguration,
 } from "../../domain/models/SumoModels";
 import { SumoModelFactory } from "../../domain/models/SumoModels";
 import { SumoMapper, SumoReverseMapper } from "../mappers/SumoMapper";
-import {
-  getSumoStatus,
-  startSumoSimulation,
-  getSumoState,
-  executeSumoStep,
-  stopSumoSimulation,
-  enableAIControl,
-  executeAIStep,
-  disableAIControl,
-} from "../../api/sumoApi";
 
 /**
  * SUMO Slice State
@@ -74,148 +63,153 @@ const initialState: SumoSliceState = {
  */
 
 // Fetch SUMO Status
-export const fetchSumoStatus = createAsyncThunk(
-  "sumo/fetchStatus",
-  async (_, { rejectWithValue }) => {
-    try {
-      const response = await getSumoStatus();
-      return SumoMapper.mapSumoStatus(response);
-    } catch (error: unknown) {
-      return rejectWithValue(
-        error instanceof Error ? error.message : "Failed to fetch SUMO status"
-      );
-    }
+export const fetchSumoStatus = createAsyncThunk<
+  SumoStatus,
+  void,
+  { extra: { sumoApi: typeof import("../../api/sumoApi").sumoApi } }
+>("sumo/fetchStatus", async (_, { rejectWithValue, extra }) => {
+  try {
+    const response = await extra.sumoApi.getSumoStatus();
+    return SumoMapper.mapSumoStatus(response);
+  } catch (error: unknown) {
+    return rejectWithValue(
+      error instanceof Error ? error.message : "Failed to fetch SUMO status"
+    );
   }
-);
+});
 
 // Start SUMO Simulation
-export const startSimulation = createAsyncThunk(
-  "sumo/startSimulation",
-  async (config: SumoConfiguration, { rejectWithValue }) => {
-    try {
-      const requestDTO = SumoReverseMapper.mapStartRequest(
-        config.scenario,
-        config.gui,
-        config.port
-      );
-      const response = await startSumoSimulation(requestDTO);
+export const startSimulation = createAsyncThunk<
+  { status: SumoStatus; initialState: SumoSimulationState | null },
+  SumoConfiguration,
+  { extra: { sumoApi: typeof import("../../api/sumoApi").sumoApi } }
+>("sumo/startSimulation", async (config, { rejectWithValue, extra }) => {
+  try {
+    const requestDTO = SumoReverseMapper.mapStartRequest(
+      config.scenario,
+      config.gui,
+      config.port
+    );
+    const response = await extra.sumoApi.startSumoSimulation(requestDTO);
 
-      return {
-        status: SumoMapper.mapSumoStatus({
-          connected: true,
-          scenario: response.scenario,
-          description: response.description,
-          tls_id: response.tls_id,
-        }),
-        initialState: response.initial_state
-          ? SumoMapper.mapSumoState(response.initial_state)
-          : null,
-      };
-    } catch (error: unknown) {
-      return rejectWithValue(
-        error instanceof Error
-          ? error.message
-          : "Failed to start SUMO simulation"
-      );
-    }
+    return {
+      status: SumoMapper.mapSumoStatus({
+        connected: true,
+        scenario: response.scenario,
+        description: response.description,
+        tls_id: response.tls_id,
+        port: config.port, // Ensure port is passed if needed
+      }),
+      initialState: response.initial_state
+        ? SumoMapper.mapSumoState(response.initial_state)
+        : null,
+    };
+  } catch (error: unknown) {
+    return rejectWithValue(
+      error instanceof Error ? error.message : "Failed to start SUMO simulation"
+    );
   }
-);
+});
 
 // Fetch SUMO State
-export const fetchSumoState = createAsyncThunk(
-  "sumo/fetchState",
-  async (_, { rejectWithValue }) => {
-    try {
-      const response = await getSumoState();
-      return SumoMapper.mapSumoState(response);
-    } catch (error: unknown) {
-      return rejectWithValue(
-        error instanceof Error ? error.message : "Failed to fetch SUMO state"
-      );
-    }
+export const fetchSumoState = createAsyncThunk<
+  SumoSimulationState,
+  void,
+  { extra: { sumoApi: typeof import("../../api/sumoApi").sumoApi } }
+>("sumo/fetchState", async (_, { rejectWithValue, extra }) => {
+  try {
+    const response = await extra.sumoApi.getSumoState();
+    return SumoMapper.mapSumoState(response);
+  } catch (error: unknown) {
+    return rejectWithValue(
+      error instanceof Error ? error.message : "Failed to fetch SUMO state"
+    );
   }
-);
+});
 
 // Execute Simulation Step
-export const performSimulationStep = createAsyncThunk(
-  "sumo/performStep",
-  async (_, { rejectWithValue }) => {
-    try {
-      const response = await executeSumoStep();
-      return SumoMapper.mapSumoState(response.state);
-    } catch (error: unknown) {
-      return rejectWithValue(
-        error instanceof Error
-          ? error.message
-          : "Failed to execute simulation step"
-      );
-    }
+export const performSimulationStep = createAsyncThunk<
+  SumoSimulationState,
+  void,
+  { extra: { sumoApi: typeof import("../../api/sumoApi").sumoApi } }
+>("sumo/performStep", async (_, { rejectWithValue, extra }) => {
+  try {
+    const response = await extra.sumoApi.executeSumoStep();
+    return SumoMapper.mapSumoState(response.state);
+  } catch (error: unknown) {
+    return rejectWithValue(
+      error instanceof Error
+        ? error.message
+        : "Failed to execute simulation step"
+    );
   }
-);
+});
 
 // Stop SUMO Simulation
-export const stopSimulation = createAsyncThunk(
-  "sumo/stopSimulation",
-  async (_, { rejectWithValue }) => {
-    try {
-      await stopSumoSimulation();
-      return true;
-    } catch (error: unknown) {
-      return rejectWithValue(
-        error instanceof Error
-          ? error.message
-          : "Failed to stop SUMO simulation"
-      );
-    }
+export const stopSimulation = createAsyncThunk<
+  boolean,
+  void,
+  { extra: { sumoApi: typeof import("../../api/sumoApi").sumoApi } }
+>("sumo/stopSimulation", async (_, { rejectWithValue, extra }) => {
+  try {
+    await extra.sumoApi.stopSumoSimulation();
+    return true;
+  } catch (error: unknown) {
+    return rejectWithValue(
+      error instanceof Error ? error.message : "Failed to stop SUMO simulation"
+    );
   }
-);
+});
 
 // Scenarios are hardcoded in initial state (backend doesn't have /sumo/scenarios endpoint)
 
 // Enable AI Control
-export const activateAIControl = createAsyncThunk(
-  "sumo/activateAI",
-  async (_, { rejectWithValue }) => {
-    try {
-      const response = await enableAIControl();
-      return SumoMapper.mapAIControlState(response);
-    } catch (error: unknown) {
-      return rejectWithValue(
-        error instanceof Error ? error.message : "Failed to enable AI control"
-      );
-    }
+export const activateAIControl = createAsyncThunk<
+  AIControlState,
+  void,
+  { extra: { sumoApi: typeof import("../../api/sumoApi").sumoApi } }
+>("sumo/activateAI", async (_, { rejectWithValue, extra }) => {
+  try {
+    const response = await extra.sumoApi.enableAIControl();
+    return SumoMapper.mapAIControlState(response);
+  } catch (error: unknown) {
+    return rejectWithValue(
+      error instanceof Error ? error.message : "Failed to enable AI control"
+    );
   }
-);
+});
 
 // Execute AI Step
-export const performAIStep = createAsyncThunk(
-  "sumo/performAIStep",
-  async (_, { rejectWithValue }) => {
-    try {
-      const response = await executeAIStep();
-      return SumoMapper.mapAIStepResult(response);
-    } catch (error: unknown) {
-      return rejectWithValue(
-        error instanceof Error ? error.message : "Failed to execute AI step"
-      );
-    }
+export const performAIStep = createAsyncThunk<
+  AIStepResult,
+  void,
+  { extra: { sumoApi: typeof import("../../api/sumoApi").sumoApi } }
+>("sumo/performAIStep", async (_, { rejectWithValue, extra }) => {
+  try {
+    const response = await extra.sumoApi.executeAIStep();
+    return SumoMapper.mapAIStepResult(response);
+  } catch (error: unknown) {
+    return rejectWithValue(
+      error instanceof Error ? error.message : "Failed to execute AI step"
+    );
   }
-);
+});
 
 // Disable AI Control
-export const deactivateAIControl = createAsyncThunk(
-  "sumo/deactivateAI",
-  async (_, { rejectWithValue }) => {
-    try {
-      await disableAIControl();
-      return true;
-    } catch (error: unknown) {
-      return rejectWithValue(
-        error instanceof Error ? error.message : "Failed to disable AI control"
-      );
-    }
+export const deactivateAIControl = createAsyncThunk<
+  boolean,
+  void,
+  { extra: { sumoApi: typeof import("../../api/sumoApi").sumoApi } }
+>("sumo/deactivateAI", async (_, { rejectWithValue, extra }) => {
+  try {
+    await extra.sumoApi.disableAIControl();
+    return true;
+  } catch (error: unknown) {
+    return rejectWithValue(
+      error instanceof Error ? error.message : "Failed to disable AI control"
+    );
   }
-);
+});
 
 /**
  * SUMO Slice

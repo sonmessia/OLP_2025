@@ -5,23 +5,25 @@
 
 import axiosInstance from "./axiosConfig";
 import type {
-  SumoStatus,
-  SumoStartRequest,
-  SumoStartResponse,
-  SumoState,
-  SumoStepResponse,
-  AIControlResponse,
-  AIStepResponse,
-  ScenarioInfo,
-} from "./sumoTypes";
+  SumoStatusResponseDTO,
+  SumoStartRequestDTO,
+  SumoStartResponseDTO,
+  SumoStateResponseDTO,
+  SumoStepResponseDTO,
+  AIControlResponseDTO,
+  AIStepResponseDTO,
+  ScenarioInfoDTO,
+} from "../data/dtos/SumoDTOs";
 
 /**
  * Get SUMO connection status
  * @returns Promise with SUMO status information
  */
-export const getSumoStatus = async (): Promise<SumoStatus> => {
+export const getSumoStatus = async (): Promise<SumoStatusResponseDTO> => {
   try {
-    const response = await axiosInstance.get<SumoStatus>("/sumo/status");
+    const response = await axiosInstance.get<SumoStatusResponseDTO>(
+      "/sumo/status"
+    );
     return response.data;
   } catch (error: unknown) {
     console.error("Error fetching SUMO status:", error);
@@ -35,10 +37,10 @@ export const getSumoStatus = async (): Promise<SumoStatus> => {
  * @returns Promise with start response
  */
 export const startSumoSimulation = async (
-  request: SumoStartRequest
-): Promise<SumoStartResponse> => {
+  request: SumoStartRequestDTO
+): Promise<SumoStartResponseDTO> => {
   try {
-    const response = await axiosInstance.post<SumoStartResponse>(
+    const response = await axiosInstance.post<SumoStartResponseDTO>(
       "/sumo/start",
       request
     );
@@ -53,9 +55,11 @@ export const startSumoSimulation = async (
  * Get current SUMO simulation state
  * @returns Promise with current simulation state
  */
-export const getSumoState = async (): Promise<SumoState> => {
+export const getSumoState = async (): Promise<SumoStateResponseDTO> => {
   try {
-    const response = await axiosInstance.get<SumoState>("/sumo/state");
+    const response = await axiosInstance.get<SumoStateResponseDTO>(
+      "/sumo/state"
+    );
     return response.data;
   } catch (error: unknown) {
     console.error("Error fetching SUMO state:", error);
@@ -67,9 +71,11 @@ export const getSumoState = async (): Promise<SumoState> => {
  * Execute one simulation step
  * @returns Promise with step response
  */
-export const executeSumoStep = async (): Promise<SumoStepResponse> => {
+export const executeSumoStep = async (): Promise<SumoStepResponseDTO> => {
   try {
-    const response = await axiosInstance.post<SumoStepResponse>("/sumo/step");
+    const response = await axiosInstance.post<SumoStepResponseDTO>(
+      "/sumo/step"
+    );
     return response.data;
   } catch (error: unknown) {
     console.error("Error executing SUMO step:", error);
@@ -101,9 +107,11 @@ export const stopSumoSimulation = async (): Promise<{
  * Get available scenarios
  * @returns Promise with list of available scenarios
  */
-export const getSumoScenarios = async (): Promise<ScenarioInfo[]> => {
+export const getSumoScenarios = async (): Promise<ScenarioInfoDTO[]> => {
   try {
-    const response = await axiosInstance.get<ScenarioInfo[]>("/sumo/scenarios");
+    const response = await axiosInstance.get<ScenarioInfoDTO[]>(
+      "/sumo/scenarios"
+    );
     return response.data;
   } catch (error: unknown) {
     console.error("Error fetching SUMO scenarios:", error);
@@ -115,9 +123,9 @@ export const getSumoScenarios = async (): Promise<ScenarioInfo[]> => {
  * Enable AI traffic control
  * @returns Promise with AI control status
  */
-export const enableAIControl = async (): Promise<AIControlResponse> => {
+export const enableAIControl = async (): Promise<AIControlResponseDTO> => {
   try {
-    const response = await axiosInstance.post<AIControlResponse>(
+    const response = await axiosInstance.post<AIControlResponseDTO>(
       "/sumo/ai-control"
     );
     return response.data;
@@ -131,9 +139,11 @@ export const enableAIControl = async (): Promise<AIControlResponse> => {
  * Execute one AI control step
  * @returns Promise with AI decisions
  */
-export const executeAIStep = async (): Promise<AIStepResponse> => {
+export const executeAIStep = async (): Promise<AIStepResponseDTO> => {
   try {
-    const response = await axiosInstance.post<AIStepResponse>("/sumo/ai-step");
+    const response = await axiosInstance.post<AIStepResponseDTO>(
+      "/sumo/ai-step"
+    );
     return response.data;
   } catch (error: unknown) {
     console.error("Error executing AI step:", error);

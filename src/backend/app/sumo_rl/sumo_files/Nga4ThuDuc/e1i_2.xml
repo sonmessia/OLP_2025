@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<!-- generated on 2025-12-03T00:26:15.730507+07:00 by Eclipse SUMO sumo 1.25.0
+<!-- generated on 2025-12-03T20:18:07.422835+07:00 by Eclipse SUMO GUI 1.25.0
 <sumoConfiguration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/sumoConfiguration.xsd">
 
     <input>
@@ -292,15 +292,4 @@
     <instantOut id="e1i_2" time="407.00" state="stay" vehID="152" speed="0.21" length="5.00" type="car"/>
     <instantOut id="e1i_2" time="408.00" state="stay" vehID="152" speed="0.21" length="5.00" type="car"/>
     <instantOut id="e1i_2" time="409.00" state="stay" vehID="152" speed="0.21" length="5.00" type="car"/>
-    <instantOut id="e1i_2" time="410.00" state="stay" vehID="152" speed="0.76" length="5.00" type="car"/>
-    <instantOut id="e1i_2" time="411.00" state="stay" vehID="152" speed="0.91" length="5.00" type="car"/>
-    <instantOut id="e1i_2" time="412.00" state="stay" vehID="152" speed="0.24" length="5.00" type="car"/>
-    <instantOut id="e1i_2" time="413.00" state="stay" vehID="152" speed="0.61" length="5.00" type="car"/>
-    <instantOut id="e1i_2" time="413.50" state="leave" vehID="152" speed="2.88" length="5.00" type="car" occupancy="228.49"/>
-    <instantOut id="e1i_2" time="416.34" state="enter" vehID="65" speed="1.73" length="5.00" type="car" gap="2.83"/>
-    <instantOut id="e1i_2" time="417.00" state="stay" vehID="65" speed="1.73" length="5.00" type="car"/>
-    <instantOut id="e1i_2" time="418.00" state="stay" vehID="65" speed="1.16" length="5.00" type="car"/>
-    <instantOut id="e1i_2" time="419.00" state="stay" vehID="65" speed="0.32" length="5.00" type="car"/>
-    <instantOut id="e1i_2" time="420.00" state="stay" vehID="65" speed="0.61" length="5.00" type="car"/>
-    <instantOut id="e1i_2" time="421.00" state="stay" vehID="65" speed="0.72" length="5.00" type="car"/>
-    <instantOut id="e1i_2" time="421.46" state="leave" vehID="65" speed="2.27" length="5.00" type="car" occupancy="5.13"/>
+    <instantOut id="e1i_2" time="410.00" state="

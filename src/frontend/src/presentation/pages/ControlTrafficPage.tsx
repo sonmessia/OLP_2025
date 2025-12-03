@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "../../data/redux/hooks";
 import { fetchSumoStatus, fetchSumoState } from "../../data/redux/sumoSlice";
-import { DashboardHeader } from "../components/feature/dashboard/DashboardHeader";
+import AuthHeader from "../components/common/AuthHeader";
 import { SumoControlPanel } from "../components/feature/sumo/SumoControlPanel";
 import { TrafficMetrics } from "../components/feature/sumo/TrafficMetrics";
 import { TrafficLightsDisplay } from "../components/feature/sumo/TrafficLightsDisplay";
@@ -87,10 +87,7 @@ export const ControlTrafficPage: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800">
-      <DashboardHeader
-        onThemeToggle={handleThemeToggle}
-        isDarkMode={isDarkMode}
-      />
+      <AuthHeader title="Hệ thống điều khiển giao thông thông minh" />
 
       <main className="p-4 max-w-[1920px] mx-auto">
         {/* Main Layout: Left Sidebar (1/4) + Right Content (3/4) */}

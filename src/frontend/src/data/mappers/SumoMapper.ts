@@ -12,15 +12,18 @@ import type {
   ScenarioInfoDTO,
 } from "../dtos/SumoDTOs";
 
+import {
+  SumoConnectionStatus,
+  AIControlStatus,
+} from "../../domain/models/SumoModels";
+
 import type {
   TrafficLightSignal,
   TrafficLight,
   SumoSimulationState,
   SumoStatus,
-  SumoConnectionStatus,
   ScenarioInfo,
   AIControlState,
-  AIControlStatus,
   AIDecision,
   AIStepResult,
 } from "../../domain/models/SumoModels";
@@ -106,10 +109,16 @@ export class SumoMapper {
   /**
    * Map AI Decision DTO to Domain Model
    */
+  /**
+   * Map AI Decision DTO to Domain Model
+   */
   static mapAIDecision(dto: AIDecisionDTO): AIDecision {
+    const action =
+      dto.action === "switch" || dto.action === "hold" ? dto.action : "hold";
+
     return {
       tlsId: dto.tls_id,
-      action: dto.action as "switch" | "hold",
+      action: action,
       fromPhase: dto.from_phase,
       toPhase: dto.to_phase,
       priorityScore: dto.priority_score,
@@ -158,7 +167,9 @@ export class SumoMapper {
    * Helper: Map connection status
    */
   private static mapConnectionStatus(connected: boolean): SumoConnectionStatus {
-    return connected ? "CONNECTED" : "DISCONNECTED";
+    return connected
+      ? SumoConnectionStatus.CONNECTED
+      : SumoConnectionStatus.DISCONNECTED;
   }
 
   /**
@@ -167,15 +178,15 @@ export class SumoMapper {
   private static mapAIControlStatus(status: string): AIControlStatus {
     const upperStatus = status.toUpperCase();
     if (upperStatus === "SUCCESS" || upperStatus === "ENABLED") {
-      return "ENABLED";
+      return AIControlStatus.ENABLED;
     }
     if (upperStatus === "INITIALIZING") {
-      return "INITIALIZING";
+      return AIControlStatus.INITIALIZING;
     }
     if (upperStatus === "ERROR") {
-      return "ERROR";
+      return AIControlStatus.ERROR;
     }
-    return "DISABLED";
+    return AIControlStatus.DISABLED;
   }
 }
 

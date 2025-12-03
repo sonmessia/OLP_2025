@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<!-- generated on 2025-12-03T00:26:15.729918+07:00 by Eclipse SUMO sumo 1.25.0
+<!-- generated on 2025-12-03T20:18:07.421908+07:00 by Eclipse SUMO GUI 1.25.0
 <sumoConfiguration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/sumoConfiguration.xsd">
 
     <input>
@@ -22,9 +22,3 @@
     </gui_only>
 
 </sumoConfiguration>
--->
-
-<instantE1 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/instant_e1_file.xsd">
-    <instantOut id="e1i_0" time="128.87" state="enter" vehID="121" speed="9.80" length="5.00" type="car"/>
-    <instantOut id="e1i_0" time="129.00" state="stay" vehID="121" speed="9.80" length="5.00" type="car"/>
-    <instantOut id="e1i_0" time="129.71" state="leave" vehID="121" speed="5.30" length="5.00" type="car" occupancy="0.83"/>
