@@ -1,9 +1,18 @@
 // src/data/redux/authSlice.ts
 
-import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
-import { AuthState, User, LoginCredentials, RegisterData } from '../../domain/models/AuthModels';
-import { authApi } from '../../api/authApi';
-import { mapLoginResponseDtoToDomain, mapRegisterResponseDtoToDomain } from '../mappers/AuthMapper';
+import {
+  createSlice,
+  createAsyncThunk,
+  type PayloadAction,
+} from "@reduxjs/toolkit";
+import type {
+  AuthState,
+  User,
+  LoginCredentials,
+  RegisterData,
+} from "../../domain/models/AuthModels";
+import { authApi } from "../../api/authApi";
+import { AuthMapper } from "../mappers/AuthMapper";
 
 const initialState: AuthState = {
   user: null,
@@ -15,72 +24,78 @@ const initialState: AuthState = {
 
 // Async thunks
 export const login = createAsyncThunk(
-  'auth/login',
+  "auth/login",
   async (credentials: LoginCredentials, { rejectWithValue }) => {
     try {
       const response = await authApi.login(credentials);
-      return mapLoginResponseDtoToDomain(response);
+      return AuthMapper.mapLoginResponseDtoToDomain(response);
     } catch (error) {
-      return rejectWithValue(error instanceof Error ? error.message : 'Đăng nhập thất bại');
+      return rejectWithValue(
+        error instanceof Error ? error.message : "Đăng nhập thất bại"
+      );
     }
   }
 );
 
 export const register = createAsyncThunk(
-  'auth/register',
+  "auth/register",
   async (userData: RegisterData, { rejectWithValue }) => {
     try {
-      const response = await authApi.register(userData);
-      return mapRegisterResponseDtoToDomain(response);
+      const response = await authApi.register(
+        AuthMapper.mapRegisterDataToDto(userData)
+      );
+      return AuthMapper.mapRegisterResponseDtoToDomain(response);
     } catch (error) {
-      return rejectWithValue(error instanceof Error ? error.message : 'Đăng ký thất bại');
+      return rejectWithValue(
+        error instanceof Error ? error.message : "Đăng ký thất bại"
+      );
     }
   }
 );
 
 export const verifyToken = createAsyncThunk(
-  'auth/verifyToken',
+  "auth/verifyToken",
   async (token: string, { rejectWithValue }) => {
     try {
       const userResponse = await authApi.verifyToken(token);
+      const user = AuthMapper.mapUserDtoToDomain(userResponse);
       return {
-        user: {
-          id: userResponse.id,
-          email: userResponse.email,
-          name: userResponse.name,
-          role: userResponse.role,
-          areaName: userResponse.area_name,
-          createdAt: new Date(userResponse.created_at),
-          updatedAt: new Date(userResponse.updated_at),
-        },
+        user,
         token,
       };
     } catch (error) {
-      return rejectWithValue(error instanceof Error ? error.message : 'Token không hợp lệ');
+      return rejectWithValue(
+        error instanceof Error ? error.message : "Token không hợp lệ"
+      );
     }
   }
 );
 
 export const logout = createAsyncThunk(
-  'auth/logout',
+  "auth/logout",
   async (_, { rejectWithValue }) => {
     try {
       await authApi.logout();
     } catch (error) {
-      return rejectWithValue(error instanceof Error ? error.message : 'Đăng xuất thất bại');
+      return rejectWithValue(
+        error instanceof Error ? error.message : "Đăng xuất thất bại"
+      );
     }
   }
 );
 
 const authSlice = createSlice({
-  name: 'auth',
+  name: "auth",
   initialState,
   reducers: {
     clearError: (state) => {
       state.error = null;
     },
     // Thêm reducer để set auth state từ localStorage (cho trường hợp reload trang)
-    setAuthState: (state, action: PayloadAction<{ user: User; token: string }>) => {
+    setAuthState: (
+      state,
+      action: PayloadAction<{ user: User; token: string }>
+    ) => {
       state.user = action.payload.user;
       state.token = action.payload.token;
       state.isAuthenticated = true;
@@ -100,17 +115,20 @@ const authSlice = createSlice({
         state.isLoading = true;
         state.error = null;
       })
-      .addCase(login.fulfilled, (state, action: PayloadAction<{ user: User; token: string }>) => {
-        state.isLoading = false;
-        state.user = action.payload.user;
-        state.token = action.payload.token;
-        state.isAuthenticated = true;
-        state.error = null;
+      .addCase(
+        login.fulfilled,
+        (state, action: PayloadAction<{ user: User; token: string }>) => {
+          state.isLoading = false;
+          state.user = action.payload.user;
+          state.token = action.payload.token;
+          state.isAuthenticated = true;
+          state.error = null;
 
-        // Lưu vào localStorage
-        localStorage.setItem('authToken', action.payload.token);
-        localStorage.setItem('user', JSON.stringify(action.payload.user));
-      })
+          // Lưu vào localStorage
+          localStorage.setItem("authToken", action.payload.token);
+          localStorage.setItem("user", JSON.stringify(action.payload.user));
+        }
+      )
       .addCase(login.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.payload as string;
@@ -125,17 +143,20 @@ const authSlice = createSlice({
         state.isLoading = true;
         state.error = null;
       })
-      .addCase(register.fulfilled, (state, action: PayloadAction<{ user: User; token: string }>) => {
-        state.isLoading = false;
-        state.user = action.payload.user;
-        state.token = action.payload.token;
-        state.isAuthenticated = true;
-        state.error = null;
+      .addCase(
+        register.fulfilled,
+        (state, action: PayloadAction<{ user: User; token: string }>) => {
+          state.isLoading = false;
+          state.user = action.payload.user;
+          state.token = action.payload.token;
+          state.isAuthenticated = true;
+          state.error = null;
 
-        // Lưu vào localStorage
-        localStorage.setItem('authToken', action.payload.token);
-        localStorage.setItem('user', JSON.stringify(action.payload.user));
-      })
+          // Lưu vào localStorage
+          localStorage.setItem("authToken", action.payload.token);
+          localStorage.setItem("user", JSON.stringify(action.payload.user));
+        }
+      )
       .addCase(register.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.payload as string;
@@ -150,13 +171,16 @@ const authSlice = createSlice({
         state.isLoading = true;
         state.error = null;
       })
-      .addCase(verifyToken.fulfilled, (state, action: PayloadAction<{ user: User; token: string }>) => {
-        state.isLoading = false;
-        state.user = action.payload.user;
-        state.token = action.payload.token;
-        state.isAuthenticated = true;
-        state.error = null;
-      })
+      .addCase(
+        verifyToken.fulfilled,
+        (state, action: PayloadAction<{ user: User; token: string }>) => {
+          state.isLoading = false;
+          state.user = action.payload.user;
+          state.token = action.payload.token;
+          state.isAuthenticated = true;
+          state.error = null;
+        }
+      )
       .addCase(verifyToken.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.payload as string;
@@ -165,8 +189,8 @@ const authSlice = createSlice({
         state.isAuthenticated = false;
 
         // Xóa localStorage nếu token không hợp lệ
-        localStorage.removeItem('authToken');
-        localStorage.removeItem('user');
+        localStorage.removeItem("authToken");
+        localStorage.removeItem("user");
       });
 
     // Logout
@@ -182,8 +206,8 @@ const authSlice = createSlice({
         state.error = null;
 
         // Xóa localStorage
-        localStorage.removeItem('authToken');
-        localStorage.removeItem('user');
+        localStorage.removeItem("authToken");
+        localStorage.removeItem("user");
       })
       .addCase(logout.rejected, (state, action) => {
         state.isLoading = false;
@@ -193,8 +217,8 @@ const authSlice = createSlice({
         state.user = null;
         state.token = null;
         state.isAuthenticated = false;
-        localStorage.removeItem('authToken');
-        localStorage.removeItem('user');
+        localStorage.removeItem("authToken");
+        localStorage.removeItem("user");
       });
   },
 });

@@ -2,27 +2,27 @@
 // Tuân thủ Clean Architecture: không phụ thuộc vào framework cụ thể
 
 export enum DeviceType {
-  TRAFFIC_CAM = 'TRAFFIC_CAM',
-  INDUCTIVE_LOOP = 'INDUCTIVE_LOOP',
-  RADAR_SENSOR = 'RADAR_SENSOR',
-  SMART_LIGHT = 'SMART_LIGHT',
-  AIR_QUALITY_SENSOR = 'AIR_QUALITY_SENSOR',
+  TRAFFIC_CAM = "TRAFFIC_CAM",
+  INDUCTIVE_LOOP = "INDUCTIVE_LOOP",
+  RADAR_SENSOR = "RADAR_SENSOR",
+  SMART_LIGHT = "SMART_LIGHT",
+  AIR_QUALITY_SENSOR = "AIR_QUALITY_SENSOR",
 }
 
 export enum ConnectionProtocol {
-  MQTT = 'MQTT',
-  HTTP = 'HTTP',
-  RTSP = 'RTSP',
-  MODBUS_TCP = 'MODBUS_TCP',
-  LORAWAN = 'LORAWAN',
-  COAP = 'COAP',
+  MQTT = "MQTT",
+  HTTP = "HTTP",
+  RTSP = "RTSP",
+  MODBUS_TCP = "MODBUS_TCP",
+  LORAWAN = "LORAWAN",
+  COAP = "COAP",
 }
 
 export enum DeviceStatus {
-  ONLINE = 'ONLINE',
-  OFFLINE = 'OFFLINE',
-  MAINTENANCE = 'MAINTENANCE',
-  ERROR = 'ERROR',
+  ONLINE = "ONLINE",
+  OFFLINE = "OFFLINE",
+  MAINTENANCE = "MAINTENANCE",
+  ERROR = "ERROR",
 }
 
 export interface Geolocation {
@@ -42,7 +42,7 @@ export interface MQTTConfig {
 
 export interface HTTPConfig {
   ipAddress: string;
-  apiEndpoint: string;
+  apiEndpoint?: string;
   rtspUrl?: string;
 }
 
@@ -97,11 +97,11 @@ export interface DeviceStats {
 export class DeviceFactory {
   static createTrafficCamera(data: Partial<DeviceModel>): DeviceModel {
     return {
-      id: data.id || '',
-      name: data.name || '',
+      id: data.id || "",
+      name: data.name || "",
       type: DeviceType.TRAFFIC_CAM,
       manufacturer: data.manufacturer,
-      serialNumber: data.serialNumber || '',
+      serialNumber: data.serialNumber || "",
       installDate: data.installDate,
       protocol: data.protocol || ConnectionProtocol.RTSP,
       httpConfig: data.httpConfig,
@@ -117,11 +117,11 @@ export class DeviceFactory {
 
   static createAirQualitySensor(data: Partial<DeviceModel>): DeviceModel {
     return {
-      id: data.id || '',
-      name: data.name || '',
+      id: data.id || "",
+      name: data.name || "",
       type: DeviceType.AIR_QUALITY_SENSOR,
       manufacturer: data.manufacturer,
-      serialNumber: data.serialNumber || '',
+      serialNumber: data.serialNumber || "",
       installDate: data.installDate,
       protocol: data.protocol || ConnectionProtocol.MQTT,
       mqttConfig: data.mqttConfig,
@@ -138,11 +138,11 @@ export class DeviceFactory {
 
   static createSmartLight(data: Partial<DeviceModel>): DeviceModel {
     return {
-      id: data.id || '',
-      name: data.name || '',
+      id: data.id || "",
+      name: data.name || "",
       type: DeviceType.SMART_LIGHT,
       manufacturer: data.manufacturer,
-      serialNumber: data.serialNumber || '',
+      serialNumber: data.serialNumber || "",
       installDate: data.installDate,
       protocol: data.protocol || ConnectionProtocol.MQTT,
       mqttConfig: data.mqttConfig,
@@ -173,8 +173,12 @@ export class DeviceValidator {
   }
 
   static validateHTTPConfig(config: HTTPConfig): boolean {
-    const ipRegex = /^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/;
-    return ipRegex.test(config.ipAddress) && config.apiEndpoint.length > 0;
+    const ipRegex =
+      /^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/;
+    const isIpValid = ipRegex.test(config.ipAddress);
+    const isApiEndpointValid =
+      config.apiEndpoint === undefined || config.apiEndpoint.length > 0;
+    return isIpValid && isApiEndpointValid;
   }
 
   static validateSerialNumber(serial: string): boolean {
