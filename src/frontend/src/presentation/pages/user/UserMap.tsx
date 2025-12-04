@@ -1,89 +1,30 @@
 import React, { useState, useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import { UserMapHeader } from "../../components/feature/usermap/UserMapHeader";
 import { UserMapView } from "../../components/feature/usermap/UserMapView";
 import { HealthInsightPanel } from "../../components/feature/usermap/HealthInsightPanel";
 import { AQIGauge } from "../../components/feature/usermap/AQIGauge";
+import { TrafficStatusCard } from "../../components/feature/usermap/TrafficStatusCard";
 import type { AirQualityObservedModel } from "../../../domain/models/AirQualityObservedModel";
 import type { LocationModel } from "../../../domain/models/CommonModels";
-import { GeoJSONType } from "../../../domain/models/CommonModels";
-
-// Mock data for demonstration
-const generateMockAirQualityData = (): AirQualityObservedModel[] => [
-  {
-    id: "1",
-    type: "AirQualityObserved" as any,
-    dateObserved: new Date(),
-    location: {
-      type: GeoJSONType.Point,
-      coordinates: [106.7012, 10.7997], // [longitude, latitude] - Ngã Tư Hàng Xanh
-    },
-    airQualityIndex: 45,
-    airQualityLevel: "Tốt",
-    areaServed: "Ngã Tư Hàng Xanh, Quận 1",
-    pm25: 12.5,
-    pm10: 20.3,
-    co: 0.4,
-    no2: 25.8,
-    o3: 35.2,
-    temperature: 28.5,
-    relativeHumidity: 0.75,
-    windSpeed: 3.2,
-    windDirection: 45.0,
-  },
-  {
-    id: "2",
-    type: "AirQualityObserved" as any,
-    dateObserved: new Date(),
-    location: {
-      type: GeoJSONType.Point,
-      coordinates: [106.7718, 10.8505], // Ngã Tư Thủ Đức
-    },
-    airQualityIndex: 85,
-    airQualityLevel: "Kém",
-    areaServed: "Ngã Tư Thủ Đức, TP. Thủ Đức",
-    pm25: 35.8,
-    pm10: 45.2,
-    co: 0.8,
-    no2: 42.1,
-    o3: 28.9,
-    temperature: 30.2,
-    relativeHumidity: 0.68,
-    windSpeed: 2.1,
-    windDirection: 90.0,
-  },
-  {
-    id: "3",
-    type: "AirQualityObserved" as any,
-    dateObserved: new Date(),
-    location: {
-      type: GeoJSONType.Point,
-      coordinates: [106.6989, 10.7626], // Cầu Sài Gòn
-    },
-    airQualityIndex: 165,
-    airQualityLevel: "Nguy hại",
-    areaServed: "Cầu Sài Gòn, Bình Thạnh",
-    pm25: 75.3,
-    pm10: 95.7,
-    co: 1.2,
-    no2: 68.4,
-    o3: 45.8,
-    temperature: 31.1,
-    relativeHumidity: 0.62,
-    windSpeed: 1.8,
-    windDirection: 180.0,
-  },
-];
+import { AirQualityRepositoryImpl } from "../../../data/repositories/AirQualityRepositoryImpl";
+import { GetAirQualityDataUseCase } from "../../../domain/usecases/airquality/GetAirQualityDataUseCase";
+import { fetchSumoState } from "../../../data/redux/sumoSlice";
+import type { RootState, AppDispatch } from "../../../data/redux/store";
 
 export const UserMap: React.FC = () => {
+  const dispatch = useDispatch<AppDispatch>();
+  const { simulationState } = useSelector((state: RootState) => state.sumo);
+
   const [isDarkMode, setIsDarkMode] = useState(false);
   const [selectedLocation, setSelectedLocation] =
     useState<LocationModel | null>(null);
   const [selectedAirQuality, setSelectedAirQuality] =
     useState<AirQualityObservedModel | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
-  const [airQualityData] = useState<AirQualityObservedModel[]>(
-    generateMockAirQualityData()
-  );
+  const [airQualityData, setAirQualityData] = useState<
+    AirQualityObservedModel[]
+  >([]);
 
   // Initialize dark mode
   useEffect(() => {
@@ -100,6 +41,35 @@ export const UserMap: React.FC = () => {
 
     setIsDarkMode(getInitialDarkMode());
   }, []);
+
+  // Fetch Air Quality Data
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const repository = new AirQualityRepositoryImpl();
+        const useCase = new GetAirQualityDataUseCase(repository);
+        const data = await useCase.execute();
+        setAirQualityData(data);
+      } catch (error) {
+        console.error("Failed to fetch air quality data:", error);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  // Poll SUMO Traffic Data
+  useEffect(() => {
+    // Fetch immediately
+    dispatch(fetchSumoState());
+
+    // Poll every 5 seconds
+    const intervalId = setInterval(() => {
+      dispatch(fetchSumoState());
+    }, 5000);
+
+    return () => clearInterval(intervalId);
+  }, [dispatch]);
 
   // Apply dark mode class
   useEffect(() => {
@@ -129,6 +99,23 @@ export const UserMap: React.FC = () => {
     // Search functionality will be implemented in the search component
   };
 
+  const handleTrafficSelect = (_scenarioId: string) => {
+    // For now, we assume selecting a traffic location triggers a fetch of the state
+    // In a real app, this might switch the active scenario on the backend
+    // or fetch specific data for that scenario.
+    // For this demo, we'll just ensure we are fetching the global state
+    // and maybe set a local state to show we are focusing on this traffic node.
+
+    // If you wanted to switch scenario:
+    // dispatch(startSimulation({ scenario: scenarioId, gui: false, port: 8813 }));
+
+    // Just fetch state for now
+    dispatch(fetchSumoState());
+
+    // We could also set a "selectedTrafficNode" state if we wanted to show specific info
+    // distinct from the global simulation state, but the request implies showing the card.
+  };
+
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900 relative">
       {/* Header */}
@@ -147,10 +134,11 @@ export const UserMap: React.FC = () => {
           airQualityData={airQualityData}
           selectedLocation={selectedLocation}
           onLocationSelect={handleLocationSelect}
+          onTrafficSelect={handleTrafficSelect}
           searchQuery={searchQuery}
         />
 
-        {/* AQI Gauge - Fixed Position */}
+        {/* AQI Gauge - Fixed Position (Bottom Left) */}
         <div className="absolute bottom-6 left-4 z-[1000]">
           <AQIGauge
             value={selectedAirQuality?.airQualityIndex || 50}
@@ -158,7 +146,20 @@ export const UserMap: React.FC = () => {
           />
         </div>
 
-        {/* Health Insight Panel - Fixed Position */}
+        {/* Traffic Status Card - Fixed Position (Bottom Right) */}
+        {simulationState && (
+          <div className="absolute bottom-6 right-4 z-[1000] w-80">
+            <TrafficStatusCard
+              avgSpeed={simulationState.avgSpeed}
+              vehicleCount={simulationState.vehicleCount}
+              waitingTime={simulationState.waitingTime}
+              lastUpdated={new Date()} // In a real app, this would come from simulationState.timestamp or similar
+              isDarkMode={isDarkMode}
+            />
+          </div>
+        )}
+
+        {/* Health Insight Panel - Fixed Position (Top Right) */}
         {selectedAirQuality && (
           <div className="absolute top-4 right-4 z-[1000] w-80">
             <HealthInsightPanel

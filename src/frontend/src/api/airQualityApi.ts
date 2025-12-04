@@ -1,11 +1,12 @@
 import axiosInstance from "../app/config/axiosConfig";
-import type { AirQualityObservedModel } from "../domain/models/AirQualityObservedModel";
+import type { AirQualityObservedDto } from "../data/dtos/AirQualityDTOs";
 import type {
   BatchDeleteRequest,
   BatchOperationRequest,
   NgsiLdAttributePatch,
   QueryParams,
 } from "./types";
+import { generateMockAirQualityData } from "../utils/mockAirQualityData";
 
 const BASE_PATH = "/api/v1/air-quality";
 
@@ -15,11 +16,18 @@ export class AirQualityApiClient {
    */
   async getAll(
     params?: QueryParams
-  ): Promise<AirQualityObservedModel[] | number> {
+  ): Promise<AirQualityObservedDto[] | number> {
+    // Mock data implementation
+    await new Promise((resolve) => setTimeout(resolve, 800)); // Simulate network delay
+    return generateMockAirQualityData();
+
+    /* 
+    // Real API implementation
     const response = await axiosInstance.get<
-      AirQualityObservedModel[] | number
+      AirQualityObservedDto[] | number
     >(BASE_PATH, { params });
     return response.data;
+    */
   }
 
   /**
@@ -28,8 +36,8 @@ export class AirQualityApiClient {
   async getById(
     entityId: string,
     params?: Pick<QueryParams, "pick" | "attrs" | "format" | "options">
-  ): Promise<AirQualityObservedModel> {
-    const response = await axiosInstance.get<AirQualityObservedModel>(
+  ): Promise<AirQualityObservedDto> {
+    const response = await axiosInstance.get<AirQualityObservedDto>(
       `${BASE_PATH}/${entityId}`,
       { params }
     );
@@ -40,7 +48,7 @@ export class AirQualityApiClient {
    * Create AirQualityObserved Entity
    */
   async create(
-    data: AirQualityObservedModel
+    data: AirQualityObservedDto
   ): Promise<{ message: string; id: string }> {
     const response = await axiosInstance.post<{ message: string; id: string }>(
       BASE_PATH,
@@ -62,10 +70,7 @@ export class AirQualityApiClient {
   /**
    * Replace Entity (Full Update)
    */
-  async replace(
-    entityId: string,
-    data: AirQualityObservedModel
-  ): Promise<void> {
+  async replace(entityId: string, data: AirQualityObservedDto): Promise<void> {
     await axiosInstance.put(`${BASE_PATH}/${entityId}`, data);
   }
 
@@ -92,9 +97,9 @@ export class AirQualityApiClient {
    * Batch Create Entities
    */
   async batchCreate(
-    entities: AirQualityObservedModel[]
+    entities: AirQualityObservedDto[]
   ): Promise<string[] | { success: boolean }> {
-    const request: BatchOperationRequest<AirQualityObservedModel> = {
+    const request: BatchOperationRequest<AirQualityObservedDto> = {
       entities,
     };
     const response = await axiosInstance.post<string[] | { success: boolean }>(
@@ -108,10 +113,10 @@ export class AirQualityApiClient {
    * Batch Upsert Entities
    */
   async batchUpsert(
-    entities: AirQualityObservedModel[],
+    entities: AirQualityObservedDto[],
     options: "update" | "replace" = "update"
   ): Promise<string[] | { success: boolean }> {
-    const request: BatchOperationRequest<AirQualityObservedModel> = {
+    const request: BatchOperationRequest<AirQualityObservedDto> = {
       entities,
     };
     const response = await axiosInstance.post<string[] | { success: boolean }>(

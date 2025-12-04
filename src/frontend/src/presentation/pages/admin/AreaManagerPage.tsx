@@ -13,14 +13,20 @@ import { AIControlPanel } from "../../components/feature/sumo/AIControlPanel";
 import { SystemLogs } from "../../components/feature/sumo/SystemLogs";
 import { TrafficFlowChart } from "../../components/feature/sumo/TrafficFlowChart";
 
-// Coordinate mapping for areas
-const AREA_COORDINATES: Record<string, { lat: number; lng: number }> = {
-  "Ngã 4 Thủ Đức": { lat: 10.8505, lng: 106.7718 },
-  "Ngã 4 Hàng Xanh": { lat: 10.7997, lng: 106.7012 },
-  "Cầu Sài Gòn": { lat: 10.7938, lng: 106.7215 },
-  // Default fallback
-  default: { lat: 10.8231, lng: 106.6297 },
-};
+import { TRAFFIC_LOCATIONS } from "../../../utils/trafficLocations";
+
+// Coordinate mapping for areas derived from TRAFFIC_LOCATIONS
+const AREA_COORDINATES: Record<string, { lat: number; lng: number }> =
+  TRAFFIC_LOCATIONS.reduce(
+    (acc, loc) => {
+      acc[loc.name] = { lat: loc.coordinates[0], lng: loc.coordinates[1] };
+      return acc;
+    },
+    {
+      // Default fallback
+      default: { lat: 10.8231, lng: 106.6297 },
+    } as Record<string, { lat: number; lng: number }>
+  );
 
 const AreaManagerPage: React.FC = () => {
   const dispatch = useAppDispatch();

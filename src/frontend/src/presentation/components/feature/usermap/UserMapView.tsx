@@ -15,6 +15,8 @@ import type { AirQualityObservedModel } from "../../../../domain/models/AirQuali
 import type { LocationModel } from "../../../../domain/models/CommonModels";
 import { GeoJSONType } from "../../../../domain/models/CommonModels";
 
+import { TRAFFIC_LOCATIONS } from "../../../../utils/trafficLocations";
+
 interface UserMapViewProps {
   isDarkMode: boolean;
   airQualityData: AirQualityObservedModel[];
@@ -23,6 +25,7 @@ interface UserMapViewProps {
     location: LocationModel,
     airQuality?: AirQualityObservedModel
   ) => void;
+  onTrafficSelect: (scenarioId: string) => void;
   searchQuery: string;
 }
 
@@ -282,6 +285,7 @@ export const UserMapView: React.FC<UserMapViewProps> = ({
   isDarkMode,
   airQualityData,
   onLocationSelect,
+  onTrafficSelect,
   searchQuery,
 }) => {
   const tileUrl = isDarkMode
@@ -332,6 +336,49 @@ export const UserMapView: React.FC<UserMapViewProps> = ({
             />
           );
         })}
+
+        {/* Traffic Location Markers */}
+        {TRAFFIC_LOCATIONS.map((loc) => (
+          <Marker
+            key={loc.id}
+            position={loc.coordinates}
+            icon={L.divIcon({
+              html: `
+                <div style="
+                  background-color: #3B82F6;
+                  width: 32px;
+                  height: 32px;
+                  border-radius: 50%;
+                  border: 3px solid white;
+                  box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+                  display: flex;
+                  align-items: center;
+                  justify-content: center;
+                  color: white;
+                  font-size: 16px;
+                ">
+                  🚦
+                </div>
+              `,
+              className: "traffic-marker",
+              iconSize: [32, 32],
+              iconAnchor: [16, 16],
+            })}
+            eventHandlers={{
+              click: () => onTrafficSelect(loc.id),
+            }}
+          >
+            <Popup>
+              <div className="p-2">
+                <h3 className="font-bold text-lg">{loc.name}</h3>
+                <p className="text-sm text-gray-600">{loc.description}</p>
+                <p className="text-xs text-blue-500 mt-1 font-semibold">
+                  Click to view traffic status
+                </p>
+              </div>
+            </Popup>
+          </Marker>
+        ))}
 
         {/* Air Quality Markers */}
         {airQualityData.map((data) => {
