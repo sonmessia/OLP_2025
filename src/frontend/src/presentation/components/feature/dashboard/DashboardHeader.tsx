@@ -2,6 +2,10 @@ import React, { useState } from "react";
 import { Moon, Sun, User, Leaf, Monitor, Cpu, Route } from "lucide-react";
 import { useNavigate, useLocation } from "react-router-dom";
 
+import { useAppDispatch, useAppSelector } from "../../../../data/redux/hooks";
+import { UserRole } from "../../../../domain/models/AuthModels";
+import { logout } from "../../../../data/redux/authSlice";
+
 interface DashboardHeaderProps {
   onThemeToggle?: () => void;
   isDarkMode?: boolean;
@@ -20,6 +24,13 @@ export const DashboardHeader: React.FC<DashboardHeaderProps> = ({
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
+  const dispatch = useAppDispatch();
+  const { user } = useAppSelector((state) => state.auth);
+
+  const handleLogout = async () => {
+    await dispatch(logout());
+    navigate("/login");
+  };
 
   const navItems: NavItem[] = [
     {
@@ -29,7 +40,7 @@ export const DashboardHeader: React.FC<DashboardHeaderProps> = ({
     },
     {
       label: "Điều phối giao thông",
-      path: "/control",
+      path: user?.role === UserRole.AREA_MANAGER ? "/area-manager" : "/control",
       icon: Route,
     },
     {
@@ -102,14 +113,22 @@ export const DashboardHeader: React.FC<DashboardHeaderProps> = ({
               className="flex items-center gap-3 p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
             >
               <div className="w-10 h-10 bg-emerald-600 dark:bg-emerald-500 rounded-full flex items-center justify-center">
-                <User className="w-6 h-6 text-white" />
+                <span className="text-white font-bold text-lg">
+                  {user?.name?.charAt(0).toUpperCase() || (
+                    <User className="w-6 h-6" />
+                  )}
+                </span>
               </div>
               <div className="text-left hidden md:block">
                 <p className="text-sm font-medium text-gray-900 dark:text-white">
-                  Quản lý viên
+                  {user?.name || "Người dùng"}
                 </p>
                 <p className="text-xs text-gray-500 dark:text-gray-400">
-                  Admin
+                  {user?.role === UserRole.ADMIN
+                    ? "Quản lý chính"
+                    : user?.role === UserRole.AREA_MANAGER
+                    ? `QL Khu vực: ${user.areaName}`
+                    : "Nhân viên"}
                 </p>
               </div>
             </button>
@@ -124,7 +143,10 @@ export const DashboardHeader: React.FC<DashboardHeaderProps> = ({
                   Cài đặt
                 </button>
                 <hr className="my-2 border-gray-200 dark:border-gray-700" />
-                <button className="w-full px-4 py-2 text-left text-sm text-red-600 dark:text-red-400 hover:bg-gray-100 dark:hover:bg-gray-700">
+                <button
+                  onClick={handleLogout}
+                  className="w-full px-4 py-2 text-left text-sm text-red-600 dark:text-red-400 hover:bg-gray-100 dark:hover:bg-gray-700"
+                >
                   Đăng xuất
                 </button>
               </div>

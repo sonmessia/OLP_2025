@@ -56,15 +56,13 @@ export const KPICard: React.FC<KPICardProps> = ({
   metrics,
   showProgress,
   progressValue,
-  progressColor = "bg-blue-500"
+  progressColor = "bg-blue-500",
 }) => {
   // Handle metrics array mode (for Air Quality Dashboard)
   if (metrics) {
     return (
       <div
-        className={`rounded-lg border p-4 transition-all hover:shadow-md ${
-          colorClasses.blue
-        }`}
+        className={`rounded-lg border p-4 transition-all hover:shadow-md ${colorClasses.blue}`}
       >
         <div className="flex flex-col">
           <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
@@ -120,12 +118,6 @@ export const KPICard: React.FC<KPICardProps> = ({
       default:
         return <Minus className="w-3 h-3" />;
     }
-  };
-
-  const getTrendColor = () => {
-    if (kpi.trend === "up") return "text-green-600 dark:text-green-400";
-    if (kpi.trend === "down") return "text-red-600 dark:text-red-400";
-    return "text-gray-600 dark:text-gray-400";
   };
 
   const IconComponent = iconComponents[kpi.icon] || Clock;

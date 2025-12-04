@@ -1,6 +1,6 @@
 export interface NgsiLdAttributePatch {
   type: "Property" | "Relationship" | "GeoProperty" | "VocabProperty";
-  value?: any;
+  value?: unknown;
   object?: string;
   observedAt?: string;
   unitCode?: string;
@@ -62,4 +62,12 @@ export interface RegistrationUpdate {
   expiresAt?: string;
   management?: ManagementInfo;
   contextSourceInfo?: Record<string, string>[];
+}
+
+export interface ContextSourceRegistration extends RegistrationCreate {
+  id: string;
+  type: string;
+  createdAt?: string;
+  modifiedAt?: string;
+  status?: string;
 }

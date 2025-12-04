@@ -4,7 +4,7 @@ import { useAppDispatch, useAppSelector } from "../../../data/redux/hooks";
 import { fetchSumoStatus, fetchSumoState } from "../../../data/redux/sumoSlice";
 import type { RootState } from "../../../data/redux/store";
 import { UserRole } from "../../../domain/models/AuthModels";
-import AuthHeader from "../../components/common/AuthHeader";
+import { DashboardHeader } from "../../components/feature/dashboard/DashboardHeader";
 import { AreaControlPanel } from "../../components/feature/area/AreaControlPanel";
 import { AreaMapView } from "../../components/feature/area/AreaMapView";
 import { TrafficMetrics } from "../../components/feature/sumo/TrafficMetrics";
@@ -39,7 +39,7 @@ const AreaManagerPage: React.FC = () => {
     return false;
   };
 
-  const [isDarkMode] = useState(getInitialDarkMode);
+  const [isDarkMode, setIsDarkMode] = useState(getInitialDarkMode);
   const [systemLogs, setSystemLogs] = useState<string[]>([
     "System initialized successfully",
     "Waiting for connection...",
@@ -59,6 +59,12 @@ const AreaManagerPage: React.FC = () => {
       document.documentElement.classList.remove("dark");
     }
   }, [isDarkMode]);
+
+  const handleThemeToggle = () => {
+    const newDarkMode = !isDarkMode;
+    setIsDarkMode(newDarkMode);
+    localStorage.setItem("darkMode", newDarkMode.toString());
+  };
 
   // Initialize data
   useEffect(() => {
@@ -112,8 +118,9 @@ const AreaManagerPage: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800">
-      <AuthHeader
-        title={`Quản lý khu vực: ${user.areaName || "Chưa xác định"}`}
+      <DashboardHeader
+        onThemeToggle={handleThemeToggle}
+        isDarkMode={isDarkMode}
       />
 
       <main className="p-4 max-w-[1920px] mx-auto">

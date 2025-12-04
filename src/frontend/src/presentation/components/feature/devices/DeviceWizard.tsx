@@ -170,13 +170,6 @@ export const DeviceWizard: React.FC<DeviceWizardProps> = ({
     }, 2000);
   };
 
-  const handleLocationSelect = (lat: number, lng: number) => {
-    setDeviceData({
-      ...deviceData,
-      location: { latitude: lat, longitude: lng },
-    });
-  };
-
   const handleNext = () => {
     switch (currentStep) {
       case "type":
@@ -428,6 +421,7 @@ export const DeviceWizard: React.FC<DeviceWizardProps> = ({
                             setDeviceData({
                               ...deviceData,
                               mqttConfig: {
+                                topicSubscribe: "",
                                 ...deviceData.mqttConfig,
                                 brokerUrl: e.target.value,
                               },
@@ -448,6 +442,7 @@ export const DeviceWizard: React.FC<DeviceWizardProps> = ({
                             setDeviceData({
                               ...deviceData,
                               mqttConfig: {
+                                topicSubscribe: "",
                                 ...deviceData.mqttConfig,
                                 port: parseInt(e.target.value),
                               },
@@ -487,6 +482,7 @@ export const DeviceWizard: React.FC<DeviceWizardProps> = ({
                             setDeviceData({
                               ...deviceData,
                               mqttConfig: {
+                                topicSubscribe: "",
                                 ...deviceData.mqttConfig,
                                 topicPublish: e.target.value,
                               },

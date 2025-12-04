@@ -1,4 +1,4 @@
-export * from "./axiosConfig";
+export * from "../app/config/axiosConfig";
 export * from "./types";
 export * from "./airQualityApi";
 export * from "./authApi";

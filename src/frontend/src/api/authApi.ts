@@ -51,7 +51,7 @@ const delay = (ms: number = 800): Promise<void> => {
 /**
  * Authentication API Client
  */
-export const authApi = {
+export class AuthApiClient {
   /**
    * Đăng nhập người dùng
    */
@@ -79,7 +79,7 @@ export const authApi = {
       user: userResponse,
       token,
     };
-  },
+  }
 
   /**
    * Đăng ký người dùng mới
@@ -124,7 +124,7 @@ export const authApi = {
       user: userResponse,
       token,
     };
-  },
+  }
 
   /**
    * Xác thực token và lấy thông tin user
@@ -152,7 +152,7 @@ export const authApi = {
     const { password: _password, ...userResponse } = user;
 
     return userResponse;
-  },
+  }
 
   /**
    * Đăng xuất
@@ -161,5 +161,7 @@ export const authApi = {
     await delay();
     // Mock logout - trong thực tế sẽ gọi API để logout
     return;
-  },
-};
+  }
+}
+
+export const authApi = new AuthApiClient();
