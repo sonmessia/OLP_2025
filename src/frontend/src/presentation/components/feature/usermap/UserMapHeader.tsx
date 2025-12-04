@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Wind, Search, X, Sun, Moon, Info, Shield } from "lucide-react";
+import { Search, X, Sun, Moon, Info, Shield } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import type { RootState } from "../../../../data/redux/store";
@@ -40,16 +40,15 @@ export const UserMapHeader: React.FC<UserMapHeaderProps> = ({
         {/* Logo and Title */}
         <div className="flex items-center space-x-2 md:space-x-4">
           <div className="flex items-center space-x-2">
-            <div className="w-8 h-8 bg-green-600 rounded-lg flex items-center justify-center">
-              <Wind className="w-5 h-5 text-white" />
-            </div>
+            <img
+              src="/logo.png"
+              alt="GreenWave Logo"
+              className="w-12 h-12 object-contain"
+            />
             <div>
               <h1 className="text-sm md:text-xl font-bold text-gray-900 dark:text-white">
                 GreenWave
               </h1>
-              <p className="text-xs text-gray-500 dark:text-gray-400 hidden sm:block">
-                Bản đồ chất lượng không khí
-              </p>
             </div>
           </div>
         </div>

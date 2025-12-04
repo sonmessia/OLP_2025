@@ -1,10 +1,12 @@
 import React, { useState } from "react";
-import { Moon, Sun, User, Leaf, Monitor, Cpu, Route } from "lucide-react";
+import { Moon, Sun, User, Monitor, Cpu, Route, Bell } from "lucide-react";
 import { useNavigate, useLocation } from "react-router-dom";
 
 import { useAppDispatch, useAppSelector } from "../../../../data/redux/hooks";
 import { UserRole } from "../../../../domain/models/AuthModels";
 import { logout } from "../../../../data/redux/authSlice";
+import { NotificationPopover } from "./NotificationPopover";
+import type { AlertLog } from "../../../../domain/models/DashboardModel";
 
 interface DashboardHeaderProps {
   onThemeToggle?: () => void;
@@ -32,6 +34,35 @@ export const DashboardHeader: React.FC<DashboardHeaderProps> = ({
     navigate("/login");
   };
 
+  // Mock notifications state (In a real app, this would come from a store or context)
+  const [notifications, setNotifications] = useState<AlertLog[]>([
+    {
+      id: "1",
+      timestamp: new Date().toISOString(),
+      type: "warning",
+      message: "Chỉ số PM2.5 tại Quận 1 vượt ngưỡng an toàn (160)",
+      resolved: false,
+    },
+    {
+      id: "2",
+      timestamp: new Date(Date.now() - 3600000).toISOString(),
+      type: "info",
+      message:
+        "Hệ thống đã tự động điều chỉnh đèn tín hiệu tại Ngã tư Hàng Xanh",
+      resolved: true,
+    },
+  ]);
+
+  const handleMarkAsRead = (id: string) => {
+    setNotifications((prev) =>
+      prev.map((n) => (n.id === id ? { ...n, resolved: true } : n))
+    );
+  };
+
+  const handleClearAll = () => {
+    setNotifications([]);
+  };
+
   const navItems: NavItem[] = [
     {
       label: "Dashboard",
@@ -48,6 +79,11 @@ export const DashboardHeader: React.FC<DashboardHeaderProps> = ({
       path: "/devices",
       icon: Cpu,
     },
+    {
+      label: "Cảnh báo",
+      path: "/subscriptions",
+      icon: Bell,
+    },
   ];
 
   return (
@@ -55,9 +91,11 @@ export const DashboardHeader: React.FC<DashboardHeaderProps> = ({
       <div className="flex items-center justify-between">
         {/* Logo and Title */}
         <div className="flex items-center gap-3">
-          <div className="p-2 bg-emerald-100 dark:bg-emerald-900/30 rounded-lg">
-            <Leaf className="w-8 h-8 text-emerald-600 dark:text-emerald-400" />
-          </div>
+          <img
+            src="/logo.png"
+            alt="GreenWave Logo"
+            className="w-12 h-12 object-contain"
+          />
           <div>
             <h1 className="text:xl md:text-2xl font-bold text-gray-900 dark:text-white">
               GreenWave
@@ -93,6 +131,13 @@ export const DashboardHeader: React.FC<DashboardHeaderProps> = ({
 
         {/* Right Section */}
         <div className="flex items-center gap-4">
+          {/* Notifications */}
+          <NotificationPopover
+            notifications={notifications}
+            onMarkAsRead={handleMarkAsRead}
+            onClearAll={handleClearAll}
+          />
+
           {/* Theme Toggle */}
           <button
             onClick={onThemeToggle}

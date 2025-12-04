@@ -17,6 +17,7 @@ import { ControlTrafficPage } from "./pages/admin/ControlTrafficPage";
 import LoginPage from "./pages/auth/LoginPage";
 import RegisterPage from "./pages/auth/RegisterPage";
 import AreaManagerPage from "./pages/admin/AreaManagerPage";
+import { SubscriptionPage } from "./pages/admin/SubscriptionPage";
 import UnauthorizedPage from "./pages/auth/UnauthorizedPage";
 import ProtectedRoute from "./components/common/ProtectedRoute";
 
@@ -61,6 +62,17 @@ const AppContent: React.FC = () => {
               requiredRole={[UserRole.ADMIN, UserRole.AREA_MANAGER]}
             >
               <ManagerDashboard />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/subscriptions"
+          element={
+            <ProtectedRoute
+              requiredRole={[UserRole.ADMIN, UserRole.AREA_MANAGER]}
+            >
+              <SubscriptionPage />
             </ProtectedRoute>
           }
         />

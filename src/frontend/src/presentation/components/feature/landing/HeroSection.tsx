@@ -69,9 +69,16 @@ export const HeroSection: React.FC = () => {
           <div className="grid lg:grid-cols-2 gap-8 items-center">
             {/* Left Side - Text Content */}
             <div className="text-center lg:text-left">
-              <h1 className="text-5xl md:text-7xl font-bold mb-6 bg-gradient-to-r from-greenwave-primary-light to-traffic-info bg-clip-text text-transparent">
-                GreenWave
-              </h1>
+              <div className="flex items-center">
+                <img
+                  src="/logo.png"
+                  alt="GreenWave Logo"
+                  className="w-24 h-24 object-contain mr-2"
+                />
+                <h1 className="text-5xl md:text-7xl font-bold mb-6 bg-gradient-to-r from-greenwave-primary-light to-traffic-info bg-clip-text text-transparent">
+                  GreenWave
+                </h1>
+              </div>
               <h2 className="text-2xl md:text-4xl font-semibold mb-4 text-text-main-dark">
                 Hệ Thống Điều Phối Giao Thông Thích Ứng Đa Mục Tiêu
               </h2>
