@@ -81,25 +81,24 @@ export const HealthInsightPanel: React.FC<HealthInsightPanelProps> = ({
   return (
     <div
       className={`
-      ${aqiState.bgColor} border-2 rounded-xl p-3 md:p-4 shadow-xl backdrop-blur-sm
+      glass-card rounded-xl p-3 md:p-4 shadow-xl
       transition-all duration-300 transform h-full overflow-y-auto
+      ${aqiState.textColor}
     `}
     >
       {/* Header */}
       <div className="flex items-center justify-between mb-3 md:mb-4">
         <div className="flex items-center space-x-2 md:space-x-3">
-          <div className="text-2xl md:text-3xl">{aqiState.icon}</div>
+          <div className="text-2xl md:text-3xl drop-shadow-md">
+            {aqiState.icon}
+          </div>
           <div>
             <h3
               className={`font-bold text-base md:text-lg ${aqiState.textColor}`}
             >
               Trạng thái: {aqiState.level}
             </h3>
-            <p
-              className={`text-xs md:text-sm ${
-                isDarkMode ? "text-gray-300" : "text-gray-600"
-              }`}
-            >
+            <p className={`text-xs md:text-sm opacity-80`}>
               Chỉ số AQI: {airQuality.airQualityIndex || "N/A"}
             </p>
           </div>

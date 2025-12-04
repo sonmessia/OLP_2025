@@ -1,5 +1,9 @@
 import React, { useState } from "react";
-import { Wind, Search, X, Sun, Moon } from "lucide-react";
+import { Wind, Search, X, Sun, Moon, Info, Shield } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
+import type { RootState } from "../../../../data/redux/store";
+import { UserRole } from "../../../../domain/models/AuthModels";
 
 interface UserMapHeaderProps {
   onThemeToggle: () => void;
@@ -15,6 +19,8 @@ export const UserMapHeader: React.FC<UserMapHeaderProps> = ({
   searchQuery,
 }) => {
   const [localSearchQuery, setLocalSearchQuery] = useState(searchQuery);
+  const navigate = useNavigate();
+  const { user } = useSelector((state: RootState) => state.auth);
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const query = e.target.value;
@@ -29,7 +35,7 @@ export const UserMapHeader: React.FC<UserMapHeaderProps> = ({
   };
 
   return (
-    <header className="h-18 bg-white dark:bg-gray-800 shadow-lg border-b border-gray-200 dark:border-gray-700 px-2 md:px-4 py-3">
+    <header className="h-18 glass-effect shadow-lg px-2 md:px-4 py-3 z-50 relative">
       <div className="flex items-center justify-between h-full">
         {/* Logo and Title */}
         <div className="flex items-center space-x-2 md:space-x-4">
@@ -110,6 +116,28 @@ export const UserMapHeader: React.FC<UserMapHeaderProps> = ({
               </div>
             </div>
           </div>
+
+          {/* About Us Link */}
+          <button
+            onClick={() => navigate("/introduce")}
+            className="p-2 rounded-lg bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors"
+            title="Về chúng tôi"
+          >
+            <Info className="w-5 h-5" />
+          </button>
+
+          {/* Admin Link */}
+          {user &&
+            (user.role === UserRole.ADMIN ||
+              user.role === UserRole.AREA_MANAGER) && (
+              <button
+                onClick={() => navigate("/admin")}
+                className="p-2 rounded-lg bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors"
+                title="Trang quản trị"
+              >
+                <Shield className="w-5 h-5" />
+              </button>
+            )}
 
           {/* Theme Toggle */}
           <button

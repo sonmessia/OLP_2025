@@ -18,6 +18,7 @@ interface SumoActionButtonsProps {
   onStop: () => void;
   onStep: () => void;
   onRefresh: () => void;
+  disabled?: boolean;
 }
 
 export const SumoActionButtons: React.FC<SumoActionButtonsProps> = ({
@@ -30,13 +31,14 @@ export const SumoActionButtons: React.FC<SumoActionButtonsProps> = ({
   onStop,
   onStep,
   onRefresh,
+  disabled = false,
 }) => {
   return (
     <div className="space-y-3">
       <div className="grid grid-cols-2 gap-3">
         <button
           onClick={onStart}
-          disabled={isSimulationRunning || isLoading}
+          disabled={isSimulationRunning || isLoading || disabled}
           className="flex items-center justify-center gap-2 px-4 py-3 eco-gradient-primary text-white font-semibold rounded-lg
                      transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed
                      hover:shadow-lg hover:scale-105 disabled:hover:scale-100"
@@ -47,7 +49,7 @@ export const SumoActionButtons: React.FC<SumoActionButtonsProps> = ({
 
         <button
           onClick={onStop}
-          disabled={!isSimulationRunning || isLoading}
+          disabled={!isSimulationRunning || isLoading || disabled}
           className="flex items-center justify-center gap-2 px-4 py-3 bg-gray-600 hover:bg-gray-700 text-white font-semibold rounded-lg
                      transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed
                      hover:shadow-lg hover:scale-105 disabled:hover:scale-100"
@@ -61,7 +63,7 @@ export const SumoActionButtons: React.FC<SumoActionButtonsProps> = ({
       <div className="grid grid-cols-3 gap-2">
         <button
           onClick={onStep}
-          disabled={!isSimulationRunning || isStepping}
+          disabled={!isSimulationRunning || isStepping || disabled}
           className="flex items-center justify-center gap-1 px-3 py-2 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg
                      transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed text-sm"
         >
@@ -71,7 +73,7 @@ export const SumoActionButtons: React.FC<SumoActionButtonsProps> = ({
 
         <button
           onClick={() => setAutoStep(!autoStep)}
-          disabled={!isSimulationRunning}
+          disabled={!isSimulationRunning || disabled}
           className={`flex items-center justify-center gap-1 px-3 py-2 font-medium rounded-lg transition-all duration-200
                      disabled:opacity-50 disabled:cursor-not-allowed text-sm
                      ${
@@ -90,7 +92,7 @@ export const SumoActionButtons: React.FC<SumoActionButtonsProps> = ({
 
         <button
           onClick={onRefresh}
-          disabled={isLoading}
+          disabled={isLoading || disabled}
           className="flex items-center justify-center gap-1 px-3 py-2 bg-purple-600 hover:bg-purple-700 text-white font-medium rounded-lg
                      transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed text-sm"
         >

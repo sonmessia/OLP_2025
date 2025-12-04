@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { DashboardHeader } from "../../components/feature/dashboard/DashboardHeader";
 import { KPICard } from "../../components/feature/dashboard/KPICard";
 import { MonitoringChart } from "../../components/feature/dashboard/MonitoringChart";
-import { RewardChart } from "../../components/feature/dashboard/RewardChart";
+import { DeviceHealthPanel } from "../../components/feature/dashboard/DeviceHealthPanel";
 import { PollutionMap } from "../../components/feature/dashboard/PollutionMap";
 import { AlertPanel } from "../../components/feature/dashboard/AlertPanel";
 import { ManualControlPanel } from "../../components/feature/dashboard/ManualControlPanel";
@@ -15,8 +15,12 @@ import type {
   AlertLog,
   InterventionAction,
 } from "../../../domain/models/DashboardModel";
+import { sumoApi } from "../../../api/sumoApi";
+import { airQualityApi } from "../../../api/airQualityApi";
+import type { AirQualityObservedDto } from "../../../data/dtos/AirQualityDTOs";
+import { TRAFFIC_LOCATIONS } from "../../../utils/trafficLocations";
 
-// Mock data generator (will be replaced with real API calls)
+// Mock data generator (kept for initialization and aesthetics)
 const generateMockData = (): DashboardStateModel => {
   const now = new Date();
   const timePoints = Array.from({ length: 20 }, (_, i) => {
@@ -81,113 +85,20 @@ const generateMockData = (): DashboardStateModel => {
     environmentReward: 30 + Math.random() * 25,
   }));
 
-  const pollutionHotspots: PollutionHotspot[] = [
-    {
-      id: "1",
-      name: "Ngã Tư Thủ Đức",
-      latitude: 10.8505,
-      longitude: 106.7718,
-      pm25: 45.2,
-      aqi: 85,
+  const pollutionHotspots: PollutionHotspot[] = TRAFFIC_LOCATIONS.map(
+    (loc) => ({
+      id: loc.id,
+      name: loc.name,
+      latitude: loc.coordinates[0],
+      longitude: loc.coordinates[1],
+      pm25: 30 + Math.random() * 30, // Random initial value
+      aqi: 50 + Math.random() * 50, // Random initial value
       severity: "medium",
-    },
-    {
-      id: "2",
-      name: "Ngã Tư Hàng Xanh",
-      latitude: 10.7997,
-      longitude: 106.7012,
-      pm25: 62.8,
-      aqi: 112,
-      severity: "high",
-    },
-    {
-      id: "3",
-      name: "Cầu Sài Gòn",
-      latitude: 10.7626,
-      longitude: 106.6989,
-      pm25: 28.5,
-      aqi: 48,
-      severity: "low",
-    },
-  ];
+    })
+  );
 
-  const alerts: AlertLog[] = [
-    {
-      id: "1",
-      timestamp: new Date(now.getTime() - 10 * 60 * 1000).toISOString(),
-      type: "warning",
-      message: "PM2.5 vượt ngưỡng 50 μg/m³",
-      location: "Ngã Tư Hàng Xanh",
-      resolved: false,
-    },
-    {
-      id: "2",
-      timestamp: new Date(now.getTime() - 25 * 60 * 1000).toISOString(),
-      type: "info",
-      message: "Lưu lượng xe tăng cao",
-      location: "Ngã Tư Thủ Đức",
-      resolved: true,
-    },
-    {
-      id: "2",
-      timestamp: new Date(now.getTime() - 25 * 60 * 1000).toISOString(),
-      type: "info",
-      message: "Lưu lượng xe tăng cao",
-      location: "Ngã Tư Thủ Đức",
-      resolved: true,
-    },
-    {
-      id: "2",
-      timestamp: new Date(now.getTime() - 25 * 60 * 1000).toISOString(),
-      type: "info",
-      message: "Lưu lượng xe tăng cao",
-      location: "Ngã Tư Thủ Đức",
-      resolved: true,
-    },
-  ];
-
-  const interventions: InterventionAction[] = [
-    {
-      id: "1",
-      timestamp: new Date(now.getTime() - 5 * 60 * 1000).toISOString(),
-      action: "Tăng thời gian đèn xanh hướng Đông-Tây",
-      target: "Ngã Tư Hàng Xanh",
-      status: "in-progress",
-      aiTriggered: true,
-    },
-    {
-      id: "1",
-      timestamp: new Date(now.getTime() - 5 * 60 * 1000).toISOString(),
-      action: "Tăng thời gian đèn xanh hướng Đông-Tây",
-      target: "Ngã Tư Hàng Xanh",
-      status: "in-progress",
-      aiTriggered: true,
-    },
-    {
-      id: "1",
-      timestamp: new Date(now.getTime() - 5 * 60 * 1000).toISOString(),
-      action: "Tăng thời gian đèn xanh hướng Đông-Tây",
-      target: "Ngã Tư Hàng Xanh",
-      status: "in-progress",
-      aiTriggered: true,
-    },
-    {
-      id: "2",
-      timestamp: new Date(now.getTime() - 15 * 60 * 1000).toISOString(),
-      action: "Giảm PM2.5 bằng điều chỉnh pha",
-      target: "Ngã Tư Thủ Đức",
-      status: "completed",
-      aiTriggered: true,
-    },
-    {
-      id: "3",
-      timestamp: new Date(now.getTime() - 30 * 60 * 1000).toISOString(),
-      action: "Cân bằng lưu lượng",
-      target: "Cầu Sài Gòn",
-      status: "completed",
-      aiTriggered: false,
-    },
-  ];
+  const alerts: AlertLog[] = [];
+  const interventions: InterventionAction[] = [];
 
   return {
     kpis,
@@ -230,11 +141,126 @@ export const ManagerDashboard: React.FC = () => {
     }
   }, [isDarkMode]);
 
-  // Simulate real-time updates
+  // Real-time data fetching
   useEffect(() => {
-    const interval = setInterval(() => {
-      setDashboardData(generateMockData());
-    }, 30000); // Update every 30 seconds
+    const fetchData = async () => {
+      try {
+        const now = new Date().toISOString();
+
+        // 1. Fetch Sumo State
+        let sumoState = null;
+        try {
+          sumoState = await sumoApi.getSumoState();
+        } catch {
+          console.warn("Could not fetch Sumo state, using previous/mock data");
+        }
+
+        // 2. Fetch Air Quality Data
+        let airQualityData: AirQualityObservedDto[] = [];
+        try {
+          const aqResponse = await airQualityApi.getAll();
+          if (Array.isArray(aqResponse)) {
+            airQualityData = aqResponse;
+          }
+        } catch {
+          console.warn("Could not fetch Air Quality data");
+        }
+
+        // 3. Process Data
+        setDashboardData((prev) => {
+          // Update KPIs
+          const newKpis = [...prev.kpis];
+
+          // Update Waiting Time (Sumo)
+          if (sumoState) {
+            newKpis[0] = {
+              ...newKpis[0],
+              value: Math.round(sumoState.waiting_time || 0),
+              trend: "stable",
+            };
+
+            // Update Vehicle Count (Sumo)
+            newKpis[2] = {
+              ...newKpis[2],
+              value: sumoState.vehicle_count || 0,
+            };
+          }
+
+          // Update PM2.5 (Air Quality)
+          let avgPm25 = 0;
+          if (airQualityData.length > 0) {
+            const totalPm25 = airQualityData.reduce(
+              (sum, item) => sum + (item.pm25 || 0),
+              0
+            );
+            avgPm25 = totalPm25 / airQualityData.length;
+
+            newKpis[1] = {
+              ...newKpis[1],
+              value: Math.round(avgPm25),
+            };
+          } else {
+            // Fallback to previous value or mock if no data
+            avgPm25 = prev.kpis[1].value;
+          }
+
+          // Update Monitoring Chart (Hybrid: Keep history, add new point)
+          const newPoint: MonitoringDataPoint = {
+            timestamp: now,
+            avgWaitingTime:
+              sumoState?.waiting_time ||
+              prev.monitoringData[prev.monitoringData.length - 1]
+                .avgWaitingTime,
+            pm25Level:
+              airQualityData.length > 0
+                ? avgPm25
+                : prev.monitoringData[prev.monitoringData.length - 1].pm25Level,
+          };
+
+          // Keep last 20 points
+          const newMonitoringData = [...prev.monitoringData.slice(1), newPoint];
+
+          // Update Pollution Hotspots
+          const newHotspots: PollutionHotspot[] =
+            airQualityData.length > 0
+              ? airQualityData.map((aq) => ({
+                  id: aq.id,
+                  name: aq.areaServed || "Unknown Location",
+                  latitude: aq.location?.coordinates[1] || 0,
+                  longitude: aq.location?.coordinates[0] || 0,
+                  pm25: aq.pm25 || 0,
+                  aqi: aq.airQualityIndex || 0,
+                  severity:
+                    (aq.airQualityIndex || 0) > 150
+                      ? "high"
+                      : (aq.airQualityIndex || 0) > 100
+                      ? "medium"
+                      : "low",
+                }))
+              : prev.pollutionHotspots;
+
+          // Update Interventions (Mocking AI detection for now as API doesn't return history)
+          const newInterventions = prev.interventions;
+
+          return {
+            ...prev,
+            kpis: newKpis,
+            monitoringData: newMonitoringData,
+            pollutionHotspots: newHotspots,
+            interventions: newInterventions,
+            lastUpdated: now,
+          };
+        });
+      } catch (error) {
+        console.error("Error updating dashboard:", error);
+      }
+    };
+
+    // Initial fetch
+    fetchData();
+
+    // Poll every 5 seconds
+    const interval = setInterval(fetchData, 5000);
 
     return () => clearInterval(interval);
   }, []);
@@ -297,12 +323,9 @@ export const ManagerDashboard: React.FC = () => {
             />
           </div>
 
-          {/* Reward Chart - 35% */}
+          {/* Device Health Panel - 35% */}
           <div className="h-96">
-            <RewardChart
-              data={dashboardData.rewardData}
-              isDarkMode={isDarkMode}
-            />
+            <DeviceHealthPanel />
           </div>
         </div>
 

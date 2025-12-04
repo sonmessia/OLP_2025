@@ -7,6 +7,7 @@ import type { AppDispatch } from "../../../data/redux/store";
 import { logout } from "../../../data/redux/authSlice";
 import type { RootState } from "../../../data/redux/store";
 import { UserRole } from "../../../domain/models/AuthModels";
+import { Monitor, Route, Cpu } from "lucide-react";
 
 interface AuthHeaderProps {
   title?: string;
@@ -34,13 +35,26 @@ const AuthHeader: React.FC<AuthHeaderProps> = ({
     }
   };
 
-  const handleDashboard = () => {
-    if (user?.role === UserRole.ADMIN) {
-      navigate("/admin");
-    } else {
-      navigate("/area-manager");
-    }
-  };
+  const navItems = [
+    {
+      label: "Dashboard",
+      path: "/admin",
+      icon: Monitor,
+    },
+    {
+      label:
+        user?.role === UserRole.AREA_MANAGER
+          ? "Điều phối khu vực"
+          : "Điều khiển",
+      path: user?.role === UserRole.AREA_MANAGER ? "/area-manager" : "/control",
+      icon: Route,
+    },
+    {
+      label: "Thiết bị",
+      path: "/devices",
+      icon: Cpu,
+    },
+  ];
 
   return (
     <header className="bg-white shadow-sm border-b border-gray-200">
@@ -55,39 +69,20 @@ const AuthHeader: React.FC<AuthHeaderProps> = ({
               {title}
             </button>
 
-            {/* Navigation for admin */}
-            {user?.role === UserRole.ADMIN && (
+            {/* Navigation for Admin and Area Manager */}
+            {(user?.role === UserRole.ADMIN ||
+              user?.role === UserRole.AREA_MANAGER) && (
               <nav className="hidden md:flex space-x-4">
-                <Link
-                  to="/control"
-                  className="text-sm font-medium text-gray-700 hover:text-indigo-600 px-3 py-2 rounded-md text-sm hover:bg-gray-50"
-                >
-                  Điều khiển
-                </Link>
-                <Link
-                  to="/admin"
-                  className="text-sm font-medium text-gray-700 hover:text-indigo-600 px-3 py-2 rounded-md text-sm hover:bg-gray-50"
-                >
-                  Dashboard
-                </Link>
-                <Link
-                  to="/devices"
-                  className="text-sm font-medium text-gray-700 hover:text-indigo-600 px-3 py-2 rounded-md text-sm hover:bg-gray-50"
-                >
-                  Thiết bị
-                </Link>
-              </nav>
-            )}
-
-            {/* Navigation for area manager */}
-            {user?.role === UserRole.AREA_MANAGER && (
-              <nav className="hidden md:flex space-x-4">
-                <button
-                  onClick={handleDashboard}
-                  className="text-sm font-medium text-gray-700 hover:text-indigo-600 px-3 py-2 rounded-md text-sm hover:bg-gray-50"
-                >
-                  Dashboard
-                </button>
+                {navItems.map((item) => (
+                  <Link
+                    key={item.path}
+                    to={item.path}
+                    className="text-sm font-medium text-gray-700 hover:text-indigo-600 px-3 py-2 rounded-md hover:bg-gray-50 flex items-center gap-2"
+                  >
+                    <item.icon className="w-4 h-4" />
+                    {item.label}
+                  </Link>
+                ))}
               </nav>
             )}
           </div>

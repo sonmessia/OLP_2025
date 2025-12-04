@@ -34,7 +34,7 @@ const AppContent: React.FC = () => {
 
         // Verify token is still valid
         store.dispatch(verifyToken(token));
-      } catch (error) {
+      } catch {
         // If parsing fails, clear invalid data
         store.dispatch(clearAuthState());
         localStorage.removeItem("authToken");
@@ -57,7 +57,9 @@ const AppContent: React.FC = () => {
         <Route
           path="/admin"
           element={
-            <ProtectedRoute requiredRole={UserRole.ADMIN}>
+            <ProtectedRoute
+              requiredRole={[UserRole.ADMIN, UserRole.AREA_MANAGER]}
+            >
               <ManagerDashboard />
             </ProtectedRoute>
           }

@@ -142,7 +142,11 @@ export const KPICard: React.FC<KPICardProps> = ({
             </span>
           </div>
         </div>
-        <div className="flex items-center gap-1 mt-1.5">
+        <div
+          className={`flex items-center gap-1 mt-1.5 ${
+            iconColorClasses[kpi.color]
+          }`}
+        >
           {getTrendIcon()}
           <span className="text-xs font-medium">
             {kpi.trendValue > 0 ? "+" : ""}

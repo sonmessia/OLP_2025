@@ -103,8 +103,7 @@ export const AQIGauge: React.FC<AQIGaugeProps> = ({
     <div
       className={`
       relative flex flex-col items-center justify-center
-      bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-3
-      border border-gray-100 dark:border-gray-700
+      glass-card rounded-2xl shadow-xl p-3
       transition-all duration-300
     `}
     >

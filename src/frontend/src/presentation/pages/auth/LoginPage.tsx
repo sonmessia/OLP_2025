@@ -250,8 +250,16 @@ const LoginPage: React.FC = () => {
                   <strong>Quản lý chính:</strong> admin@olp.vn / admin123
                 </p>
                 <p>
-                  <strong>Quản lý khu vực:</strong> manager.nguyenkieuan@olp.vn
+                  <strong>Quản lý khu vực:</strong> manager.thuduc@olp.vn /
+                  manager123
+                </p>
+                <p>
+                  <strong>Quản lý khu vực:</strong> manager.nguyenthaison@olp.vn
                   / manager123
+                </p>
+                <p>
+                  <strong>Quản lý khu vực:</strong> manager.quangtrung@olp.vn /
+                  manager123
                 </p>
               </div>
             </div>

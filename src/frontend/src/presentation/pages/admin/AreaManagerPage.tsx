@@ -1,7 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { useAppDispatch, useAppSelector } from "../../../data/redux/hooks";
-import { fetchSumoStatus, fetchSumoState } from "../../../data/redux/sumoSlice";
+import {
+  startSimulation,
+  fetchSumoStatus,
+  fetchSumoState,
+} from "../../../data/redux/sumoSlice";
+import { SumoModelFactory } from "../../../domain/models/SumoModels";
 import type { RootState } from "../../../data/redux/store";
 import { UserRole } from "../../../domain/models/AuthModels";
 import { DashboardHeader } from "../../components/feature/dashboard/DashboardHeader";
@@ -72,6 +77,10 @@ const AreaManagerPage: React.FC = () => {
     localStorage.setItem("darkMode", newDarkMode.toString());
   };
 
+  const addLog = (message: string) => {
+    setSystemLogs((prev) => [...prev, message]);
+  };
+
   // Initialize data
   useEffect(() => {
     const initializeData = async () => {
@@ -94,18 +103,59 @@ const AreaManagerPage: React.FC = () => {
 
   // Fetch SUMO state when simulation is running
   useEffect(() => {
+    // Check if the running scenario matches the user's area
+    const userScenarioId = TRAFFIC_LOCATIONS.find(
+      (loc) => loc.name === user?.areaName
+    )?.id;
+
     if (status.connected && isSimulationRunning) {
+      if (
+        userScenarioId &&
+        status.scenario &&
+        status.scenario !== userScenarioId
+      ) {
+        // Mismatch detected: Stop the wrong simulation
+        console.warn(
+          `Mismatch: Running scenario ${status.scenario} but user area is ${userScenarioId}. Stopping...`
+        );
+        addLog(
+          `⚠️ Đang chạy kịch bản ${status.scenario} (Khác khu vực của bạn). Vui lòng khởi động lại đúng khu vực.`
+        );
+        // Do NOT fetch state
+        return;
+      }
+
+      // Only fetch state if scenario matches
       const stateInterval = setInterval(() => {
         dispatch(fetchSumoState());
       }, 1000);
 
       return () => clearInterval(stateInterval);
+    } else if (status.connected && !isSimulationRunning && user?.areaName) {
+      // Auto-start simulation for the user's area if connected but not running
+      if (userScenarioId) {
+        // Debounce auto-start to avoid rapid firing on mount
+        const timer = setTimeout(() => {
+          addLog(
+            `🚀 Đang tự động khởi động mô phỏng cho khu vực: ${user.areaName}`
+          );
+          const config = SumoModelFactory.createConfiguration(
+            userScenarioId,
+            false, // No GUI by default for auto-start
+            8813
+          );
+          dispatch(startSimulation(config));
+        }, 1000);
+        return () => clearTimeout(timer);
+      }
     }
-  }, [status.connected, isSimulationRunning, dispatch]);
-
-  const addLog = (message: string) => {
-    setSystemLogs((prev) => [...prev, message]);
-  };
+  }, [
+    status.connected,
+    isSimulationRunning,
+    dispatch,
+    status.scenario,
+    user?.areaName,
+  ]);
 
   if (!user || user.role !== UserRole.AREA_MANAGER) {
     return (

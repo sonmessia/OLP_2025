@@ -11,6 +11,8 @@ import { Settings, MapPin } from "lucide-react";
 import { SumoStatusDisplay } from "../sumo/components/SumoStatusDisplay";
 import { SumoActionButtons } from "../sumo/components/SumoActionButtons";
 
+import { TRAFFIC_LOCATIONS } from "../../../../utils/trafficLocations";
+
 interface AreaControlPanelProps {
   areaName: string;
   onLog?: (message: string) => void;
@@ -24,14 +26,20 @@ export const AreaControlPanel: React.FC<AreaControlPanelProps> = ({
   const { status, isLoading, isSimulationRunning, simulationState, error } =
     useAppSelector((state) => state.sumo);
 
-  // Hardcoded for now, but could be mapped from areaName
-  const scenario = "Nga4ThuDuc";
+  // Find scenario ID based on areaName
+  const scenario = TRAFFIC_LOCATIONS.find((loc) => loc.name === areaName)?.id;
+
   const [useGUI, setUseGUI] = useState(false);
   const [port] = useState(8813);
   const [isStepping, setIsStepping] = useState(false);
   const [autoStep, setAutoStep] = useState(false);
 
   const handleStartSumo = async () => {
+    if (!scenario) {
+      onLog?.(`❌ Không tìm thấy kịch bản cho khu vực: ${areaName}`);
+      return;
+    }
+
     try {
       const config = SumoModelFactory.createConfiguration(
         scenario,
@@ -90,6 +98,16 @@ export const AreaControlPanel: React.FC<AreaControlPanelProps> = ({
     }
   }, [autoStep, isSimulationRunning, isStepping, handleStepForward]);
 
+  // Determine effective status for display
+  // If connected but scenario doesn't match, show as disconnected/mismatch
+  const isScenarioMatch = status.connected && status.scenario === scenario;
+
+  const displayStatus = isScenarioMatch
+    ? status
+    : { ...status, connected: false, scenario: undefined }; // Or keep scenario undefined to show "Not running"
+
+  const displayState = isScenarioMatch ? simulationState : null;
+
   return (
     <div className="glass-card rounded-xl p-6 shadow-xl">
       <div className="flex items-center justify-between mb-6">
@@ -108,8 +126,8 @@ export const AreaControlPanel: React.FC<AreaControlPanelProps> = ({
       </div>
 
       <SumoStatusDisplay
-        status={status}
-        simulationState={simulationState}
+        status={displayStatus}
+        simulationState={displayState}
         error={error}
       />
 
@@ -138,6 +156,7 @@ export const AreaControlPanel: React.FC<AreaControlPanelProps> = ({
         onStop={handleStopSumo}
         onStep={handleStepForward}
         onRefresh={handleRefreshStatus}
+        disabled={!scenario}
       />
     </div>
   );

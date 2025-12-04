@@ -1,10 +1,5 @@
 import React, { useEffect, useRef } from "react";
 
-interface LogEntry {
-  timestamp: Date;
-  message: string;
-}
-
 interface SystemLogsProps {
   logs: string[];
   maxLogs?: number;

@@ -16,13 +16,11 @@ export const TrafficStatusCard: React.FC<TrafficStatusCardProps> = ({
   lastUpdated,
   isDarkMode,
 }) => {
-  const cardBg = isDarkMode ? "bg-gray-800" : "bg-white";
   const textColor = isDarkMode ? "text-white" : "text-gray-800";
-  const borderColor = isDarkMode ? "border-gray-700" : "border-gray-200";
 
   return (
     <div
-      className={`${cardBg} ${textColor} rounded-xl shadow-lg p-4 border ${borderColor} backdrop-blur-sm bg-opacity-90 transition-all duration-300`}
+      className={`glass-card ${textColor} rounded-xl shadow-lg p-4 transition-all duration-300`}
     >
       <div className="flex items-center justify-between mb-4">
         <h3 className="font-bold text-lg flex items-center gap-2">

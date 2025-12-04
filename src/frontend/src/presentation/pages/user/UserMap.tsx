@@ -116,6 +116,16 @@ export const UserMap: React.FC = () => {
     // distinct from the global simulation state, but the request implies showing the card.
   };
 
+  // State to track last update time
+  const [lastUpdated, setLastUpdated] = useState(new Date());
+
+  // Update timestamp when simulationState changes
+  useEffect(() => {
+    if (simulationState) {
+      setLastUpdated(new Date());
+    }
+  }, [simulationState]);
+
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900 relative">
       {/* Header */}
@@ -153,7 +163,7 @@ export const UserMap: React.FC = () => {
               avgSpeed={simulationState.avgSpeed}
               vehicleCount={simulationState.vehicleCount}
               waitingTime={simulationState.waitingTime}
-              lastUpdated={new Date()} // In a real app, this would come from simulationState.timestamp or similar
+              lastUpdated={lastUpdated}
               isDarkMode={isDarkMode}
             />
           </div>

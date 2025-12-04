@@ -8,7 +8,7 @@ import { UserRole } from "../../../domain/models/AuthModels";
 
 interface ProtectedRouteProps {
   children: React.ReactNode;
-  requiredRole?: UserRole;
+  requiredRole?: UserRole | UserRole[];
   fallbackPath?: string;
 }
 
@@ -59,8 +59,14 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
   }
 
   // Nếu có yêu cầu role nhưng user không có quyền, redirect đến trang không có quyền
-  if (requiredRole && user?.role !== requiredRole) {
-    return <Navigate to="/unauthorized" replace />;
+  if (requiredRole) {
+    const allowedRoles = Array.isArray(requiredRole)
+      ? requiredRole
+      : [requiredRole];
+
+    if (!user?.role || !allowedRoles.includes(user.role)) {
+      return <Navigate to="/unauthorized" replace />;
+    }
   }
 
   // Nếu tất cả điều kiện đều thỏa mãn, render children
