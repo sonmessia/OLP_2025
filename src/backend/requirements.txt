@@ -5,3 +5,12 @@ httpx==0.25.1
 pydantic==2.5.2
 pydantic-settings==2.1.0
 requests==2.32.5
+
+# SUMO RL Dependencies
+numpy==1.24.3
+tensorflow==2.15.0
+matplotlib==3.7.5
+
+# SUMO Python Libraries
+traci==1.19.0  # TraCI client for SUMO communication
+sumolib==1.19.0  # SUMO library for network/route parsing

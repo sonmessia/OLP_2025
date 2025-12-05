@@ -1,0 +1,102 @@
+{
+  "detectors": {
+    "inductionLoop": [
+      {
+        "id": "e1_0",
+        "laneId": "568236971#1_0",
+        "type": "point",
+        "purpose": "flow_count"
+      },
+      {
+        "id": "e1_2",
+        "laneId": "602009562#1_0",
+        "type": "point",
+        "purpose": "flow_count"
+      },
+      {
+        "id": "e1_3",
+        "laneId": "1116686585#1_1",
+        "type": "point",
+        "purpose": "flow_count"
+      },
+      {
+        "id": "e1_4",
+        "laneId": "1116686584#2_1",
+        "type": "point",
+        "purpose": "flow_count"
+      },
+      {
+        "id": "e1_5",
+        "laneId": "604177378#1_1",
+        "type": "point",
+        "purpose": "flow_count"
+      },
+      {
+        "id": "e1_7",
+        "laneId": "1422419156_1",
+        "type": "point",
+        "purpose": "flow_count"
+      },
+      {
+        "id": "e1_6",
+        "laneId": "409056759#1_1",
+        "type": "point",
+        "purpose": "flow_count"
+      }
+    ],
+    "laneAreaDetector": [
+      {
+        "id": "e2_0",
+        "laneId": "602009562#1_1",
+        "length": 10.0,
+        "purpose": "queue_length"
+      },
+      {
+        "id": "e2_2",
+        "laneId": "725686334#3_0",
+        "length": 10.0,
+        "purpose": "queue_length"
+      }
+    ],
+    "multiLaneAreaDetector": [
+      {
+        "id": "e2_4",
+        "lanes": ["1116686584#1_2", "1116686584#2_2"],
+        "purpose": "aggregate_queue"
+      },
+      {
+        "id": "e2_1",
+        "lanes": ["359552103_2", "568236971#0_1", "568236971#1_1"],
+        "purpose": "aggregate_queue"
+      }
+    ],
+    "instantInductionLoop": [
+      {
+        "id": "e1i_0",
+        "laneId": "602009562#1_0"
+      },
+      {
+        "id": "e1i_2",
+        "laneId": "1116686585#1_0"
+      },
+      {
+        "id": "e1i_1",
+        "laneId": "1116686584#2_0"
+      },
+      {
+        "id": "e1i_3",
+        "laneId": "1116686632_0"
+      }
+    ],
+    "TLS_ID": [
+      // Phạm Văn Đồng
+      "2493364036",
+      "4067989314",
+      // Nguyễn Kiệm
+      "4719951876",
+      "4067989318",
+      "4067989321",
+      "3640191575"
+    ]
+  }
+}

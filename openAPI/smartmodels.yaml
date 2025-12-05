@@ -55,8 +55,7 @@ components:
     RoadSegment:
       $ref: "https://smart-data-models.github.io/dataModel.Transportation/RoadSegment/model.yaml#/RoadSegment"
 
-    #6. TrafficEnvironmentImpact entity: Describes the environmental impact of traffic.
-
+    # 6. TrafficEnvironmentImpact entity: Describes the environmental impact of traffic.
     TrafficEnvironmentImpact:
       allOf:
         - $ref: "https://smart-data-models.github.io/dataModel.Environment/TrafficEnvironmentImpact/model.yaml#/TrafficEnvironmentImpact"
@@ -69,3 +68,73 @@ components:
                 type: "Relationship"
                 model: "https://smart-data-models.github.io/dataModel.Transportation/RoadSegment/model.yaml#/RoadSegment"
               $ref: "https://smart-data-models.github.io/data-models/common-schema.json#/definitions/EntityIdentifierType"
+
+    # 7. TrafficFlowObserved entity: Minimal SUMO-derived traffic flow metrics
+    TrafficFlowObserved:
+      type: object
+      description: "Traffic flow observation entity containing real-time metrics from SUMO simulation: queue lengths, vehicle count, and average speed."
+      required:
+        - id
+        - type
+      properties:
+        id:
+          description: "Unique identifier of the entity"
+          type: string
+          format: uri
+          example: "urn:ngsi-ld:TrafficFlowObserved:4066470692"
+          x-ngsi:
+            type: Property
+        type:
+          description: "NGSI Entity type. Must be 'TrafficFlowObserved'"
+          type: string
+          enum:
+            - TrafficFlowObserved
+          x-ngsi:
+            type: Property
+        dateObservedFrom:
+          description: "Observation period start time"
+          type: string
+          format: date-time
+          example: "2025-11-25T10:00:00Z"
+          x-ngsi:
+            type: Property
+        dateObservedTo:
+          description: "Observation period end time"
+          type: string
+          format: date-time
+          example: "2025-11-25T10:01:00Z"
+          x-ngsi:
+            type: Property
+        queues:
+          description: "Queue lengths per lane/direction (array of integers)"
+          type: array
+          items:
+            type: integer
+            minimum: 0
+          example: [2, 1]
+          x-ngsi:
+            type: Property
+        vehicleCount:
+          description: "Total number of vehicles observed during the period"
+          type: integer
+          minimum: 0
+          example: 5
+          x-ngsi:
+            type: Property
+        avgSpeed:
+          description: "Average vehicle speed in meters per second"
+          type: number
+          format: float
+          minimum: 0
+          example: 8.5
+          x-ngsi:
+            type: Property
+            unitCode: "MTS"
+        refRoadSegment:
+          description: "Reference to the road segment where this observation was made"
+          type: string
+          format: uri
+          example: "urn:ngsi-ld:RoadSegment:4066470692"
+          x-ngsi:
+            type: Relationship
+            model: "https://smart-data-models.github.io/dataModel.Transportation/RoadSegment/model.yaml#/RoadSegment"

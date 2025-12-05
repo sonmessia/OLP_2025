@@ -1,0 +1,39 @@
+# Dockerfile for SUMO Simulation Container
+FROM ubuntu:22.04
+
+# Avoid interactive prompts during build
+ENV DEBIAN_FRONTEND=noninteractive
+
+# Install SUMO and dependencies
+RUN apt-get update && apt-get install -y \
+    software-properties-common \
+    wget \
+    python3 \
+    python3-pip \
+    libxrender1 \
+    libxext6 \
+    libsm6 \
+    libxrandr2 \
+    libxi6 \
+    libgl1-mesa-glx \
+    x11-apps \
+    && add-apt-repository ppa:sumo/stable \
+    && apt-get update \
+    && apt-get install -y sumo sumo-tools sumo-doc \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
+
+# Set SUMO_HOME environment variable
+ENV SUMO_HOME=/usr/share/sumo
+ENV PATH="${SUMO_HOME}/bin:${PATH}"
+
+# Install Python dependencies
+COPY requirements.txt /tmp/requirements.txt
+RUN pip3 install --no-cache-dir -r /tmp/requirements.txt
+
+# Copy application code
+WORKDIR /app
+COPY app/sumo_rl /app/sumo_rl
+
+# Default command (will be overridden by docker-compose)
+CMD ["python3", "/app/sumo_rl/agents/iot_agent.py", "--scenario", "Nga4ThuDuc", "--gui"]

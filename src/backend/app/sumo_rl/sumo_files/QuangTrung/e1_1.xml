@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- generated on 2025-11-17T12:56:16.256834+07:00 by Eclipse SUMO GUI 1.25.0
+<sumoConfiguration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/sumoConfiguration.xsd">
+
+    <input>
+        <net-file value="D:\OLP\SUMO\QuangTrung\quangtrung.net.xml"/>
+        <route-files value="D:\OLP\SUMO\QuangTrung\routes.rou.xml"/>
+        <additional-files value="D:\OLP\SUMO\QuangTrung\quangtrungcar.add.xml"/>
+    </input>
+
+</sumoConfiguration>
+-->
+
+<detector xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/det_e1_file.xsd">
+    <interval begin="0.00" end="300.00" id="e1_1" nVehContrib="4" flow="48.00" occupancy="75.53" speed="1.42" harmonicMeanSpeed="0.37" length="5.00" nVehEntered="5"/>
+    <interval begin="300.00" end="600.00" id="e1_1" nVehContrib="0" flow="0.00" occupancy="99.23" speed="-1.00" harmonicMeanSpeed="-1.00" length="-1.00" nVehEntered="1"/>
+    <interval begin="600.00" end="900.00" id="e1_1" nVehContrib="2" flow="24.00" occupancy="98.20" speed="0.77" harmonicMeanSpeed="0.54" length="5.00" nVehEntered="3"/>
+    <interval begin="900.00" end="1200.00" id="e1_1" nVehContrib="0" flow="0.00" occupancy="99.26" speed="-1.00" harmonicMeanSpeed="-1.00" length="-1.00" nVehEntered="1"/>
+    <interval begin="1200.00" end="1500.00" id="e1_1" nVehContrib="0" flow="0.00" occupancy="99.45" speed="-1.00" harmonicMeanSpeed="-1.00" length="-1.00" nVehEntered="1"/>
+    <interval begin="1500.00" end="1800.00" id="e1_1" nVehContrib="0" flow="0.00" occupancy="99.42" speed="-1.00" harmonicMeanSpeed="-1.00" length="-1.00" nVehEntered="1"/>
+    <interval begin="1800.00" end="2100.00" id="e1_1" nVehContrib="16" flow="192.00" occupancy="79.33" speed="4.07" harmonicMeanSpeed="0.22" length="5.00" nVehEntered="15"/>
+    <interval begin="2100.00" end="2185.00" id="e1_1" nVehContrib="0" flow="0.00" occupancy="0.00" speed="-1.00" harmonicMeanSpeed="-1.00" length="-1.00" nVehEntered="0"/>
+</detector>

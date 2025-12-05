@@ -1,0 +1,26 @@
+<additional>
+    <entryExitDetector 
+        id="KV_Nga_4_ThuDuc" 
+        file="travel_time_nga5.xml" 
+        freq="600"
+    >
+        
+        <entry edge="1215970290#0"/>  
+        <entry edge="11840922#1"/>  
+        <entry edge="6760602354"/>
+        <entry edge="720360985"/>
+        <entry edge="404368564#1"/>
+        <entry edge="720360983#1"/>
+        <entry edge="1272225923#0"/>
+        <entry edge="723249849#1"/>
+        <entry edge="720360982#0"/>
+        
+        <exit edge="1269264064#1"/>   
+        <exit edge="218227253#1"/>   
+        <exit edge="720360978#1"/>
+        <exit edge="722556034#1"/>
+        <exit edge="1272225924#2"/>
+        <exit edge="719482084#1"/>
+        
+    </entryExitDetector>
+</additional>
