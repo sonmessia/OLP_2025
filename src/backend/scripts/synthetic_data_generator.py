@@ -35,9 +35,6 @@ from pathlib import Path
 from random import Random
 from typing import Any, Dict, List
 
-# Add parent directory to Python path so we can import app modules
-sys.path.insert(0, str(Path(__file__).parent.parent))
-
 from app.models.AirQualityObserved import Type6 as AirQualityType
 from app.models.AirQualityObserved import TypeofLocation
 from app.models.CarbonFootprint import Type6 as CarbonType
@@ -45,6 +42,9 @@ from app.models.TrafficEnvironmentImpact import (
     Type6 as TrafficType,
 )
 from app.models.WaterQualityObserved import Type6 as WaterType
+
+# Add parent directory to Python path so we can import app modules
+sys.path.insert(0, str(Path(__file__).parent.parent))
 
 # Configure logging
 logging.basicConfig(

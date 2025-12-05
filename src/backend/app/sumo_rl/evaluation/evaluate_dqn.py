@@ -4,13 +4,9 @@ Script đánh giá DQN Model với metrics chi tiết
 So sánh: Baseline (Fixed-time) vs DQN vs Random
 """
 
+import json
 import os
 import sys
-
-# Force CPU only to avoid GPU/CUDA issues
-os.environ["CUDA_VISIBLE_DEVICES"] = ""
-
-import json
 from datetime import datetime
 
 import matplotlib.pyplot as plt
@@ -19,6 +15,8 @@ import numpy as np
 # TensorFlow imports
 from tensorflow import keras
 
+# Force CPU only to avoid GPU/CUDA issues
+os.environ["CUDA_VISIBLE_DEVICES"] = ""
 # SUMO imports
 _SUMO_AVAILABLE = False
 try:

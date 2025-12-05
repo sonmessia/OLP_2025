@@ -17,11 +17,10 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Dict, List
 
-# Add parent directory to Python path so we can import app modules
-sys.path.insert(0, str(Path(__file__).parent.parent))
-
 from app.services.air_quality_service import AirQualityService
 
+# Add parent directory to Python path so we can import app modules
+sys.path.insert(0, str(Path(__file__).parent.parent))
 # Detect if running inside Docker and set appropriate ORION_LD_URL
 # def _detect_orion_url():
 #     """Detect the appropriate Orion URL based on the runtime environment."""

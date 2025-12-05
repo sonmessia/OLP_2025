@@ -12,10 +12,11 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Dict, List
 
-# Add parent directory to Python path so we can import app modules
-sys.path.insert(0, str(Path(__file__).parent.parent))
 # Import services
 from app.services.carbon_footprint_service import CarbonFootprintService
+
+# Add parent directory to Python path so we can import app modules
+sys.path.insert(0, str(Path(__file__).parent.parent))
 
 
 def generate_sample_carbon_entities() -> List[Dict[str, Any]]:

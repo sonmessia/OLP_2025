@@ -24,9 +24,6 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Dict, List
 
-# Add parent directory to Python path so we can import app modules
-sys.path.insert(0, str(Path(__file__).parent.parent))
-
 # Import services
 from app.services.air_quality_service import AirQualityService
 from app.services.carbon_footprint_service import CarbonFootprintService
@@ -34,6 +31,9 @@ from app.services.traffic_enviroment_impact_service import (
     TrafficEnvironmentImpactService,
 )
 from app.services.water_quality_service import WaterQualityService
+
+# Add parent directory to Python path so we can import app modules
+sys.path.insert(0, str(Path(__file__).parent.parent))
 
 
 class SyntheticDataGenerator:
