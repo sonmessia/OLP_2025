@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<!-- generated on 2025-12-04T22:27:29.180294+07:00 by Eclipse SUMO sumo 1.25.0
+<!-- generated on 2025-12-05T20:30:00.994200+07:00 by Eclipse SUMO GUI 1.25.0
 <sumoConfiguration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/sumoConfiguration.xsd">
 
     <input>
@@ -33,3 +33,4 @@
     <instantOut id="e1i_3" time="101.71" state="enter" vehID="75" speed="7.88" length="5.00" type="car" gap="2.91"/>
     <instantOut id="e1i_3" time="102.00" state="stay" vehID="75" speed="7.88" length="5.00" type="car"/>
     <instantOut id="e1i_3" time="102.65" state="leave" vehID="75" speed="4.11" length="5.00" type="car" occupancy="0.95"/>
+</instantE1>

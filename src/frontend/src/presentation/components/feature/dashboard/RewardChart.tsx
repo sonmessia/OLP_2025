@@ -1,4 +1,5 @@
 import React, { useMemo } from "react";
+import { useTranslation } from "react-i18next";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -31,6 +32,7 @@ export const RewardChart: React.FC<RewardChartProps> = ({
   data,
   isDarkMode = false,
 }) => {
+  const { t, i18n } = useTranslation(["charts"]);
   // Detect dark mode from document if not provided
   const darkMode =
     isDarkMode || document.documentElement.classList.contains("dark");
@@ -62,7 +64,7 @@ export const RewardChart: React.FC<RewardChartProps> = ({
 
   const labels = data.map((point) => {
     const date = new Date(point.timestamp);
-    return date.toLocaleTimeString("vi-VN", {
+    return date.toLocaleTimeString(i18n.language === "en" ? "en-US" : "vi-VN", {
       hour: "2-digit",
       minute: "2-digit",
     });
@@ -72,7 +74,7 @@ export const RewardChart: React.FC<RewardChartProps> = ({
     labels,
     datasets: [
       {
-        label: "Giao thông",
+        label: t("rewards.traffic"),
         data: data.map((point) => point.trafficReward),
         backgroundColor: "#3B82F6", // Blue-500
         hoverBackgroundColor: "#2563EB", // Blue-600
@@ -81,7 +83,7 @@ export const RewardChart: React.FC<RewardChartProps> = ({
         categoryPercentage: 0.8,
       },
       {
-        label: "Môi trường",
+        label: t("rewards.environment"),
         data: data.map((point) => point.environmentReward),
         backgroundColor: "#10B981", // Emerald-500
         hoverBackgroundColor: "#059669", // Emerald-600
@@ -191,17 +193,18 @@ export const RewardChart: React.FC<RewardChartProps> = ({
           <div>
             <h3 className="text-lg font-bold text-gray-900 dark:text-white flex items-center gap-2">
               <Activity className="w-5 h-5 text-indigo-500" />
-              Hiệu Suất AI
+              {t("rewards.title")}
             </h3>
             <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
-              Phân bổ điểm thưởng Giao thông & Môi trường
+              {t("rewards.subtitle")}
             </p>
           </div>
           <div className="flex items-center gap-2 px-3 py-1 rounded-full bg-green-50 dark:bg-green-900/20 border border-green-100 dark:border-green-900/30">
             <TrendingUp className="w-4 h-4 text-green-600 dark:text-green-400" />
             <span className="text-xs font-medium text-green-700 dark:text-green-300">
               {stats.trend > 0 ? "+" : ""}
-              {stats.trend.toFixed(1)}% vs TB
+              {stats.trend.toFixed(1)}
+              {t("rewards.vsAverage")}
             </span>
           </div>
         </div>
@@ -212,7 +215,7 @@ export const RewardChart: React.FC<RewardChartProps> = ({
             <div className="flex items-center gap-2 mb-1">
               <Car className="w-4 h-4 text-blue-600 dark:text-blue-400" />
               <span className="text-xs font-medium text-blue-700 dark:text-blue-300">
-                Giao thông (TB)
+                {t("rewards.trafficAvg")}
               </span>
             </div>
             <p className="text-md font-bold text-blue-900 dark:text-blue-100">
@@ -224,7 +227,7 @@ export const RewardChart: React.FC<RewardChartProps> = ({
             <div className="flex items-center gap-2 mb-1">
               <Leaf className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
               <span className="text-xs font-medium text-emerald-700 dark:text-emerald-300">
-                Môi trường (TB)
+                {t("rewards.environmentAvg")}
               </span>
             </div>
             <p className="text-md font-bold text-emerald-900 dark:text-emerald-100">
@@ -236,7 +239,7 @@ export const RewardChart: React.FC<RewardChartProps> = ({
             <div className="flex items-center gap-2 mb-1">
               <Activity className="w-4 h-4 text-purple-600 dark:text-purple-400" />
               <span className="text-xs font-medium text-purple-700 dark:text-purple-300">
-                Tổng điểm (Mới nhất)
+                {t("rewards.totalLatest")}
               </span>
             </div>
             <p className="text-md font-bold text-purple-900 dark:text-purple-100">

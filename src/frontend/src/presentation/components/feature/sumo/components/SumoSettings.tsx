@@ -1,4 +1,4 @@
-import React from "react";
+import { useTranslation } from "react-i18next";
 import { Eye } from "lucide-react";
 
 interface SumoSettingsProps {
@@ -20,12 +20,14 @@ export const SumoSettings: React.FC<SumoSettingsProps> = ({
   setPort,
   isSimulationRunning,
 }) => {
+  const { t } = useTranslation("sumo");
+
   return (
     <>
       {/* Scenario Selection */}
       <div className="mb-4">
         <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-          Traffic Scenario
+          {t("settings.scenario")}
         </label>
         <select
           value={selectedScenario}
@@ -36,9 +38,15 @@ export const SumoSettings: React.FC<SumoSettingsProps> = ({
                      focus:ring-2 focus:ring-emerald-500 focus:border-transparent
                      disabled:opacity-50 disabled:cursor-not-allowed transition-all"
         >
-          <option value="Nga4ThuDuc">Ngã Tư Thủ Đức (4-way)</option>
-          <option value="NguyenThaiSon">Ngã 6 Nguyễn Thái Sơn (6-way)</option>
-          <option value="QuangTrung">Quang Trung (Complex)</option>
+          <option value="Nga4ThuDuc">
+            {t("settings.scenarios.nga4ThuDuc")}
+          </option>
+          <option value="NguyenThaiSon">
+            {t("settings.scenarios.nguyenThaiSon")}
+          </option>
+          <option value="QuangTrung">
+            {t("settings.scenarios.quangTrung")}
+          </option>
         </select>
       </div>
 
@@ -46,7 +54,7 @@ export const SumoSettings: React.FC<SumoSettingsProps> = ({
       <div className="mb-4 space-y-3">
         <div className="flex items-center justify-between">
           <label className="text-sm font-medium text-gray-700 dark:text-gray-300">
-            Port
+            {t("settings.port")}
           </label>
           <input
             type="number"
@@ -64,7 +72,7 @@ export const SumoSettings: React.FC<SumoSettingsProps> = ({
         <div className="flex items-center justify-between">
           <label className="text-sm font-medium text-gray-700 dark:text-gray-300 flex items-center gap-2">
             <Eye className="w-4 h-4" />
-            Use GUI
+            {t("settings.useGui")}
           </label>
           <input
             type="checkbox"

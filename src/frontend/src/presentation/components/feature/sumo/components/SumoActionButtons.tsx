@@ -1,4 +1,5 @@
 import React from "react";
+import { useTranslation } from "react-i18next";
 import {
   Play,
   Square,
@@ -33,6 +34,7 @@ export const SumoActionButtons: React.FC<SumoActionButtonsProps> = ({
   onRefresh,
   disabled = false,
 }) => {
+  const { t } = useTranslation(["traffic", "common"]);
   return (
     <div className="space-y-3">
       <div className="grid grid-cols-2 gap-3">
@@ -44,7 +46,8 @@ export const SumoActionButtons: React.FC<SumoActionButtonsProps> = ({
                      hover:shadow-lg hover:scale-105 disabled:hover:scale-100"
         >
           <Play className="w-4 h-4" />
-          {isLoading ? "Connecting..." : "Start"}
+          <Play className="w-4 h-4" />
+          {isLoading ? t("traffic:connecting") : t("common:start")}
         </button>
 
         <button
@@ -55,7 +58,7 @@ export const SumoActionButtons: React.FC<SumoActionButtonsProps> = ({
                      hover:shadow-lg hover:scale-105 disabled:hover:scale-100"
         >
           <Square className="w-4 h-4" />
-          Stop
+          {t("common:stop")}
         </button>
       </div>
 
@@ -68,7 +71,8 @@ export const SumoActionButtons: React.FC<SumoActionButtonsProps> = ({
                      transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed text-sm"
         >
           <SkipForward className="w-4 h-4" />
-          Step
+          <SkipForward className="w-4 h-4" />
+          {t("traffic:stepForward")}
         </button>
 
         <button
@@ -87,7 +91,7 @@ export const SumoActionButtons: React.FC<SumoActionButtonsProps> = ({
           ) : (
             <PlayCircle className="w-4 h-4" />
           )}
-          Auto
+          {t("traffic:autoStep")}
         </button>
 
         <button

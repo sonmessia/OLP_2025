@@ -3,12 +3,15 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
+import { useTranslation } from "react-i18next";
 import type { AppDispatch } from "../../../data/redux/store";
 import { register, clearError } from "../../../data/redux/authSlice";
 import type { RootState } from "../../../data/redux/store";
 import { type RegisterData, UserRole } from "../../../domain/models/AuthModels";
 
 const RegisterPage: React.FC = () => {
+  const { t } = useTranslation("auth");
+
   const [formData, setFormData] = useState<RegisterData>({
     email: "",
     password: "",
@@ -49,27 +52,27 @@ const RegisterPage: React.FC = () => {
     const newErrors: typeof errors = {};
 
     if (!formData.email.trim()) {
-      newErrors.email = "Email là bắt buộc";
+      newErrors.email = t("validation.emailRequired");
     } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
-      newErrors.email = "Email không hợp lệ";
+      newErrors.email = t("validation.emailInvalid");
     }
 
     if (!formData.password.trim()) {
-      newErrors.password = "Mật khẩu là bắt buộc";
+      newErrors.password = t("validation.passwordRequired");
     } else if (formData.password.length < 6) {
-      newErrors.password = "Mật khẩu phải có ít nhất 6 ký tự";
+      newErrors.password = t("validation.passwordMinLength");
     }
 
     if (!formData.name.trim()) {
-      newErrors.name = "Họ tên là bắt buộc";
+      newErrors.name = t("validation.nameRequired");
     }
 
     if (!formData.role) {
-      newErrors.role = "Vai trò là bắt buộc";
+      newErrors.role = t("validation.roleRequired");
     }
 
     if (formData.role === UserRole.AREA_MANAGER && !formData.areaName?.trim()) {
-      newErrors.areaName = "Tên khu vực là bắt buộc đối với Quản lý khu vực";
+      newErrors.areaName = t("validation.areaNameRequired");
     }
 
     setErrors(newErrors);
@@ -130,15 +133,15 @@ const RegisterPage: React.FC = () => {
             </div>
           </div>
           <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
-            Đăng ký tài khoản mới
+            {t("register.title")}
           </h2>
           <p className="mt-2 text-center text-sm text-gray-600">
-            Hoặc{" "}
+            {t("register.subtitle")}{" "}
             <Link
               to="/login"
               className="font-medium text-indigo-600 hover:text-indigo-500"
             >
-              đăng nhập vào tài khoản hiện có
+              {t("register.loginLink")}
             </Link>
           </p>
         </div>
@@ -173,7 +176,7 @@ const RegisterPage: React.FC = () => {
                 htmlFor="name"
                 className="block text-sm font-medium text-gray-700"
               >
-                Họ tên
+                {t("register.nameLabel")}
               </label>
               <input
                 id="name"
@@ -185,7 +188,7 @@ const RegisterPage: React.FC = () => {
                 className={`mt-1 block w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm ${
                   errors.name ? "border-red-300" : "border-gray-300"
                 }`}
-                placeholder="Nguyễn Văn A"
+                placeholder={t("register.namePlaceholder")}
               />
               {errors.name && (
                 <p className="mt-1 text-sm text-red-600">{errors.name}</p>
@@ -197,7 +200,7 @@ const RegisterPage: React.FC = () => {
                 htmlFor="email"
                 className="block text-sm font-medium text-gray-700"
               >
-                Email
+                {t("register.emailLabel")}
               </label>
               <input
                 id="email"
@@ -209,7 +212,7 @@ const RegisterPage: React.FC = () => {
                 className={`mt-1 block w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm ${
                   errors.email ? "border-red-300" : "border-gray-300"
                 }`}
-                placeholder="example@email.com"
+                placeholder={t("register.emailPlaceholder")}
               />
               {errors.email && (
                 <p className="mt-1 text-sm text-red-600">{errors.email}</p>
@@ -221,7 +224,7 @@ const RegisterPage: React.FC = () => {
                 htmlFor="password"
                 className="block text-sm font-medium text-gray-700"
               >
-                Mật khẩu
+                {t("register.passwordLabel")}
               </label>
               <input
                 id="password"
@@ -233,7 +236,7 @@ const RegisterPage: React.FC = () => {
                 className={`mt-1 block w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm ${
                   errors.password ? "border-red-300" : "border-gray-300"
                 }`}
-                placeholder="••••••••"
+                placeholder={t("register.passwordPlaceholder")}
               />
               {errors.password && (
                 <p className="mt-1 text-sm text-red-600">{errors.password}</p>
@@ -245,7 +248,7 @@ const RegisterPage: React.FC = () => {
                 htmlFor="role"
                 className="block text-sm font-medium text-gray-700"
               >
-                Vai trò
+                {t("register.roleLabel")}
               </label>
               <select
                 id="role"
@@ -256,9 +259,9 @@ const RegisterPage: React.FC = () => {
                   errors.role ? "border-red-300" : "border-gray-300"
                 }`}
               >
-                <option value="">Chọn vai trò</option>
-                <option value={UserRole.ADMIN}>Quản lý chính</option>
-                <option value={UserRole.AREA_MANAGER}>Quản lý khu vực</option>
+                <option value="">{t("register.rolePlaceholder")}</option>
+                <option value={UserRole.ADMIN}>{t("user.admin")}</option>
+                <option value={UserRole.AREA_MANAGER}>{t("user.areaManager")}</option>
               </select>
               {errors.role && (
                 <p className="mt-1 text-sm text-red-600">{errors.role}</p>
@@ -271,7 +274,7 @@ const RegisterPage: React.FC = () => {
                   htmlFor="areaName"
                   className="block text-sm font-medium text-gray-700"
                 >
-                  Tên khu vực quản lý
+                  {t("register.areaNameLabel")}
                 </label>
                 <input
                   id="areaName"
@@ -282,7 +285,7 @@ const RegisterPage: React.FC = () => {
                   className={`mt-1 block w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm ${
                     errors.areaName ? "border-red-300" : "border-gray-300"
                   }`}
-                  placeholder="Ngã 4 Thủ Đức"
+                  placeholder={t("register.areaNamePlaceholder")}
                 />
                 {errors.areaName && (
                   <p className="mt-1 text-sm text-red-600">{errors.areaName}</p>
@@ -323,10 +326,10 @@ const RegisterPage: React.FC = () => {
                       d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
                     ></path>
                   </svg>
-                  Đang đăng ký...
+                  {t("register.registering")}
                 </>
               ) : (
-                "Đăng ký"
+                t("register.registerButton")
               )}
             </button>
           </div>

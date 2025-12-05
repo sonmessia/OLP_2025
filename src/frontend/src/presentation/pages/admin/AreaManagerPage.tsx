@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { useAppDispatch, useAppSelector } from "../../../data/redux/hooks";
 import {
@@ -37,6 +38,7 @@ const AreaManagerPage: React.FC = () => {
   const dispatch = useAppDispatch();
   const { user } = useSelector((state: RootState) => state.auth);
   const { status, isSimulationRunning } = useAppSelector((state) => state.sumo);
+  const { t } = useTranslation(["areaControl", "common", "user"]);
 
   // Initialize dark mode
   const getInitialDarkMode = () => {
@@ -86,9 +88,9 @@ const AreaManagerPage: React.FC = () => {
     const initializeData = async () => {
       try {
         await dispatch(fetchSumoStatus()).unwrap();
-        addLog("📡 Kết nối tới máy chủ thành công");
+        addLog(t("areaControl:messages.logs.connectedSuccess"));
       } catch (error) {
-        addLog(`⚠️ Không thể kết nối tới máy chủ: ${error}`);
+        addLog(t("areaControl:messages.logs.connectError", { error }));
       }
     };
 
@@ -99,7 +101,7 @@ const AreaManagerPage: React.FC = () => {
     }, 5000);
 
     return () => clearInterval(statusInterval);
-  }, [dispatch]);
+  }, [dispatch, t]);
 
   // Fetch SUMO state when simulation is running
   useEffect(() => {
@@ -119,7 +121,9 @@ const AreaManagerPage: React.FC = () => {
           `Mismatch: Running scenario ${status.scenario} but user area is ${userScenarioId}. Stopping...`
         );
         addLog(
-          `⚠️ Đang chạy kịch bản ${status.scenario} (Khác khu vực của bạn). Vui lòng khởi động lại đúng khu vực.`
+          t("areaControl:messages.logs.scenarioMismatch", {
+            scenario: status.scenario,
+          })
         );
         // Do NOT fetch state
         return;
@@ -137,7 +141,7 @@ const AreaManagerPage: React.FC = () => {
         // Debounce auto-start to avoid rapid firing on mount
         const timer = setTimeout(() => {
           addLog(
-            `🚀 Đang tự động khởi động mô phỏng cho khu vực: ${user.areaName}`
+            t("areaControl:messages.logs.autoStart", { area: user.areaName })
           );
           const config = SumoModelFactory.createConfiguration(
             userScenarioId,
@@ -155,6 +159,7 @@ const AreaManagerPage: React.FC = () => {
     dispatch,
     status.scenario,
     user?.areaName,
+    t,
   ]);
 
   if (!user || user.role !== UserRole.AREA_MANAGER) {
@@ -162,10 +167,10 @@ const AreaManagerPage: React.FC = () => {
       <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-900">
         <div className="text-center">
           <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-4">
-            Truy cập bị từ chối
+            {t("areaControl:messages.accessDenied")}
           </h1>
           <p className="text-lg text-gray-600 dark:text-gray-400">
-            Bạn không có quyền truy cập trang này
+            {t("areaControl:messages.noPermission")}
           </p>
         </div>
       </div>
@@ -189,14 +194,14 @@ const AreaManagerPage: React.FC = () => {
               <AreaMapView
                 latitude={areaCoords.lat}
                 longitude={areaCoords.lng}
-                areaName={user.areaName || "Khu vực của bạn"}
+                areaName={user.areaName || t("areaControl:messages.yourArea")}
                 isDarkMode={isDarkMode}
               />
             </div>
 
             {/* Area Control Panel */}
             <AreaControlPanel
-              areaName={user.areaName || "Khu vực"}
+              areaName={user.areaName || t("user:area")}
               onLog={addLog}
             />
           </div>
@@ -232,7 +237,7 @@ const AreaManagerPage: React.FC = () => {
         {/* Footer Info */}
         <div className="mt-6 text-center">
           <p className="text-sm text-gray-500 dark:text-gray-400">
-            Hệ thống quản lý giao thông thông minh - Khu vực {user.areaName}
+            {t("areaControl:messages.footer", { area: user.areaName })}
           </p>
         </div>
       </main>

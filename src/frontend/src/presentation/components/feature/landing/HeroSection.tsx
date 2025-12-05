@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { ArrowRight, Github, BookOpen, Car, Zap } from "lucide-react";
+import { useTranslation } from "react-i18next";
 import ParticleBackground from "./ParticleBackground";
 import ThreeDVisualization from "./ThreeDVisualization";
 import LandingImage from "../../../../assets/landing.png";
 
 export const HeroSection: React.FC = () => {
+  const { t } = useTranslation("landing");
   const [scrollY, setScrollY] = useState(0);
   const [isHovered, setIsHovered] = useState(false);
 
@@ -76,15 +78,14 @@ export const HeroSection: React.FC = () => {
                   className="w-24 h-24 object-contain mr-2"
                 />
                 <h1 className="text-5xl md:text-7xl font-bold mb-6 bg-gradient-to-r from-greenwave-primary-light to-traffic-info bg-clip-text text-transparent">
-                  GreenWave
+                  {t("title")}
                 </h1>
               </div>
               <h2 className="text-2xl md:text-4xl font-semibold mb-4 text-text-main-dark">
-                Hệ Thống Điều Phối Giao Thông Thích Ứng Đa Mục Tiêu
+                {t("subtitle")}
               </h2>
               <p className="text-lg md:text-xl text-text-muted-dark mb-8 max-w-2xl leading-relaxed">
-                Không chỉ giải quyết kẹt xe. Chúng tôi giải cứu lá phổi thành
-                phố bằng AI & Dữ liệu chuẩn hóa NGSI-LD.
+                {t("description")}
               </p>
 
               <div className="flex flex-wrap gap-4 justify-center lg:justify-start items-center w-full">
@@ -100,7 +101,7 @@ export const HeroSection: React.FC = () => {
                   }}
                 >
                   <span className="relative z-10 text-white flex items-center gap-2">
-                    Get Started
+                    {t("getStarted")}
                     <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
                   </span>
                   <div
@@ -118,7 +119,7 @@ export const HeroSection: React.FC = () => {
                   }}
                 >
                   <Github className="w-5 h-5" />
-                  View Github
+                  {t("viewGithub")}
                 </button>
 
                 <button
@@ -132,7 +133,7 @@ export const HeroSection: React.FC = () => {
                   }}
                 >
                   <BookOpen className="w-5 h-5" />
-                  Document
+                  {t("documentation")}
                 </button>
               </div>
             </div>

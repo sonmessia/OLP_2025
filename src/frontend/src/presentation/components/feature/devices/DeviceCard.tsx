@@ -1,4 +1,6 @@
 import React from "react";
+import { useTranslation } from "react-i18next";
+import type { TFunction } from "i18next";
 import {
   DeviceStatus,
   DeviceType,
@@ -15,6 +17,13 @@ import {
   Activity,
   Power,
 } from "lucide-react";
+
+const DEVICE_STATUS_KEYS = {
+  [DeviceStatus.ONLINE]: "devices:status.online",
+  [DeviceStatus.OFFLINE]: "devices:status.offline",
+  [DeviceStatus.MAINTENANCE]: "devices:status.maintenance",
+  [DeviceStatus.ERROR]: "devices:status.error",
+} as const;
 
 interface DeviceCardProps {
   device: DeviceModel;
@@ -49,32 +58,24 @@ const getStatusColor = (status: DeviceStatus) => {
   }
 };
 
-const formatLastSeen = (date?: Date) => {
-  if (!date) return "Chưa có dữ liệu";
-
-  const now = new Date();
-  const diff = now.getTime() - date.getTime();
-  const minutes = Math.floor(diff / 60000);
-
-  if (minutes < 1) return "Vừa xong";
-  if (minutes < 60) return `${minutes} phút trước`;
-
-  const hours = Math.floor(minutes / 60);
-  if (hours < 24) return `${hours} giờ trước`;
-
-  const days = Math.floor(hours / 24);
-  return `${days} ngày trước`;
-};
-
-const getQuickStats = (device: DeviceModel) => {
+const getQuickStats = (
+  device: DeviceModel,
+  t: TFunction<["devices", "common"]>
+) => {
   // Mock data - trong thực tế sẽ lấy từ device stats
   switch (device.type) {
     case DeviceType.TRAFFIC_CAM:
-      return { value: "35 xe/phút", label: "Lưu lượng" };
+      return {
+        value: "35 xe/phút",
+        label: t("devices:quickStats.trafficFlow"),
+      };
     case DeviceType.AIR_QUALITY_SENSOR:
-      return { value: "AQI: 82", label: "Chỉ số AQI" };
+      return { value: "AQI: 82", label: t("devices:quickStats.aqiIndex") };
     default:
-      return { value: "Hoạt động", label: "Trạng thái" };
+      return {
+        value: t("devices:quickStats.activity"),
+        label: t("devices:quickStats.activity"),
+      };
   }
 };
 
@@ -84,9 +85,27 @@ export const DeviceCard: React.FC<DeviceCardProps> = ({
   onViewLogs,
   onRestart,
 }) => {
+  const { t } = useTranslation(["devices", "common"]);
   const Icon = getDeviceIcon(device.type);
   const statusColor = getStatusColor(device.status);
-  const quickStats = getQuickStats(device);
+  const quickStats = getQuickStats(device, t);
+
+  const formatLastSeen = (date?: Date) => {
+    if (!date) return t("devices:noData");
+
+    const now = new Date();
+    const diff = now.getTime() - date.getTime();
+    const minutes = Math.floor(diff / 60000);
+
+    if (minutes < 1) return t("devices:justNow");
+    if (minutes < 60) return t("devices:minutesAgo", { count: minutes });
+
+    const hours = Math.floor(minutes / 60);
+    if (hours < 24) return t("devices:hoursAgo", { count: hours });
+
+    const days = Math.floor(hours / 24);
+    return t("devices:daysAgo", { count: days });
+  };
 
   return (
     <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-2xl p-6 shadow-sm hover:shadow-md transition-all duration-300 cursor-pointer group">
@@ -118,7 +137,8 @@ export const DeviceCard: React.FC<DeviceCardProps> = ({
               {device.name}
             </h3>
             <p className="text-sm text-gray-500 dark:text-gray-400">
-              {device.manufacturer || "Unknown"} • {device.serialNumber}
+              {device.manufacturer || t("devices:unknown")} •{" "}
+              {device.serialNumber}
             </p>
           </div>
         </div>
@@ -132,13 +152,15 @@ export const DeviceCard: React.FC<DeviceCardProps> = ({
               device.status === DeviceStatus.ONLINE ? "animate-pulse" : ""
             }`}
           />
-          {device.status}
+          {t(DEVICE_STATUS_KEYS[device.status])}
         </div>
       </div>
 
       {/* Location */}
       <div className="mb-4 p-3 rounded-lg bg-gray-50 dark:bg-gray-700/50">
-        <p className="text-sm text-gray-500 dark:text-gray-400 mb-1">Vị trí:</p>
+        <p className="text-sm text-gray-500 dark:text-gray-400 mb-1">
+          {t("common:location")}:
+        </p>
         <p className="text-sm text-gray-900 dark:text-white font-medium">
           {device.location.description ||
             `${device.location.latitude.toFixed(
@@ -170,7 +192,9 @@ export const DeviceCard: React.FC<DeviceCardProps> = ({
           ) : (
             <WifiOff className="w-4 h-4 text-red-500" />
           )}
-          <span>Cập nhật cuối: {formatLastSeen(device.lastDataReceived)}</span>
+          <span>
+            {t("devices:lastUpdate")}: {formatLastSeen(device.lastDataReceived)}
+          </span>
         </div>
       </div>
 
@@ -184,7 +208,7 @@ export const DeviceCard: React.FC<DeviceCardProps> = ({
           className="flex-1 flex items-center justify-center gap-2 px-3 py-2 rounded-lg bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400 hover:bg-blue-100 dark:hover:bg-blue-900/40 transition-colors text-sm font-medium"
         >
           <Edit className="w-4 h-4" />
-          Chỉnh sửa
+          {t("common:edit")}
         </button>
 
         <button
@@ -195,7 +219,7 @@ export const DeviceCard: React.FC<DeviceCardProps> = ({
           className="flex-1 flex items-center justify-center gap-2 px-3 py-2 rounded-lg bg-gray-50 dark:bg-gray-700/50 text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors text-sm font-medium"
         >
           <Activity className="w-4 h-4" />
-          Logs
+          {t("devices:logs")}
         </button>
 
         <button
@@ -204,7 +228,7 @@ export const DeviceCard: React.FC<DeviceCardProps> = ({
             onRestart(device);
           }}
           className="flex items-center justify-center px-3 py-2 rounded-lg bg-green-50 dark:bg-green-900/20 text-green-600 dark:text-green-400 hover:bg-green-100 dark:hover:bg-green-900/40 transition-colors"
-          title="Khởi động lại"
+          title={t("devices:restart")}
         >
           <Power className="w-4 h-4" />
         </button>
@@ -215,7 +239,9 @@ export const DeviceCard: React.FC<DeviceCardProps> = ({
         <div className="mt-4 p-3 rounded-lg bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800">
           <div className="flex items-center gap-2 text-red-600 dark:text-red-400">
             <AlertCircle className="w-4 h-4" />
-            <span className="text-sm font-medium">Cần sự chú ý</span>
+            <span className="text-sm font-medium">
+              {t("devices:needsAttention")}
+            </span>
           </div>
         </div>
       )}

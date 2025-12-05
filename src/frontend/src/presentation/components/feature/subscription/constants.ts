@@ -1,26 +1,26 @@
 export const AIR_QUALITY_ATTRIBUTES = [
-  { value: "airQualityIndex", label: "Chỉ số AQI" },
-  { value: "pm25", label: "PM2.5" },
-  { value: "pm10", label: "PM10" },
-  { value: "co", label: "CO" },
-  { value: "no2", label: "NO2" },
-  { value: "o3", label: "O3" },
-  { value: "temperature", label: "Nhiệt độ" },
-  { value: "relativeHumidity", label: "Độ ẩm" },
-  { value: "windSpeed", label: "Tốc độ gió" },
+  { value: "airQualityIndex", labelKey: "subscription:attributes.aqi" },
+  { value: "pm25", labelKey: "subscription:attributes.pm25" },
+  { value: "pm10", labelKey: "subscription:attributes.pm10" },
+  { value: "co", labelKey: "subscription:attributes.co" },
+  { value: "no2", labelKey: "subscription:attributes.no2" },
+  { value: "o3", labelKey: "subscription:attributes.o3" },
+  { value: "temperature", labelKey: "subscription:attributes.temperature" },
+  { value: "relativeHumidity", labelKey: "subscription:attributes.humidity" },
+  { value: "windSpeed", labelKey: "subscription:attributes.windSpeed" },
 ];
 
 export const TRAFFIC_FLOW_ATTRIBUTES = [
-  { value: "vehicleCount", label: "Lưu lượng xe" },
-  { value: "avgSpeed", label: "Tốc độ trung bình" },
-  { value: "queues", label: "Độ dài hàng đợi" },
+  { value: "vehicleCount", labelKey: "subscription:attributes.vehicleCount" },
+  { value: "avgSpeed", labelKey: "subscription:attributes.avgSpeed" },
+  { value: "queues", labelKey: "subscription:attributes.queues" },
 ];
 
 export const OPERATORS = [
-  { value: "==", label: "=" },
-  { value: "!=", label: "!" },
-  { value: ">", label: ">" },
-  { value: "<", label: "<" },
-  { value: ">=", label: ">=" },
-  { value: "<=", label: "<=" },
+  { value: "==", labelKey: "subscription:operators.equals" },
+  { value: "!=", labelKey: "subscription:operators.notEquals" },
+  { value: ">", labelKey: "subscription:operators.greaterThan" },
+  { value: "<", labelKey: "subscription:operators.lessThan" },
+  { value: ">=", labelKey: "subscription:operators.greaterThanOrEqual" },
+  { value: "<=", labelKey: "subscription:operators.lessThanOrEqual" },
 ];

@@ -1,4 +1,5 @@
 import React from "react";
+import { useTranslation } from "react-i18next";
 import {
   Brain,
   X,
@@ -24,6 +25,8 @@ export const AIModelDetailsDialog: React.FC<AIModelDetailsDialogProps> = ({
   onClose,
   aiControlState,
 }) => {
+  const { t } = useTranslation(["sumo", "common"]);
+
   if (!isOpen || !aiControlState) return null;
 
   const getStatusColor = () => {
@@ -47,7 +50,7 @@ export const AIModelDetailsDialog: React.FC<AIModelDetailsDialogProps> = ({
           <div className="flex items-center gap-3">
             <Brain className="w-7 h-7 text-emerald-600 dark:text-emerald-400" />
             <h3 className="text-2xl font-bold text-gray-900 dark:text-white">
-              AI Model Details
+              {t("ai.title")}
             </h3>
           </div>
           <button
@@ -68,7 +71,7 @@ export const AIModelDetailsDialog: React.FC<AIModelDetailsDialogProps> = ({
                 <div className="flex items-center gap-2 mb-3">
                   <Target className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />
                   <p className="text-sm text-emerald-600 dark:text-emerald-400 font-semibold">
-                    Algorithm
+                    {t("ai.algorithm")}
                   </p>
                 </div>
                 <p className="text-lg font-bold text-emerald-900 dark:text-emerald-100">
@@ -81,7 +84,7 @@ export const AIModelDetailsDialog: React.FC<AIModelDetailsDialogProps> = ({
                 <div className="flex items-center gap-2 mb-3">
                   <Activity className="w-5 h-5 text-purple-600 dark:text-purple-400" />
                   <p className="text-sm text-purple-600 dark:text-purple-400 font-semibold">
-                    Features
+                    {t("ai.features")}
                   </p>
                 </div>
                 <div className="flex flex-wrap gap-2">
@@ -104,7 +107,7 @@ export const AIModelDetailsDialog: React.FC<AIModelDetailsDialogProps> = ({
                 <div className="flex items-center justify-between">
                   <div>
                     <p className="text-sm text-blue-600 dark:text-blue-400 mb-2">
-                      Total Actions
+                      {t("ai.totalActions")}
                     </p>
                     <p className="text-3xl font-bold text-blue-900 dark:text-blue-100">
                       {aiControlState.actionCount}
@@ -113,7 +116,7 @@ export const AIModelDetailsDialog: React.FC<AIModelDetailsDialogProps> = ({
                   <Zap className="w-10 h-10 text-blue-600 dark:text-blue-400" />
                 </div>
                 <p className="text-xs text-blue-700 dark:text-blue-300 mt-3">
-                  Traffic light switches executed
+                  {t("ai.actionDesc")}
                 </p>
               </div>
 
@@ -121,18 +124,18 @@ export const AIModelDetailsDialog: React.FC<AIModelDetailsDialogProps> = ({
               <div className="grid grid-cols-2 gap-4">
                 <div className="bg-gray-50 dark:bg-gray-800/50 rounded-lg p-4 text-center">
                   <p className="text-xs text-gray-600 dark:text-gray-400 mb-2">
-                    Controlled
+                    {t("ai.controlled")}
                   </p>
                   <p className="text-2xl font-bold text-gray-900 dark:text-white">
                     {aiControlState.numTrafficLights}
                   </p>
                   <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
-                    lights
+                    {t("ai.lights")}
                   </p>
                 </div>
                 <div className="bg-gray-50 dark:bg-gray-800/50 rounded-lg p-4 text-center">
                   <p className="text-xs text-gray-600 dark:text-gray-400 mb-2">
-                    Status
+                    {t("ai.status")}
                   </p>
                   <p className={`text-2xl font-bold ${getStatusColor()}`}>
                     {aiControlState.status}
@@ -148,25 +151,25 @@ export const AIModelDetailsDialog: React.FC<AIModelDetailsDialogProps> = ({
                 <div className="flex items-center gap-2 mb-4">
                   <Award className="w-5 h-5 text-yellow-600 dark:text-yellow-400" />
                   <h4 className="text-lg font-bold text-gray-900 dark:text-white">
-                    Model Performance
+                    {t("ai.modelPerformance")}
                   </h4>
                 </div>
 
                 <div className="grid grid-cols-2 gap-4">
                   <div className="bg-white/50 dark:bg-gray-800/50 rounded-lg p-4">
                     <p className="text-xs text-gray-600 dark:text-gray-400 mb-1">
-                      DQN Score
+                      {t("ai.dqnScore")}
                     </p>
                     <p className="text-2xl font-bold text-yellow-900 dark:text-yellow-100">
                       1383
                     </p>
                     <p className="text-xs text-gray-500 dark:text-gray-400">
-                      points
+                      {t("ai.points")}
                     </p>
                   </div>
                   <div className="bg-white/50 dark:bg-gray-800/50 rounded-lg p-4">
                     <p className="text-xs text-gray-600 dark:text-gray-400 mb-1">
-                      vs Baseline
+                      {t("ai.vsBaseline")}
                     </p>
                     <div className="flex items-center gap-1">
                       <TrendingUp className="w-4 h-4 text-emerald-600" />
@@ -177,7 +180,7 @@ export const AIModelDetailsDialog: React.FC<AIModelDetailsDialogProps> = ({
                   </div>
                   <div className="bg-white/50 dark:bg-gray-800/50 rounded-lg p-4">
                     <p className="text-xs text-gray-600 dark:text-gray-400 mb-1">
-                      Model Size
+                      {t("ai.modelSize")}
                     </p>
                     <p className="text-xl font-bold text-gray-900 dark:text-white">
                       334 KB
@@ -185,7 +188,7 @@ export const AIModelDetailsDialog: React.FC<AIModelDetailsDialogProps> = ({
                   </div>
                   <div className="bg-white/50 dark:bg-gray-800/50 rounded-lg p-4">
                     <p className="text-xs text-gray-600 dark:text-gray-400 mb-1">
-                      Inference Time
+                      {t("ai.inferenceTime")}
                     </p>
                     <div className="flex items-center gap-1">
                       <Clock className="w-4 h-4 text-blue-600" />
@@ -202,7 +205,7 @@ export const AIModelDetailsDialog: React.FC<AIModelDetailsDialogProps> = ({
                 <div className="flex items-center gap-2 mb-4">
                   <BarChart3 className="w-5 h-5 text-gray-700 dark:text-gray-300" />
                   <h4 className="text-sm font-bold text-gray-900 dark:text-white">
-                    Performance Comparison
+                    {t("ai.performanceComparison")}
                   </h4>
                 </div>
 
@@ -211,7 +214,7 @@ export const AIModelDetailsDialog: React.FC<AIModelDetailsDialogProps> = ({
                   <div>
                     <div className="flex items-center justify-between mb-1">
                       <span className="text-xs font-semibold text-emerald-700 dark:text-emerald-300">
-                        🥇 DQN (AI)
+                        {t("algorithms.dqn")}
                       </span>
                       <span className="text-xs font-bold text-emerald-900 dark:text-emerald-100">
                         1383
@@ -233,7 +236,7 @@ export const AIModelDetailsDialog: React.FC<AIModelDetailsDialogProps> = ({
                   <div>
                     <div className="flex items-center justify-between mb-1">
                       <span className="text-xs font-semibold text-gray-700 dark:text-gray-300">
-                        🥈 Baseline
+                        {t("algorithms.baseline")}
                       </span>
                       <span className="text-xs font-bold text-gray-900 dark:text-white">
                         1227
@@ -255,7 +258,7 @@ export const AIModelDetailsDialog: React.FC<AIModelDetailsDialogProps> = ({
                   <div>
                     <div className="flex items-center justify-between mb-1">
                       <span className="text-xs font-semibold text-gray-600 dark:text-gray-400">
-                        🥉 Random
+                        {t("algorithms.random")}
                       </span>
                       <span className="text-xs font-bold text-gray-700 dark:text-gray-300">
                         835
@@ -280,7 +283,7 @@ export const AIModelDetailsDialog: React.FC<AIModelDetailsDialogProps> = ({
                 <div className="flex items-center gap-2 mb-4">
                   <BarChart3 className="w-5 h-5 text-gray-700 dark:text-gray-300" />
                   <h4 className="text-lg font-bold text-gray-900 dark:text-white">
-                    Algorithm Comparison
+                    {t("ai.algorithmComparison")}
                   </h4>
                 </div>
 
@@ -289,26 +292,26 @@ export const AIModelDetailsDialog: React.FC<AIModelDetailsDialogProps> = ({
                     <thead>
                       <tr className="border-b-2 border-gray-300 dark:border-gray-600">
                         <th className="text-left py-3 px-2 font-semibold text-gray-700 dark:text-gray-300">
-                          Algorithm
+                          {t("ai.algorithm")}
                         </th>
                         <th className="text-right py-3 px-2 font-semibold text-gray-700 dark:text-gray-300">
-                          Avg Reward
+                          {t("ai.avgReward")}
                         </th>
                         <th className="text-right py-3 px-2 font-semibold text-gray-700 dark:text-gray-300">
-                          Speed
+                          {t("ai.speed")}
                         </th>
                         <th className="text-right py-3 px-2 font-semibold text-gray-700 dark:text-gray-300">
-                          Wait Time
+                          {t("ai.waitTime")}
                         </th>
                         <th className="text-right py-3 px-2 font-semibold text-gray-700 dark:text-gray-300">
-                          Throughput
+                          {t("ai.throughput")}
                         </th>
                       </tr>
                     </thead>
                     <tbody>
                       <tr className="border-b border-gray-200 dark:border-gray-700 bg-emerald-50 dark:bg-emerald-900/20">
                         <td className="py-3 px-2 font-bold text-emerald-900 dark:text-emerald-100">
-                          🥇 DQN (AI)
+                          {t("algorithms.dqn")}
                         </td>
                         <td className="text-right py-3 px-2 font-bold text-emerald-700 dark:text-emerald-300">
                           1383.03
@@ -325,7 +328,7 @@ export const AIModelDetailsDialog: React.FC<AIModelDetailsDialogProps> = ({
                       </tr>
                       <tr className="border-b border-gray-200 dark:border-gray-700">
                         <td className="py-3 px-2 font-semibold text-gray-700 dark:text-gray-300">
-                          🥈 Baseline (Fixed)
+                          {t("algorithms.baselineFixed")}
                         </td>
                         <td className="text-right py-3 px-2 text-gray-700 dark:text-gray-300">
                           1227.20
@@ -342,7 +345,7 @@ export const AIModelDetailsDialog: React.FC<AIModelDetailsDialogProps> = ({
                       </tr>
                       <tr className="border-b border-gray-200 dark:border-gray-700">
                         <td className="py-3 px-2 font-semibold text-gray-600 dark:text-gray-400">
-                          🥉 Random
+                          {t("algorithms.random")}
                         </td>
                         <td className="text-right py-3 px-2 text-gray-600 dark:text-gray-400">
                           834.50
@@ -372,7 +375,7 @@ export const AIModelDetailsDialog: React.FC<AIModelDetailsDialogProps> = ({
             className="w-full px-4 py-3 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600
                        text-gray-900 dark:text-white font-semibold rounded-lg transition-colors"
           >
-            Close
+            {t("common:close")}
           </button>
         </div>
       </div>

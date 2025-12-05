@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useAppDispatch, useAppSelector } from "../../../../data/redux/hooks";
 import {
   activateAIControl,
@@ -14,6 +15,7 @@ interface AIControlPanelProps {
 }
 
 export const AIControlPanel: React.FC<AIControlPanelProps> = ({ onLog }) => {
+  const { t } = useTranslation("sumo");
   const dispatch = useAppDispatch();
   const { aiControlState, isAIControlActive, isLoading, simulationState } =
     useAppSelector((state) => state.sumo);
@@ -29,9 +31,11 @@ export const AIControlPanel: React.FC<AIControlPanelProps> = ({ onLog }) => {
           const result = await dispatch(performAIStep()).unwrap();
           if (result.totalSwitches > 0) {
             onLog?.(
-              `🚦 AI Decision: ${result.totalSwitches} switches, ${
-                result.totalHolds
-              } holds (t=${result.simulationTime.toFixed(0)}s)`
+              t("controlPanel.ai.log.decision", {
+                switches: result.totalSwitches,
+                holds: result.totalHolds,
+                time: result.simulationTime.toFixed(0),
+              })
             );
           }
         } catch (error) {
@@ -50,18 +54,18 @@ export const AIControlPanel: React.FC<AIControlPanelProps> = ({ onLog }) => {
   const handleEnableAI = async () => {
     try {
       await dispatch(activateAIControl()).unwrap();
-      onLog?.("🧠 AI Traffic Control enabled successfully!");
+      onLog?.(t("controlPanel.ai.log.enabled"));
     } catch (error) {
-      onLog?.(`❌ Failed to enable AI: ${error}`);
+      onLog?.(t("controlPanel.ai.log.enableFailed", { error }));
     }
   };
 
   const handleDisableAI = async () => {
     try {
       await dispatch(deactivateAIControl()).unwrap();
-      onLog?.("🛑 AI Traffic Control disabled");
+      onLog?.(t("controlPanel.ai.log.disabled"));
     } catch (error) {
-      onLog?.(`❌ Failed to disable AI: ${error}`);
+      onLog?.(t("controlPanel.ai.log.disableFailed", { error }));
     }
   };
 
@@ -71,7 +75,7 @@ export const AIControlPanel: React.FC<AIControlPanelProps> = ({ onLog }) => {
         <div className="flex items-center gap-3 mb-6">
           <Brain className="w-6 h-6 text-emerald-600 dark:text-emerald-400" />
           <h2 className="text-xl font-bold text-gray-900 dark:text-white">
-            AI Control
+            {t("controlPanel.ai.title")}
           </h2>
         </div>
 
@@ -86,7 +90,7 @@ export const AIControlPanel: React.FC<AIControlPanelProps> = ({ onLog }) => {
                          hover:shadow-lg hover:scale-105 disabled:hover:scale-100"
             >
               <Zap className="w-5 h-5" />
-              Enable AI Control
+              {t("controlPanel.ai.enable")}
             </button>
           ) : (
             <button
@@ -97,7 +101,7 @@ export const AIControlPanel: React.FC<AIControlPanelProps> = ({ onLog }) => {
                          hover:shadow-lg hover:scale-105 disabled:hover:scale-100"
             >
               <Circle className="w-5 h-5" />
-              Disable AI
+              {t("controlPanel.ai.disable")}
             </button>
           )}
         </div>
@@ -115,10 +119,10 @@ export const AIControlPanel: React.FC<AIControlPanelProps> = ({ onLog }) => {
           <div className="text-center py-6">
             <Circle className="w-12 h-12 text-gray-400 mx-auto mb-3" />
             <p className="text-sm text-gray-500 dark:text-gray-400">
-              AI Control is disabled
+              {t("controlPanel.ai.disabledMessage")}
             </p>
             <p className="text-xs text-gray-400 dark:text-gray-500 mt-1">
-              Start SUMO, then enable AI control
+              {t("controlPanel.ai.startSumoMessage")}
             </p>
           </div>
         )}

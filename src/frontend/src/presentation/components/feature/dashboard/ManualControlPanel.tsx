@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
+import { useTranslation } from "react-i18next";
 import type { PollutionHotspot } from "../../../../domain/models/DashboardModel";
-import { Settings, Zap, Save } from "lucide-react";
+import { Settings, Zap, Save, Clock } from "lucide-react";
 
 interface ManualControlPanelProps {
   selectedSensor: PollutionHotspot | null;
@@ -9,6 +10,7 @@ interface ManualControlPanelProps {
 export const ManualControlPanel: React.FC<ManualControlPanelProps> = ({
   selectedSensor,
 }) => {
+  const { t } = useTranslation(["manualControl"]);
   const [greenLight, setGreenLight] = useState(30);
   const [yellowLight, setYellowLight] = useState(3);
   const [redLight, setRedLight] = useState(25);
@@ -31,14 +33,14 @@ export const ManualControlPanel: React.FC<ManualControlPanelProps> = ({
     // Simulate API call
     setTimeout(() => {
       setIsApplying(false);
-      alert(`Đã cập nhật cấu hình cho ${selectedSensor.name}`);
+      alert(t("messages.configUpdated", { name: selectedSensor.name }));
     }, 1000);
   };
 
   const handleImmediateSwitch = () => {
     if (!selectedSensor) return;
     // Simulate immediate command
-    alert(`Đã gửi lệnh chuyển đèn ngay lập tức cho ${selectedSensor.name}`);
+    alert(t("messages.commandSent", { name: selectedSensor.name }));
   };
 
   if (!selectedSensor) {
@@ -48,11 +50,10 @@ export const ManualControlPanel: React.FC<ManualControlPanelProps> = ({
           <Settings className="w-8 h-8 text-gray-400" />
         </div>
         <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
-          Chưa chọn thiết bị
+          {t("noDeviceSelected.title")}
         </h3>
         <p className="text-gray-500 dark:text-gray-400 max-w-xs">
-          Vui lòng chọn một điểm giám sát trên bản đồ để truy cập bảng điều
-          khiển thủ công.
+          {t("noDeviceSelected.message")}
         </p>
       </div>
     );
@@ -67,7 +68,7 @@ export const ManualControlPanel: React.FC<ManualControlPanelProps> = ({
           </div>
           <div>
             <h3 className="font-bold text-gray-900 dark:text-white">
-              Điều khiển thủ công
+              {t("title")}
             </h3>
             <p className="text-xs text-gray-500 dark:text-gray-400">
               {selectedSensor.name}
@@ -76,7 +77,7 @@ export const ManualControlPanel: React.FC<ManualControlPanelProps> = ({
         </div>
         <div className="px-2 py-1 bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 text-xs font-medium rounded-full flex items-center gap-1">
           <span className="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse"></span>
-          Online
+          {t("status.online")}
         </div>
       </div>
 
@@ -84,14 +85,14 @@ export const ManualControlPanel: React.FC<ManualControlPanelProps> = ({
         {/* Traffic Light Timing Configuration */}
         <div className="space-y-3">
           <h4 className="text-sm font-semibold text-gray-700 dark:text-gray-300 flex items-center gap-2">
-            <ClockIcon className="w-4 h-4" />
-            Cấu hình thời gian (giây)
+            <Clock className="w-4 h-4" />
+            {t("timeConfig")}
           </h4>
 
           <div className="grid grid-cols-3 gap-3">
             <div className="space-y-1">
               <label className="text-xs font-medium text-green-600 dark:text-green-400">
-                Đèn Xanh
+                {t("greenLight")}
               </label>
               <input
                 type="number"
@@ -102,7 +103,7 @@ export const ManualControlPanel: React.FC<ManualControlPanelProps> = ({
             </div>
             <div className="space-y-1">
               <label className="text-xs font-medium text-yellow-600 dark:text-yellow-400">
-                Đèn Vàng
+                {t("yellowLight")}
               </label>
               <input
                 type="number"
@@ -113,7 +114,7 @@ export const ManualControlPanel: React.FC<ManualControlPanelProps> = ({
             </div>
             <div className="space-y-1">
               <label className="text-xs font-medium text-red-600 dark:text-red-400">
-                Đèn Đỏ
+                {t("redLight")}
               </label>
               <input
                 type="number"
@@ -128,7 +129,7 @@ export const ManualControlPanel: React.FC<ManualControlPanelProps> = ({
         {/* Current Status Info */}
         <div className="p-3 bg-gray-50 dark:bg-gray-700/50 rounded-lg border border-gray-100 dark:border-gray-700">
           <h4 className="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase mb-2">
-            Thông tin cảm biến
+            {t("sensorInfo")}
           </h4>
           <div className="grid grid-cols-2 gap-2 text-sm">
             <div className="flex justify-between">
@@ -158,33 +159,16 @@ export const ManualControlPanel: React.FC<ManualControlPanelProps> = ({
           ) : (
             <Save className="w-4 h-4" />
           )}
-          Lưu cấu hình
+          {t("saveConfig")}
         </button>
         <button
           onClick={handleImmediateSwitch}
           className="flex items-center justify-center gap-2 px-4 py-2 bg-amber-500 hover:bg-amber-600 text-white rounded-lg font-medium transition-colors"
         >
           <Zap className="w-4 h-4" />
-          Chuyển đèn ngay
+          {t("switchNow")}
         </button>
       </div>
     </div>
   );
 };
-
-// Helper icon
-const ClockIcon = ({ className }: { className?: string }) => (
-  <svg
-    className={className}
-    fill="none"
-    stroke="currentColor"
-    viewBox="0 0 24 24"
-  >
-    <path
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      strokeWidth={2}
-      d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
-    />
-  </svg>
-);

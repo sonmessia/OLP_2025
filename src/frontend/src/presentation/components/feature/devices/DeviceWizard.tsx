@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
+import { useTranslation } from "react-i18next";
 import {
   DeviceType,
   ConnectionProtocol,
@@ -27,41 +28,6 @@ interface DeviceWizardProps {
 type WizardStep = "type" | "connection" | "location" | "confirm";
 type ConnectionTestResult = "idle" | "testing" | "success" | "error";
 
-const deviceTypeOptions = [
-  {
-    type: DeviceType.TRAFFIC_CAM,
-    title: "Camera Giao thông",
-    description: "Đếm xe, nhận diện biển số, phát hiện ùn tắc",
-    icon: Camera,
-    color: "blue",
-    protocol: ConnectionProtocol.RTSP,
-  },
-  {
-    type: DeviceType.AIR_QUALITY_SENSOR,
-    title: "Cảm biến Không khí",
-    description: "Đo PM2.5, PM10, CO, NO2, nhiệt độ, độ ẩm",
-    icon: Wind,
-    color: "green",
-    protocol: ConnectionProtocol.MQTT,
-  },
-  {
-    type: DeviceType.SMART_LIGHT,
-    title: "Đèn thông minh",
-    description: "Điều khiển pha đèn giao thông",
-    icon: Cpu,
-    color: "purple",
-    protocol: ConnectionProtocol.MQTT,
-  },
-  {
-    type: DeviceType.INDUCTIVE_LOOP,
-    title: "Cảm biến từ",
-    description: "Đo lưu lượng và tốc độ xe",
-    icon: Server,
-    color: "orange",
-    protocol: ConnectionProtocol.MQTT,
-  },
-];
-
 const getStepNumber = (step: WizardStep): number => {
   switch (step) {
     case "type":
@@ -77,28 +43,67 @@ const getStepNumber = (step: WizardStep): number => {
   }
 };
 
-const getStepTitle = (step: WizardStep): string => {
-  switch (step) {
-    case "type":
-      return "Chọn loại thiết bị";
-    case "connection":
-      return "Cấu hình kết nối";
-    case "location":
-      return "Định vị bản đồ";
-    case "confirm":
-      return "Xác nhận thông tin";
-    default:
-      return "";
-  }
-};
-
 export const DeviceWizard: React.FC<DeviceWizardProps> = ({
   isOpen,
   onClose,
   onSubmit,
   editingDevice,
 }) => {
+  const { t } = useTranslation(["devices", "common"]);
   const [currentStep, setCurrentStep] = useState<WizardStep>("type");
+
+  const deviceTypeOptions = useMemo(
+    () => [
+      {
+        type: DeviceType.TRAFFIC_CAM,
+        title: t("devices:types.trafficCam"),
+        description: t("devices:wizard.typeDescriptions.trafficCam"),
+        icon: Camera,
+        color: "blue",
+        protocol: ConnectionProtocol.RTSP,
+      },
+      {
+        type: DeviceType.AIR_QUALITY_SENSOR,
+        title: t("devices:types.airQualitySensor"),
+        description: t("devices:wizard.typeDescriptions.airQualitySensor"),
+        icon: Wind,
+        color: "green",
+        protocol: ConnectionProtocol.MQTT,
+      },
+      {
+        type: DeviceType.SMART_LIGHT,
+        title: t("devices:types.smartLight"),
+        description: t("devices:wizard.typeDescriptions.smartLight"),
+        icon: Cpu,
+        color: "purple",
+        protocol: ConnectionProtocol.MQTT,
+      },
+      {
+        type: DeviceType.INDUCTIVE_LOOP,
+        title: t("devices:types.inductiveLoop"),
+        description: t("devices:wizard.typeDescriptions.inductiveLoop"),
+        icon: Server,
+        color: "orange",
+        protocol: ConnectionProtocol.MQTT,
+      },
+    ],
+    [t]
+  );
+
+  const getStepTitle = (step: WizardStep): string => {
+    switch (step) {
+      case "type":
+        return t("devices:wizard.steps.type");
+      case "connection":
+        return t("devices:wizard.steps.connection");
+      case "location":
+        return t("devices:wizard.steps.location");
+      case "confirm":
+        return t("devices:wizard.steps.confirm");
+      default:
+        return "";
+    }
+  };
   const [deviceData, setDeviceData] = useState<Partial<DeviceModel>>({
     name: "",
     type: DeviceType.TRAFFIC_CAM,
@@ -163,9 +168,7 @@ export const DeviceWizard: React.FC<DeviceWizardProps> = ({
         setConnectionTest("success");
       } else {
         setConnectionTest("error");
-        setTestError(
-          "Không thể kết nối đến thiết bị. Vui lòng kiểm tra lại cấu hình."
-        );
+        setTestError(t("devices:wizard.messages.connectError"));
       }
     }, 2000);
   };
@@ -223,7 +226,9 @@ export const DeviceWizard: React.FC<DeviceWizardProps> = ({
         <div className="p-6 border-b border-gray-200 dark:border-gray-700">
           <div className="flex items-center justify-between">
             <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
-              {editingDevice ? "Chỉnh sửa thiết bị" : "Thêm thiết bị mới"}
+              {editingDevice
+                ? t("devices:wizard.title.edit")
+                : t("devices:wizard.title.add")}
             </h2>
             <button
               onClick={onClose}
@@ -277,7 +282,7 @@ export const DeviceWizard: React.FC<DeviceWizardProps> = ({
           {currentStep === "type" && (
             <div>
               <h3 className="text-lg font-semibold mb-4 text-gray-900 dark:text-white">
-                Chọn loại thiết bị bạn muốn thêm
+                {t("devices:wizard.stepTitles.type")}
               </h3>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {deviceTypeOptions.map((option) => {
@@ -320,19 +325,19 @@ export const DeviceWizard: React.FC<DeviceWizardProps> = ({
           {currentStep === "connection" && (
             <div>
               <h3 className="text-lg font-semibold mb-4 text-gray-900 dark:text-white">
-                Cấu hình kết nối thiết bị
+                {t("devices:wizard.stepTitles.connection")}
               </h3>
 
               <div className="space-y-6">
                 {/* General Information */}
                 <div>
                   <h4 className="font-medium text-gray-900 dark:text-white mb-3">
-                    Thông tin chung
+                    {t("devices:wizard.labels.generalInfo")}
                   </h4>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
                       <label className="block text-sm font-medium text-gray-500 dark:text-gray-400 mb-2">
-                        Tên thiết bị *
+                        {t("devices:wizard.labels.name")} *
                       </label>
                       <input
                         type="text"
@@ -341,12 +346,12 @@ export const DeviceWizard: React.FC<DeviceWizardProps> = ({
                           setDeviceData({ ...deviceData, name: e.target.value })
                         }
                         className="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-greenwave-primary-light"
-                        placeholder="Ví dụ: Camera Ngã 4 Hàng Xanh"
+                        placeholder={t("devices:wizard.placeholders.name")}
                       />
                     </div>
                     <div>
                       <label className="block text-sm font-medium text-gray-500 dark:text-gray-400 mb-2">
-                        Số serial *
+                        {t("devices:wizard.labels.serial")} *
                       </label>
                       <input
                         type="text"
@@ -358,12 +363,12 @@ export const DeviceWizard: React.FC<DeviceWizardProps> = ({
                           })
                         }
                         className="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-greenwave-primary-light"
-                        placeholder="SN-2024-X99"
+                        placeholder={t("devices:wizard.placeholders.serial")}
                       />
                     </div>
                     <div>
                       <label className="block text-sm font-medium text-gray-500 dark:text-gray-400 mb-2">
-                        Hãng sản xuất
+                        {t("devices:wizard.labels.manufacturer")}
                       </label>
                       <input
                         type="text"
@@ -375,12 +380,14 @@ export const DeviceWizard: React.FC<DeviceWizardProps> = ({
                           })
                         }
                         className="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-greenwave-primary-light"
-                        placeholder="Bosch, Honeywell..."
+                        placeholder={t(
+                          "devices:wizard.placeholders.manufacturer"
+                        )}
                       />
                     </div>
                     <div>
                       <label className="block text-sm font-medium text-gray-500 dark:text-gray-400 mb-2">
-                        Giao thức
+                        {t("devices:wizard.labels.protocol")}
                       </label>
                       <select
                         value={deviceData.protocol}
@@ -407,12 +414,12 @@ export const DeviceWizard: React.FC<DeviceWizardProps> = ({
                 {deviceData.protocol === ConnectionProtocol.MQTT && (
                   <div>
                     <h4 className="font-medium text-gray-900 dark:text-white mb-3">
-                      Cấu hình MQTT
+                      {t("devices:wizard.labels.mqttConfig")}
                     </h4>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                       <div>
                         <label className="block text-sm font-medium text-gray-500 dark:text-gray-400 mb-2">
-                          Broker URL
+                          {t("devices:wizard.labels.brokerUrl")}
                         </label>
                         <input
                           type="text"
@@ -428,12 +435,14 @@ export const DeviceWizard: React.FC<DeviceWizardProps> = ({
                             })
                           }
                           className="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-greenwave-primary-light"
-                          placeholder="mqtt://broker.hivemq.com"
+                          placeholder={t(
+                            "devices:wizard.placeholders.brokerUrl"
+                          )}
                         />
                       </div>
                       <div>
                         <label className="block text-sm font-medium text-gray-500 dark:text-gray-400 mb-2">
-                          Cổng
+                          {t("devices:wizard.labels.port")}
                         </label>
                         <input
                           type="number"
@@ -453,7 +462,7 @@ export const DeviceWizard: React.FC<DeviceWizardProps> = ({
                       </div>
                       <div>
                         <label className="block text-sm font-medium text-gray-500 dark:text-gray-400 mb-2">
-                          Topic Subscribe *
+                          {t("devices:wizard.labels.topicSubscribe")} *
                         </label>
                         <input
                           type="text"
@@ -468,12 +477,14 @@ export const DeviceWizard: React.FC<DeviceWizardProps> = ({
                             })
                           }
                           className="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-greenwave-primary-light"
-                          placeholder="hcm/d1/hangxanh/traffic/data"
+                          placeholder={t(
+                            "devices:wizard.placeholders.topicSubscribe"
+                          )}
                         />
                       </div>
                       <div>
                         <label className="block text-sm font-medium text-gray-500 dark:text-gray-400 mb-2">
-                          Topic Publish
+                          {t("devices:wizard.labels.topicPublish")}
                         </label>
                         <input
                           type="text"
@@ -489,7 +500,9 @@ export const DeviceWizard: React.FC<DeviceWizardProps> = ({
                             })
                           }
                           className="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-greenwave-primary-light"
-                          placeholder="hcm/d1/hangxanh/traffic/cmd"
+                          placeholder={t(
+                            "devices:wizard.placeholders.topicPublish"
+                          )}
                         />
                       </div>
                     </div>
@@ -499,12 +512,12 @@ export const DeviceWizard: React.FC<DeviceWizardProps> = ({
                 {deviceData.protocol === ConnectionProtocol.RTSP && (
                   <div>
                     <h4 className="font-medium text-gray-900 dark:text-white mb-3">
-                      Cấu hình RTSP
+                      {t("devices:wizard.labels.rtspConfig")}
                     </h4>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                       <div>
                         <label className="block text-sm font-medium text-gray-500 dark:text-gray-400 mb-2">
-                          Địa chỉ IP *
+                          {t("devices:wizard.labels.ipAddress")} *
                         </label>
                         <input
                           type="text"
@@ -519,12 +532,14 @@ export const DeviceWizard: React.FC<DeviceWizardProps> = ({
                             })
                           }
                           className="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-greenwave-primary-light"
-                          placeholder="192.168.1.105"
+                          placeholder={t(
+                            "devices:wizard.placeholders.ipAddress"
+                          )}
                         />
                       </div>
                       <div>
                         <label className="block text-sm font-medium text-gray-500 dark:text-gray-400 mb-2">
-                          RTSP URL
+                          {t("devices:wizard.labels.rtspUrl")}
                         </label>
                         <input
                           type="text"
@@ -539,7 +554,7 @@ export const DeviceWizard: React.FC<DeviceWizardProps> = ({
                             })
                           }
                           className="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-greenwave-primary-light"
-                          placeholder="rtsp://admin:12345@192.168.1.105/stream"
+                          placeholder={t("devices:wizard.placeholders.rtspUrl")}
                         />
                       </div>
                     </div>
@@ -551,10 +566,10 @@ export const DeviceWizard: React.FC<DeviceWizardProps> = ({
                   <div className="flex items-center justify-between">
                     <div>
                       <h4 className="font-medium text-gray-900 dark:text-white">
-                        Kiểm tra kết nối
+                        {t("devices:wizard.labels.connectionTest")}
                       </h4>
                       <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
-                        Kiểm tra xem hệ thống có thể kết nối đến thiết bị không
+                        {t("devices:wizard.labels.testDescription")}
                       </p>
                     </div>
                     <button
@@ -584,15 +599,14 @@ export const DeviceWizard: React.FC<DeviceWizardProps> = ({
                         <Wifi className="w-4 h-4" />
                       )}
                       {connectionTest === "testing"
-                        ? "Đang kiểm tra..."
-                        : "Kiểm tra kết nối"}
+                        ? t("devices:wizard.labels.checking")
+                        : t("devices:wizard.labels.checkConnection")}
                     </button>
                   </div>
 
                   {connectionTest === "success" && (
                     <div className="mt-3 p-3 rounded-lg bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300">
-                      ✓ Kết nối thành công! Thiết bị sẵn sàng để thêm vào hệ
-                      thống.
+                      ✓ {t("devices:wizard.messages.connectSuccess")}
                     </div>
                   )}
 
@@ -610,18 +624,18 @@ export const DeviceWizard: React.FC<DeviceWizardProps> = ({
           {currentStep === "location" && (
             <div>
               <h3 className="text-lg font-semibold mb-4 text-gray-900 dark:text-white">
-                Định vị thiết bị trên bản đồ
+                {t("devices:wizard.stepTitles.location")}
               </h3>
 
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 <div>
                   <h4 className="font-medium text-gray-900 dark:text-white mb-3">
-                    Nhập tọa độ
+                    {t("devices:wizard.labels.enterCoordinates")}
                   </h4>
                   <div className="space-y-4">
                     <div>
                       <label className="block text-sm font-medium text-gray-500 dark:text-gray-400 mb-2">
-                        Vĩ độ (Latitude)
+                        {t("devices:wizard.labels.latitude")}
                       </label>
                       <input
                         type="number"
@@ -642,7 +656,7 @@ export const DeviceWizard: React.FC<DeviceWizardProps> = ({
                     </div>
                     <div>
                       <label className="block text-sm font-medium text-gray-500 dark:text-gray-400 mb-2">
-                        Kinh độ (Longitude)
+                        {t("devices:wizard.labels.longitude")}
                       </label>
                       <input
                         type="number"
@@ -663,7 +677,7 @@ export const DeviceWizard: React.FC<DeviceWizardProps> = ({
                     </div>
                     <div>
                       <label className="block text-sm font-medium text-gray-500 dark:text-gray-400 mb-2">
-                        Mô tả vị trí
+                        {t("devices:wizard.labels.locationDesc")}
                       </label>
                       <textarea
                         value={deviceData.location?.description || ""}
@@ -677,7 +691,9 @@ export const DeviceWizard: React.FC<DeviceWizardProps> = ({
                           })
                         }
                         className="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-greenwave-primary-light"
-                        placeholder="Cột đèn số 5, hướng về Quận 1"
+                        placeholder={t(
+                          "devices:wizard.placeholders.locationDesc"
+                        )}
                         rows={3}
                       />
                     </div>
@@ -687,15 +703,15 @@ export const DeviceWizard: React.FC<DeviceWizardProps> = ({
                 <div>
                   <h4 className="font-medium text-gray-900 dark:text-white mb-3">
                     <MapPin className="inline w-4 h-4 mr-2" />
-                    Chọn vị trí trên bản đồ
+                    {t("devices:wizard.labels.selectOnMap")}
                   </h4>
                   <div className="p-4 rounded-lg border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-800/50 h-64 flex items-center justify-center">
                     <p className="text-gray-500 dark:text-gray-400 text-center">
                       <MapPin className="w-8 h-8 mx-auto mb-2" />
-                      Bản đồ sẽ được tích hợp ở đây
+                      {t("devices:wizard.labels.mapPlaceholder")}
                       <br />
                       <span className="text-sm">
-                        Người dùng có thể kéo thả pin để chọn vị trí
+                        {t("devices:wizard.labels.dragPin")}
                       </span>
                     </p>
                   </div>
@@ -708,18 +724,18 @@ export const DeviceWizard: React.FC<DeviceWizardProps> = ({
           {currentStep === "confirm" && (
             <div>
               <h3 className="text-lg font-semibold mb-4 text-gray-900 dark:text-white">
-                Xác nhận thông tin thiết bị
+                {t("devices:wizard.stepTitles.confirm")}
               </h3>
 
               <div className="space-y-6">
                 <div className="p-6 rounded-lg bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800">
                   <h4 className="font-medium text-gray-900 dark:text-white mb-4">
-                    Thông tin chung
+                    {t("devices:wizard.labels.generalInfo")}
                   </h4>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
                       <span className="text-sm text-gray-500 dark:text-gray-400">
-                        Tên thiết bị:
+                        {t("devices:wizard.labels.name")}:
                       </span>
                       <p className="font-medium text-gray-900 dark:text-white">
                         {deviceData.name}
@@ -727,7 +743,7 @@ export const DeviceWizard: React.FC<DeviceWizardProps> = ({
                     </div>
                     <div>
                       <span className="text-sm text-gray-500 dark:text-gray-400">
-                        Loại thiết bị:
+                        {t("devices:wizard.steps.type")}:
                       </span>
                       <p className="font-medium text-gray-900 dark:text-white">
                         {deviceData.type}
@@ -735,7 +751,7 @@ export const DeviceWizard: React.FC<DeviceWizardProps> = ({
                     </div>
                     <div>
                       <span className="text-sm text-gray-500 dark:text-gray-400">
-                        Số serial:
+                        {t("devices:wizard.labels.serial")}:
                       </span>
                       <p className="font-medium text-gray-900 dark:text-white">
                         {deviceData.serialNumber}
@@ -743,7 +759,7 @@ export const DeviceWizard: React.FC<DeviceWizardProps> = ({
                     </div>
                     <div>
                       <span className="text-sm text-gray-500 dark:text-gray-400">
-                        Hãng sản xuất:
+                        {t("devices:wizard.labels.manufacturer")}:
                       </span>
                       <p className="font-medium text-gray-900 dark:text-white">
                         {deviceData.manufacturer || "N/A"}
@@ -754,12 +770,12 @@ export const DeviceWizard: React.FC<DeviceWizardProps> = ({
 
                 <div className="p-6 rounded-lg bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800">
                   <h4 className="font-medium text-gray-900 dark:text-white mb-4">
-                    Cấu hình kết nối
+                    {t("devices:wizard.steps.connection")}
                   </h4>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
                       <span className="text-sm text-gray-500 dark:text-gray-400">
-                        Giao thức:
+                        {t("devices:wizard.labels.protocol")}:
                       </span>
                       <p className="font-medium text-gray-900 dark:text-white">
                         {deviceData.protocol}
@@ -768,7 +784,7 @@ export const DeviceWizard: React.FC<DeviceWizardProps> = ({
                     {deviceData.mqttConfig && (
                       <div>
                         <span className="text-sm text-gray-500 dark:text-gray-400">
-                          Topic MQTT:
+                          {t("devices:wizard.labels.topicSubscribe")}:
                         </span>
                         <p className="font-medium text-gray-900 dark:text-white">
                           {deviceData.mqttConfig.topicSubscribe}
@@ -778,7 +794,7 @@ export const DeviceWizard: React.FC<DeviceWizardProps> = ({
                     {deviceData.httpConfig && (
                       <div>
                         <span className="text-sm text-gray-500 dark:text-gray-400">
-                          Địa chỉ IP:
+                          {t("devices:wizard.labels.ipAddress")}:
                         </span>
                         <p className="font-medium text-gray-900 dark:text-white">
                           {deviceData.httpConfig.ipAddress}

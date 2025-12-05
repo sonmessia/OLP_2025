@@ -1,4 +1,5 @@
 import React from "react";
+import { useTranslation } from "react-i18next";
 import {
   Chart as ChartJS,
   ArcElement,
@@ -18,12 +19,12 @@ interface AQIGaugeProps {
   size?: number; // Default size for the gauge
 }
 
-const getAQIState = (value: number) => {
+const getAQIState = (value: number, t: (key: string) => string) => {
   if (value <= 50) {
     return {
       color: "#10B981", // Green-500
-      label: "Tốt",
-      description: "Không khí trong lành",
+      label: t("good"),
+      description: t("descriptions.good"),
       Icon: Leaf,
       bgClass: "bg-green-100 dark:bg-green-900/30",
       textClass: "text-green-600 dark:text-green-400",
@@ -32,8 +33,8 @@ const getAQIState = (value: number) => {
   if (value <= 100) {
     return {
       color: "#FBBF24", // Yellow-400
-      label: "Trung bình",
-      description: "Chấp nhận được",
+      label: t("moderate"),
+      description: t("descriptions.moderate"),
       Icon: Cloud,
       bgClass: "bg-yellow-100 dark:bg-yellow-900/30",
       textClass: "text-yellow-600 dark:text-yellow-400",
@@ -42,8 +43,8 @@ const getAQIState = (value: number) => {
   if (value <= 150) {
     return {
       color: "#F97316", // Orange-500
-      label: "Kém",
-      description: "Hạn chế ra ngoài",
+      label: t("unhealthy"),
+      description: t("descriptions.unhealthy"),
       Icon: Wind,
       bgClass: "bg-orange-100 dark:bg-orange-900/30",
       textClass: "text-orange-600 dark:text-orange-400",
@@ -51,8 +52,8 @@ const getAQIState = (value: number) => {
   }
   return {
     color: "#EF4444", // Red-500
-    label: "Nguy hại",
-    description: "Cảnh báo sức khỏe",
+    label: t("hazardous"),
+    description: t("descriptions.hazardous"),
     Icon: AlertTriangle,
     bgClass: "bg-red-100 dark:bg-red-900/30",
     textClass: "text-red-600 dark:text-red-400",
@@ -64,8 +65,11 @@ export const AQIGauge: React.FC<AQIGaugeProps> = ({
   isDarkMode,
   size = 140,
 }) => {
-  const { color, label, description, Icon, bgClass, textClass } =
-    getAQIState(value);
+  const { t } = useTranslation("aqi");
+  const { color, label, description, Icon, bgClass, textClass } = getAQIState(
+    value,
+    t
+  );
 
   // Data for the half-doughnut gauge
   const data = {
@@ -108,7 +112,7 @@ export const AQIGauge: React.FC<AQIGaugeProps> = ({
     `}
     >
       <h3 className="hidden md:block text-xs font-semibold text-gray-400 dark:text-gray-500 md:mb-2 uppercase tracking-widest">
-        Chỉ số AQI
+        {t("title")}
       </h3>
 
       <div

@@ -1,4 +1,5 @@
 import React from "react";
+import { useTranslation } from "react-i18next";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -34,6 +35,7 @@ export const MonitoringChart: React.FC<MonitoringChartProps> = ({
   data,
   isDarkMode = false,
 }) => {
+  const { t, i18n } = useTranslation(["monitoring"]);
   // Detect dark mode from document if not provided
   const darkMode =
     isDarkMode || document.documentElement.classList.contains("dark");
@@ -53,7 +55,7 @@ export const MonitoringChart: React.FC<MonitoringChartProps> = ({
 
   const labels = data.map((point) => {
     const date = new Date(point.timestamp);
-    return date.toLocaleTimeString("vi-VN", {
+    return date.toLocaleTimeString(i18n.language === "en" ? "en-US" : "vi-VN", {
       hour: "2-digit",
       minute: "2-digit",
     });
@@ -63,7 +65,7 @@ export const MonitoringChart: React.FC<MonitoringChartProps> = ({
     labels,
     datasets: [
       {
-        label: "Thời gian chờ (s)",
+        label: t("waitingTime"),
         data: data.map((point) => point.avgWaitingTime),
         borderColor: "#3B82F6", // Blue-500
         backgroundColor: (context: ScriptableContext<"line">) => {
@@ -82,7 +84,7 @@ export const MonitoringChart: React.FC<MonitoringChartProps> = ({
         borderWidth: 2,
       },
       {
-        label: "PM2.5 (μg/m³)",
+        label: t("pm25"),
         data: data.map((point) => point.pm25Level),
         borderColor: "#10B981", // Emerald-500
         backgroundColor: (context: ScriptableContext<"line">) => {
@@ -220,10 +222,10 @@ export const MonitoringChart: React.FC<MonitoringChartProps> = ({
         <div>
           <h3 className="text-base font-bold text-gray-900 dark:text-white flex items-center gap-2">
             <span className="w-1 h-4 bg-blue-500 rounded-full"></span>
-            Giám sát Thời gian thực
+            {t("realTimeMonitoring")}
           </h3>
           <p className="text-xs text-gray-500 dark:text-gray-400 mt-1 ml-3">
-            Cập nhật mỗi 30 giây
+            {t("updateInterval")}
           </p>
         </div>
 
@@ -231,17 +233,17 @@ export const MonitoringChart: React.FC<MonitoringChartProps> = ({
           {/* Traffic Stat */}
           <div className="text-right">
             <p className="text-[10px] uppercase tracking-wider text-gray-500 dark:text-gray-400 font-semibold mb-0.5">
-              Thời gian chờ
+              {t("waitingTimeLabel")}
             </p>
             <div className="flex items-baseline justify-end gap-2">
               <span className="text-2xl font-bold text-gray-900 dark:text-white">
                 {Math.round(latest.avgWaitingTime)}
                 <span className="text-sm font-normal text-gray-500 ml-0.5">
-                  s
+                  {t("secondsAbbr")}
                 </span>
               </span>
               <span className="text-xs font-medium text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/30 px-1.5 py-0.5 rounded">
-                TB: {avgWait}
+                {t("averageAbbr")} {avgWait}
               </span>
             </div>
           </div>
@@ -255,7 +257,7 @@ export const MonitoringChart: React.FC<MonitoringChartProps> = ({
               <span className="text-2xl font-bold text-gray-900 dark:text-white">
                 {latest.pm25Level.toFixed(1)}
                 <span className="text-sm font-normal text-gray-500 ml-0.5">
-                  µg
+                  {t("microgramAbbr")}
                 </span>
               </span>
               <span
@@ -265,7 +267,7 @@ export const MonitoringChart: React.FC<MonitoringChartProps> = ({
                     : "text-emerald-600 bg-emerald-50 dark:text-emerald-400 dark:bg-emerald-900/30"
                 }`}
               >
-                TB: {avgPM25}
+                {t("averageAbbr")} {avgPM25}
               </span>
             </div>
           </div>

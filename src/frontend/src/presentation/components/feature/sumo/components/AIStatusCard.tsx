@@ -1,4 +1,5 @@
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { Circle, Info } from "lucide-react";
 
 interface AIStatusCardProps {
@@ -10,6 +11,8 @@ export const AIStatusCard: React.FC<AIStatusCardProps> = ({
   aiControlState,
   onShowDetails,
 }) => {
+  const { t } = useTranslation("sumo");
+
   if (!aiControlState) return null;
 
   const getStatusColor = () => {
@@ -42,7 +45,7 @@ export const AIStatusCard: React.FC<AIStatusCardProps> = ({
       <div className="bg-gray-50 dark:bg-gray-800/50 rounded-lg p-4">
         <div className="flex items-center justify-between mb-3">
           <span className="text-xs text-gray-600 dark:text-gray-400">
-            AI Status
+            {t("ai.statusLabel")}
           </span>
           <div className={`flex items-center gap-2 ${getStatusColor()}`}>
             {getStatusIcon()}
@@ -52,10 +55,10 @@ export const AIStatusCard: React.FC<AIStatusCardProps> = ({
 
         <div className="flex items-center justify-between">
           <span className="text-xs text-gray-600 dark:text-gray-400">
-            Controlled Lights
+            {t("ai.controlled")}
           </span>
           <span className="text-sm font-bold text-gray-900 dark:text-white">
-            {aiControlState.numTrafficLights} lights
+            {aiControlState.numTrafficLights} {t("ai.lights")}
           </span>
         </div>
       </div>
@@ -70,10 +73,10 @@ export const AIStatusCard: React.FC<AIStatusCardProps> = ({
         <div className="flex items-center justify-between">
           <div>
             <p className="text-xs text-emerald-600 dark:text-emerald-400 mb-1">
-              AI Model
+              {t("ai.model")}
             </p>
             <p className="text-sm font-bold text-emerald-900 dark:text-emerald-100">
-              {aiControlState.algorithm || "GreenWave DQN"}
+              {aiControlState.algorithm || t("ai.defaultModel")}
             </p>
           </div>
           <Info className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />
@@ -84,7 +87,7 @@ export const AIStatusCard: React.FC<AIStatusCardProps> = ({
       {aiControlState.lastDecisionTime && (
         <div className="bg-purple-50 dark:bg-purple-900/20 rounded-lg p-4 border-l-4 border-purple-500">
           <p className="text-xs text-purple-600 dark:text-purple-400 mb-1">
-            Last Decision
+            {t("ai.lastDecision")}
           </p>
           <p className="text-sm font-bold text-purple-900 dark:text-purple-100">
             {new Date(aiControlState.lastDecisionTime).toLocaleTimeString(

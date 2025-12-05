@@ -1,4 +1,5 @@
 import React, { useEffect, useRef } from "react";
+import { useTranslation } from "react-i18next";
 
 interface SystemLogsProps {
   logs: string[];
@@ -9,6 +10,7 @@ export const SystemLogs: React.FC<SystemLogsProps> = ({
   logs,
   maxLogs = 20,
 }) => {
+  const { t } = useTranslation("sumo");
   const logContainerRef = useRef<HTMLDivElement>(null);
 
   // Auto-scroll to bottom when new logs are added
@@ -55,7 +57,7 @@ export const SystemLogs: React.FC<SystemLogsProps> = ({
   return (
     <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6">
       <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
-        System Logs
+        {t("logs.title")}
       </h2>
 
       <div
@@ -64,7 +66,7 @@ export const SystemLogs: React.FC<SystemLogsProps> = ({
       >
         {displayLogs.length === 0 ? (
           <div className="text-gray-500 text-center py-8">
-            No logs yet. System is ready.
+            {t("logs.empty")}
           </div>
         ) : (
           <div className="space-y-1">
@@ -85,7 +87,7 @@ export const SystemLogs: React.FC<SystemLogsProps> = ({
 
       {/* Log Count */}
       <div className="mt-2 text-xs text-gray-500 dark:text-gray-400 text-right">
-        {displayLogs.length} / {maxLogs} logs
+        {displayLogs.length} / {maxLogs} {t("logs.count")}
       </div>
 
       <style jsx>{`

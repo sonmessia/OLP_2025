@@ -6,7 +6,11 @@ export interface DataPoint {
   avgSpeed: number;
 }
 
-export const getChartOptions = (isDarkMode: boolean): ChartOptions<"line"> => {
+// import type { TFunction } from "i18next";
+export const getChartOptions = (
+  isDarkMode: boolean,
+  t: any
+): ChartOptions<"line"> => {
   return {
     responsive: true,
     maintainAspectRatio: false,
@@ -63,7 +67,7 @@ export const getChartOptions = (isDarkMode: boolean): ChartOptions<"line"> => {
         },
         callbacks: {
           title: function (context: any[]) {
-            return `Time: ${context[0].label}`;
+            return `${t("sumo:chart.time")} ${context[0].label}`;
           },
           label: function (context: any) {
             let label = context.dataset.label || "";
@@ -72,7 +76,7 @@ export const getChartOptions = (isDarkMode: boolean): ChartOptions<"line"> => {
             }
             if (context.parsed.y !== null) {
               if (context.datasetIndex === 0) {
-                label += `${context.parsed.y} vehicles`;
+                label += `${context.parsed.y} ${t("sumo:chart.vehicles")}`;
               } else {
                 label += `${context.parsed.y.toFixed(1)} km/h`;
               }
@@ -114,7 +118,7 @@ export const getChartOptions = (isDarkMode: boolean): ChartOptions<"line"> => {
         position: "left",
         title: {
           display: true,
-          text: "Vehicle Count",
+          text: t("sumo:chart.vehicleCount"),
           color: isDarkMode ? "#10b981" : "#107c41",
           font: {
             size: 13,
@@ -151,7 +155,7 @@ export const getChartOptions = (isDarkMode: boolean): ChartOptions<"line"> => {
         position: "right",
         title: {
           display: true,
-          text: "Speed (km/h)",
+          text: t("sumo:chart.speedUnit"),
           color: isDarkMode ? "#60a5fa" : "#3b82f6",
           font: {
             size: 13,
@@ -183,12 +187,15 @@ export const getChartOptions = (isDarkMode: boolean): ChartOptions<"line"> => {
   };
 };
 
-export const getChartData = (dataHistory: DataPoint[]): ChartData<"line"> => {
+export const getChartData = (
+  dataHistory: DataPoint[],
+  t: any
+): ChartData<"line"> => {
   return {
     labels: dataHistory.map((d) => d.timestamp),
     datasets: [
       {
-        label: "Vehicle Count",
+        label: t("sumo:chart.vehicleCount"),
         data: dataHistory.map((d) => d.vehicleCount),
         borderColor: "#107c41",
         backgroundColor: (context: ScriptableContext<"line">) => {
@@ -212,7 +219,7 @@ export const getChartData = (dataHistory: DataPoint[]): ChartData<"line"> => {
         pointHoverBorderWidth: 3,
       },
       {
-        label: "Average Speed",
+        label: t("sumo:chart.avgSpeed"),
         data: dataHistory.map((d) => d.avgSpeed),
         borderColor: "#3b82f6",
         backgroundColor: (context: ScriptableContext<"line">) => {

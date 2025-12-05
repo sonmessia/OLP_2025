@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useMemo } from "react";
+import { useTranslation } from "react-i18next";
 import {
   DeviceType,
   DeviceStatus,
@@ -19,40 +20,59 @@ interface FilterBarProps {
   loading?: boolean;
 }
 
-const deviceTypes = [
-  { value: "", label: "Tất cả thiết bị", icon: Filter },
-  { value: DeviceType.TRAFFIC_CAM, label: "Camera Giao thông" },
-  { value: DeviceType.AIR_QUALITY_SENSOR, label: "Cảm biến Không khí" },
-  { value: DeviceType.SMART_LIGHT, label: "Đèn thông minh" },
-  { value: DeviceType.INDUCTIVE_LOOP, label: "Cảm biến từ" },
-  { value: DeviceType.RADAR_SENSOR, label: "Radar Sensor" },
-];
-
-const deviceStatuses = [
-  { value: "", label: "Tất cả trạng thái" },
-  { value: DeviceStatus.ONLINE, label: "Online" },
-  { value: DeviceStatus.OFFLINE, label: "Offline" },
-  { value: DeviceStatus.MAINTENANCE, label: "Bảo trì" },
-  { value: DeviceStatus.ERROR, label: "Lỗi" },
-];
-
-const districts = [
-  { value: "", label: "Tất cả quận" },
-  { value: "quan1", label: "Quận 1" },
-  { value: "quan3", label: "Quận 3" },
-  { value: "quan5", label: "Quận 5" },
-  { value: "quan7", label: "Quận 7" },
-  { value: "binhthanh", label: "Quận Bình Thạnh" },
-  { value: "phunhuan", label: "Quận Phú Nhuận" },
-  { value: "thuduc", label: "Thủ Đức" },
-];
-
 export const FilterBar: React.FC<FilterBarProps> = ({
   filters,
   onFiltersChange,
   onAddDevice,
   loading = false,
 }) => {
+  const { t } = useTranslation(["devices", "common"]);
+
+  const deviceTypes = useMemo(
+    () => [
+      { value: "", label: t("devices:filter.allDevices"), icon: Filter },
+      { value: DeviceType.TRAFFIC_CAM, label: t("devices:types.trafficCam") },
+      {
+        value: DeviceType.AIR_QUALITY_SENSOR,
+        label: t("devices:types.airQualitySensor"),
+      },
+      { value: DeviceType.SMART_LIGHT, label: t("devices:types.smartLight") },
+      {
+        value: DeviceType.INDUCTIVE_LOOP,
+        label: t("devices:types.inductiveLoop"),
+      },
+      { value: DeviceType.RADAR_SENSOR, label: t("devices:types.radarSensor") },
+    ],
+    [t]
+  );
+
+  const deviceStatuses = useMemo(
+    () => [
+      { value: "", label: t("devices:filter.allStatuses") },
+      { value: DeviceStatus.ONLINE, label: t("devices:status.online") },
+      { value: DeviceStatus.OFFLINE, label: t("devices:status.offline") },
+      {
+        value: DeviceStatus.MAINTENANCE,
+        label: t("devices:status.maintenance"),
+      },
+      { value: DeviceStatus.ERROR, label: t("devices:status.error") },
+    ],
+    [t]
+  );
+
+  const districts = useMemo(
+    () => [
+      { value: "", label: t("devices:filter.allDistricts") },
+      { value: "quan1", label: t("devices:districts.quan1") },
+      { value: "quan3", label: t("devices:districts.quan3") },
+      { value: "quan5", label: t("devices:districts.quan5") },
+      { value: "quan7", label: t("devices:districts.quan7") },
+      { value: "binhthanh", label: t("devices:districts.binhthanh") },
+      { value: "phunhuan", label: t("devices:districts.phunhuan") },
+      { value: "thuduc", label: t("devices:districts.thuduc") },
+    ],
+    [t]
+  );
   const handleFilterChange = (key: keyof DeviceFilters, value: string) => {
     const newFilters = { ...filters };
     if (value === "") {
@@ -79,7 +99,7 @@ export const FilterBar: React.FC<FilterBarProps> = ({
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
             <input
               type="text"
-              placeholder="Tìm kiếm thiết bị, địa chỉ..."
+              placeholder={t("devices:filter.searchPlaceholder")}
               value={filters.search || ""}
               onChange={handleSearchChange}
               className="w-full pl-10 pr-4 py-3 rounded-lg border border-gray-200 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-greenwave-primary-light focus:border-transparent transition-all"
@@ -98,7 +118,7 @@ export const FilterBar: React.FC<FilterBarProps> = ({
             }}
           >
             <Plus className="w-5 h-5" />
-            Thêm Thiết bị
+            {t("devices:filter.addDevice")}
           </button>
         </div>
 
@@ -149,7 +169,7 @@ export const FilterBar: React.FC<FilterBarProps> = ({
               onClick={() => onFiltersChange({})}
               className="px-4 py-3 rounded-lg border border-red-200 dark:border-red-800 bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400 hover:bg-red-100 dark:hover:bg-red-900/30 transition-colors"
             >
-              Xóa bộ lọc
+              {t("devices:filter.clearFilters")}
             </button>
           )}
         </div>

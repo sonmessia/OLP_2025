@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useTranslation } from "react-i18next";
 import { DashboardHeader } from "../../components/feature/dashboard/DashboardHeader";
 import type {
   Subscription,
@@ -28,6 +29,8 @@ const deleteSubscriptionUseCase = new DeleteSubscriptionUseCase(
 );
 
 export const SubscriptionPage: React.FC = () => {
+  const { t } = useTranslation(["subscription", "common"]);
+
   // Theme state
   const getInitialDarkMode = () => {
     if (typeof window !== "undefined") {
@@ -76,13 +79,13 @@ export const SubscriptionPage: React.FC = () => {
   }, []);
 
   const handleDelete = async (id: string) => {
-    if (window.confirm("Bạn có chắc chắn muốn xóa cảnh báo này không?")) {
+    if (window.confirm(t("subscription:management.deleteConfirm"))) {
       try {
         await deleteSubscriptionUseCase.execute(id);
         fetchSubscriptions();
       } catch (error) {
         console.error("Failed to delete subscription", error);
-        alert("Không thể xóa cảnh báo");
+        alert(t("subscription:management.deleteError"));
       }
     }
   };
@@ -94,7 +97,7 @@ export const SubscriptionPage: React.FC = () => {
       fetchSubscriptions();
     } catch (error) {
       console.error("Failed to create subscription", error);
-      alert("Không thể tạo cảnh báo. Vui lòng kiểm tra lại thông tin.");
+      alert(t("subscription:management.createError"));
     }
   };
 
@@ -110,11 +113,10 @@ export const SubscriptionPage: React.FC = () => {
           <div>
             <h1 className="text-2xl font-bold text-gray-900 dark:text-white flex items-center gap-2">
               <Bell className="w-8 h-8 text-emerald-600" />
-              Quản lý Cảnh báo (Subscriptions)
+              {t("subscription:title")}
             </h1>
             <p className="text-gray-600 dark:text-gray-400 mt-1">
-              Quản lý các đăng ký nhận thông báo về thay đổi chất lượng không
-              khí và lưu lượng giao thông.
+              {t("subscription:management.subtitle")}
             </p>
           </div>
           <button
@@ -122,7 +124,7 @@ export const SubscriptionPage: React.FC = () => {
             className="flex items-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded-lg transition-colors shadow-md"
           >
             <Plus className="w-5 h-5" />
-            Tạo Cảnh báo Mới
+            {t("subscription:createAlert")}
           </button>
         </div>
 

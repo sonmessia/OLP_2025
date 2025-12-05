@@ -1,4 +1,5 @@
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { Trash2, Activity, Wind, Car } from "lucide-react";
 import type { Subscription } from "../../../../domain/models/SubscriptionModels";
 
@@ -11,6 +12,8 @@ export const SubscriptionCard: React.FC<SubscriptionCardProps> = ({
   subscription,
   onDelete,
 }) => {
+  const { t } = useTranslation(["subscription", "common"]);
+
   return (
     <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-6 hover:shadow-md transition-shadow">
       <div className="flex justify-between items-start mb-4">
@@ -24,7 +27,7 @@ export const SubscriptionCard: React.FC<SubscriptionCardProps> = ({
         <button
           onClick={() => onDelete(subscription.id)}
           className="text-gray-400 hover:text-red-500 transition-colors p-1"
-          title="Xóa cảnh báo"
+          title={t("deleteTooltip")}
         >
           <Trash2 className="w-5 h-5" />
         </button>
@@ -37,7 +40,7 @@ export const SubscriptionCard: React.FC<SubscriptionCardProps> = ({
       <div className="space-y-2 text-sm text-gray-600 dark:text-gray-400">
         <div className="flex items-center gap-2">
           <Activity className="w-4 h-4" />
-          <span className="font-medium">Loại:</span>
+          <span className="font-medium">{t("typeLabel")}</span>
           <span className="bg-gray-100 dark:bg-gray-700 px-2 py-0.5 rounded text-xs">
             {subscription.entities[0]?.type || "N/A"}
           </span>
@@ -60,7 +63,7 @@ export const SubscriptionCard: React.FC<SubscriptionCardProps> = ({
         {subscription.q && (
           <div className="mt-2">
             <span className="font-medium text-xs text-gray-500">
-              Điều kiện:
+              {t("conditionLabel")}
             </span>
             <code className="block mt-1 bg-gray-100 dark:bg-gray-900 px-2 py-1 rounded text-xs font-mono text-pink-600 dark:text-pink-400 break-all">
               {subscription.q}
@@ -85,7 +88,9 @@ export const SubscriptionCard: React.FC<SubscriptionCardProps> = ({
             >
               {subscription.status || "active"}
             </span>
-            <span>Gửi: {subscription.timesSent || 0}</span>
+            <span>
+              {t("sentLabel")} {subscription.timesSent || 0}
+            </span>
           </div>
         </div>
       </div>

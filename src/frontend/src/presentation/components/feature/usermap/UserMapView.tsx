@@ -14,6 +14,7 @@ import "leaflet/dist/leaflet.css";
 import type { AirQualityObservedModel } from "../../../../domain/models/AirQualityObservedModel";
 import type { LocationModel } from "../../../../domain/models/CommonModels";
 import { GeoJSONType } from "../../../../domain/models/CommonModels";
+import { useTranslation } from "react-i18next";
 
 import { TRAFFIC_LOCATIONS } from "../../../../utils/trafficLocations";
 
@@ -72,6 +73,7 @@ const MapController: React.FC<{
   const [isFollowing, setIsFollowing] = useState(true);
   const [lastUpdate, setLastUpdate] = useState<Date | null>(null);
   const [speed, setSpeed] = useState<number | null>(null);
+  const { t, i18n } = useTranslation(["maps", "common"]);
 
   // Handle map clicks
   useMapEvents({
@@ -201,7 +203,7 @@ const MapController: React.FC<{
               iconAnchor: [12, 12],
             })}
           >
-            <Popup>Bạn đang ở đây</Popup>
+            <Popup>{t("userLocation.youAreHere")}</Popup>
           </Marker>
           {userAccuracy && (
             <Circle
@@ -222,26 +224,28 @@ const MapController: React.FC<{
         <div className="absolute top-4 left-4 z-[1000] bg-white dark:bg-gray-800 rounded-lg shadow-lg p-3 min-w-[250px]">
           <h3 className="text-sm font-bold text-gray-900 dark:text-white mb-2 flex items-center gap-2">
             <Navigation className="w-4 h-4 text-blue-500" />
-            Vị trí của bạn
+            {t("userLocation.title")}
           </h3>
           <div className="space-y-1 text-xs text-gray-600 dark:text-gray-300">
             <div className="flex justify-between">
-              <span className="font-medium">Vĩ độ:</span>
+              <span className="font-medium">{t("userLocation.lat")}:</span>
               <span className="font-mono">{userLocation.lat.toFixed(6)}°</span>
             </div>
             <div className="flex justify-between">
-              <span className="font-medium">Kinh độ:</span>
+              <span className="font-medium">{t("userLocation.lng")}:</span>
               <span className="font-mono">{userLocation.lng.toFixed(6)}°</span>
             </div>
             {userAccuracy && (
               <div className="flex justify-between">
-                <span className="font-medium">Độ chính xác:</span>
+                <span className="font-medium">
+                  {t("userLocation.accuracy")}:
+                </span>
                 <span className="font-mono">±{Math.round(userAccuracy)}m</span>
               </div>
             )}
             {speed !== null && speed > 0 && (
               <div className="flex justify-between">
-                <span className="font-medium">Tốc độ:</span>
+                <span className="font-medium">{t("userLocation.speed")}:</span>
                 <span className="font-mono">
                   {(speed * 3.6).toFixed(1)} km/h
                 </span>
@@ -249,9 +253,11 @@ const MapController: React.FC<{
             )}
             {lastUpdate && (
               <div className="flex justify-between pt-1 border-t border-gray-200 dark:border-gray-700">
-                <span className="font-medium">Cập nhật:</span>
+                <span className="font-medium">
+                  {t("userLocation.updated")}:
+                </span>
                 <span className="font-mono">
-                  {lastUpdate.toLocaleTimeString("vi-VN")}
+                  {lastUpdate.toLocaleTimeString(i18n.language)}
                 </span>
               </div>
             )}
@@ -268,7 +274,11 @@ const MapController: React.FC<{
               ? "bg-blue-500 text-white hover:bg-blue-600"
               : "bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700"
           }`}
-          title={isFollowing ? "Đang theo dõi vị trí" : "Vị trí của tôi"}
+          title={
+            isFollowing
+              ? t("userLocation.following")
+              : t("userLocation.locateMe")
+          }
         >
           {isFollowing ? (
             <Navigation className="w-6 h-6" />
@@ -288,6 +298,7 @@ export const UserMapView: React.FC<UserMapViewProps> = ({
   onTrafficSelect,
   searchQuery,
 }) => {
+  const { t } = useTranslation(["maps", "common"]);
   const tileUrl = isDarkMode
     ? "https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png"
     : "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png";
@@ -373,7 +384,7 @@ export const UserMapView: React.FC<UserMapViewProps> = ({
                 <h3 className="font-bold text-lg">{loc.name}</h3>
                 <p className="text-sm text-gray-600">{loc.description}</p>
                 <p className="text-xs text-blue-500 mt-1 font-semibold">
-                  Click to view traffic status
+                  {t("trafficMarker.clickToView")}
                 </p>
               </div>
             </Popup>
@@ -397,14 +408,15 @@ export const UserMapView: React.FC<UserMapViewProps> = ({
               <Popup className="custom-popup">
                 <div className="p-2 min-w-[200px]">
                   <h3 className="font-bold text-lg mb-2">
-                    {data.areaServed || "Vị trí"}
+                    {data.areaServed || t("location", { ns: "common" })}
                   </h3>
                   <div className="space-y-1 text-sm">
                     <p>
-                      <strong>AQI:</strong> {data.airQualityIndex || "N/A"}
+                      <strong>{t("aqi")}</strong>{" "}
+                      {data.airQualityIndex || "N/A"}
                     </p>
                     <p>
-                      <strong>PM2.5:</strong> {data.pm25 || "N/A"} μg/m³
+                      <strong>{t("pm25")}</strong> {data.pm25 || "N/A"} μg/m³
                     </p>
                     <p>
                       <strong>PM10:</strong> {data.pm10 || "N/A"} μg/m³

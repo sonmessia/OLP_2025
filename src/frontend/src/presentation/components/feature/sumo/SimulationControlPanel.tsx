@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useAppDispatch, useAppSelector } from "../../../../data/redux/hooks";
 import {
   performSimulationStep,
@@ -12,6 +13,7 @@ interface SimulationControlPanelProps {
 export const SimulationControlPanel: React.FC<SimulationControlPanelProps> = ({
   onLog,
 }) => {
+  const { t } = useTranslation("sumo");
   const dispatch = useAppDispatch();
   const { status, isSimulationRunning, simulationState } = useAppSelector(
     (state) => state.sumo
@@ -25,15 +27,13 @@ export const SimulationControlPanel: React.FC<SimulationControlPanelProps> = ({
   // Start simulation (auto-stepping)
   const handleStart = () => {
     if (!isSimulationRunning) {
-      onLog?.(
-        '❌ Please connect to SUMO first by clicking "Start SUMO" button'
-      );
+      onLog?.(t("controlPanel.simulation.warning.connectFirst"));
       return;
     }
 
     setIsRunning(true);
     setIsPaused(false);
-    onLog?.("▶ Simulation started - Running SUMO steps");
+    onLog?.(t("controlPanel.simulation.log.started"));
 
     // Start auto-stepping based on speed
     const interval = setInterval(async () => {
@@ -55,7 +55,7 @@ export const SimulationControlPanel: React.FC<SimulationControlPanelProps> = ({
     }
     setIsRunning(false);
     setIsPaused(true);
-    onLog?.("⏸ Simulation paused");
+    onLog?.(t("controlPanel.simulation.log.paused"));
   };
 
   // Reset simulation
@@ -70,16 +70,16 @@ export const SimulationControlPanel: React.FC<SimulationControlPanelProps> = ({
     // Stop SUMO simulation
     try {
       await dispatch(stopSimulation()).unwrap();
-      onLog?.("🔄 Simulation reset - SUMO stopped");
+      onLog?.(t("controlPanel.simulation.log.reset"));
     } catch (error) {
-      onLog?.(`❌ Failed to reset: ${error}`);
+      onLog?.(t("controlPanel.simulation.log.resetFailed", { error }));
     }
   };
 
   // Update simulation speed
   const handleSpeedChange = (value: number) => {
     setSimulationSpeed(value);
-    onLog?.(`Simulation speed changed to ${value}x`);
+    onLog?.(t("controlPanel.simulation.log.speedChanged", { speed: value }));
 
     // If currently running, restart with new speed
     if (isRunning && stepInterval) {
@@ -109,7 +109,7 @@ export const SimulationControlPanel: React.FC<SimulationControlPanelProps> = ({
   return (
     <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6">
       <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
-        Control Panel
+        {t("controlPanel.simulation.title")}
       </h2>
 
       {/* Control Buttons */}
@@ -121,7 +121,7 @@ export const SimulationControlPanel: React.FC<SimulationControlPanelProps> = ({
                      transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed
                      hover:shadow-lg disabled:hover:shadow-none"
         >
-          ▶ Start
+          {t("controlPanel.simulation.start")}
         </button>
 
         <button
@@ -131,7 +131,7 @@ export const SimulationControlPanel: React.FC<SimulationControlPanelProps> = ({
                      transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed
                      hover:shadow-lg disabled:hover:shadow-none"
         >
-          ⏸ Pause
+          {t("controlPanel.simulation.pause")}
         </button>
 
         <button
@@ -141,14 +141,14 @@ export const SimulationControlPanel: React.FC<SimulationControlPanelProps> = ({
                      transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed
                      hover:shadow-lg disabled:hover:shadow-none"
         >
-          🔄 Reset
+          {t("controlPanel.simulation.reset")}
         </button>
       </div>
 
       {/* Simulation Speed Control */}
       <div>
         <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-          Simulation Speed:{" "}
+          {t("controlPanel.simulation.speed")}{" "}
           <strong className="text-blue-600 dark:text-blue-400">
             {simulationSpeed}x
           </strong>
@@ -173,13 +173,21 @@ export const SimulationControlPanel: React.FC<SimulationControlPanelProps> = ({
       <div className="mt-6 p-3 bg-gray-50 dark:bg-gray-700 rounded-lg">
         <div className="grid grid-cols-2 gap-3 text-sm">
           <div>
-            <span className="text-gray-600 dark:text-gray-400">Status:</span>
+            <span className="text-gray-600 dark:text-gray-400">
+              {t("controlPanel.simulation.status")}
+            </span>
             <p className="font-bold text-gray-900 dark:text-white">
-              {isRunning ? "🟢 Running" : isPaused ? "🟡 Paused" : "⚫ Stopped"}
+              {isRunning
+                ? t("controlPanel.simulation.running")
+                : isPaused
+                ? t("controlPanel.simulation.paused")
+                : t("controlPanel.simulation.stopped")}
             </p>
           </div>
           <div>
-            <span className="text-gray-600 dark:text-gray-400">Sim Time:</span>
+            <span className="text-gray-600 dark:text-gray-400">
+              {t("controlPanel.simulation.time")}
+            </span>
             <p className="font-bold text-gray-900 dark:text-white">
               {simulationState?.simulationTime.toFixed(1) || "0.0"}s
             </p>
@@ -191,16 +199,17 @@ export const SimulationControlPanel: React.FC<SimulationControlPanelProps> = ({
       {!isSimulationRunning && (
         <div className="mt-4 p-3 bg-yellow-50 dark:bg-yellow-900/20 border-l-4 border-yellow-400 rounded">
           <p className="text-xs text-yellow-800 dark:text-yellow-200">
-            <strong>⚠️ SUMO Status:</strong>{" "}
+            <strong>{t("controlPanel.simulation.warning.title")}</strong>{" "}
             {status.connected ? (
               <>
-                🟢 Connected to {status.scenario || "SUMO"} but simulation not
-                started.
+                {t("controlPanel.simulation.warning.connectedNotStarted", {
+                  scenario: status.scenario || "SUMO",
+                })}
                 <br />
-                Please click "Start SUMO" button to begin simulation.
+                {t("controlPanel.simulation.warning.startInstruction")}
               </>
             ) : (
-              <>⚫ Not connected. Please start SUMO connection first.</>
+              <>{t("controlPanel.simulation.warning.notConnected")}</>
             )}
           </p>
         </div>

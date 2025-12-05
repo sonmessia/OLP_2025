@@ -1,0 +1,810 @@
+{
+  "common": {
+    "welcome": "Chào mừng",
+    "login": "Đăng nhập",
+    "logout": "Đăng xuất",
+    "language": "Ngôn ngữ",
+    "loading": "Đang tải",
+    "save": "Lưu",
+    "cancel": "Hủy",
+    "delete": "Xóa",
+    "edit": "Chỉnh sửa",
+    "add": "Thêm",
+    "search": "Tìm kiếm",
+    "filter": "Lọc",
+    "refresh": "Làm mới",
+    "settings": "Cài đặt",
+    "start": "Bắt đầu",
+    "stop": "Dừng",
+    "pause": "Tạm dừng",
+    "resume": "Tiếp tục",
+    "confirm": "Xác nhận",
+    "close": "Đóng",
+    "back": "Quay lại",
+    "next": "Tiếp theo",
+    "previous": "Trước đó",
+    "submit": "Gửi",
+    "clear": "Xóa",
+    "reset": "Đặt lại",
+    "view": "Xem",
+    "details": "Chi tiết",
+    "status": "Trạng thái",
+    "name": "Tên",
+    "description": "Mô tả",
+    "location": "Vị trí",
+    "time": "Thời gian",
+    "date": "Ngày",
+    "all": "Tất cả",
+    "none": "Không có",
+    "online": "Trực tuyến",
+    "offline": "Ngoại tuyến",
+    "error": "Lỗi",
+    "warning": "Cảnh báo",
+    "info": "Thông tin",
+    "success": "Thành công",
+    "type": "Loại"
+  },
+  "locations": {
+    "nga4ThuDuc": "Ngã 4 Thủ Đức",
+    "nguyenThaiSon": "Vòng Xoay Nguyễn Thái Sơn",
+    "quangTrung": "Ngã 5 Quang Trung",
+    "thuDucCrossroads": "Ngã Tư Thủ Đức",
+    "goVapQuangTrung": "Gò Vấp, Quang Trung",
+    "d1Center": "Quận 1 - Trung tâm",
+    "baDinhHanoi": "Ba Đình - Hà Nội",
+    "haiChauDaNang": "Hải Châu - Đà Nẵng",
+    "hcmc": "TP.HCM",
+    "hanoi": "Hà Nội",
+    "danang": "Đà Nẵng",
+    "thuDucCity": "TP. Thủ Đức",
+    "description": {
+      "thuDucCrossroads": "Giao lộ Xa Lộ Hà Nội - Võ Văn Ngân",
+      "nguyenThaiSonRoundabout": "Vòng xoay Nguyễn Thái Sơn - Nguyễn Kiệm",
+      "quangTrungIntersection": "Giao lộ Quang Trung - Nguyễn Oanh - Nguyễn Kiệm"
+    }
+  },
+  "navigation": {
+    "dashboard": "Dashboard",
+    "trafficControl": "Điều phối giao thông",
+    "areaControl": "Điều phối khu vực",
+    "deviceManagement": "Quản lý thiết bị",
+    "alerts": "Cảnh báo",
+    "subscriptions": "Đăng ký",
+    "home": "Trang chủ",
+    "profile": "Hồ sơ",
+    "settings": "Cài đặt"
+  },
+  "dashboard": {
+    "title": "GreenWave",
+    "subtitle": "Hệ thống Điều phối Giao thông Thông minh",
+    "notifications": "Thông báo",
+    "viewAll": "Xem tất cả",
+    "markAsRead": "Đã đọc",
+    "clearAll": "Xóa tất cả",
+    "noNotifications": "Không có thông báo mới",
+    "systemHealth": "Sức khỏe hệ thống",
+    "activeDevices": "Thiết bị hoạt động",
+    "alertsCount": "Cảnh báo hoạt động",
+    "lastUpdate": "Cập nhật cuối",
+    "updatedAt": "Cập nhật lần cuối: {{time}}",
+    "kpi": {
+      "waitingTime": "Thời gian chờ",
+      "unit": {
+        "seconds": "giây",
+        "vehiclePerHour": "xe/h"
+      },
+      "vehicleCount": "Số lượng xe",
+      "aiScore": "Điểm AI"
+    }
+  },
+  "landing": {
+    "title": "GreenWave",
+    "subtitle": "Hệ Thống Điều Phối Giao Thông Thích Ứng Đa Mục Tiêu",
+    "description": "Không chỉ giải quyết kẹt xe. Chúng tôi giải cứu lá phổi thành phố bằng AI & Dữ liệu chuẩn hóa NGSI-LD.",
+    "getStarted": "Bắt đầu",
+    "viewGithub": "Xem Github",
+    "documentation": "Tài liệu",
+    "features": {
+      "title": "Tính năng nổi bật",
+      "realTimeMonitoring": "Giám sát thời gian thực",
+      "airQualityTracking": "Theo dõi chất lượng không khí",
+      "trafficOptimization": "Tối ưu hóa giao thông",
+      "alertSystem": "Hệ thống cảnh báo thông minh"
+    },
+    "problem": {
+      "title": "Thách thức",
+      "description": "Tắc nghẽn giao thông đô thị và ô nhiễm không khí là những thách thức lớn đối với các thành phố hiện đại."
+    },
+    "solution": {
+      "title": "Giải pháp của chúng tôi",
+      "description": "Hệ thống điều phối giao thông powered by AI giúp tối ưu hóa luồng giao thông và giảm thiểu khí thải."
+    },
+    "architecture": {
+      "title": "Kiến trúc hệ thống",
+      "description": "Kiến trúc module, có khả năng mở rộng được xây dựng trên các tiêu chuẩn mở."
+    }
+  },
+  "traffic": {
+    "control": "Điều khiển giao thông",
+    "simulation": "Mô phỏng",
+    "sumoControl": "Điều khiển SUMO",
+    "startSimulation": "Bắt đầu mô phỏng",
+    "stopSimulation": "Dừng mô phỏng",
+    "stepForward": "Bước tiếp theo",
+    "autoStep": "Tự động",
+    "connecting": "Đang kết nối...",
+    "scenario": "Kịch bản",
+    "useGUI": "Sử dụng GUI",
+    "port": "Cổng",
+    "simulationTime": "Thời gian mô phỏng",
+    "trafficFlow": "Luồng giao thông",
+    "averageSpeed": "Tốc độ trung bình",
+    "queueLength": "Độ dài hàng đợi",
+    "vehicleCount": "Số lượng phương tiện",
+    "trafficLights": "Đèn tín hiệu",
+    "congestionLevel": "Mức độ tắc nghẽn",
+    "statusCard": {
+      "title": "Trạng thái Giao thông",
+      "live": "Trực tiếp",
+      "avgSpeed": "Tốc độ trung bình",
+      "vehicleCount": "Số lượng xe",
+      "waitingTime": "Thời gian chờ",
+      "updated": "Cập nhật"
+    },
+    "logs": {
+      "initSuccess": "Hệ thống đã khởi tạo thành công",
+      "waitingConnection": "Đang chờ kết nối SUMO...",
+      "sumoInitSuccess": "SUMO API đã khởi tạo thành công",
+      "sumoInitFailed": "Khởi tạo SUMO API thất bại: {{error}}"
+    },
+    "footer": {
+      "systemName": "GreenWave AI - Hệ thống Quản lý Giao thông Thông minh",
+      "poweredBy": "Được hỗ trợ bởi SUMO & Deep Reinforcement Learning"
+    }
+  },
+  "devices": {
+    "deviceList": "Danh sách thiết bị",
+    "addDevice": "Thêm thiết bị",
+    "editDevice": "Chỉnh sửa thiết bị",
+    "deviceInfo": "Thông tin thiết bị",
+    "manufacturer": "Nhà sản xuất",
+    "serialNumber": "Số sê-ri",
+    "lastSeen": "Lần cuối thấy",
+    "lastUpdate": "Cập nhật cuối",
+    "unknown": "Không rõ",
+    "justNow": "Vừa xong",
+    "minutesAgo": "{{count}} phút trước",
+    "hoursAgo": "{{count}} giờ trước",
+    "daysAgo": "{{count}} ngày trước",
+    "noData": "Chưa có dữ liệu",
+    "restart": "Khởi động lại",
+    "logs": "Nhật ký",
+    "needsAttention": "Cần sự chú ý",
+    "trafficCam": "Camera giao thông",
+    "airQualitySensor": "Cảm biến chất lượng không khí",
+    "device": "Thiết bị",
+    "status": {
+      "online": "Trực tuyến",
+      "offline": "Ngoại tuyến",
+      "maintenance": "Bảo trì",
+      "error": "Lỗi",
+      "lowBattery": "Pin yếu",
+      "active": "Hoạt động",
+      "inactive": "Mất kết nối"
+    },
+    "quickStats": {
+      "trafficFlow": "Lưu lượng",
+      "aqiIndex": "Chỉ số AQI",
+      "activity": "Hoạt động"
+    },
+    "healthTitle": "Trạng thái thiết bị",
+    "deviceCount": "Thiết bị",
+    "noDevices": "Chưa có thiết bị nào",
+    "unknownLocation": "Không xác định",
+    "types": {
+      "trafficCam": "Camera Giao thông",
+      "airQualitySensor": "Cảm biến Không khí",
+      "smartLight": "Đèn thông minh",
+      "inductiveLoop": "Cảm biến từ",
+      "radarSensor": "Cảm biến Radar"
+    },
+    "protocols": {
+      "mqtt": "MQTT",
+      "http": "HTTP",
+      "rtsp": "RTSP",
+      "modbusTcp": "Modbus TCP"
+    },
+    "wizard": {
+      "title": {
+        "add": "Thêm thiết bị mới",
+        "edit": "Chỉnh sửa thiết bị"
+      },
+      "steps": {
+        "type": "Chọn loại thiết bị",
+        "connection": "Cấu hình kết nối",
+        "location": "Định vị bản đồ",
+        "confirm": "Xác nhận thông tin"
+      },
+      "stepTitles": {
+        "type": "Chọn loại thiết bị bạn muốn thêm",
+        "connection": "Cấu hình kết nối thiết bị",
+        "location": "Định vị thiết bị trên bản đồ",
+        "confirm": "Xác nhận thông tin thiết bị"
+      },
+      "labels": {
+        "generalInfo": "Thông tin chung",
+        "name": "Tên thiết bị",
+        "serial": "Số serial",
+        "manufacturer": "Hãng sản xuất",
+        "protocol": "Giao thức",
+        "mqttConfig": "Cấu hình MQTT",
+        "brokerUrl": "Broker URL",
+        "port": "Cổng",
+        "topicSubscribe": "Topic Subscribe",
+        "topicPublish": "Topic Publish",
+        "rtspConfig": "Cấu hình RTSP",
+        "ipAddress": "Địa chỉ IP",
+        "rtspUrl": "RTSP URL",
+        "connectionTest": "Kiểm tra kết nối",
+        "checkConnection": "Kiểm tra kết nối",
+        "checking": "Đang kiểm tra...",
+        "testDescription": "Kiểm tra xem hệ thống có thể kết nối đến thiết bị không",
+        "enterCoordinates": "Nhập tọa độ",
+        "latitude": "Vĩ độ (Latitude)",
+        "longitude": "Kinh độ (Longitude)",
+        "locationDesc": "Mô tả vị trí",
+        "selectOnMap": "Chọn vị trí trên bản đồ",
+        "mapPlaceholder": "Bản đồ sẽ được tích hợp ở đây",
+        "dragPin": "Người dùng có thể kéo thả pin để chọn vị trí",
+        "confirmInfo": "Xác nhận thông tin"
+      },
+      "placeholders": {
+        "name": "Ví dụ: Camera Ngã 4 Hàng Xanh",
+        "serial": "SN-2024-X99",
+        "manufacturer": "Bosch, Honeywell...",
+        "brokerUrl": "mqtt://broker.hivemq.com",
+        "topicSubscribe": "hcm/d1/hangxanh/traffic/data",
+        "topicPublish": "hcm/d1/hangxanh/traffic/cmd",
+        "ipAddress": "192.168.1.105",
+        "rtspUrl": "rtsp://admin:12345@192.168.1.105/stream",
+        "locationDesc": "Cột đèn số 5, hướng về Quận 1"
+      },
+      "messages": {
+        "connectSuccess": "Kết nối thành công! Thiết bị sẵn sàng để thêm vào hệ thống.",
+        "connectError": "Không thể kết nối đến thiết bị. Vui lòng kiểm tra lại cấu hình.",
+        "required": "Bắt buộc"
+      },
+      "typeDescriptions": {
+        "trafficCam": "Đếm xe, nhận diện biển số, phát hiện ùn tắc",
+        "airQualitySensor": "Đo PM2.5, PM10, CO, NO2, nhiệt độ, độ ẩm",
+        "smartLight": "Điều khiển pha đèn giao thông",
+        "inductiveLoop": "Đo lưu lượng và tốc độ xe",
+        "radarSensor": "Cảm biến radar phát hiện xe"
+      }
+    },
+    "filter": {
+      "allDevices": "Tất cả thiết bị",
+      "allStatuses": "Tất cả trạng thái",
+      "allDistricts": "Tất cả quận",
+      "searchPlaceholder": "Tìm kiếm thiết bị, địa chỉ...",
+      "addDevice": "Thêm Thiết bị",
+      "clearFilters": "Xóa bộ lọc"
+    },
+    "districts": {
+      "quan1": "Quận 1",
+      "quan3": "Quận 3",
+      "quan5": "Quận 5",
+      "quan7": "Quận 7",
+      "binhthanh": "Quận Bình Thạnh",
+      "phunhuan": "Quận Phú Nhuận",
+      "thuduc": "TP. Thủ Đức"
+    },
+    "management": {
+      "title": "Quản lý Thiết bị IoT",
+      "subtitle": "Giám sát và quản lý tất cả các thiết bị trong hệ thống Smart City",
+      "addNew": "Thêm Thiết bị Mới",
+      "total": "Tổng Thiết bị",
+      "listTitle": "Danh sách Thiết bị",
+      "filtering": "(Đang lọc)",
+      "viewMap": "Xem trên Bản đồ",
+      "notFound": "Không tìm thấy thiết bị",
+      "adjustFilter": "Thử điều chỉnh bộ lọc để tìm thiết bị bạn cần.",
+      "noDevices": "Chưa có thiết bị nào trong hệ thống. Hãy thêm thiết bị đầu tiên.",
+      "clearFilters": "Xóa Bộ lọc",
+      "addFirst": "Thêm thiết bị đầu tiên"
+    }
+  },
+  "subscription": {
+    "title": "Quản lý cảnh báo",
+    "createAlert": "Tạo cảnh báo mới",
+    "editAlert": "Chỉnh sửa cảnh báo",
+    "alertList": "Danh sách cảnh báo",
+    "description": "Mô tả",
+    "placeholder": "Ví dụ: Cảnh báo ô nhiễm cao tại Quận 1",
+    "deleteTooltip": "Xóa cảnh báo",
+    "management": {
+      "subtitle": "Quản lý các đăng ký nhận thông báo về thay đổi chất lượng không khí và lưu lượng giao thông.",
+      "deleteConfirm": "Bạn có chắc chắn muốn xóa cảnh báo này không?",
+      "deleteError": "Không thể xóa cảnh báo",
+      "createError": "Không thể tạo cảnh báo. Vui lòng kiểm tra lại thông tin."
+    },
+    "dataType": "Loại dữ liệu theo dõi",
+    "airQuality": "Chất lượng không khí (AirQualityObserved)",
+    "trafficFlow": "Lưu lượng giao thông (TrafficFlowObserved)",
+    "watchedAttributes": "Thuộc tính theo dõi",
+    "selectAll": "Chọn tất cả",
+    "clearSelection": "Xóa lựa chọn",
+    "selectedCount": "Đã chọn {{count}} thuộc tính",
+    "monitorAll": "Theo dõi tất cả thuộc tính nếu không chọn.",
+    "queryConditions": "Điều kiện lọc (Query)",
+    "addCondition": "Thêm điều kiện",
+    "noConditions": "Không có điều kiện lọc. Nhận thông báo cho mọi thay đổi.",
+    "notificationUri": "Địa chỉ nhận thông báo (Notification URI)",
+    "notificationPlaceholder": "http://myserver.com/api/notify",
+    "create": "Tạo cảnh báo",
+    "update": "Cập nhật cảnh báo",
+    "delete": "Xóa cảnh báo",
+    "attributes": {
+      "aqi": "Chỉ số AQI",
+      "pm25": "PM2.5",
+      "pm10": "PM10",
+      "co": "CO",
+      "no2": "NO2",
+      "o3": "O3",
+      "temperature": "Nhiệt độ",
+      "humidity": "Độ ẩm",
+      "windSpeed": "Tốc độ gió",
+      "vehicleCount": "Lưu lượng xe",
+      "avgSpeed": "Tốc độ trung bình",
+      "queues": "Độ dài hàng đợi"
+    },
+    "operators": {
+      "equals": "=",
+      "notEquals": "!",
+      "greaterThan": ">",
+      "lessThan": "<",
+      "greaterThanOrEqual": ">=",
+      "lessThanOrEqual": "<="
+    },
+    "typeLabel": "Loại:",
+    "conditionLabel": "Điều kiện:",
+    "sentLabel": "Gửi:",
+    "noAlertsCreated": "Chưa có cảnh báo nào được tạo."
+  },
+  "aqi": {
+    "title": "Chỉ số AQI",
+    "good": "Tốt",
+    "moderate": "Trung bình",
+    "unhealthyForSensitive": "Kém cho nhóm nhạy cảm",
+    "unhealthy": "Kém",
+    "veryUnhealthy": "Rất kém",
+    "hazardous": "Nguy hại",
+    "descriptions": {
+      "good": "Không khí trong lành",
+      "moderate": "Chấp nhận được",
+      "unhealthyForSensitive": "Hạn chế ra ngoài",
+      "unhealthy": "Cảnh báo sức khỏe",
+      "veryUnhealthy": "Điều kiện cảnh báo sức khỏe",
+      "hazardous": "Điều kiện khẩn cấp sức khỏe"
+    },
+    "healthInsight": {
+      "status": "Trạng thái",
+      "index": "Chỉ số AQI",
+      "recommendations": "Khuyến nghị sức khỏe",
+      "windSpeed": "Tốc độ gió",
+      "windDirection": "Hướng gió",
+      "updated": "Cập nhật",
+      "levels": {
+        "safe": "An toàn",
+        "poor": "Kém",
+        "hazardous": "Nguy hại"
+      },
+      "advice": {
+        "safe": [
+          "Mở cửa sổ để thông gió",
+          "Tự do tham gia các hoạt động ngoài trời",
+          "Không khí trong lành, an toàn cho sức khỏe"
+        ],
+        "poor": [
+          "Nhóm nhạy cảm (trẻ em, người già) nên hạn chế vận động mạnh",
+          "Đóng cửa sổ nếu gió lớn",
+          "Cân nhắc đeo khẩu trang khi ra ngoài"
+        ],
+        "hazardous": [
+          "Bắt buộc đeo khẩu trang chuyên dụng (N95/PM2.5)",
+          "Đóng kín cửa sổ ngay lập tức",
+          "Bật máy lọc không khí nếu có",
+          "Hạn chế tối đa việc ra ngoài",
+          "Rửa mắt/mũi bằng nước muối sinh lý khi vào nhà"
+        ]
+      }
+    }
+  },
+  "alerts": {
+    "highPollution": "Phát hiện mức độ ô nhiễm cao",
+    "trafficAlert": "Phát hiện tắc nghẽn giao thông",
+    "systemAlert": "Cảnh báo hệ thống",
+    "deviceOffline": "Thiết bị ngoại tuyến",
+    "thresholdExceeded": "Vượt ngưỡng: {{value}}",
+    "pm25Warning": "Chỉ số PM2.5 tại {{location}} vượt ngưỡng an toàn ({{value}})",
+    "systemAdjusted": "Hệ thống đã tự động điều chỉnh đèn tín hiệu tại {{location}}",
+    "newAlert": "Cảnh báo mới",
+    "alertResolved": "Cảnh báo đã giải quyết",
+    "criticalAlert": "Cảnh báo khẩn cấp",
+    "title": "Cảnh báo",
+    "noAlerts": "Không có cảnh báo",
+    "aiIntervention": "Can thiệp AI",
+    "noIntervention": "Không có can thiệp",
+    "status": {
+      "pending": "Chờ xử lý",
+      "inProgress": "Đang thực hiện",
+      "completed": "Hoàn thành"
+    },
+    "aiTag": "AI"
+  },
+  "user": {
+    "profile": "Hồ sơ",
+    "userSettings": "Cài đặt người dùng",
+    "admin": "Quản lý chính",
+    "areaManager": "QL Khu vực",
+    "operator": "Nhân viên",
+    "guest": "Khách",
+    "role": "Vai trò",
+    "area": "Khu vực",
+    "loginRequired": "Yêu cầu đăng nhập",
+    "accessDenied": "Truy cập bị từ chối",
+    "invalidCredentials": "Thông tin đăng nhập không hợp lệ"
+  },
+  "auth": {
+    "login": {
+      "title": "Đăng nhập vào hệ thống",
+      "subtitle": "Hoặc",
+      "registerLink": "đăng ký tài khoản mới",
+      "emailLabel": "Email",
+      "emailPlaceholder": "example@email.com",
+      "passwordLabel": "Mật khẩu",
+      "passwordPlaceholder": "••••••••",
+      "loginButton": "Đăng nhập",
+      "loggingIn": "Đang đăng nhập...",
+      "demoAccounts": {
+        "title": "Tài khoản demo:",
+        "admin": "Quản lý chính: admin@olp.vn / admin123",
+        "managerThuDuc": "Quản lý khu vực: manager.thuduc@olp.vn / manager123",
+        "managerNguyenThaiSon": "Quản lý khu vực: manager.nguyenthaison@olp.vn / manager123",
+        "managerQuangTrung": "Quản lý khu vực: manager.quangtrung@olp.vn / manager123"
+      }
+    },
+    "register": {
+      "title": "Đăng ký tài khoản mới",
+      "subtitle": "Hoặc",
+      "loginLink": "đăng nhập vào tài khoản hiện có",
+      "nameLabel": "Họ tên",
+      "namePlaceholder": "Nguyễn Văn A",
+      "emailLabel": "Email",
+      "emailPlaceholder": "example@email.com",
+      "passwordLabel": "Mật khẩu",
+      "passwordPlaceholder": "••••••••",
+      "roleLabel": "Vai trò",
+      "rolePlaceholder": "Chọn vai trò",
+      "areaNameLabel": "Tên khu vực quản lý",
+      "areaNamePlaceholder": "Ngã 4 Thủ Đức",
+      "registerButton": "Đăng ký",
+      "registering": "Đang đăng ký..."
+    },
+    "unauthorized": {
+      "title": "Truy cập bị từ chối",
+      "notLoggedIn": "Bạn cần đăng nhập để truy cập trang này.",
+      "loggedInDenied": "Xin lỗi {{name}}, bạn không có quyền truy cập trang này.",
+      "accountInfo": "Thông tin tài khoản:",
+      "email": "Email: {{email}}",
+      "role": "Vai trò: {{role}}",
+      "goHome": "Về trang chủ",
+      "goToControl": "Đến trang điều khiển",
+      "goToAreaManager": "Đến trang quản lý khu vực",
+      "login": "Đăng nhập",
+      "goBack": "Quay lại"
+    },
+    "validation": {
+      "emailRequired": "Email là bắt buộc",
+      "emailInvalid": "Email không hợp lệ",
+      "passwordRequired": "Mật khẩu là bắt buộc",
+      "passwordMinLength": "Mật khẩu phải có ít nhất 6 ký tự",
+      "nameRequired": "Họ tên là bắt buộc",
+      "roleRequired": "Vai trò là bắt buộc",
+      "areaNameRequired": "Tên khu vực là bắt buộc đối với Quản lý khu vực"
+    }
+  },
+  "forms": {
+    "required": "Trường này là bắt buộc",
+    "invalidEmail": "Vui lòng nhập địa chỉ email hợp lệ",
+    "invalidUrl": "Vui lòng nhập URL hợp lệ",
+    "minLength": "Tối thiểu {{min}} ký tự",
+    "maxLength": "Tối đa {{max}} ký tự",
+    "invalidNumber": "Vui lòng nhập số hợp lệ",
+    "value": "Giá trị"
+  },
+  "maps": {
+    "loading": "Đang tải bản đồ...",
+    "error": "Không thể tải bản đồ",
+    "searchLocation": "Tìm vị trí...",
+    "currentLocation": "Vị trí hiện tại",
+    "trafficDensity": "Mật độ giao thông",
+    "airQuality": "Chất lượng không khí",
+    "sensors": "Cảm biến",
+    "cameras": "Camera",
+    "trafficLights": "Đèn tín hiệu",
+    "zoomIn": "Phóng to",
+    "zoomOut": "Thu nhỏ",
+    "fullscreen": "Toàn màn hình",
+    "resetView": "Đặt lại chế độ xem",
+    "severity": {
+      "low": "Thấp",
+      "medium": "Trung bình",
+      "high": "Cao",
+      "critical": "Nguy hại"
+    },
+    "searchPlaceholder": "Tìm kiếm địa điểm (VD: Đường Cầu Giấy)...",
+    "noResults": "Không tìm thấy kết quả cho \"{{query}}\"",
+    "pm25": "PM2.5:",
+    "aqi": "AQI:",
+    "severityLabel": "Mức độ:",
+    "userLocation": {
+      "title": "Vị trí của bạn",
+      "lat": "Vĩ độ",
+      "lng": "Kinh độ",
+      "accuracy": "Độ chính xác",
+      "speed": "Tốc độ",
+      "updated": "Cập nhật",
+      "youAreHere": "Bạn đang ở đây",
+      "locateMe": "Vị trí của tôi",
+      "following": "Đang theo dõi vị trí"
+    },
+    "trafficMarker": {
+      "clickToView": "Nhấn để xem trạng thái giao thông",
+      "name": "Tên",
+      "description": "Mô tả"
+    },
+    "header": {
+      "searchPlaceholder": "Tìm địa điểm (ví dụ: Quận 1, Nhà thờ Đức Bà...)",
+      "legendTitle": "AQI:",
+      "about": "Về chúng tôi",
+      "admin": "Trang quản trị",
+      "toggleLight": "Chuyển sang chế độ sáng",
+      "toggleDark": "Chuyển sang chế độ tối"
+    }
+  },
+  "errors": {
+    "networkError": "Lỗi mạng. Vui lòng kiểm tra kết nối của bạn.",
+    "serverError": "Lỗi máy chủ. Vui lòng thử lại sau.",
+    "notFound": "Không tìm thấy trang",
+    "unauthorized": "Truy cập không được ủy quyền",
+    "forbidden": "Truy cập bị cấm",
+    "validationError": "Lỗi xác thực",
+    "unknownError": "Đã xảy ra lỗi không xác định",
+    "retry": "Thử lại",
+    "goHome": "Về trang chủ"
+  },
+  "manualControl": {
+    "title": "Điều khiển thủ công",
+    "noDeviceSelected": {
+      "title": "Chưa chọn thiết bị",
+      "message": "Vui lòng chọn một điểm giám sát trên bản đồ để truy cập bảng điều khiển thủ công."
+    },
+    "status": {
+      "online": "Trực tuyến",
+      "offline": "Ngoại tuyến"
+    },
+    "timeConfig": "Cấu hình thời gian (giây)",
+    "greenLight": "Đèn Xanh",
+    "yellowLight": "Đèn Vàng",
+    "redLight": "Đèn Đỏ",
+    "sensorInfo": "Thông tin cảm biến",
+    "saveConfig": "Lưu cấu hình",
+    "switchNow": "Chuyển đèn ngay",
+    "messages": {
+      "configUpdated": "Đã cập nhật cấu hình cho {{name}}",
+      "commandSent": "Đã gửi lệnh chuyển đèn ngay lập tức cho {{name}}"
+    }
+  },
+  "monitoring": {
+    "realTimeMonitoring": "Giám sát Thời gian thực",
+    "updateInterval": "Cập nhật mỗi 30 giây",
+    "waitingTime": "Thời gian chờ (s)",
+    "pm25": "PM2.5 (μg/m³)",
+    "waitingTimeLabel": "Thời gian chờ",
+    "averageAbbr": "TB:",
+    "secondsAbbr": "s",
+    "microgramAbbr": "µg"
+  },
+  "charts": {
+    "rewards": {
+      "title": "Hiệu Suất AI",
+      "subtitle": "Phân bổ điểm thưởng Giao thông & Môi trường",
+      "vsAverage": "% vs TB",
+      "traffic": "Giao thông",
+      "environment": "Môi trường",
+      "trafficAvg": "Giao thông (TB)",
+      "environmentAvg": "Môi trường (TB)",
+      "totalLatest": "Tổng điểm (Mới nhất)"
+    }
+  },
+  "areaControl": {
+    "title": "Điều khiển khu vực",
+    "useGui": "Hiển thị giao diện mô phỏng (SUMO GUI)",
+    "messages": {
+      "noScenario": "Không tìm thấy kịch bản cho khu vực: {{area}}",
+      "connected": "Đã kết nối tới hệ thống điều khiển tại: {{area}}",
+      "connectFailed": "Kết nối thất bại: {{error}}",
+      "disconnected": "Đã ngắt kết nối hệ thống",
+      "disconnectFailed": "Ngắt kết nối thất bại: {{error}}",
+      "statusUpdated": "Đã cập nhật trạng thái",
+      "updateFailed": "Cập nhật thất bại: {{error}}",
+      "accessDenied": "Truy cập bị từ chối",
+      "noPermission": "Bạn không có quyền truy cập trang này",
+      "yourArea": "Khu vực của bạn",
+      "footer": "Hệ thống quản lý giao thông thông minh - Khu vực {{area}}",
+      "logs": {
+        "connectedSuccess": "Kết nối tới máy chủ thành công",
+        "connectError": "Không thể kết nối tới máy chủ: {{error}}",
+        "scenarioMismatch": "Đang chạy kịch bản {{scenario}} (Khác khu vực của bạn). Vui lòng khởi động lại đúng khu vực.",
+        "autoStart": "Đang tự động khởi động mô phỏng cho khu vực: {{area}}"
+      }
+    }
+  },
+  "sumo": {
+    "ai": {
+      "title": "Chi tiết Mô hình AI",
+      "algorithm": "Thuật toán",
+      "features": "Đặc trưng",
+      "totalActions": "Tổng hành động",
+      "actionDesc": "Số lần chuyển đèn đã thực hiện",
+      "controlled": "Đã kiểm soát",
+      "lights": "đèn",
+      "status": "Trạng thái",
+      "statusLabel": "Trạng thái AI",
+      "modelPerformance": "Hiệu suất Mô hình",
+      "dqnScore": "Điểm DQN",
+      "points": "điểm",
+      "vsBaseline": "vs Baseline",
+      "modelSize": "Kích thước mô hình",
+      "inferenceTime": "Thời gian suy luận",
+      "performanceComparison": "So sánh Hiệu suất",
+      "algorithmComparison": "So sánh Thuật toán",
+      "avgReward": "Thưởng TB",
+      "speed": "Tốc độ",
+      "waitTime": "Thời gian chờ",
+      "throughput": "Lưu lượng",
+      "lastDecision": "Quyết định cuối",
+      "model": "Mô hình AI",
+      "defaultModel": "GreenWave DQN"
+    },
+    "status": {
+      "status": "Trạng thái",
+      "connected": "Đã kết nối",
+      "disconnected": "Ngắt kết nối",
+      "scenario": "Kịch bản",
+      "notRunning": "Chưa chạy",
+      "time": "Thời gian",
+      "vehicles": "Phương tiện",
+      "error": "Lỗi"
+    },
+    "settings": {
+      "scenario": "Kịch bản Giao thông",
+      "port": "Cổng",
+      "useGui": "Sử dụng GUI",
+      "scenarios": {
+        "nga4ThuDuc": "Ngã Tư Thủ Đức (4-way)",
+        "nguyenThaiSon": "Ngã 6 Nguyễn Thái Sơn (6-way)",
+        "quangTrung": "Quang Trung (Phức hợp)"
+      }
+    },
+    "chart": {
+      "vehicleCount": "Lượng xe",
+      "avgSpeed": "Tốc độ TB",
+      "speedUnit": "Tốc độ (km/h)",
+      "time": "Thời gian:",
+      "vehicles": "xe"
+    },
+    "trafficLight": {
+      "title": "Đèn Giao thông",
+      "signal": "Tín hiệu",
+      "phase": "Pha",
+      "mainControl": "Điều khiển Chính",
+      "lights": "đèn",
+      "waiting": "Đang chờ dữ liệu đèn giao thông...",
+      "legend": {
+        "green": "Xanh",
+        "yellow": "Vàng",
+        "red": "Đỏ"
+      }
+    },
+    "algorithms": {
+      "dqn": "🥇 DQN (AI)",
+      "baseline": "🥈 Baseline",
+      "baselineFixed": "🥈 Baseline (Cố định)",
+      "random": "🥉 Ngẫu nhiên"
+    },
+    "controlPanel": {
+      "title": "Điều khiển SUMO",
+      "simulation": {
+        "title": "Bảng Điều khiển",
+        "start": "▶ Bắt đầu",
+        "pause": "⏸ Tạm dừng",
+        "reset": "🔄 Đặt lại",
+        "speed": "Tốc độ Mô phỏng:",
+        "status": "Trạng thái:",
+        "running": "🟢 Đang chạy",
+        "paused": "🟡 Tạm dừng",
+        "stopped": "⚫ Đã dừng",
+        "time": "Thời gian:",
+        "warning": {
+          "title": "⚠️ Trạng thái SUMO:",
+          "connectedNotStarted": "🟢 Đã kết nối tới {{scenario}} nhưng chưa chạy mô phỏng.",
+          "startInstruction": "Vui lòng nhấn nút \"Bắt đầu SUMO\" để chạy mô phỏng.",
+          "notConnected": "⚫ Chưa kết nối. Vui lòng kết nối SUMO trước.",
+          "connectFirst": "❌ Vui lòng kết nối SUMO trước bằng cách nhấn nút \"Bắt đầu SUMO\""
+        },
+        "log": {
+          "started": "▶ Mô phỏng bắt đầu - Đang chạy các bước SUMO",
+          "paused": "⏸ Mô phỏng tạm dừng",
+          "reset": "🔄 Đặt lại mô phỏng - SUMO đã dừng",
+          "resetFailed": "❌ Đặt lại thất bại: {{error}}",
+          "speedChanged": "Tốc độ mô phỏng thay đổi thành {{speed}}x"
+        }
+      },
+      "ai": {
+        "title": "Điều khiển AI",
+        "enable": "Bật Điều khiển AI",
+        "disable": "Tắt AI",
+        "disabledMessage": "Điều khiển AI đang tắt",
+        "startSumoMessage": "Hãy khởi động SUMO, sau đó bật điều khiển AI",
+        "log": {
+          "enabled": "🧠 Điều khiển Giao thông AI đã bật thành công!",
+          "enableFailed": "❌ Bật AI thất bại: {{error}}",
+          "disabled": "🛑 Điều khiển Giao thông AI đã tắt",
+          "disableFailed": "❌ Tắt AI thất bại: {{error}}",
+          "decision": "🚦 Quyết định AI: {{switches}} chuyển, {{holds}} giữ (t={{time}}s)"
+        }
+      },
+      "log": {
+        "started": "✅ SUMO đã khởi động thành công với kịch bản: {{scenario}}",
+        "startFailed": "❌ Khởi động SUMO thất bại: {{error}}",
+        "stopped": "🛑 SUMO đã dừng thành công",
+        "stopFailed": "❌ Dừng SUMO thất bại: {{error}}",
+        "stepExecuted": "⏭️ Bước mô phỏng thực hiện tại thời gian: {{time}}",
+        "stepFailed": "❌ Thực hiện bước thất bại: {{error}}",
+        "refreshed": "🔄 Trạng thái SUMO đã làm mới",
+        "refreshFailed": "❌ Làm mới trạng thái thất bại: {{error}}"
+      }
+    },
+    "logs": {
+      "title": "Nhật ký Hệ thống",
+      "empty": "Chưa có nhật ký. Hệ thống đã sẵn sàng.",
+      "count": "nhật ký"
+    },
+    "metrics": {
+      "title": "Chỉ số Giao thông Thời gian thực",
+      "avgSpeed": "Tốc độ TB",
+      "vehicles": "Lượng xe",
+      "active": "hoạt động",
+      "occupancy": "Mật độ",
+      "queue": "Hàng đợi",
+      "roadOccupancy": "Mật độ Đường",
+      "loaded": "Đã tải",
+      "departed": "Đã đi",
+      "arrived": "Đã đến",
+      "waitingTime": "Tổng Thời gian Chờ"
+    },
+    "flowChart": {
+      "title": "Lưu lượng Giao thông Thời gian thực",
+      "ready": "Biểu đồ Sẵn sàng",
+      "startSumo": "Khởi động SUMO, sau đó bật AI",
+      "dataPoints": "điểm dữ liệu",
+      "liveUpdating": "Cập nhật trực tiếp",
+      "legend": {
+        "vehicles": "Lượng xe",
+        "speed": "Tốc độ"
+      }
+    }
+  }
+}

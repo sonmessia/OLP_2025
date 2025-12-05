@@ -1,4 +1,6 @@
 import React from "react";
+import { useTranslation } from "react-i18next";
+import type { TFunction } from "i18next";
 import {
   Leaf,
   AlertTriangle,
@@ -16,12 +18,16 @@ interface HealthInsightPanelProps {
   isDarkMode: boolean;
 }
 
-const getAQIState = (aqi: number | undefined, isDarkMode: boolean) => {
+const getAQIState = (
+  aqi: number | undefined,
+  isDarkMode: boolean,
+  t: TFunction<"aqi">
+) => {
   const value = aqi || 0;
 
   if (value <= 50) {
     return {
-      level: "An toàn",
+      level: t("healthInsight.levels.safe"),
       icon: <Leaf className="w-8 h-8 text-green-600" />,
       color: "green",
       bgColor: isDarkMode
@@ -29,15 +35,13 @@ const getAQIState = (aqi: number | undefined, isDarkMode: boolean) => {
         : "bg-green-50 border-green-200",
       textColor: isDarkMode ? "text-green-300" : "text-green-800",
       iconColor: "text-green-600",
-      recommendations: [
-        "Mở cửa sổ để thông gió",
-        "Tự do tham gia các hoạt động ngoài trời",
-        "Không khí trong lành, an toàn cho sức khỏe",
-      ],
+      recommendations: t("healthInsight.advice.safe", {
+        returnObjects: true,
+      }) as string[],
     };
   } else if (value <= 150) {
     return {
-      level: "Kém",
+      level: t("healthInsight.levels.poor"),
       icon: <AlertTriangle className="w-8 h-8 text-yellow-600" />,
       color: "yellow",
       bgColor: isDarkMode
@@ -45,15 +49,13 @@ const getAQIState = (aqi: number | undefined, isDarkMode: boolean) => {
         : "bg-yellow-50 border-yellow-200",
       textColor: isDarkMode ? "text-yellow-300" : "text-yellow-800",
       iconColor: "text-yellow-600",
-      recommendations: [
-        "Nhóm nhạy cảm (trẻ em, người già) nên hạn chế vận động mạnh",
-        "Đóng cửa sổ nếu gió lớn",
-        "Cân nhắc đeo khẩu trang khi ra ngoài",
-      ],
+      recommendations: t("healthInsight.advice.poor", {
+        returnObjects: true,
+      }) as string[],
     };
   } else {
     return {
-      level: "Nguy hại",
+      level: t("healthInsight.levels.hazardous"),
       icon: <AlertOctagon className="w-8 h-8 text-red-600" />,
       color: "red",
       bgColor: isDarkMode
@@ -61,13 +63,9 @@ const getAQIState = (aqi: number | undefined, isDarkMode: boolean) => {
         : "bg-red-50 border-red-200",
       textColor: isDarkMode ? "text-red-300" : "text-red-800",
       iconColor: "text-red-600",
-      recommendations: [
-        "Bắt buộc đeo khẩu trang chuyên dụng (N95/PM2.5)",
-        "Đóng kín cửa sổ ngay lập tức",
-        "Bật máy lọc không khí nếu có",
-        "Hạn chế tối đa việc ra ngoài",
-        "Rửa mắt/mũi bằng nước muối sinh lý khi vào nhà",
-      ],
+      recommendations: t("healthInsight.advice.hazardous", {
+        returnObjects: true,
+      }) as string[],
     };
   }
 };
@@ -76,7 +74,8 @@ export const HealthInsightPanel: React.FC<HealthInsightPanelProps> = ({
   airQuality,
   isDarkMode,
 }) => {
-  const aqiState = getAQIState(airQuality.airQualityIndex, isDarkMode);
+  const { t } = useTranslation(["aqi", "subscription"]);
+  const aqiState = getAQIState(airQuality.airQualityIndex, isDarkMode, t);
 
   return (
     <div
@@ -96,10 +95,10 @@ export const HealthInsightPanel: React.FC<HealthInsightPanelProps> = ({
             <h3
               className={`font-bold text-base md:text-lg ${aqiState.textColor}`}
             >
-              Trạng thái: {aqiState.level}
+              {t("healthInsight.status")}: {aqiState.level}
             </h3>
             <p className={`text-xs md:text-sm opacity-80`}>
-              Chỉ số AQI: {airQuality.airQualityIndex || "N/A"}
+              {t("healthInsight.index")}: {airQuality.airQualityIndex || "N/A"}
             </p>
           </div>
         </div>
@@ -159,7 +158,7 @@ export const HealthInsightPanel: React.FC<HealthInsightPanelProps> = ({
               isDarkMode ? "text-gray-400" : "text-gray-600"
             }`}
           >
-            Nhiệt độ
+            {t("attributes.temperature", { ns: "subscription" })}
           </p>
           <p
             className={`font-semibold text-sm md:text-base ${
@@ -175,7 +174,7 @@ export const HealthInsightPanel: React.FC<HealthInsightPanelProps> = ({
               isDarkMode ? "text-gray-400" : "text-gray-600"
             }`}
           >
-            Độ ẩm
+            {t("attributes.humidity", { ns: "subscription" })}
           </p>
           <p
             className={`font-semibold text-sm md:text-base ${
@@ -195,24 +194,25 @@ export const HealthInsightPanel: React.FC<HealthInsightPanelProps> = ({
         <h4
           className={`flex items-center font-semibold text-xs md:text-sm mb-2 md:mb-3 ${aqiState.textColor}`}
         >
-          <Lightbulb className="w-3 h-3 md:w-4 md:h-4 mr-2" /> Khuyến nghị sức
-          khỏe:
+          <Lightbulb className="w-3 h-3 md:w-4 md:h-4 mr-2" />{" "}
+          {t("healthInsight.recommendations")}:
         </h4>
         <ul className="space-y-1 md:space-y-2">
-          {aqiState.recommendations.map((recommendation, index) => (
-            <li key={index} className="flex items-start space-x-2">
-              <Check
-                className={`w-3 h-3 md:w-4 md:h-4 mt-0.5 ${aqiState.iconColor}`}
-              />
-              <span
-                className={`text-xs md:text-sm ${
-                  isDarkMode ? "text-gray-300" : "text-gray-700"
-                }`}
-              >
-                {recommendation}
-              </span>
-            </li>
-          ))}
+          {Array.isArray(aqiState.recommendations) &&
+            aqiState.recommendations.map((recommendation, index) => (
+              <li key={index} className="flex items-start space-x-2">
+                <Check
+                  className={`w-3 h-3 md:w-4 md:h-4 mt-0.5 ${aqiState.iconColor}`}
+                />
+                <span
+                  className={`text-xs md:text-sm ${
+                    isDarkMode ? "text-gray-300" : "text-gray-700"
+                  }`}
+                >
+                  {recommendation}
+                </span>
+              </li>
+            ))}
         </ul>
       </div>
 
@@ -226,8 +226,8 @@ export const HealthInsightPanel: React.FC<HealthInsightPanelProps> = ({
                   isDarkMode ? "text-gray-400" : "text-gray-600"
                 }`}
               >
-                <Wind className="w-3 h-3 mr-1" /> Tốc độ gió:{" "}
-                {airQuality.windSpeed} m/s
+                <Wind className="w-3 h-3 mr-1" /> {t("healthInsight.windSpeed")}
+                : {airQuality.windSpeed} m/s
               </span>
             )}
             {airQuality.windDirection && (
@@ -236,8 +236,8 @@ export const HealthInsightPanel: React.FC<HealthInsightPanelProps> = ({
                   isDarkMode ? "text-gray-400" : "text-gray-600"
                 }`}
               >
-                <Compass className="w-3 h-3 mr-1" /> Hướng gió:{" "}
-                {airQuality.windDirection}°
+                <Compass className="w-3 h-3 mr-1" />{" "}
+                {t("healthInsight.windDirection")}: {airQuality.windDirection}°
               </span>
             )}
           </div>
@@ -248,8 +248,8 @@ export const HealthInsightPanel: React.FC<HealthInsightPanelProps> = ({
       {airQuality.dateObserved && (
         <div className="mt-3 text-xs text-center">
           <span className={isDarkMode ? "text-gray-500" : "text-gray-400"}>
-            Cập nhật:{" "}
-            {new Date(airQuality.dateObserved).toLocaleString("vi-VN")}
+            {t("healthInsight.updated")}:{" "}
+            {new Date(airQuality.dateObserved).toLocaleString()}
           </span>
         </div>
       )}
