@@ -2,6 +2,7 @@
 SUMO RL Traffic Light Control Router
 Chuyển đổi từ Flask sang FastAPI cho AI GreenWave Agent
 """
+
 import logging
 from typing import Any, Dict, List
 
@@ -38,11 +39,13 @@ def get_iot_agent():
 # --- Pydantic Models ---
 class CommandRequest(BaseModel):
     """Legacy direct command format"""
+
     data: List[Dict[str, Any]]
 
 
 class NotificationData(BaseModel):
     """NGSI-LD Notification format"""
+
     id: str
     type: str
     # Dynamic fields based on entity type
@@ -50,6 +53,7 @@ class NotificationData(BaseModel):
 
 class OrionNotification(BaseModel):
     """Full Orion notification structure"""
+
     subscriptionId: str = None
     data: List[Dict[str, Any]]
 
@@ -67,13 +71,13 @@ async def receive_ai_notification(request: Request):
     try:
         data = await request.json()
         logger.debug("[AI Agent] Received notification from Orion")
-        
+
         # Process notification and make decision
         ai_agent = get_ai_agent()
         result = ai_agent.process_notification(data)
-        
+
         return {"status": "ok", **result}
-        
+
     except Exception as e:
         logger.error(f"[AI Agent] Error processing notification: {e}")
         raise HTTPException(status_code=500, detail=str(e)) from e
@@ -86,17 +90,19 @@ async def receive_ai_command(cmd_data: CommandRequest):
     Use /ai/notify with NGSI-LD subscriptions instead.
     """
     try:
-        logger.warning("[AI Agent] Using legacy /cmd endpoint - consider migrating to /notify")
-        
+        logger.warning(
+            "[AI Agent] Using legacy /cmd endpoint - consider migrating to /notify"
+        )
+
         # Extract command from legacy format
         ai_agent = get_ai_agent()
-        command_data = cmd_data.data[0].get('forcePhase')
+        command_data = cmd_data.data[0].get("forcePhase")
         if command_data:
-            phase_index = command_data['value']
+            phase_index = command_data["value"]
             await ai_agent.send_command(phase_index)
-            
+
         return {"status": "ok"}
-        
+
     except Exception as e:
         logger.error(f"[AI Agent] Error processing command: {e}")
         raise HTTPException(status_code=500, detail=str(e)) from e
@@ -112,13 +118,13 @@ async def receive_iot_notification(request: Request):
     try:
         data = await request.json()
         logger.debug("[IoT Agent] Received notification from Orion")
-        
+
         # Apply command to SUMO simulation
         iot_agent = get_iot_agent()
         result = iot_agent.process_notification(data)
-        
+
         return {"status": "ok", **result}
-        
+
     except Exception as e:
         logger.error(f"[IoT Agent] Error processing notification: {e}")
         raise HTTPException(status_code=500, detail=str(e)) from e
@@ -131,16 +137,18 @@ async def receive_iot_command(cmd_data: CommandRequest):
     Use /iot/notify with NGSI-LD subscriptions instead.
     """
     try:
-        logger.warning("[IoT Agent] Using legacy /cmd endpoint - consider migrating to /notify")
-        
-        command_data = cmd_data.data[0].get('forcePhase')
+        logger.warning(
+            "[IoT Agent] Using legacy /cmd endpoint - consider migrating to /notify"
+        )
+
+        command_data = cmd_data.data[0].get("forcePhase")
         if command_data:
-            command_data['value']
+            command_data["value"]
             # Direct SUMO control would happen here
             # But we need SUMO connection in service
-            
+
         return {"status": "ok"}
-        
+
     except Exception as e:
         logger.error(f"[IoT Agent] Error processing command: {e}")
         raise HTTPException(status_code=500, detail=str(e)) from e
@@ -157,7 +165,7 @@ async def proxy_orion_get(path: str, request: Request):
         ai_agent = get_ai_agent()
         result = await ai_agent.proxy_orion("GET", path)
         return result
-        
+
     except Exception as e:
         logger.error(f"[Proxy] GET error: {e}")
         raise HTTPException(status_code=500, detail=str(e)) from e
@@ -173,7 +181,7 @@ async def proxy_orion_patch(path: str, request: Request):
         data = await request.json()
         result = await ai_agent.proxy_orion("PATCH", path, data)
         return result
-        
+
     except Exception as e:
         logger.error(f"[Proxy] PATCH error: {e}")
         raise HTTPException(status_code=500, detail=str(e)) from e
@@ -191,13 +199,13 @@ async def get_status():
         iot_agent = get_iot_agent()
         ai_status = ai_agent.get_status()
         iot_status = iot_agent.get_status()
-        
+
         return {
             "system": "SUMO RL Traffic Control",
             "ai_agent": ai_status,
-            "iot_agent": iot_status
+            "iot_agent": iot_status,
         }
-        
+
     except Exception as e:
         logger.error(f"[Status] Error: {e}")
         raise HTTPException(status_code=500, detail=str(e)) from e
@@ -212,7 +220,7 @@ async def get_model_info():
         ai_agent = get_ai_agent()
         info = ai_agent.model.get_info()
         return info
-        
+
     except Exception as e:
         logger.error(f"[Model Info] Error: {e}")
         raise HTTPException(status_code=500, detail=str(e)) from e

@@ -13,13 +13,25 @@ class TrafficFlowObserved(BaseModel):
     """
 
     id: Optional[Union[str, AnyUrl]] = Field(None, description="Unique identifier")
-    type: Optional[str] = Field(None, description="NGSI Entity type (TrafficFlowObserved)")
-    dateObservedFrom: Optional[AwareDatetime] = Field(None, description="Observation start time")
-    dateObservedTo: Optional[AwareDatetime] = Field(None, description="Observation end time")
-    queues: Optional[List[int]] = Field(None, description="Queue lengths per lane/direction")
-    vehicleCount: Optional[int] = Field(None, description="Total vehicles observed", ge=0)
+    type: Optional[str] = Field(
+        None, description="NGSI Entity type (TrafficFlowObserved)"
+    )
+    dateObservedFrom: Optional[AwareDatetime] = Field(
+        None, description="Observation start time"
+    )
+    dateObservedTo: Optional[AwareDatetime] = Field(
+        None, description="Observation end time"
+    )
+    queues: Optional[List[int]] = Field(
+        None, description="Queue lengths per lane/direction"
+    )
+    vehicleCount: Optional[int] = Field(
+        None, description="Total vehicles observed", ge=0
+    )
     avgSpeed: Optional[float] = Field(None, description="Average speed in m/s", ge=0.0)
-    refRoadSegment: Optional[Union[str, AnyUrl]] = Field(None, description="Reference to RoadSegment entity")
+    refRoadSegment: Optional[Union[str, AnyUrl]] = Field(
+        None, description="Reference to RoadSegment entity"
+    )
 
     model_config = {
         "json_schema_extra": {
