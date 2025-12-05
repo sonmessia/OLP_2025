@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Community Support
+    url: https://github.com/sonmessia/GreenWave/discussions
+    about: Please ask and answer questions here.
+  - name: Security Bug Bounty
+    url: https://github.com/sonmessia/GreenWave/security/advisories
+    about: Please report security vulnerabilities here.
