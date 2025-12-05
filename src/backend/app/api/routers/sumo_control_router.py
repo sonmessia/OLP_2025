@@ -7,16 +7,15 @@ Hỗ trợ 2 modes:
 
 Updated: 2025-11-30 - Added TraCI connector support
 """
+import logging
+import time
+from typing import Dict, Optional
+
 from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel
-from typing import Optional, Dict, Any
-import logging
-import subprocess
-import os
-import time
 
-from app.sumo_rl.agents.traci_connector import TraCIConnector
 from app.sumo_rl.agents.smart_traffic_controller import SmartTrafficController
+from app.sumo_rl.agents.traci_connector import TraCIConnector
 
 router = APIRouter(prefix="/sumo", tags=["SUMO Control"])
 logger = logging.getLogger(__name__)
@@ -83,8 +82,8 @@ def start_sumo_on_host(scenario: str) -> bool:
             return False
             
     except requests.exceptions.ConnectionError:
-        logger.error(f"Cannot connect to SUMO starter service at http://172.17.0.1:9999")
-        logger.error(f"Please start it on the host with: python3 /home/thaianh/OLP2025/OLP_2025/scripts/sumo_starter_service.py")
+        logger.error("Cannot connect to SUMO starter service at http://172.17.0.1:9999")
+        logger.error("Please start it on the host with: python /scripts/sumo_starter_service.py")
         return False
     except Exception as e:
         logger.error(f"Error starting SUMO: {e}")
@@ -144,7 +143,7 @@ async def connect_to_simulation(request: ConnectSimulationRequest):
         raise
     except Exception as e:
         logger.error(f"Failed to connect to SUMO: {e}")
-        raise HTTPException(status_code=500, detail=str(e))
+        raise HTTPException(status_code=500, detail=str(e)) from e
 
 
 @router.post("/start")
@@ -218,7 +217,7 @@ async def start_simulation(request: StartSimulationRequest):
         logger.error(f"Failed to start SUMO: {e}")
         import traceback
         logger.error(traceback.format_exc())
-        raise HTTPException(status_code=500, detail=str(e))
+        raise HTTPException(status_code=500, detail=str(e)) from e
 
 
 @router.post("/stop")
@@ -238,7 +237,7 @@ async def stop_simulation():
         raise
     except Exception as e:
         logger.error(f"Failed to disconnect: {e}")
-        raise HTTPException(status_code=500, detail=str(e))
+        raise HTTPException(status_code=500, detail=str(e)) from e
 
 
 @router.post("/step")
@@ -266,7 +265,7 @@ async def simulation_step():
         raise
     except Exception as e:
         logger.error(f"Failed to step simulation: {e}")
-        raise HTTPException(status_code=500, detail=str(e))
+        raise HTTPException(status_code=500, detail=str(e)) from e
 
 
 @router.get("/state")
@@ -292,7 +291,7 @@ async def get_current_state():
         raise
     except Exception as e:
         logger.error(f"Failed to get state: {e}")
-        raise HTTPException(status_code=500, detail=str(e))
+        raise HTTPException(status_code=500, detail=str(e)) from e
 
 
 @router.post("/set-phase")
@@ -329,7 +328,7 @@ async def set_traffic_light_phase(request: SetPhaseRequest):
         raise
     except Exception as e:
         logger.error(f"Failed to set phase: {e}")
-        raise HTTPException(status_code=500, detail=str(e))
+        raise HTTPException(status_code=500, detail=str(e)) from e
 
 
 @router.get("/phases")
@@ -395,7 +394,7 @@ async def get_traffic_light_phases():
         raise
     except Exception as e:
         logger.error(f"Failed to get phases: {e}")
-        raise HTTPException(status_code=500, detail=str(e))
+        raise HTTPException(status_code=500, detail=str(e)) from e
 
 
 @router.post("/set-phase-countdown")
@@ -428,7 +427,7 @@ async def set_phase_with_countdown(request: SetPhaseWithCountdownRequest):
         raise
     except Exception as e:
         logger.error(f"Failed to start countdown: {e}")
-        raise HTTPException(status_code=500, detail=str(e))
+        raise HTTPException(status_code=500, detail=str(e)) from e
 
 
 @router.post("/ai-control")
@@ -490,7 +489,7 @@ async def enable_ai_traffic_control():
         raise
     except Exception as e:
         logger.error(f"Failed to enable AI control: {e}")
-        raise HTTPException(status_code=500, detail=str(e))
+        raise HTTPException(status_code=500, detail=str(e)) from e
 
 
 @router.post("/ai-step")
@@ -568,7 +567,7 @@ async def ai_traffic_control_step():
         raise
     except Exception as e:
         logger.error(f"Failed AI control step: {e}")
-        raise HTTPException(status_code=500, detail=str(e))
+        raise HTTPException(status_code=500, detail=str(e)) from e
 
 
 @router.get("/scenarios")

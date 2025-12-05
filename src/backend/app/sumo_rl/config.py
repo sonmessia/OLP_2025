@@ -1,7 +1,6 @@
 """
 Configuration for SUMO RL System
 """
-import os
 from pydantic_settings import BaseSettings
 
 

@@ -1,10 +1,11 @@
 """
 DQN Model Architecture and Management
 """
-import os
 import logging
-import numpy as np
+import os
 from typing import Optional, Tuple
+
+import numpy as np
 
 logger = logging.getLogger(__name__)
 

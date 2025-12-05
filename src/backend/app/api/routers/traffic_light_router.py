@@ -2,10 +2,11 @@
 SUMO RL Traffic Light Control Router
 Chuyển đổi từ Flask sang FastAPI cho AI GreenWave Agent
 """
+import logging
+from typing import Any, Dict, List
+
 from fastapi import APIRouter, HTTPException, Request
 from pydantic import BaseModel
-from typing import List, Dict, Any
-import logging
 
 from app.sumo_rl.agents.ai_agent import AIGreenWaveAgent
 from app.sumo_rl.agents.iot_agent import IoTAgent
@@ -65,7 +66,7 @@ async def receive_ai_notification(request: Request):
     """
     try:
         data = await request.json()
-        logger.debug(f"[AI Agent] Received notification from Orion")
+        logger.debug("[AI Agent] Received notification from Orion")
         
         # Process notification and make decision
         ai_agent = get_ai_agent()
@@ -75,7 +76,7 @@ async def receive_ai_notification(request: Request):
         
     except Exception as e:
         logger.error(f"[AI Agent] Error processing notification: {e}")
-        raise HTTPException(status_code=500, detail=str(e))
+        raise HTTPException(status_code=500, detail=str(e)) from e
 
 
 @router.post("/ai/cmd")
@@ -98,7 +99,7 @@ async def receive_ai_command(cmd_data: CommandRequest):
         
     except Exception as e:
         logger.error(f"[AI Agent] Error processing command: {e}")
-        raise HTTPException(status_code=500, detail=str(e))
+        raise HTTPException(status_code=500, detail=str(e)) from e
 
 
 # --- IoT Agent Endpoints ---
@@ -110,7 +111,7 @@ async def receive_iot_notification(request: Request):
     """
     try:
         data = await request.json()
-        logger.debug(f"[IoT Agent] Received notification from Orion")
+        logger.debug("[IoT Agent] Received notification from Orion")
         
         # Apply command to SUMO simulation
         iot_agent = get_iot_agent()
@@ -120,7 +121,7 @@ async def receive_iot_notification(request: Request):
         
     except Exception as e:
         logger.error(f"[IoT Agent] Error processing notification: {e}")
-        raise HTTPException(status_code=500, detail=str(e))
+        raise HTTPException(status_code=500, detail=str(e)) from e
 
 
 @router.post("/iot/cmd")
@@ -134,7 +135,7 @@ async def receive_iot_command(cmd_data: CommandRequest):
         
         command_data = cmd_data.data[0].get('forcePhase')
         if command_data:
-            phase_index = command_data['value']
+            command_data['value']
             # Direct SUMO control would happen here
             # But we need SUMO connection in service
             
@@ -142,7 +143,7 @@ async def receive_iot_command(cmd_data: CommandRequest):
         
     except Exception as e:
         logger.error(f"[IoT Agent] Error processing command: {e}")
-        raise HTTPException(status_code=500, detail=str(e))
+        raise HTTPException(status_code=500, detail=str(e)) from e
 
 
 # --- Proxy Endpoints (Dashboard Support) ---
@@ -159,7 +160,7 @@ async def proxy_orion_get(path: str, request: Request):
         
     except Exception as e:
         logger.error(f"[Proxy] GET error: {e}")
-        raise HTTPException(status_code=500, detail=str(e))
+        raise HTTPException(status_code=500, detail=str(e)) from e
 
 
 @router.patch("/proxy/orion/{path:path}")
@@ -175,7 +176,7 @@ async def proxy_orion_patch(path: str, request: Request):
         
     except Exception as e:
         logger.error(f"[Proxy] PATCH error: {e}")
-        raise HTTPException(status_code=500, detail=str(e))
+        raise HTTPException(status_code=500, detail=str(e)) from e
 
 
 # --- Health & Status Endpoints ---
@@ -199,7 +200,7 @@ async def get_status():
         
     except Exception as e:
         logger.error(f"[Status] Error: {e}")
-        raise HTTPException(status_code=500, detail=str(e))
+        raise HTTPException(status_code=500, detail=str(e)) from e
 
 
 @router.get("/model-info")
@@ -214,4 +215,4 @@ async def get_model_info():
         
     except Exception as e:
         logger.error(f"[Model Info] Error: {e}")
-        raise HTTPException(status_code=500, detail=str(e))
+        raise HTTPException(status_code=500, detail=str(e)) from e

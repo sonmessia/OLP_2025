@@ -63,7 +63,7 @@ def start_sumo(scenario='Nga4ThuDuc', gui=False, port=8813):
                 found_path = result.stdout.strip().split('\n')[0]
                 if found_path:
                     sumo_binary = found_path
-        except:
+        except Exception:
             pass
             
     cmd = [
@@ -74,15 +74,15 @@ def start_sumo(scenario='Nga4ThuDuc', gui=False, port=8813):
         '--start'
     ]
     
-    print(f"🚦 Starting SUMO...")
-    print(f"   Scenario: {scenario}")
-    print(f"   Binary: {sumo_binary}")
-    print(f"   Port: {port}")
-    print(f"   Config: {config_file}")
+    print("🚦 Starting SUMO...")
+    print("   Scenario: {scenario}")
+    print("   Binary: {sumo_binary}")
+    print("   Port: {port}")
+    print("   Config: {config_file}")
     print()
-    print(f"✅ SUMO is ready for TraCI connections on port {port}")
-    print(f"💡 Backend will connect using: http://localhost:8000/sumo/start")
-    print(f"   Press Ctrl+C to stop SUMO")
+    print("✅ SUMO is ready for TraCI connections on port {port}")
+    print("💡 Backend will connect using: http://localhost:8000/sumo/start")
+    print("   Press Ctrl+C to stop SUMO")
     print()
     
     try:
@@ -100,7 +100,7 @@ def start_sumo(scenario='Nga4ThuDuc', gui=False, port=8813):
         if sumo_process.poll() is not None:
             # Process died
             _, stderr = sumo_process.communicate()
-            print(f"❌ SUMO failed to start:")
+            print("❌ SUMO failed to start:")
             if stderr:
                 print(stderr.decode())
             return False

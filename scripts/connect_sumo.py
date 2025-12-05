@@ -1,6 +1,4 @@
 import requests
-import sys
-import time
 
 def connect_sumo():
     url = "http://localhost:8000/sumo/connect"

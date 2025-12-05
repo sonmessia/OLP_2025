@@ -3,8 +3,9 @@
 
 import os
 import sys
-import numpy as np
+
 import matplotlib.pyplot as plt
+import numpy as np
 
 # --- Cấu hình SUMO ---
 _SUMO_AVAILABLE = False
@@ -112,7 +113,7 @@ def run_baseline():
     print("✅ Đã lưu biểu đồ: baseline_queue.png")
     plt.close()
     
-    print(f"\n=== KẾT QUẢ BASELINE ===")
+    print("\n=== KẾT QUẢ BASELINE ===")
     print(f"Total Steps: {len(step_history) * 100}")
     print(f"Final Cumulative Reward: {cumulative_reward:.2f}")
     print(f"Average Queue Length: {np.mean(queue_history):.2f}")

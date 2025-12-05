@@ -3,9 +3,9 @@ IoT Agent - SUMO Simulation Controller
 Receives commands from Orion → Applies to SUMO via TraCI
 """
 import logging
-from typing import Dict, Any, Optional
-import sys
 import os
+import sys
+from typing import Any, Dict
 
 logger = logging.getLogger(__name__)
 

@@ -3,12 +3,15 @@ SUMO Simulation Runner
 Tự động khởi động SUMO với GUI và kết nối TraCI
 Hỗ trợ 3 scenarios: Nga4ThuDuc, NguyenThaiSon, QuangTrung
 """
+import argparse
+import logging
 import os
 import sys
 import time
-import logging
-import argparse
 from pathlib import Path
+
+import sumolib
+import traci
 
 # Add SUMO tools to path (optional - will check later)
 _SUMO_AVAILABLE = False
@@ -16,8 +19,7 @@ try:
     if 'SUMO_HOME' in os.environ:
         tools = os.path.join(os.environ['SUMO_HOME'], 'tools')
         sys.path.append(tools)
-        import traci
-        import sumolib
+       
         _SUMO_AVAILABLE = True
     else:
         print("Please declare environment variable 'SUMO_HOME'", file=sys.stderr)

@@ -10,11 +10,14 @@ import sys
 # Force CPU only to avoid GPU/CUDA issues
 os.environ['CUDA_VISIBLE_DEVICES'] = ''
 
-import numpy as np
-import matplotlib.pyplot as plt
 import json
 from datetime import datetime
-from collections import defaultdict
+
+import matplotlib.pyplot as plt
+import numpy as np
+
+# TensorFlow imports
+from tensorflow import keras
 
 # SUMO imports
 _SUMO_AVAILABLE = False
@@ -28,9 +31,6 @@ except ImportError:
     print("Warning: SUMO/TraCI not available", file=sys.stderr)
     traci = None
 
-# TensorFlow imports
-import tensorflow as tf
-from tensorflow import keras
 
 # Configuration
 SUMO_CONFIG_BASE = [
@@ -238,8 +238,8 @@ def run_dqn_evaluation(model_path="dqn_model.keras"):
             print("  Trying h5 format...")
             model = keras.models.load_model("dqn_model.h5", compile=False)
             model.compile(loss='mse', optimizer=keras.optimizers.Adam(learning_rate=0.001))
-            print(f"✅ Model loaded from dqn_model.h5")
-        except:
+            print("✅ Model loaded from dqn_model.h5")
+        except Exception:
             return None, None
     
     metrics = TrafficMetrics()
@@ -469,7 +469,7 @@ def main():
     model_path = "dqn_model.keras" if os.path.exists("dqn_model.keras") else "dqn_model.h5"
     
     if not os.path.exists(model_path):
-        print(f"\n⚠️  Warning: No model file found!")
+        print("\n⚠️  Warning: No model file found!")
         print("Please train the model first using train_dqn_fast.py or train_dqn.py")
         
         # Run only baseline and random
@@ -491,7 +491,7 @@ def main():
         return
     
     # Compare and visualize
-    results = compare_and_visualize(
+    compare_and_visualize(
         baseline_summary, random_summary, dqn_summary,
         baseline_metrics, random_metrics, dqn_metrics
     )
@@ -510,14 +510,14 @@ def main():
     if dqn_summary['combined_score'] == best_score:
         improvement = ((baseline_summary['combined_score'] - dqn_summary['combined_score']) 
                       / baseline_summary['combined_score'] * 100)
-        print(f"✅ DQN Model is the BEST performer!")
+        print("✅ DQN Model is the BEST performer!")
         print(f"   Combined score improvement: {improvement:.2f}% vs Baseline")
         print(f"   Overall Performance: {'EXCELLENT' if improvement > 20 else 'GOOD' if improvement > 10 else 'MODERATE'}")
     else:
-        print(f"⚠️  DQN Model needs improvement")
+        print("⚠️  DQN Model needs improvement")
         if baseline_summary['combined_score'] < dqn_summary['combined_score']:
             print(f"   Baseline performs better by {((dqn_summary['combined_score'] - baseline_summary['combined_score']) / baseline_summary['combined_score'] * 100):.2f}%")
-        print(f"   Suggestions: Increase training steps, tune hyperparameters, or adjust reward function")
+        print("   Suggestions: Increase training steps, tune hyperparameters, or adjust reward function")
     
     print("\n" + "="*60)
     print("Evaluation complete! 🎉")

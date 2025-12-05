@@ -37,7 +37,7 @@ def main():
     
     # Get sumo-gui path
     sumo_gui = 'sumo-gui'
-    if not os.path.exists(f"{sumo_home}/bin/sumo-gui"):
+    if not os.path.exists("{sumo_home}/bin/sumo-gui"):
         # Try to find in PATH
         try:
             result = subprocess.run(['which', 'sumo-gui'], capture_output=True, text=True)
@@ -47,24 +47,24 @@ def main():
                 print("❌ sumo-gui not found!")
                 print("   Install SUMO or set SUMO_HOME")
                 sys.exit(1)
-        except:
+        except Exception:
             print("❌ sumo-gui not found!")
             sys.exit(1)
     else:
         sumo_gui = f"{sumo_home}/bin/sumo-gui"
     
-    print(f"SUMO Binary: {sumo_gui}")
+    print("SUMO Binary: {sumo_gui}")
     print()
     
     # Select scenario
     print("Select scenario:")
     for key, scenario in SCENARIOS.items():
-        print(f"  {key}) {scenario['name']} - {scenario['desc']}")
+        print("  {key}) {scenario['name']} - {scenario['desc']}")
     
     choice = input("\nChoice (1-3) [1]: ").strip() or '1'
     
     if choice not in SCENARIOS:
-        print(f"❌ Invalid choice: {choice}")
+        print("❌ Invalid choice: {choice}")
         sys.exit(1)
     
     scenario = SCENARIOS[choice]
@@ -75,21 +75,21 @@ def main():
     config_path = sumo_files / scenario['config']
     
     if not config_path.exists():
-        print(f"❌ Config not found: {config_path}")
+        print("❌ Config not found: {config_path}")
         sys.exit(1)
     
     # TraCI port
     port = input("\nTraCI Port [8813]: ").strip() or '8813'
     
     print()
-    print(f"✅ Starting SUMO-GUI...")
-    print(f"   Scenario: {scenario['name']}")
-    print(f"   Config: {config_path}")
-    print(f"   TraCI Port: {port}")
+    print("✅ Starting SUMO-GUI...")
+    print("   Scenario: {scenario['name']}")
+    print("   Config: {config_path}")
+    print("   TraCI Port: {port}")
     print()
     print("📡 After SUMO opens, connect from dashboard:")
-    print(f"   POST http://localhost:8000/sumo/connect")
-    print(f"   {{'scenario': '{scenario['name']}', 'port': {port}}}")
+    print("   POST http://localhost:8000/sumo/connect")
+    print("   {{'scenario': '{scenario['name']}', 'port': {port}}}")
     print()
     print("Press Ctrl+C to stop SUMO")
     print("-" * 50)
@@ -109,7 +109,7 @@ def main():
     except KeyboardInterrupt:
         print("\n\n✅ SUMO stopped")
     except Exception as e:
-        print(f"\n❌ Error: {e}")
+        print("\n❌ Error: ", e)
         sys.exit(1)
 
 if __name__ == '__main__':

@@ -2,12 +2,14 @@
 AI GreenWave Agent - Decision Making Component
 Chuyển đổi từ Flask sang FastAPI Service
 """
+import asyncio
 import logging
-from typing import Dict, Any, Optional
+from typing import Any, Dict, Optional
+
 import httpx
 
-from app.sumo_rl.models.dqn_model import DQNModel
 from app.sumo_rl.config import config
+from app.sumo_rl.models.dqn_model import DQNModel
 
 logger = logging.getLogger(__name__)
 
@@ -172,5 +174,4 @@ class AIGreenWaveAgent:
         }
 
 
-# Import asyncio at module level
-import asyncio
+

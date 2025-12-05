@@ -4,7 +4,7 @@ Không cần SUMO_HOME, chỉ cần SUMO đang chạy với --remote-port
 """
 import logging
 import os
-from typing import Optional, Dict, Any
+from typing import Any, Dict, Optional
 
 logger = logging.getLogger(__name__)
 
@@ -220,7 +220,7 @@ class TraCIConnector:
             # Test connection by getting simulation time
             traci.simulation.getTime()
             return True
-        except:
+        except Exception:
             self.connected = False
             return False
     
@@ -406,7 +406,7 @@ class TraCIConnector:
             needs_yellow = False
             if current_state and target_state:
                 # Check each signal position
-                for i, (curr, target) in enumerate(zip(current_state, target_state)):
+                for i, (curr, target) in enumerate(zip(current_state, target_state, strict=False)):
                     # If changing from green to red directly = DANGEROUS
                     if curr in ['G', 'g'] and target in ['r', 'R']:
                         needs_yellow = True
@@ -462,7 +462,7 @@ class TraCIConnector:
             try:
                 traci.close()
                 logger.info("TraCI connection closed")
-            except:
+            except Exception:
                 pass
             
             self.connected = False

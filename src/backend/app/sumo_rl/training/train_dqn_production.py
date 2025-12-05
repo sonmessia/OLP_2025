@@ -5,16 +5,16 @@ Optimized hyperparameters for best performance
 """
 
 import os
-import sys
 import random
-import numpy as np
+import sys
 from collections import deque
 from datetime import datetime
+
+import numpy as np
 
 # Force CPU only for stability
 os.environ['CUDA_VISIBLE_DEVICES'] = ''
 
-import tensorflow as tf
 from tensorflow import keras
 from tensorflow.keras import layers
 
@@ -196,7 +196,7 @@ def main_loop():
     target_dqn_model = build_model(STATE_SIZE, ACTION_SIZE)
     target_dqn_model.set_weights(main_dqn_model.get_weights())
     
-    print(f"Model architecture:")
+    print("Model architecture:")
     main_dqn_model.summary()
     
     replay_buffer = ReplayBuffer(REPLAY_BUFFER_SIZE)
@@ -294,7 +294,7 @@ def main_loop():
     main_dqn_model.save_weights(f"dqn_weights_prod_{timestamp}.weights.h5")
     
     print(f"   ✅ Model saved: dqn_model_prod_{timestamp}.keras")
-    print(f"   ✅ Latest link: dqn_model.keras")
+    print("   ✅ Latest link: dqn_model.keras")
     print(f"   ✅ Weights: dqn_weights_prod_{timestamp}.weights.h5")
     
     # Save training stats

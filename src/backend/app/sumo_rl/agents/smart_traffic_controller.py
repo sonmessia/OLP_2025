@@ -6,7 +6,7 @@ Thuật toán điều hướng giao thông ĐÚNG:
 - Đảm bảo không xung đột (không cho tất cả đèn xanh cùng lúc!)
 """
 import logging
-from typing import Dict, List, Optional, Tuple
+from typing import Dict
 
 logger = logging.getLogger(__name__)
 
