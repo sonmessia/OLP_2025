@@ -220,7 +220,7 @@ Want to report a bug, contribute some code, or improve the documentation? Excell
 
 <p align="justify">
 
-Help us keep Law Knowledge open and inclusive. Please read and follow our [Code of Conduct](.github/CODE_OF_CONDUCT.md).
+Help us keep GreenWave open and inclusive. Please read and follow our [Code of Conduct](.github/CODE_OF_CONDUCT.md).
 
 </p>
 
