@@ -228,13 +228,15 @@ Help us keep Law Knowledge open and inclusive. Please read and follow our [Code 
 
 <p align="center">
 	<a href="https://hutech.edu.vn/" target="_blank">
-		<img loading="lazy" src="./assets/images/hutech.png" height="60px" alt="Hutech">
+		<img loading="lazy" src="https://file1.hutech.edu.vn/file/editor/homepage/stories/hinh34/logo%20CMYK-01.png" height="80px" alt="HUTECH University">
 	</a>
+	&nbsp;&nbsp;&nbsp;
 	<a href="https://vfossa.vn/" target="_blank">
-		<img loading="lazy" src="./assets/images/vfossa.png" height="60px" alt="Hutech">
+		<img loading="lazy" src="https://vfossa.vn/uploads/about/logo-6b-new.png" height="80px" alt="VFOSSA">
 	</a>
-	<a href="https://olp.husc.edu.vn/" target="_blank">
-		<img loading="lazy" src="./assets/images/icpc.jpg" height="60px" alt="ICPC">
+	&nbsp;&nbsp;&nbsp;
+	<a href="https://www.olp.vn/" target="_blank">
+		<img loading="lazy" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRePWbAslFDMVxeJCgHI6f_LSIuNOrlrEsEhA&s" height="80px" alt="Vietnam OLP">
 	</a>
 </p>
 
