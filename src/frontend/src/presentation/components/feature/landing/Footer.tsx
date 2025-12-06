@@ -19,15 +19,24 @@ export const Footer: React.FC = () => {
           </div>
 
           <div className="flex gap-6">
-            <button className="text-text-muted-dark hover:text-greenwave-primary-light transition-colors">
+            <a
+              href="https://github.com/sonmessia/GreenWave.git"
+              className="text-text-muted-dark hover:text-greenwave-primary-light transition-colors"
+            >
               {t("footer.sourceCode")}
-            </button>
-            <button className="text-text-muted-dark hover:text-greenwave-primary-light transition-colors">
+            </a>
+            <a
+              href=""
+              className="text-text-muted-dark hover:text-greenwave-primary-light transition-colors"
+            >
               {t("footer.dataModels")}
-            </button>
-            <button className="text-text-muted-dark hover:text-greenwave-primary-light transition-colors">
+            </a>
+            <a
+              href=""
+              className="text-text-muted-dark hover:text-greenwave-primary-light transition-colors"
+            >
               {t("footer.contact")}
-            </button>
+            </a>
           </div>
         </div>
       </div>

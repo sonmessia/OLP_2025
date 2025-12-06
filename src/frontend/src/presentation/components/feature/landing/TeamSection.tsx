@@ -1,5 +1,5 @@
 import React from "react";
-import thaiAnhAI from "../../../../assets/team/thaianh.jpg";
+import thaiAnhAI from "../../../../assets/team/thaianh.png";
 import sonCloud from "../../../../assets/team/son.jpg";
 import huynhMinhTri from "../../../../assets/team/tri.jpg";
 import { useTranslation } from "react-i18next";
