@@ -61,6 +61,45 @@
 }
 
 /* =========================================
+   Global Section Utilities
+   ========================================= */
+
+/* Consistent section spacing */
+section {
+  scroll-margin-top: 4rem;
+}
+
+/* Section titles */
+section h2 {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 2rem;
+  color: var(--ifm-heading-color);
+}
+
+@media screen and (min-width: 997px) {
+  section h2 {
+    font-size: 2.5rem;
+  }
+}
+
+/* Smooth transitions for interactive elements */
+a,
+button,
+.card,
+[class*="feature"] {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Focus styles for accessibility */
+a:focus-visible,
+button:focus-visible {
+  outline: 2px solid var(--ifm-color-primary);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* =========================================
    Custom Admonitions (Premium Look)
    ========================================= */
 

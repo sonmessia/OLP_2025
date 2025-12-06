@@ -123,7 +123,7 @@ const config: Config = {
         alt: "Hutech Logo",
         src: "/img/hutech_logo.png",
         href: "https://www.hutech.edu.vn/",
-        height: 50,
+        height: 75,
       },
       copyright: `Copyright © ${new Date().getFullYear()} GreenWave, Inc. All rights reserved`,
     },

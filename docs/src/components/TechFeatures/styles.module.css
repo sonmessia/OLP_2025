@@ -1,0 +1,191 @@
+/**
+ * Copyright (c) 2025 Green Wave Team
+ * 
+ * This software is released under the MIT License.
+ * https://opensource.org/licenses/MIT
+ */
+
+.techSection {
+  padding: 4rem 0;
+  overflow: hidden;
+  background: linear-gradient(
+    180deg,
+    transparent 0%,
+    rgba(16, 185, 129, 0.03) 50%,
+    transparent 100%
+  );
+}
+
+.marqueeContainer {
+  width: 100%;
+  overflow: hidden;
+  position: relative;
+  padding: 2rem 0;
+  mask-image: linear-gradient(
+    to right,
+    transparent 0%,
+    black 10%,
+    black 90%,
+    transparent 100%
+  );
+  -webkit-mask-image: linear-gradient(
+    to right,
+    transparent 0%,
+    black 10%,
+    black 90%,
+    transparent 100%
+  );
+}
+
+.marquee {
+  display: flex;
+  width: fit-content;
+  will-change: transform;
+}
+
+.marqueeContent {
+  display: flex;
+  gap: 4rem;
+  padding: 0 2rem;
+  animation: scroll 40s linear infinite;
+  flex-shrink: 0;
+  will-change: transform;
+}
+
+@keyframes scroll {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(calc(-100% - 4rem));
+  }
+}
+
+/* Pause animation on hover */
+.marquee:hover .marqueeContent {
+  animation-play-state: paused;
+}
+
+.techItem {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  min-width: 140px;
+  padding: 1.5rem;
+  border-radius: 12px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  background: transparent;
+  border: 2px solid transparent;
+  cursor: pointer;
+}
+
+.techItem:hover {
+  transform: translateY(-8px) scale(1.05);
+  box-shadow: 0 12px 24px rgba(16, 185, 129, 0.15),
+    0 0 20px rgba(5, 150, 105, 0.1);
+  border-color: rgba(16, 185, 129, 0.3);
+  background: rgba(16, 185, 129, 0.05);
+}
+
+.techLogo {
+  width: 80px;
+  height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.techLogo img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  filter: grayscale(0%);
+  transition: all 0.3s ease;
+}
+
+.techItem:hover .techLogo img {
+  filter: grayscale(0%) brightness(1.1);
+  transform: scale(1.1);
+}
+
+.techIcon {
+  width: 64px;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--ifm-color-primary);
+  transition: all 0.3s ease;
+}
+
+.techItem:hover .techIcon {
+  color: var(--ifm-color-primary-light);
+  transform: scale(1.1) rotate(5deg);
+}
+
+.techName {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--ifm-font-color-base);
+  text-align: center;
+  letter-spacing: 0.5px;
+  transition: color 0.3s ease;
+}
+
+.techItem:hover .techName {
+  color: var(--ifm-color-primary);
+}
+
+/* Dark mode adjustments */
+[data-theme="dark"] .techSection {
+  background: linear-gradient(
+    180deg,
+    transparent 0%,
+    rgba(76, 175, 80, 0.05) 50%,
+    transparent 100%
+  );
+}
+
+[data-theme="dark"] .techItem:hover {
+  box-shadow: 0 12px 24px rgba(76, 175, 80, 0.2),
+    0 0 20px rgba(102, 187, 106, 0.15);
+  border-color: rgba(76, 175, 80, 0.4);
+  background: rgba(76, 175, 80, 0.08);
+}
+
+[data-theme="dark"] .techLogo img {
+  filter: brightness(0.9);
+}
+
+[data-theme="dark"] .techItem:hover .techLogo img {
+  filter: brightness(1.1);
+}
+
+/* Responsive */
+@media screen and (max-width: 768px) {
+  .marqueeContent {
+    gap: 2rem;
+    animation: scroll 30s linear infinite;
+  }
+
+  .techItem {
+    min-width: 100px;
+    padding: 1rem;
+  }
+
+  .techLogo {
+    width: 60px;
+    height: 60px;
+  }
+
+  .techIcon {
+    width: 48px;
+    height: 48px;
+  }
+
+  .techName {
+    font-size: 0.85rem;
+  }
+}
