@@ -49,8 +49,6 @@ export interface WaterQualityDTO {
 export type SensorDTO = AirQualityDTO | WaterQualityDTO;
 
 class SensorApiClient {
-  private baseUrl: string = "/api"; // Replace with actual API URL
-
   async fetchAllSensors(): Promise<SensorDTO[]> {
     // Simulated API call - Replace with real fetch/axios
     return new Promise((resolve, reject) => {
@@ -67,7 +65,7 @@ class SensorApiClient {
   }
 
   async fetchSensorById(id: string): Promise<SensorDTO | null> {
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve) => {
       setTimeout(() => {
         const allSensors = this.getMockData();
         const sensor = allSensors.find((s) => s.id === id);

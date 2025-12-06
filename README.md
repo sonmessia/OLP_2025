@@ -5,8 +5,8 @@
  https://opensource.org/licenses/MIT
 -->
 
-<div align="left">
-<img src="./docs-site/static/img/logo.png" alt="GreenWave-Logo" style="height: 100px ; border-radius: 50%;">
+<div align="center">
+<img src="./assets/docusaurus/logo.png" alt="GreenWave-Logo" style="height: 200px ; border-radius: 50%;">
 
 # GreenWave - Smart Traffic Management System
 
@@ -44,7 +44,7 @@
 
 <div align="center">
 
-![Architecture](./docs-site/docs/System_Architecture.png)
+![Architecture](./assets/architecture/System_Architecture.png)
 
 </div>
 

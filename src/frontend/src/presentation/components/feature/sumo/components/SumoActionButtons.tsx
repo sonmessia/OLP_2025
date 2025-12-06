@@ -46,7 +46,6 @@ export const SumoActionButtons: React.FC<SumoActionButtonsProps> = ({
                      hover:shadow-lg hover:scale-105 disabled:hover:scale-100"
         >
           <Play className="w-4 h-4" />
-          <Play className="w-4 h-4" />
           {isLoading ? t("traffic:connecting") : t("common:start")}
         </button>
 
@@ -70,7 +69,6 @@ export const SumoActionButtons: React.FC<SumoActionButtonsProps> = ({
           className="flex items-center justify-center gap-1 px-3 py-2 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg
                      transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed text-sm"
         >
-          <SkipForward className="w-4 h-4" />
           <SkipForward className="w-4 h-4" />
           {t("traffic:stepForward")}
         </button>

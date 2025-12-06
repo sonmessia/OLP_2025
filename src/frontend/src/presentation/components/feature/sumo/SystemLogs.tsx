@@ -90,7 +90,9 @@ export const SystemLogs: React.FC<SystemLogsProps> = ({
         {displayLogs.length} / {maxLogs} {t("logs.count")}
       </div>
 
-      <style jsx>{`
+      <style
+        dangerouslySetInnerHTML={{
+          __html: `
         .custom-scrollbar::-webkit-scrollbar {
           width: 6px;
         }
@@ -105,7 +107,9 @@ export const SystemLogs: React.FC<SystemLogsProps> = ({
         .custom-scrollbar::-webkit-scrollbar-thumb:hover {
           background: rgba(255, 255, 255, 0.5);
         }
-      `}</style>
+      `,
+        }}
+      />
     </div>
   );
 };

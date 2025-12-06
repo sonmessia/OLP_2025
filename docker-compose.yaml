@@ -45,15 +45,7 @@ services:
     restart: unless-stopped
     volumes:
       - ./src/backend:/app
-    command:
-      [
-        "uvicorn",
-        "app.main:app",
-        "--host",
-        "0.0.0.0",
-        "--port",
-        "8000",
-      ]
+    command: ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
 
   orion-ld:
     image: fiware/orion-ld
@@ -107,6 +99,30 @@ services:
       timeout: 10s
       retries: 5
 
+  # Frontend Application
+  frontend:
+    build: ./src/frontend
+    container_name: frontend
+    hostname: frontend
+    networks:
+      - fiware_default
+    ports:
+      - "5173:80"
+    restart: unless-stopped
+    depends_on:
+      - backend
+
+  # Documentation Site
+  docs:
+    build: ./docs
+    container_name: docs
+    hostname: docs
+    networks:
+      - fiware_default
+    ports:
+      - "3000:80"
+    restart: unless-stopped
+
   # SUMO Simulation with GUI (choose scenario via environment variable)
   sumo-simulation:
     build:
@@ -119,7 +135,7 @@ services:
     environment:
       DISPLAY: ${DISPLAY}
       SUMO_HOME: /usr/share/sumo
-      SCENARIO: ${SUMO_SCENARIO:-Nga4ThuDuc}  # Default: Nga4ThuDuc, options: NguyenThaiSon, QuangTrung
+      SCENARIO: ${SUMO_SCENARIO:-Nga4ThuDuc} # Default: Nga4ThuDuc, options: NguyenThaiSon, QuangTrung
       ORION_URL: http://orion:1026
       BACKEND_URL: http://backend:8000
     volumes:

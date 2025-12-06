@@ -28,6 +28,7 @@ export const ManagerDashboard: React.FC = () => {
     "monitoring",
     "traffic",
     "devices",
+    "common",
   ]);
 
   // Initialize dark mode from localStorage or system preference
@@ -46,7 +47,7 @@ export const ManagerDashboard: React.FC = () => {
 
   // Mock data generator (moved inside component to access t)
   const generateMockData = (
-    translate: TFunction<["dashboard", "devices"]>
+    translate: TFunction<["dashboard", "devices", "common"]>
   ): DashboardStateModel => {
     const now = new Date();
     const timePoints = Array.from({ length: 20 }, (_, i) => {
@@ -114,7 +115,8 @@ export const ManagerDashboard: React.FC = () => {
     const pollutionHotspots: PollutionHotspot[] = TRAFFIC_LOCATIONS.map(
       (loc) => ({
         id: loc.id,
-        name: loc.name,
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        name: translate(loc.nameKey as any),
         latitude: loc.coordinates[0],
         longitude: loc.coordinates[1],
         pm25: 30 + Math.random() * 30, // Random initial value

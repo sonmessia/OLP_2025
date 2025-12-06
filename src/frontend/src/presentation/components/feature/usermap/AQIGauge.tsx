@@ -1,5 +1,6 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
+import { type TFunction } from "i18next";
 import {
   Chart as ChartJS,
   ArcElement,
@@ -19,7 +20,7 @@ interface AQIGaugeProps {
   size?: number; // Default size for the gauge
 }
 
-const getAQIState = (value: number, t: (key: string) => string) => {
+const getAQIState = (value: number, t: TFunction<"aqi">) => {
   if (value <= 50) {
     return {
       color: "#10B981", // Green-500

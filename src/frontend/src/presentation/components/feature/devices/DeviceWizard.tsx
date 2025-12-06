@@ -548,6 +548,7 @@ export const DeviceWizard: React.FC<DeviceWizardProps> = ({
                             setDeviceData({
                               ...deviceData,
                               httpConfig: {
+                                ipAddress: "", // Default ipAddress if missing
                                 ...deviceData.httpConfig,
                                 rtspUrl: e.target.value,
                               },

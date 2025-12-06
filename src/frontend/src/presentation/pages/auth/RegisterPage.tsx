@@ -10,7 +10,7 @@ import type { RootState } from "../../../data/redux/store";
 import { type RegisterData, UserRole } from "../../../domain/models/AuthModels";
 
 const RegisterPage: React.FC = () => {
-  const { t } = useTranslation("auth");
+  const { t } = useTranslation(["auth", "common"]);
 
   const [formData, setFormData] = useState<RegisterData>({
     email: "",
@@ -260,8 +260,12 @@ const RegisterPage: React.FC = () => {
                 }`}
               >
                 <option value="">{t("register.rolePlaceholder")}</option>
-                <option value={UserRole.ADMIN}>{t("user.admin")}</option>
-                <option value={UserRole.AREA_MANAGER}>{t("user.areaManager")}</option>
+                <option value={UserRole.ADMIN}>
+                  {t("common:user.admin" as any)}
+                </option>
+                <option value={UserRole.AREA_MANAGER}>
+                  {t("common:user.areaManager" as any)}
+                </option>
               </select>
               {errors.role && (
                 <p className="mt-1 text-sm text-red-600">{errors.role}</p>

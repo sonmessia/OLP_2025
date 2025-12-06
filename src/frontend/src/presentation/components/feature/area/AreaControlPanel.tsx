@@ -29,7 +29,9 @@ export const AreaControlPanel: React.FC<AreaControlPanelProps> = ({
     useAppSelector((state) => state.sumo);
 
   // Find scenario ID based on areaName
-  const scenario = TRAFFIC_LOCATIONS.find((loc) => loc.name === areaName)?.id;
+  const scenario = TRAFFIC_LOCATIONS.find(
+    (loc) => loc.nameKey === areaName
+  )?.id;
 
   const [useGUI, setUseGUI] = useState(false);
   const [port] = useState(8813);

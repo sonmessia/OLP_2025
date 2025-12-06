@@ -10,7 +10,7 @@ This document outlines the high-level architecture of the GreenWave system, a sm
 
 ## Architecture Diagram
 
-![System Architecture](../../assets/architecture/System_Architecture.png)
+![System Architecture](./assets/System_Architecture.png)
 
 ## Component Layers
 

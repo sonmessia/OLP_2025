@@ -298,7 +298,7 @@ export const UserMapView: React.FC<UserMapViewProps> = ({
   onTrafficSelect,
   searchQuery,
 }) => {
-  const { t } = useTranslation(["maps", "common"]);
+  const { t } = useTranslation(["maps", "common", "locations"]);
   const tileUrl = isDarkMode
     ? "https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png"
     : "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png";
@@ -381,8 +381,18 @@ export const UserMapView: React.FC<UserMapViewProps> = ({
           >
             <Popup>
               <div className="p-2">
-                <h3 className="font-bold text-lg">{loc.name}</h3>
-                <p className="text-sm text-gray-600">{loc.description}</p>
+                <h3 className="font-bold text-lg">
+                  {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
+                  {t(loc.nameKey.replace(/^locations\./, "") as any, {
+                    ns: "locations",
+                  })}
+                </h3>
+                <p className="text-sm text-gray-600">
+                  {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
+                  {t(loc.descriptionKey.replace(/^locations\./, "") as any, {
+                    ns: "locations",
+                  })}
+                </p>
                 <p className="text-xs text-blue-500 mt-1 font-semibold">
                   {t("trafficMarker.clickToView")}
                 </p>

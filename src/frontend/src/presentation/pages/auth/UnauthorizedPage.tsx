@@ -5,7 +5,7 @@ import { useTranslation } from "react-i18next";
 import type { RootState } from "../../../data/redux/store";
 
 const UnauthorizedPage: React.FC = () => {
-  const { t } = useTranslation("auth");
+  const { t } = useTranslation(["auth", "common"]);
   const { user } = useSelector((state: RootState) => state.auth);
   const navigate = useNavigate();
 
@@ -54,7 +54,10 @@ const UnauthorizedPage: React.FC = () => {
             </p>
             <p className="text-sm text-gray-600">
               {t("unauthorized.role", {
-                role: user.role === "admin" ? t("user.admin") : t("user.areaManager")
+                role:
+                  user.role === "admin"
+                    ? t("common:user.admin" as any)
+                    : t("common:user.areaManager" as any),
               })}
               {user.areaName && ` (${user.areaName})`}
             </p>

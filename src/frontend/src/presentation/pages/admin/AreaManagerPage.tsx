@@ -25,7 +25,7 @@ import { TRAFFIC_LOCATIONS } from "../../../utils/trafficLocations";
 const AREA_COORDINATES: Record<string, { lat: number; lng: number }> =
   TRAFFIC_LOCATIONS.reduce(
     (acc, loc) => {
-      acc[loc.name] = { lat: loc.coordinates[0], lng: loc.coordinates[1] };
+      acc[loc.id] = { lat: loc.coordinates[0], lng: loc.coordinates[1] };
       return acc;
     },
     {
@@ -107,7 +107,7 @@ const AreaManagerPage: React.FC = () => {
   useEffect(() => {
     // Check if the running scenario matches the user's area
     const userScenarioId = TRAFFIC_LOCATIONS.find(
-      (loc) => loc.name === user?.areaName
+      (loc) => loc.id === user?.areaName
     )?.id;
 
     if (status.connected && isSimulationRunning) {
@@ -199,9 +199,8 @@ const AreaManagerPage: React.FC = () => {
               />
             </div>
 
-            {/* Area Control Panel */}
             <AreaControlPanel
-              areaName={user.areaName || t("user:area")}
+              areaName={user.areaName || t("user:area" as any)}
               onLog={addLog}
             />
           </div>

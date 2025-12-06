@@ -13,8 +13,7 @@ type FeatureItem = {
 const FeatureList: FeatureItem[] = [
   {
     title: "Open Source",
-    Svg: require("../../../../assets/docusaurus/Open_Source_Initiative.svg")
-      .default,
+    Svg: require("@site/static/img/Open_Source_Initiative.svg").default,
     description: (
       <>
         Built on open source standards, ensuring transparency, collaboration,
@@ -24,7 +23,7 @@ const FeatureList: FeatureItem[] = [
   },
   {
     title: "NGSI-LD Standard",
-    Image: require("../../../../assets/docusaurus/ngsi-ld.png").default,
+    Image: require("@site/static/img/ngsi-ld.png").default,
     description: (
       <>
         Utilizes the NGSI-LD data standard for open data, enabling
@@ -35,7 +34,7 @@ const FeatureList: FeatureItem[] = [
   },
   {
     title: "Intelligent Traffic System",
-    Image: require("../../../../assets/docusaurus/its.jpg").default,
+    Image: require("@site/static/img/its.jpg").default,
     description: (
       <>
         Intelligent traffic management system applying AI to analyze, forecast,
