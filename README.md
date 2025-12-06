@@ -190,33 +190,58 @@ Once services are running, access them at:
 
 <div align="center">
 
-### **[Read Full Documentation](http://localhost:3000)**
+### **[Read Full Documentation](https://sonmessia.github.io/GreenWave)**
 
 Explore detailed tutorials, API references, architecture guides, and more!
 
 </div>
 
-## 🤝 Contribution
+# Contributing
 
-Thanks to all [contributors](http://localhost:3000/docs/category/contributing), your help is greatly appreciated!
+## 📖 Contributing Guidelines
 
-Contributions are welcome! Please read the [contribution guidelines](http://localhost:3000/docs/contributing/contribution-guidelines) and [code of conduct](http://localhost:3000/docs/contributing/code-of-conduct) to learn how to participate.
+<p align="justify">
 
-## 🌟 Support
+We are excited that you are interested in contributing to this project! Before submitting your contribution, please make sure to take a moment and read through the following guidelines:
 
-- If you like this project, please give it a ⭐ star.
-- If you have any issues or feature requests, please create an issue.
+Read through our [contributing guidelines](.github/CONTRIBUTING.md) to learn about our submission process, coding rules, and more.
 
-## License
+</p>
 
-This project is licensed under the **MIT License** - see the [LICENSE](LICENSE) file for details.
+## 💁 Want to Help?
 
----
+<p align="justify">
 
-<div align="center">
+Want to report a bug, contribute some code, or improve the documentation? Excellent! Read up on our guidelines for [contributing](.github/CONTRIBUTING.md) and then check out one of our issues labeled as <kbd>[help wanted](https://github.com/sonmessia/GreenWave/labels/help%20wanted)</kbd> or <kbd>[good first issue](https://github.com/sonmessia/GreenWave/labels/good%20first%20issue)</kbd>.
 
-**Made by GreenWave Team**
+</p>
 
-_Building smarter, cleaner cities through AI and IoT_
+## 🫂 Code of Conduct
 
-</div>
+<p align="justify">
+
+Help us keep Law Knowledge open and inclusive. Please read and follow our [Code of Conduct](.github/CODE_OF_CONDUCT.md).
+
+</p>
+
+# Support and Organization
+
+<p align="center">
+	<a href="https://hutech.edu.vn/" target="_blank">
+		<img loading="lazy" src="./assets/images/hutech.png" height="60px" alt="Hutech">
+	</a>
+	<a href="https://vfossa.vn/" target="_blank">
+		<img loading="lazy" src="./assets/images/vfossa.png" height="60px" alt="Hutech">
+	</a>
+	<a href="https://olp.husc.edu.vn/" target="_blank">
+		<img loading="lazy" src="./assets/images/icpc.jpg" height="60px" alt="ICPC">
+	</a>
+</p>
+
+# License
+
+<p align="justify">
+
+This project is licensed under the terms of the [MIT](LICENSE) license.
+
+</p>
