@@ -111,17 +111,73 @@
       "trafficOptimization": "Traffic Optimization",
       "alertSystem": "Smart Alert System"
     },
+    "keyFeaturesSection": {
+      "title": "Key Features",
+      "digitalTwin": {
+        "title": "Digital Twin",
+        "description": "Integrates real-time traffic information to create a precise digital twin of the city."
+      },
+      "globalStandard": {
+        "title": "Global Standard",
+        "description": "Fully compliant with NGSI-LD, FIWARE Data Models & SOSA/SSN, ensuring global compatibility."
+      },
+      "dynamicResponse": {
+        "title": "Dynamic Response",
+        "description": "Automatically detects and responds when PM2.5 exceeds safe thresholds, changing alert colors instantly."
+      }
+    },
+    "pipeline": {
+      "steps": {
+        "sumo": { "title": "SUMO", "desc": "3D Traffic Simulation" },
+        "iotAgent": { "title": "IoT Agent", "desc": "Raw Data → JSON-LD" },
+        "orion": { "title": "Orion-LD", "desc": "Context Broker" },
+        "aiAgent": { "title": "AI Agent", "desc": "MORL Processing" },
+        "dashboard": { "title": "Dashboard", "desc": "User Interface" }
+      },
+      "flowActive": "Real-time NGSI-LD Data Flow Active"
+    },
     "problem": {
       "title": "The Challenge",
-      "description": "Urban traffic congestion and air pollution are major challenges in modern cities."
+      "description": "Urban traffic congestion and air pollution are major challenges in modern cities.",
+      "blindOptimization": "Blind Optimization",
+      "blindOptimizationSub": "(Optimization Blindness)",
+      "statusDescription": "Current traffic lights cause 'Pollution Hotspots' by forcing vehicles to stop/start frequently. Speed-optimized systems are creating 'pollution oases' that silently kill community health.",
+      "speedOrientedStatus": "Status of Speed-Oriented Optimization",
+      "vehicleSpeed": "Traffic Speed",
+      "high": "High",
+      "lungHealth": "Lung Health",
+      "critical": "Critical",
+      "pm25Warning": "⚠️ PM2.5 exceeds safe threshold by 300% in school areas"
     },
     "solution": {
       "title": "Our Solution",
-      "description": "AI-powered traffic coordination system that optimizes flow while reducing emissions."
+      "description": "AI-powered traffic coordination system that optimizes flow while reducing emissions.",
+      "tradeOffTitle": "Trade-off for a Better Life",
+      "tradeOffSubtitle": "Trading off for a better life with Multi-Objective Reinforcement Learning (MORL)",
+      "trafficSpeed": "Traffic Speed",
+      "airQuality": "Air Quality",
+      "weightSpeed": "Weight w₁ (Speed)",
+      "weightAir": "Weight w₂ (Air)",
+      "sliderInstruction": "Drag the slider to adjust the priority between traffic speed and air quality.",
+      "morlExplanation": "The MORL system will automatically optimize the signal cycle based on weights w₁ and w₂."
+    },
+    "team": {
+      "title": "Development Team",
+      "roles": {
+        "aiData": "AI & Data Engineer",
+        "backend": "Backend & Architect",
+        "frontend": "Frontend & Mascot"
+      }
     },
     "architecture": {
       "title": "System Architecture",
       "description": "Modular, scalable architecture built on open standards."
+    },
+    "footer": {
+      "rights": "© 2025 GreenWave Project.",
+      "sourceCode": "Source Code",
+      "dataModels": "Data Models Documentation",
+      "contact": "Contact"
     }
   },
   "traffic": {

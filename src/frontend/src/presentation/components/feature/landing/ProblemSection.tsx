@@ -1,6 +1,9 @@
 import React from "react";
+import { useTranslation } from "react-i18next";
 
 export const ProblemSection: React.FC = () => {
+  const { t } = useTranslation("landing");
+
   return (
     <section className="py-20 px-4 relative">
       <div className="max-w-6xl mx-auto">
@@ -24,17 +27,14 @@ export const ProblemSection: React.FC = () => {
               </div>
 
               <h3 className="text-3xl md:text-4xl font-bold mb-4 text-text-main-dark relative z-10">
-                Sự Tối Ưu Mù Quáng
+                {t("problem.blindOptimization")}
                 <span className="block text-lg font-normal text-text-muted-dark mt-2">
-                  (Optimization Blindness)
+                  {t("problem.blindOptimizationSub")}
                 </span>
               </h3>
 
               <p className="text-text-muted-dark leading-relaxed relative z-10">
-                Hiện trạng đèn giao thông gây ra các "Điểm nóng ô nhiễm"
-                (Pollution Hotspots) do bắt xe dừng/chạy liên tục. Hệ thống tối
-                ưu tốc độ đơn thuần đang tạo ra những "ốc đảo ô nhiễm" âm thầm
-                giết chết sức khỏe cộng đồng.
+                {t("problem.statusDescription")}
               </p>
             </div>
           </div>
@@ -49,15 +49,17 @@ export const ProblemSection: React.FC = () => {
             }}
           >
             <h4 className="text-xl font-semibold mb-6 text-center text-text-main-dark">
-              Hiện trạng Tối ưu Hướng tốc độ
+              {t("problem.speedOrientedStatus")}
             </h4>
 
             <div className="space-y-6">
               <div className="space-y-2">
                 <div className="flex justify-between items-center">
-                  <span className="text-text-muted-dark">Tốc độ xe</span>
+                  <span className="text-text-muted-dark">
+                    {t("problem.vehicleSpeed")}
+                  </span>
                   <span className="text-greenwave-primary-light font-semibold">
-                    Cao
+                    {t("problem.high")}
                   </span>
                 </div>
                 <div className="h-8 bg-greenwave-accent-dark rounded-full overflow-hidden">
@@ -74,9 +76,11 @@ export const ProblemSection: React.FC = () => {
 
               <div className="space-y-2">
                 <div className="flex justify-between items-center">
-                  <span className="text-text-muted-dark">Sức khỏe phổi</span>
+                  <span className="text-text-muted-dark">
+                    {t("problem.lungHealth")}
+                  </span>
                   <span className="text-traffic-red font-semibold">
-                    Nguy cấp
+                    {t("problem.critical")}
                   </span>
                 </div>
                 <div className="h-8 bg-greenwave-accent-dark rounded-full overflow-hidden">
@@ -96,7 +100,7 @@ export const ProblemSection: React.FC = () => {
                 style={{ background: "rgba(217, 35, 47, 0.1)" }}
               >
                 <p className="text-sm text-traffic-red text-center">
-                  ⚠️ PM2.5 vượt ngưỡng an toàn 300% tại khu vực trường học
+                  {t("problem.pm25Warning")}
                 </p>
               </div>
             </div>

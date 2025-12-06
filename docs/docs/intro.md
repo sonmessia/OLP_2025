@@ -22,6 +22,8 @@ The system is no longer "blind"; it makes trade-offs between these two goals.
 
 ## Architecture & Data Flow
 
+![Architecture](./assets/architecture.gif)
+
 The system revolves around **Smart Data Models**:
 
 1.  **Input Layer**:
@@ -36,31 +38,36 @@ The system revolves around **Smart Data Models**:
 
 ## Goals
 
-**Core Infrastructure & IoT**
-
-- [x] **Orion-LD Context Broker Integration**: Centralized context management for real-time data.
-- [x] **SUMO Traffic Simulation**: Realistic traffic modeling and simulation environment.
-- [x] **IoT Device Connectivity**: Simulation of traffic lights and air quality sensors.
-
 **Intelligent Control**
 
-- [x] **AI-Driven Traffic Coordination**: Reinforcement Learning (DQN) agent for adaptive signal control.
+- [x] **AI-Driven Traffic Coordination** - DQN-based adaptive signal control
+- [x] **Multi-Objective Optimization** - Balance traffic flow & air quality
+- [x] **Real-Time Decision Making** - Sub-second response to traffic changes
 
-**User Interfaces**
+**Environmental Awareness**
 
-- [x] **Admin Dashboard**: Comprehensive monitoring with both AI-driven and manual control modes.
-- [x] **Public Air Quality Portal**: User-facing map and metrics for environmental awareness.
-- [x] **Sensor Management**: Interface for administrators to configure and connect IoT devices.
+- [x] **Air Quality Monitoring** - PM2.5, CO, NO2 sensors at intersections
+- [x] **Emission Estimation** - Traffic-based pollution prediction
+- [x] **Pollution Hotspot Prevention** - Protect sensitive areas
 
-**DevOps & Open Source Standards**
+**Monitoring & Visualization**
 
-- [x] **CI/CD Pipeline**: Automated testing and deployment using GitHub Actions.
-- [x] **API Documentation**: Comprehensive OpenAPI documentation integrated with Docusaurus.
-- [x] **Open Source Compliance**: Includes MIT License, Contributing Guidelines, and Code of Conduct.
+**Admin Dashboard** - Comprehensive control panel with AI/manual modes
 
----
+- [x] **Public Air Quality Portal** - User-facing environmental metrics
+- [x] **Historical Analytics** - Time-series data visualization
+- [x] **Real-Time Monitoring** - Live dashboards and analytics for instant insights
+- [x] **Control Panel By Hand/AI** - Manual and AI modes for traffic control
+- [x] **Manage Sensors** - Add, remove, and configure sensors
+- [x] **Manage Subscriptions** - Subscribe to real-time data streams
 
-## Getting Started
+**DevOps & Standards**
+
+- [x] **CI/CD Pipeline** - Automated testing & deployment
+- [x] **OpenAPI Documentation** - Comprehensive API specs
+- [x] **Open Source Compliance** - MIT License, Contributing Guidelines
+
+## Quick Started
 
 ### Prerequisites
 
@@ -73,12 +80,13 @@ The system revolves around **Smart Data Models**:
 Run the following command to start all services (Context Broker, Backend, Frontend, and Documentation):
 
 ```bash
+cp .env.example .env
 docker compose up -d
 ```
 
 Once the services are up and running, you can access them at the following addresses:
 
 - **Frontend**: [http://localhost:5173](http://localhost:5173)
-- **Documentation**: [http://localhost:3000](http://localhost:3000)
+- **Quantum Leap**: [http://localhost:8668](http://localhost:8668)
 - **Backend API**: [http://localhost:8000](http://localhost:8000)
 - **Context Broker**: [http://localhost:1026](http://localhost:1026)

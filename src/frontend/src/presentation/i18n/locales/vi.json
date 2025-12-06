@@ -111,17 +111,73 @@
       "trafficOptimization": "Tối ưu hóa giao thông",
       "alertSystem": "Hệ thống cảnh báo thông minh"
     },
+    "keyFeaturesSection": {
+      "title": "Tính năng Nổi bật",
+      "digitalTwin": {
+        "title": "Digital Twin",
+        "description": "Tích hợp hiển thị thông tin giao thông chính xác từng giây thực tế, tạo ra bản sao số của đô thị."
+      },
+      "globalStandard": {
+        "title": "Global Standard",
+        "description": "Tuân thủ tuyệt đối NGSI-LD, FIWARE Data Models & SOSA/SSN, đảm bảo tương thích toàn cầu."
+      },
+      "dynamicResponse": {
+        "title": "Dynamic Response",
+        "description": "Tự động phát hiện và xử lý khi PM2.5 vượt ngưỡng an toàn, chuyển màu cảnh báo tức thì."
+      }
+    },
+    "pipeline": {
+      "steps": {
+        "sumo": { "title": "SUMO", "desc": "Mô phỏng giao thông 3D" },
+        "iotAgent": { "title": "IoT Agent", "desc": "Raw Data → JSON-LD" },
+        "orion": { "title": "Orion-LD", "desc": "Context Broker" },
+        "aiAgent": { "title": "AI Agent", "desc": "MORL Processing" },
+        "dashboard": { "title": "Dashboard", "desc": "Giao diện người dùng" }
+      },
+      "flowActive": "Luồng dữ liệu NGSI-LD thời gian thực đang hoạt động"
+    },
     "problem": {
       "title": "Thách thức",
-      "description": "Tắc nghẽn giao thông đô thị và ô nhiễm không khí là những thách thức lớn đối với các thành phố hiện đại."
+      "description": "Tắc nghẽn giao thông đô thị và ô nhiễm không khí là những thách thức lớn đối với các thành phố hiện đại.",
+      "blindOptimization": "Sự Tối Ưu Mù Quáng",
+      "blindOptimizationSub": "(Optimization Blindness)",
+      "statusDescription": "Hiện trạng đèn giao thông gây ra các \"Điểm nóng ô nhiễm\" (Pollution Hotspots) do bắt xe dừng/chạy liên tục. Hệ thống tối ưu tốc độ đơn thuần đang tạo ra những \"ốc đảo ô nhiễm\" âm thầm giết chết sức khỏe cộng đồng.",
+      "speedOrientedStatus": "Hiện trạng Tối ưu Hướng tốc độ",
+      "vehicleSpeed": "Tốc độ xe",
+      "high": "Cao",
+      "lungHealth": "Sức khỏe phổi",
+      "critical": "Nguy cấp",
+      "pm25Warning": "⚠️ PM2.5 vượt ngưỡng an toàn 300% tại khu vực trường học"
     },
     "solution": {
       "title": "Giải pháp của chúng tôi",
-      "description": "Hệ thống điều phối giao thông powered by AI giúp tối ưu hóa luồng giao thông và giảm thiểu khí thải."
+      "description": "Hệ thống điều phối giao thông powered by AI giúp tối ưu hóa luồng giao thông và giảm thiểu khí thải.",
+      "tradeOffTitle": "Trade-off for a Better Life",
+      "tradeOffSubtitle": "Đánh đổi vì cuộc sống tốt hơn với Multi-Objective Reinforcement Learning (MORL)",
+      "trafficSpeed": "Traffic Speed",
+      "airQuality": "Air Quality",
+      "weightSpeed": "Weight w₁ (Tốc độ)",
+      "weightAir": "Weight w₂ (Không khí)",
+      "sliderInstruction": "Kéo thanh trượt để điều chỉnh mức độ ưu tiên giữa tốc độ giao thông và chất lượng không khí.",
+      "morlExplanation": "Hệ thống MORL sẽ tự động tối ưu hóa chu kỳ đèn tín hiệu dựa trên trọng số w₁ và w₂."
+    },
+    "team": {
+      "title": "Đội ngũ Phát triển",
+      "roles": {
+        "aiData": "AI & Data Engineer",
+        "backend": "Backend & Architect",
+        "frontend": "Frontend & Mascot"
+      }
     },
     "architecture": {
       "title": "Kiến trúc hệ thống",
       "description": "Kiến trúc module, có khả năng mở rộng được xây dựng trên các tiêu chuẩn mở."
+    },
+    "footer": {
+      "rights": "© 2025 GreenWave Project.",
+      "sourceCode": "Mã nguồn",
+      "dataModels": "Tài liệu Mô hình Dữ liệu",
+      "contact": "Liên hệ"
     }
   },
   "traffic": {
