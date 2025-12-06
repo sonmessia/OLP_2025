@@ -1,6 +1,7 @@
 # 🏗️ OLP 2025 - Smart City Application Pipeline
 
 ## 📋 Table of Contents
+
 1. [System Architecture Overview](#system-architecture-overview)
 2. [Data Flow Pipeline](#data-flow-pipeline)
 3. [Traffic Control AI Pipeline](#traffic-control-ai-pipeline)
@@ -59,7 +60,7 @@ graph TB
         C --> F3[Water Quality Router]
         C --> F4[Carbon Router]
         C --> F5[Building Router]
-        
+
         F1 --> G[FastAPI Main App]
         F2 --> G
         F3 --> G
@@ -165,9 +166,10 @@ Step 7: Simulation Update
 ```
 
 **Performance Metrics:**
+
 - **Model Score**: 1383.03 (13% better than baseline)
 - **Training**: 10,000 steps, ~34 minutes
-- **Response Time**: <100ms per decision
+- **Response Time**: &lt;100ms per decision
 - **Scenarios**: Nga4ThuDuc, NguyenThaiSon, QuangTrung
 
 ---
@@ -232,12 +234,12 @@ Client Request (Dashboard/Mobile App)
 
 **API Endpoints Summary:**
 
-| Router | Endpoints | Purpose |
-|--------|-----------|---------|
-| Air Quality | 7 endpoints | GET all, GET by ID, POST, PATCH, DELETE, subscriptions |
-| Water Quality | 7 endpoints | GET all, GET by ID, POST, PATCH, DELETE, subscriptions |
-| Carbon Footprint | 7 endpoints | GET all, GET by ID, POST, PATCH, DELETE, subscriptions |
-| Building | 7 endpoints | GET all, GET by ID, POST, PATCH, DELETE, subscriptions |
+| Router                  | Endpoints   | Purpose                                                |
+| ----------------------- | ----------- | ------------------------------------------------------ |
+| Air Quality             | 7 endpoints | GET all, GET by ID, POST, PATCH, DELETE, subscriptions |
+| Water Quality           | 7 endpoints | GET all, GET by ID, POST, PATCH, DELETE, subscriptions |
+| Carbon Footprint        | 7 endpoints | GET all, GET by ID, POST, PATCH, DELETE, subscriptions |
+| Building                | 7 endpoints | GET all, GET by ID, POST, PATCH, DELETE, subscriptions |
 | Traffic Light (SUMO RL) | 8 endpoints | AI notify, IoT notify, status, model info, Orion proxy |
 
 ---
@@ -492,16 +494,16 @@ INFRASTRUCTURE LAYER:
 
 ## 📈 Performance Characteristics
 
-| Component | Metric | Value |
-|-----------|--------|-------|
-| **API Response Time** | Average | <100ms |
-| **AI Decision Time** | Per inference | ~10-20ms |
-| **SUMO Simulation** | Steps/second | 100-200 |
-| **Data Ingestion** | Entities/second | 1000+ |
-| **Database Queries** | Average latency | <50ms |
-| **Model Training** | Full training | ~34 minutes |
-| **Model Size** | Disk space | 334KB |
-| **System Uptime** | Target | 99.9% |
+| Component             | Metric          | Value       |
+| --------------------- | --------------- | ----------- |
+| **API Response Time** | Average         | &lt;100ms   |
+| **AI Decision Time**  | Per inference   | ~10-20ms    |
+| **SUMO Simulation**   | Steps/second    | 100-200     |
+| **Data Ingestion**    | Entities/second | 1000+       |
+| **Database Queries**  | Average latency | &lt;50ms    |
+| **Model Training**    | Full training   | ~34 minutes |
+| **Model Size**        | Disk space      | 334KB       |
+| **System Uptime**     | Target          | 99.9%       |
 
 ---
 
