@@ -1,3 +1,8 @@
+// Copyright (c) 2025 Green Wave Team
+// 
+// This software is released under the MIT License.
+// https://opensource.org/licenses/MIT
+
 // Domain Models - Thiết bị IoT
 // Tuân thủ Clean Architecture: không phụ thuộc vào framework cụ thể
 

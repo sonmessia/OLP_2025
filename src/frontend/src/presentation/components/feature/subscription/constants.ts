@@ -1,3 +1,8 @@
+// Copyright (c) 2025 Green Wave Team
+// 
+// This software is released under the MIT License.
+// https://opensource.org/licenses/MIT
+
 export const AIR_QUALITY_ATTRIBUTES = [
   { value: "airQualityIndex", labelKey: "subscription:attributes.aqi" },
   { value: "pm25", labelKey: "subscription:attributes.pm25" },

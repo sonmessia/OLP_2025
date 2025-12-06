@@ -1,3 +1,8 @@
+// Copyright (c) 2025 Green Wave Team
+// 
+// This software is released under the MIT License.
+// https://opensource.org/licenses/MIT
+
 import type { AirQualityObservedDto } from "../dtos/AirQualityDTOs";
 import type { AirQualityObservedModel } from "../../domain/models/AirQualityObservedModel";
 import { GeoJSONType } from "../../domain/models/CommonModels";

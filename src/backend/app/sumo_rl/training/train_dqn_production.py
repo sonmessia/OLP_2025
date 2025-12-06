@@ -1,4 +1,9 @@
 #!/usr/bin/env python3
+# Copyright (c) 2025 Green Wave Team
+# 
+# This software is released under the MIT License.
+# https://opensource.org/licenses/MIT
+
 """
 Production DQN Training Script - 10,000 steps
 Optimized hyperparameters for best performance

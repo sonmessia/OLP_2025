@@ -1,3 +1,8 @@
+// Copyright (c) 2025 Green Wave Team
+// 
+// This software is released under the MIT License.
+// https://opensource.org/licenses/MIT
+
 import React from "react";
 import thaiAnhAI from "../../../../assets/team/thaianh.png";
 import sonCloud from "../../../../assets/team/son.jpg";

@@ -1,4 +1,9 @@
 #!/bin/bash
+# Copyright (c) 2025 Green Wave Team
+# 
+# This software is released under the MIT License.
+# https://opensource.org/licenses/MIT
+
 # Script to run SUMO simulation on host and connect to backend API
 # Usage: ./run_sumo.sh [scenario]
 # Scenarios: Nga4ThuDuc (default), NguyenThaiSon, QuangTrung

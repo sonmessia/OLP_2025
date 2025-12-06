@@ -1,4 +1,9 @@
 #!/usr/bin/env python3
+# Copyright (c) 2025 Green Wave Team
+# 
+# This software is released under the MIT License.
+# https://opensource.org/licenses/MIT
+
 """
 Script đánh giá DQN Model với metrics chi tiết
 So sánh: Baseline (Fixed-time) vs DQN vs Random
