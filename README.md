@@ -18,7 +18,7 @@
 
   <br />
 
-[**Documentation**](http://localhost:3000/GreenWave/) • [**Quick Start**](#-quick-start) • [**Architecture**](#-architecture) • [**Features**](#-features)
+[**Documentation**](https://sonmessia.github.io/GreenWave/) • [**Quick Start**](#-quick-start) • [**Architecture**](#-architecture) • [**Features**](#-features)
 
 </div>
 
@@ -193,6 +193,21 @@ Once services are running, access them at:
 ### **[Read Full Documentation](http://localhost:3000)**
 
 Explore detailed tutorials, API references, architecture guides, and more!
+
+</div>
+
+## Support and Organization
+
+<div align="center">
+
+  <div style="display: flex; justify-content: center; align-items: center; gap: 10px; flex-wrap: wrap;">
+    <img src="./assets/organization/hutech_logo.png" alt="HUTECH" height="100" style="object-fit: contain;  ">
+    <img src="./assets/organization/fossa_log.png" alt="FOSSA" height="100" style="object-fit: contain;">
+    <div>
+      <img src="./assets/organization/olp_logo.jpg" alt="OLP" height="100">
+      <img src="./assets/organization/olp_banner.png" alt="OLP Banner" height="100">
+    </div>
+  </div>
 
 </div>
 
