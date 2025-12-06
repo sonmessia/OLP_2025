@@ -8,6 +8,7 @@ import {
   Shield,
   Globe,
   Settings,
+  LogIn,
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
@@ -140,6 +141,17 @@ export const UserMapHeader: React.FC<UserMapHeaderProps> = ({
           >
             <Info className="w-5 h-5" />
           </button>
+
+          {/* Login Button */}
+          {!user && (
+            <button
+              onClick={() => navigate("/login")}
+              className="p-2 rounded-lg bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors"
+              title={t("common:login", "Login")}
+            >
+              <LogIn className="w-5 h-5" />
+            </button>
+          )}
 
           {/* Settings Dropdown */}
           <div className="relative">

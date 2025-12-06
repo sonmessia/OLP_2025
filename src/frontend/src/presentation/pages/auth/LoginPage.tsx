@@ -242,28 +242,6 @@ const LoginPage: React.FC = () => {
               )}
             </button>
           </div>
-
-          <div className="mt-6 border-t border-gray-200 pt-6">
-            <div className="text-sm text-gray-600">
-              <h3 className="font-medium text-gray-900 mb-2">
-                {t("login.demoAccounts.title")}
-              </h3>
-              <div className="space-y-1">
-                <p>
-                  <strong>{t("login.demoAccounts.admin")}</strong>
-                </p>
-                <p>
-                  <strong>{t("login.demoAccounts.managerThuDuc")}</strong>
-                </p>
-                <p>
-                  <strong>{t("login.demoAccounts.managerNguyenThaiSon")}</strong>
-                </p>
-                <p>
-                  <strong>{t("login.demoAccounts.managerQuangTrung")}</strong>
-                </p>
-              </div>
-            </div>
-          </div>
         </form>
       </div>
     </div>

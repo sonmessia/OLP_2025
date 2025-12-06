@@ -45,9 +45,10 @@ class IoTAgent:
                 logger.warning("[IoT Agent] SUMO_HOME not set")
                 return False
             
-            import traci
             import subprocess
             import time
+
+            import traci
             
             # Use subprocess to start SUMO exactly as requested (no auto-magic arg injection)
             logger.info(f"[IoT Agent] Executing SUMO command: {' '.join(sumo_config)}")

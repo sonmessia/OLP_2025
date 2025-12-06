@@ -115,7 +115,10 @@ export const DashboardHeader: React.FC<DashboardHeaderProps> = ({
     <header className="bg-white dark:bg-gray-800 border-b-2 border-gray-200 dark:border-gray-700 px-6 py-2">
       <div className="flex items-center justify-between">
         {/* Logo and Title */}
-        <div className="flex items-center gap-3">
+        <div
+          className="flex items-center gap-3 cursor-pointer"
+          onClick={() => navigate("/")}
+        >
           <img
             src="/logo.png"
             alt="GreenWave Logo"

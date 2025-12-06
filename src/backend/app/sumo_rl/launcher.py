@@ -1,9 +1,7 @@
-import os
-import time
-import subprocess
-import signal
-import sys
 import logging
+import os
+import subprocess
+import time
 
 # Configure logging
 logging.basicConfig(

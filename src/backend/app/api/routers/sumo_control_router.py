@@ -8,8 +8,8 @@ Hỗ trợ 2 modes:
 Updated: 2025-11-30 - Added TraCI connector support
 """
 import logging
-import time
 import os
+import time
 from typing import Dict, Optional
 
 from fastapi import APIRouter, HTTPException
@@ -186,9 +186,8 @@ async def start_simulation(request: StartSimulationRequest):
         logger.warning(f"Failed to write hot-swap trigger file: {e}")
 
     # METHOD 1: Try Host Starter Service
-    host_started = False
     try:
-        logger.info(f"Method 1: Attempting to start SUMO on host via starter service...")
+        logger.info("Method 1: Attempting to start SUMO on host via starter service...")
         if start_sumo_on_host(request.scenario):
             logger.info("Host starter service returned success. Waiting for initialization...")
             time.sleep(3)
