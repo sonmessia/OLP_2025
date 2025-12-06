@@ -190,7 +190,7 @@ Once services are running, access them at:
 
 <div align="center">
 
-### **[Read Full Documentation](http://localhost:3000)**
+### **[Read Full Documentation](https://sonmessia.github.io/GreenWave/)**
 
 Explore detailed tutorials, API references, architecture guides, and more!
 
@@ -213,9 +213,9 @@ Explore detailed tutorials, API references, architecture guides, and more!
 
 ## 🤝 Contribution
 
-Thanks to all [contributors](http://localhost:3000/docs/category/contributing), your help is greatly appreciated!
+Thanks to all [contributors](https://sonmessia.github.io/GreenWave/docs/category/contributing), your help is greatly appreciated!
 
-Contributions are welcome! Please read the [contribution guidelines](http://localhost:3000/docs/contributing/contribution-guidelines) and [code of conduct](http://localhost:3000/docs/contributing/code-of-conduct) to learn how to participate.
+Contributions are welcome! Please read the [contribution guidelines](https://sonmessia.github.io/GreenWave/docs/contributing/contribution-guidelines) and [code of conduct](https://sonmessia.github.io/GreenWave/docs/contributing/code-of-conduct) to learn how to participate.
 
 ## 🌟 Support
 
