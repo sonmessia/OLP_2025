@@ -1,0 +1,275 @@
+/**
+ * Copyright (c) 2025 Green Wave Team
+ * 
+ * This software is released under the MIT License.
+ * https://opensource.org/licenses/MIT
+ */
+
+.features {
+  display: flex;
+  align-items: center;
+  padding: 4rem 0;
+  width: 100%;
+  background: linear-gradient(
+    180deg,
+    transparent 0%,
+    rgba(16, 185, 129, 0.02) 50%,
+    transparent 100%
+  );
+}
+
+/* Dark mode */
+[data-theme="dark"] .features {
+  background: linear-gradient(
+    180deg,
+    transparent 0%,
+    rgba(76, 175, 80, 0.03) 50%,
+    transparent 100%
+  );
+}
+
+/* Hero Section */
+.heroSection {
+  text-align: center;
+  margin-bottom: 4rem;
+}
+
+.sectionTitle {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  background: linear-gradient(
+    120deg,
+    var(--ifm-color-primary),
+    var(--ifm-color-primary-dark)
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.sectionSubtitle {
+  font-size: 1.25rem;
+  color: var(--ifm-color-emphasis-700);
+  max-width: 800px;
+  margin: 0 auto;
+  line-height: 1.6;
+}
+
+/* Problem & Solution Cards */
+.problemSolution {
+  margin-bottom: 4rem;
+}
+
+.card {
+  background: var(--ifm-card-background-color);
+  border: 1px solid var(--ifm-color-emphasis-200);
+  border-radius: 12px;
+  padding: 2rem;
+  height: 100%;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1);
+}
+
+.cardTitle {
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+  color: var(--ifm-color-primary);
+}
+
+.highlight {
+  background: var(--ifm-color-warning-contrast-background);
+  padding: 0.75rem 1rem;
+  border-left: 4px solid var(--ifm-color-warning);
+  border-radius: 4px;
+  font-style: italic;
+  margin-top: 1rem;
+}
+
+/* Architecture Section */
+.architectureSection {
+  margin-bottom: 4rem;
+  text-align: center;
+}
+
+.imageContainer {
+  max-width: 900px;
+  margin: 2rem auto;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+  transition: transform 0.3s ease;
+}
+
+.imageContainer:hover {
+  transform: scale(1.02);
+}
+
+.architectureImage {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.imageCaption {
+  color: var(--ifm-color-emphasis-600);
+  font-style: italic;
+  margin-top: 1rem;
+}
+
+/* Features Grid */
+.featuresGrid {
+  margin-bottom: 4rem;
+}
+
+.featuresGrid .row {
+  margin-top: 2rem;
+}
+
+.featureIcon {
+  font-size: 4rem;
+  margin-bottom: 1rem;
+  animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+.featuresGrid h3 {
+  font-size: 2rem;
+  margin-bottom: 0.75rem;
+  color: var(--ifm-heading-color);
+}
+
+.featuresGrid p {
+  color: var(--ifm-color-emphasis-700);
+  line-height: 1.6;
+}
+
+/* CTA Section */
+.ctaSection {
+  text-align: center;
+  background: var(--ifm-color-primary);
+  border-radius: 16px;
+  padding: 4rem 2rem;
+  margin-top: 4rem;
+  box-shadow: 0 10px 40px rgba(16, 124, 65, 0.2);
+  position: relative;
+  overflow: hidden;
+}
+
+.ctaSection h3 {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+  color: #ffffff;
+}
+
+.ctaSection p {
+  font-size: 1.25rem;
+  color: rgba(255, 255, 255, 0.9);
+  margin-bottom: 2.5rem;
+  max-width: 700px;
+  margin-left: auto;
+  margin-right: auto;
+  line-height: 1.6;
+}
+
+/* Custom Button Styling for CTA */
+.ctaSection :global(.button) {
+  padding: 1rem 2rem;
+  font-size: 1.1rem;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+}
+
+.ctaSection :global(.button--primary) {
+  background-color: var(--ifm-color-primary-darker);
+  border-color: var(--ifm-color-primary-darker);
+  color: #ffffff;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.ctaSection :global(.button--primary):hover {
+  background-color: var(--ifm-color-primary-darkest);
+  border-color: var(--ifm-color-primary-darkest);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+}
+
+.ctaSection :global(.button--secondary) {
+  background-color: #ffffff;
+  border-color: #ffffff;
+  color: var(--ifm-color-primary);
+  font-weight: 700;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.ctaSection :global(.button--secondary):hover {
+  background-color: #f8f9fa;
+  border-color: #f8f9fa;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+}
+
+/* Responsive Design */
+@media screen and (max-width: 996px) {
+  .sectionTitle {
+    font-size: 2rem;
+  }
+
+  .sectionSubtitle {
+    font-size: 1.125rem;
+  }
+
+  .card {
+    margin-bottom: 1.5rem;
+  }
+
+  .featureIcon {
+    font-size: 3rem;
+  }
+
+  .ctaSection {
+    padding: 2rem 1rem;
+  }
+
+  .ctaSection h3 {
+    font-size: 1.5rem;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .features {
+    padding: 2rem 0;
+  }
+
+  .heroSection {
+    margin-bottom: 2rem;
+  }
+
+  .problemSolution,
+  .architectureSection,
+  .featuresGrid {
+    margin-bottom: 2rem;
+  }
+
+  .ctaButtons {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .ctaButtons a {
+    width: 100%;
+  }
+}

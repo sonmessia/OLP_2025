@@ -1,0 +1,64 @@
+/**
+ * Copyright (c) 2025 Green Wave Team
+ * 
+ * This software is released under the MIT License.
+ * https://opensource.org/licenses/MIT
+ */
+
+.features {
+  display: flex;
+  align-items: center;
+  padding: 2rem 0;
+  width: 100%;
+}
+
+.featureSvg {
+  height: 200px;
+  width: 200px;
+}
+
+.featureLink {
+  text-decoration: none;
+  color: inherit;
+  display: block;
+  height: 100%;
+}
+
+.featureLink:hover {
+  text-decoration: none;
+  color: inherit;
+}
+
+.featureCard {
+  height: 100%;
+  padding: 1.5rem;
+  border-radius: 12px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  background: transparent;
+  border: 2px solid transparent;
+}
+
+.featureCard:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 12px 24px rgba(16, 185, 129, 0.15),
+    0 0 20px rgba(5, 150, 105, 0.1);
+  border-color: rgba(16, 185, 129, 0.3);
+  background: rgba(16, 185, 129, 0.02);
+}
+
+.featureCard:active {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 16px rgba(16, 185, 129, 0.12);
+}
+
+/* Dark mode adjustments */
+[data-theme="dark"] .featureCard:hover {
+  box-shadow: 0 12px 24px rgba(76, 175, 80, 0.2),
+    0 0 20px rgba(102, 187, 106, 0.15);
+  border-color: rgba(76, 175, 80, 0.4);
+  background: rgba(76, 175, 80, 0.05);
+}
+
+[data-theme="dark"] .featureCard:active {
+  box-shadow: 0 8px 16px rgba(76, 175, 80, 0.15);
+}

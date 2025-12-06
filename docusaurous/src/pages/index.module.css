@@ -1,0 +1,139 @@
+/**
+ * Copyright (c) 2025 Green Wave Team
+ * 
+ * This software is released under the MIT License.
+ * https://opensource.org/licenses/MIT
+ */
+
+/**
+ * CSS files with the .module.css suffix will be treated as CSS modules
+ * and scoped locally.
+ */
+
+.heroBanner {
+  padding: 4rem 0;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+@media screen and (max-width: 996px) {
+  .heroBanner {
+    padding: 2rem;
+  }
+}
+
+.buttons {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ctaButtons {
+  display: flex;
+  gap: 1.5rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+/* Nút Read Documentation nổi bật */
+.primaryButton {
+  position: relative;
+  background: linear-gradient(
+    135deg,
+    #10b981 0%,
+    #059669 50%,
+    #047857 100%
+  ) !important;
+  border: none !important;
+  box-shadow: 0 10px 25px rgba(16, 185, 129, 0.4),
+    0 0 20px rgba(5, 150, 105, 0.3);
+  transform: translateY(0);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  font-weight: 600 !important;
+  letter-spacing: 0.5px;
+  overflow: hidden;
+  animation: pulse 2s ease-in-out infinite;
+}
+
+.primaryButton::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.3),
+    transparent
+  );
+  transition: left 0.5s;
+}
+
+.primaryButton:hover::before {
+  left: 100%;
+}
+
+.primaryButton:hover {
+  transform: translateY(-3px) scale(1.05);
+  box-shadow: 0 15px 35px rgba(16, 185, 129, 0.5),
+    0 0 30px rgba(5, 150, 105, 0.4), 0 5px 15px rgba(0, 0, 0, 0.2);
+  animation: none;
+}
+
+.primaryButton:active {
+  transform: translateY(-1px) scale(1.02);
+  box-shadow: 0 8px 20px rgba(16, 185, 129, 0.4),
+    0 0 15px rgba(5, 150, 105, 0.3);
+}
+
+/* Animation pulse */
+@keyframes pulse {
+  0%,
+  100% {
+    box-shadow: 0 10px 25px rgba(16, 185, 129, 0.4),
+      0 0 20px rgba(5, 150, 105, 0.3);
+  }
+  50% {
+    box-shadow: 0 10px 25px rgba(16, 185, 129, 0.6),
+      0 0 30px rgba(5, 150, 105, 0.5);
+  }
+}
+
+/* Dark mode adjustments */
+[data-theme="dark"] .primaryButton {
+  background: linear-gradient(
+    135deg,
+    #4caf50 0%,
+    #66bb6a 50%,
+    #81c784 100%
+  ) !important;
+  box-shadow: 0 10px 25px rgba(76, 175, 80, 0.4),
+    0 0 20px rgba(102, 187, 106, 0.3);
+  animation: pulseDark 2s ease-in-out infinite;
+}
+
+[data-theme="dark"] .primaryButton:hover {
+  box-shadow: 0 15px 35px rgba(76, 175, 80, 0.5),
+    0 0 30px rgba(102, 187, 106, 0.4), 0 5px 15px rgba(0, 0, 0, 0.3);
+  animation: none;
+}
+
+[data-theme="dark"] .primaryButton:active {
+  box-shadow: 0 8px 20px rgba(76, 175, 80, 0.4),
+    0 0 15px rgba(102, 187, 106, 0.3);
+}
+
+@keyframes pulseDark {
+  0%,
+  100% {
+    box-shadow: 0 10px 25px rgba(76, 175, 80, 0.4),
+      0 0 20px rgba(102, 187, 106, 0.3);
+  }
+  50% {
+    box-shadow: 0 10px 25px rgba(76, 175, 80, 0.6),
+      0 0 30px rgba(102, 187, 106, 0.5);
+  }
+}
