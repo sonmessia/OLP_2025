@@ -10,7 +10,7 @@ services:
       args:
         VITE_API_URL: http://localhost:8000
         VITE_ORION_URL: http://localhost:1026/ngsi-ld/v1
-        VITE_WS_URL: http://localhost:8000/sumo/socket  # Updated based on backend assumptions, looking for websocket
+        VITE_WS_URL: http://localhost:8000/sumo/socket # Updated based on backend assumptions, looking for websocket
     container_name: frontend
     networks:
       - fiware_default
@@ -110,19 +110,6 @@ services:
       interval: 30s
       timeout: 10s
       retries: 5
-
-  # Frontend Application
-  frontend:
-    build: ./src/frontend
-    container_name: frontend
-    hostname: frontend
-    networks:
-      - fiware_default
-    ports:
-      - "5173:80"
-    restart: unless-stopped
-    depends_on:
-      - backend
 
   # Documentation Site
   docs:
