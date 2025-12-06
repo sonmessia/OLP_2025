@@ -1,3 +1,8 @@
+# Copyright (c) 2025 Green Wave Team
+# 
+# This software is released under the MIT License.
+# https://opensource.org/licenses/MIT
+
 """
 TraCI Connector - Connect to running SUMO instance
 Không cần SUMO_HOME, chỉ cần SUMO đang chạy với --remote-port

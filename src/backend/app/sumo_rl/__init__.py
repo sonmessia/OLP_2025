@@ -1,3 +1,8 @@
+# Copyright (c) 2025 Green Wave Team
+# 
+# This software is released under the MIT License.
+# https://opensource.org/licenses/MIT
+
 """
 SUMO RL - Reinforcement Learning for Traffic Light Control
 Integrated into FastAPI Backend

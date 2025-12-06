@@ -1,3 +1,8 @@
+// Copyright (c) 2025 Green Wave Team
+// 
+// This software is released under the MIT License.
+// https://opensource.org/licenses/MIT
+
 // Data Transfer Objects - Raw data from SUMO API
 // Tuân thủ Clean Architecture: định nghĩa chính xác cấu trúc dữ liệu từ server
 

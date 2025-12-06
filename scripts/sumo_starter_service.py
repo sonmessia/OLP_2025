@@ -1,4 +1,9 @@
 #!/usr/bin/env python3
+# Copyright (c) 2025 Green Wave Team
+# 
+# This software is released under the MIT License.
+# https://opensource.org/licenses/MIT
+
 """
 SUMO Starter Service
 HTTP server that runs on the HOST and allows the backend container to start SUMO

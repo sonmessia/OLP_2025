@@ -1,3 +1,10 @@
+<!--
+ Copyright (c) 2025 Green Wave Team
+ 
+ This software is released under the MIT License.
+ https://opensource.org/licenses/MIT
+-->
+
 # 🎬 HƯỚNG DẪN DEMO TRƯỚC BAN TỔ CHỨC
 
 ## 📊 NGUỒN DỮ LIỆU KHI DEMO

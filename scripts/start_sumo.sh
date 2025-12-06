@@ -1,4 +1,9 @@
 #!/bin/bash
+# Copyright (c) 2025 Green Wave Team
+# 
+# This software is released under the MIT License.
+# https://opensource.org/licenses/MIT
+
 # Auto-start SUMO script for any scenario
 # Usage: ./start_sumo.sh <scenario_name>
 

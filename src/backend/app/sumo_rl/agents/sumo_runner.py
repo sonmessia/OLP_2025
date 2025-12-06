@@ -1,3 +1,8 @@
+# Copyright (c) 2025 Green Wave Team
+# 
+# This software is released under the MIT License.
+# https://opensource.org/licenses/MIT
+
 """
 SUMO Simulation Runner
 Tự động khởi động SUMO với GUI và kết nối TraCI

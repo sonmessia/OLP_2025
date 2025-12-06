@@ -5,10 +5,6 @@
  https://opensource.org/licenses/MIT
 -->
 
----
-title: Markdown page example
----
+# Hello GitHub Pages 👋
 
-# Markdown page example
-
-You don't need React to write simple standalone pages.
+Đây là trang GitHub Pages dùng thư mục /docs.

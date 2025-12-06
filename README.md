@@ -7,6 +7,8 @@
 
 <div align="center">
   <img src="./assets/docusaurus/logo.png" alt="GreenWave-Logo" width="200" height="200" style="border-radius: 50%; object-fit: cover; margin-bottom: 20px;">
+<div align="center">
+  <img src="./assets/docusaurus/logo.png" alt="GreenWave-Logo" width="200" height="200" style="border-radius: 50%; object-fit: cover; margin-bottom: 20px;">
 
 # GreenWave - Smart Traffic Management System
 
@@ -17,10 +19,13 @@
 [![Docker](https://img.shields.io/badge/Docker-Ready-2496ED?style=for-the-badge&logo=docker&logoColor=white)](https://www.docker.com/)
 
   <br />
+  <br />
 
 [**Documentation**](https://sonmessia.github.io/GreenWave/) • [**Quick Start**](#-quick-start) • [**Architecture**](#-architecture) • [**Features**](#-features)
 
 </div>
+
+<br />
 
 <br />
 
@@ -34,6 +39,8 @@
 
 <div align="center">
 
+<div align="center">
+
 ### Key Highlights
 
 |                                  🚦 Intelligent Control                                  |                           🌱 Environmental Awareness                            |
@@ -41,6 +48,15 @@
 | **Multi-Objective Optimization**<br>Balances traffic flow and air quality simultaneously | **Pollution Prevention**<br>Protects sensitive areas like schools and hospitals |
 | **AI-Driven Decision Making**<br>Uses Reinforcement Learning (DQN) for adaptive signals  |       **Real-Time Monitoring**<br>Live dashboards with sub-second updates       |
 |   **Linked Data Integration**<br>Fully NGSI-LD compliant for semantic interoperability   |           **FIWARE-Based**<br>Built on industry-standard IoT platform           |
+
+<br/>
+
+<video src="./assets/Video%20Project%202.mp4" style="width: 300px; height: 300px; object-fit: cover; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.15);" autoplay loop muted playsinline></video>
+| 🚦 Intelligent Control | 🌱 Environmental Awareness |
+| :--------------------------------------------------------------------------------------: | :-----------------------------------------------------------------------------: |
+| **Multi-Objective Optimization**<br>Balances traffic flow and air quality simultaneously | **Pollution Prevention**<br>Protects sensitive areas like schools and hospitals |
+| **AI-Driven Decision Making**<br>Uses Reinforcement Learning (DQN) for adaptive signals | **Real-Time Monitoring**<br>Live dashboards with sub-second updates |
+| **Linked Data Integration**<br>Fully NGSI-LD compliant for semantic interoperability | **FIWARE-Based**<br>Built on industry-standard IoT platform |
 
 <br/>
 
@@ -68,6 +84,10 @@
 
 - [x] **Public Air Quality Portal** - User-facing environmental metrics
 - [x] **Historical Analytics** - Time-series data visualization
+- [x] **Real-Time Monitoring** - Live dashboards and analytics for instant insights
+- [x] **Control Panel By Hand/AI** - Manual and AI modes for traffic control
+- [x] **Manage Sensors** - Add, remove, and configure sensors
+- [x] **Manage Subscriptions** - Subscribe to real-time data streams
 - [x] **Real-Time Monitoring** - Live dashboards and analytics for instant insights
 - [x] **Control Panel By Hand/AI** - Manual and AI modes for traffic control
 - [x] **Manage Sensors** - Add, remove, and configure sensors
@@ -100,13 +120,54 @@
 
 ## Getting Started
 
+## Architecture
+
+<div align="center">
+
+![Architecture](./assets/gif/architecture.gif)
+
+</div>
+
+### Core Components
+
+| Component          | Technology                                                                                             | Purpose                                     |
+| :----------------- | :----------------------------------------------------------------------------------------------------- | :------------------------------------------ |
+| **Context Broker** | ![Orion-LD](https://img.shields.io/badge/Orion--LD-002E67?style=flat-square)                           | Real-time context management (NGSI-LD)      |
+| **AI Engine**      | ![Python](https://img.shields.io/badge/Python-3776AB?style=flat-square&logo=python&logoColor=white)    | Reinforcement Learning traffic optimization |
+| **Simulation**     | ![SUMO](https://img.shields.io/badge/SUMO-E3A600?style=flat-square)                                    | Urban mobility simulation                   |
+| **Time-Series DB** | ![CrateDB](https://img.shields.io/badge/CrateDB-009DC7?style=flat-square)                              | Historical data storage & analytics         |
+| **Frontend**       | ![React](https://img.shields.io/badge/React-61DAFB?style=flat-square&logo=react&logoColor=black)       | Admin dashboard & public portal             |
+| **Database**       | ![MongoDB](https://img.shields.io/badge/MongoDB-47A248?style=flat-square&logo=mongodb&logoColor=white) | Current state persistence                   |
+
+## Getting Started
+
 ### Prerequisites
 
 | Requirement | Version | Download                                           |
 | :---------- | :------ | :------------------------------------------------- |
+| :---------- | :------ | :------------------------------------------------- |
 | **Docker**  | 28.3.2+ | [Get Docker](https://www.docker.com/get-started/)  |
 | **Node.js** | 24.6.0+ | [Get Node.js](https://nodejs.org/en/download)      |
 | **SUMO**    | 1.25.0+ | [Get SUMO](https://sumo.dlr.de/docs/Downloads.php) |
+
+> **Note:** If you want to run SUMO on your local machine, you need to download and install it from the [SUMO website](https://sumo.dlr.de/docs/Downloads.php).
+
+### 🏃‍♂️ Run the Application
+
+Follow these steps to get GreenWave running locally:
+
+```bash
+# Clone the repository
+git clone https://github.com/sonmessia/GreenWave.git
+
+# Navigate to the project directory
+cd GreenWave
+
+# Copy the environment variables
+cp .env.example .env
+```
+
+#### Launch All Services
 
 > **Note:** If you want to run SUMO on your local machine, you need to download and install it from the [SUMO website](https://sumo.dlr.de/docs/Downloads.php).
 
@@ -173,10 +234,57 @@ npm install  # Install dependencies
 npm run dev  # Run frontend
 ```
 
+#### Start Backend Only
+
+```bash
+# By Docker Compose
+# Start backend service with Docker Compose
+docker compose up -d backend
+
+# Stop backend service with Docker Compose
+docker compose down backend
+
+# By Python
+cd src/backend  # Change directory to backend
+
+# Copy the environment variables
+cp .env.example .env
+
+pip install -r requirements.txt  # Install dependencies
+
+uvicorn app.main:app --host 0.0.0.0 --port 8000  # Run backend
+```
+
+#### Start Frontend Only
+
+```bash
+# By Docker Compose
+# Start frontend service with Docker Compose
+docker compose up -d frontend
+
+# Stop frontend service with Docker Compose
+docker compose down frontend
+
+# By Node.js
+cd src/frontend  # Change directory to frontend
+
+# Copy the environment variables
+cp .env.example .env
+npm install  # Install dependencies
+
+npm run dev  # Run frontend
+```
+
 ### Access Points
 
 Once services are running, access them at:
 
+| Service            | URL                                            | Description              |
+| :----------------- | :--------------------------------------------- | :----------------------- |
+| **Frontend**       | [http://localhost:5173](http://localhost:5173) | User & Admin interfaces  |
+| **Backend API**    | [http://localhost:8000](http://localhost:8000) | REST API endpoints       |
+| **Context Broker** | [http://localhost:1026](http://localhost:1026) | Orion-LD NGSI-LD API     |
+| **Quantum Leap**   | [http://localhost:8668](http://localhost:8668) | Time-series data storage |
 | Service            | URL                                            | Description              |
 | :----------------- | :--------------------------------------------- | :----------------------- |
 | **Frontend**       | [http://localhost:5173](http://localhost:5173) | User & Admin interfaces  |
@@ -230,6 +338,7 @@ This project is licensed under the **MIT License** - see the [LICENSE](LICENSE) 
 
 <div align="center">
 
+**Made by GreenWave Team**
 **Made by GreenWave Team**
 
 _Building smarter, cleaner cities through AI and IoT_
