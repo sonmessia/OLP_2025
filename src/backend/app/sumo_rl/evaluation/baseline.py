@@ -1,3 +1,8 @@
+# Copyright (c) 2025 Green Wave Team
+# 
+# This software is released under the MIT License.
+# https://opensource.org/licenses/MIT
+
 # FILE 7: baseline.py
 # Chạy mô phỏng với đèn cố định (không có AI) để làm baseline.
 

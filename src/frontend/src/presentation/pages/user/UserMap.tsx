@@ -1,3 +1,8 @@
+// Copyright (c) 2025 Green Wave Team
+// 
+// This software is released under the MIT License.
+// https://opensource.org/licenses/MIT
+
 import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { UserMapHeader } from "../../components/feature/usermap/UserMapHeader";

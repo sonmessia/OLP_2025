@@ -1,3 +1,8 @@
+// Copyright (c) 2025 Green Wave Team
+// 
+// This software is released under the MIT License.
+// https://opensource.org/licenses/MIT
+
 import React, { useEffect, useRef } from "react";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";

@@ -1,3 +1,10 @@
+<!--
+ Copyright (c) 2025 Green Wave Team
+ 
+ This software is released under the MIT License.
+ https://opensource.org/licenses/MIT
+-->
+
 # 🎉 FINAL VERDICT: DQN MODEL EVALUATION RESULTS
 
 **Training ID**: 20251129_194332  

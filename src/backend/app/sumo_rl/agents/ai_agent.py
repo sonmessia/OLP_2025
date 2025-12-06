@@ -1,3 +1,8 @@
+# Copyright (c) 2025 Green Wave Team
+# 
+# This software is released under the MIT License.
+# https://opensource.org/licenses/MIT
+
 """
 AI GreenWave Agent - Decision Making Component
 Chuyển đổi từ Flask sang FastAPI Service

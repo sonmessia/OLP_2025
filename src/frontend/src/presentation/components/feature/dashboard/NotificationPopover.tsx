@@ -1,3 +1,8 @@
+// Copyright (c) 2025 Green Wave Team
+// 
+// This software is released under the MIT License.
+// https://opensource.org/licenses/MIT
+
 import React, { useState } from "react";
 import { Bell, CheckCircle, AlertTriangle, Info } from "lucide-react";
 import type { AlertLog } from "../../../../domain/models/DashboardModel";

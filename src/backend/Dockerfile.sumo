@@ -1,3 +1,8 @@
+# Copyright (c) 2025 Green Wave Team
+# 
+# This software is released under the MIT License.
+# https://opensource.org/licenses/MIT
+
 # Dockerfile for SUMO Simulation Container
 FROM ubuntu:22.04
 
