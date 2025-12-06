@@ -1,0 +1,177 @@
+/**
+ * Copyright (c) 2025 Green Wave Team
+ * 
+ * This software is released under the MIT License.
+ * https://opensource.org/licenses/MIT
+ */
+
+/**
+ * Any CSS included here will be global. The classic template
+ * bundles Infima by default. Infima is a CSS framework designed to
+ * work well for content-centric websites.
+ */
+
+/* You can override the default Infima variables here. */
+:root {
+  /* GreenWave Primary - Light Mode (#107c41) */
+  --ifm-color-primary: #107c41;
+  --ifm-color-primary-dark: #0e6f3a;
+  --ifm-color-primary-darker: #0d6937;
+  --ifm-color-primary-darkest: #0b562d;
+  --ifm-color-primary-light: #128948;
+  --ifm-color-primary-lighter: #13904b;
+  --ifm-color-primary-lightest: #16a456;
+
+  --ifm-code-font-size: 95%;
+  --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.1);
+
+  /* GreenWave Custom Colors (Light Mode) */
+  --color-greenwave-primary: #107c41;
+  --color-greenwave-secondary: #e8f5e9;
+  --color-greenwave-accent: #ffffff;
+  --color-text-main: #1f2937;
+  --color-text-muted: #6b7280;
+
+  /* Functional Colors */
+  --color-traffic-red: #d9232f;
+  --color-traffic-yellow: #fbbf24;
+  --color-traffic-green: #10b981;
+  --color-traffic-info: #3b82f6;
+}
+
+/* For readability concerns, you should choose a lighter palette in dark mode. */
+[data-theme="dark"] {
+  /* GreenWave Primary - Dark Mode (#4caf50) */
+  --ifm-color-primary: #4caf50;
+  --ifm-color-primary-dark: #449d48;
+  --ifm-color-primary-darker: #409444;
+  --ifm-color-primary-darkest: #357a38;
+  --ifm-color-primary-light: #54c158;
+  --ifm-color-primary-lighter: #5ccb60;
+  --ifm-color-primary-lightest: #74d878;
+
+  --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.3);
+
+  /* GreenWave Custom Colors (Dark Mode) */
+  --color-greenwave-primary: #4caf50;
+  --color-greenwave-secondary: #1b5e20;
+  --color-greenwave-accent: #121212;
+  --color-text-main: #e0e0e0;
+  --color-text-muted: #9e9e9e;
+}
+
+/* =========================================
+   Custom Admonitions (Premium Look)
+   ========================================= */
+
+/* Base Alert Style */
+.alert {
+  border: none;
+  border-left: 4px solid;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  padding: 1rem 1.25rem;
+  margin-bottom: 1.5rem;
+  position: relative;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.alert:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
+}
+
+/* Hide default SVG icons */
+.alert svg {
+  display: none !important;
+}
+
+/* Icon Container */
+.alert [class^="admonitionIcon"] {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  margin-right: 0.5rem;
+  font-size: 1.25rem; /* Emoji size */
+  line-height: 1;
+}
+
+/* Custom Icons via ::before */
+/* Note (Secondary) */
+.alert--secondary {
+  background-color: #f8f9fa;
+  border-left-color: #6c757d;
+  color: #343a40;
+}
+.alert--secondary [class^="admonitionIcon"]::before {
+  content: "📝";
+}
+
+/* Tip (Success) */
+.alert--success {
+  background-color: #f0fdf4;
+  border-left-color: #22c55e;
+  color: #14532d;
+}
+.alert--success [class^="admonitionIcon"]::before {
+  content: "💡";
+}
+
+/* Info (Info) */
+.alert--info {
+  background-color: #eff6ff;
+  border-left-color: #3b82f6;
+  color: #1e3a8a;
+}
+.alert--info [class^="admonitionIcon"]::before {
+  content: "ℹ️";
+}
+
+/* Warning (Warning) */
+.alert--warning {
+  background-color: #fffbeb;
+  border-left-color: #f59e0b;
+  color: #78350f;
+}
+.alert--warning [class^="admonitionIcon"]::before {
+  content: "⚠️";
+}
+
+/* Danger (Danger) */
+.alert--danger {
+  background-color: #fef2f2;
+  border-left-color: #ef4444;
+  color: #7f1d1d;
+}
+.alert--danger [class^="admonitionIcon"]::before {
+  content: "🔥";
+}
+
+/* Dark Mode Adjustments */
+[data-theme="dark"] .alert--secondary {
+  background-color: #2d3748;
+  color: #e2e8f0;
+  border-left-color: #a0aec0;
+}
+[data-theme="dark"] .alert--success {
+  background-color: #064e3b;
+  color: #d1fae5;
+  border-left-color: #34d399;
+}
+[data-theme="dark"] .alert--info {
+  background-color: #1e3a8a;
+  color: #dbeafe;
+  border-left-color: #60a5fa;
+}
+[data-theme="dark"] .alert--warning {
+  background-color: #78350f;
+  color: #fef3c7;
+  border-left-color: #fbbf24;
+}
+[data-theme="dark"] .alert--danger {
+  background-color: #7f1d1d;
+  color: #fee2e2;
+  border-left-color: #f87171;
+}
