@@ -170,6 +170,7 @@ class TraCIConnector:
             # BUT SUMO won't respond until simulation starts!
             # Solution: use traci.init with numRetries=10 (wait ~10s)
             traci.init(port=port, host=host, numRetries=10)
+            traci.setOrder(1) # Order 1: Backend (Passive/Slave) -> Does not block simulation
             
             logger.info("TraCI init successful, starting simulation...")
             
@@ -180,19 +181,29 @@ class TraCIConnector:
             logger.info(f"Simulation started at time: {traci.simulation.getTime()}")
             
             # Get scenario info
+            detected_tls_list = traci.trafficlight.getIDList()
+            if not detected_tls_list:
+                logger.error("No traffic lights found in simulation")
+                traci.close()
+                return False
+
+            target_tls_id = None
             if scenario in self.SCENARIOS:
-                self.scenario = scenario
-                self.tls_id = self.SCENARIOS[scenario]['tls_id']
-            else:
-                # Try to detect TLS from simulation
-                tls_list = traci.trafficlight.getIDList()
-                if tls_list:
-                    self.tls_id = tls_list[0]
-                    logger.warning(f"Unknown scenario '{scenario}', using first TLS: {self.tls_id}")
+                config_tls_id = self.SCENARIOS[scenario]['tls_id']
+                if config_tls_id in detected_tls_list:
+                    target_tls_id = config_tls_id
+                    self.scenario = scenario
                 else:
-                    logger.error("No traffic lights found in simulation")
-                    traci.close()
-                    return False
+                    logger.warning(f"Requested scenario '{scenario}' expects TLS '{config_tls_id}' but it was not found.")
+                    logger.warning(f"Available TLS: {detected_tls_list}")
+                    # Fallback to first available
+                    target_tls_id = detected_tls_list[0]
+                    self.scenario = f"{scenario} (Mismatch - Using {target_tls_id})"
+            else:
+                target_tls_id = detected_tls_list[0]
+                self.scenario = scenario
+
+            self.tls_id = target_tls_id
             
             self.connected = True
             self.host = host

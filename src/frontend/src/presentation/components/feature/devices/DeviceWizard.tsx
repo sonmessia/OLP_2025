@@ -240,30 +240,27 @@ export const DeviceWizard: React.FC<DeviceWizardProps> = ({
             ).map((step) => (
               <div key={step} className="flex items-center flex-1">
                 <div
-                  className={`flex items-center justify-center w-10 h-10 rounded-full font-medium transition-colors ${
-                    getStepNumber(currentStep) >= getStepNumber(step)
+                  className={`flex items-center justify-center w-10 h-10 rounded-full font-medium transition-colors ${getStepNumber(currentStep) >= getStepNumber(step)
                       ? "bg-greenwave-primary-light text-white"
                       : "bg-gray-200 dark:bg-gray-700 text-gray-600 dark:text-gray-400"
-                  }`}
+                    }`}
                 >
                   {getStepNumber(step)}
                 </div>
                 <span
-                  className={`ml-3 text-sm font-medium transition-colors hidden md:block ${
-                    getStepNumber(currentStep) >= getStepNumber(step)
+                  className={`ml-3 text-sm font-medium transition-colors hidden md:block ${getStepNumber(currentStep) >= getStepNumber(step)
                       ? "text-gray-900 dark:text-white"
                       : "text-gray-500 dark:text-gray-400"
-                  }`}
+                    }`}
                 >
                   {getStepTitle(step)}
                 </span>
                 {step !== "confirm" && (
                   <div
-                    className={`flex-1 h-1 mx-4 transition-colors ${
-                      getStepNumber(currentStep) > getStepNumber(step)
+                    className={`flex-1 h-1 mx-4 transition-colors ${getStepNumber(currentStep) > getStepNumber(step)
                         ? "bg-greenwave-primary-light"
                         : "bg-gray-200 dark:bg-gray-700"
-                    }`}
+                      }`}
                   />
                 )}
               </div>
@@ -286,11 +283,10 @@ export const DeviceWizard: React.FC<DeviceWizardProps> = ({
                     <button
                       key={option.type}
                       onClick={() => handleDeviceTypeSelect(option.type)}
-                      className={`p-6 rounded-2xl border-2 transition-all hover:scale-105 ${
-                        deviceData.type === option.type
+                      className={`p-6 rounded-2xl border-2 transition-all hover:scale-105 ${deviceData.type === option.type
                           ? "border-greenwave-primary-light bg-green-50 dark:bg-green-900/20"
                           : "border-gray-200 dark:border-gray-700 hover:border-greenwave-primary-light/50 bg-white dark:bg-gray-800"
-                      }`}
+                        }`}
                     >
                       <div className="flex items-start gap-4">
                         <div
@@ -535,6 +531,7 @@ export const DeviceWizard: React.FC<DeviceWizardProps> = ({
                               httpConfig: {
                                 ...deviceData.httpConfig,
                                 rtspUrl: e.target.value,
+                                ipAddress: deviceData.httpConfig?.ipAddress || "",
                               },
                             })
                           }
@@ -566,8 +563,8 @@ export const DeviceWizard: React.FC<DeviceWizardProps> = ({
                           connectionTest === "success"
                             ? "var(--color-greenwave-primary-light)"
                             : connectionTest === "error"
-                            ? "var(--color-traffic-red)"
-                            : "linear-gradient(135deg, var(--color-greenwave-primary-light) 0%, var(--color-greenwave-primary-dark) 100%)",
+                              ? "var(--color-traffic-red)"
+                              : "linear-gradient(135deg, var(--color-greenwave-primary-light) 0%, var(--color-greenwave-primary-dark) 100%)",
                         color: "white",
                       }}
                     >

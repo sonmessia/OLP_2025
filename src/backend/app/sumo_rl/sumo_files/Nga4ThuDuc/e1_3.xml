@@ -1,28 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<!-- generated on 2025-12-04T22:27:29.178578+07:00 by Eclipse SUMO sumo 1.25.0
+<!-- generated on 2025-12-06T07:23:46.157310+00:00 by Eclipse SUMO sumo 1.25.0
 <sumoConfiguration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/sumoConfiguration.xsd">
 
     <input>
-        <net-file value="D:\OLP\OLP_2025\src\backend\app\sumo_rl\sumo_files\Nga4ThuDuc\Nga4ThuDuc.net.xml"/>
-        <route-files value="D:\OLP\OLP_2025\src\backend\app\sumo_rl\sumo_files\Nga4ThuDuc\routes.rou.xml"/>
-        <additional-files value="D:\OLP\OLP_2025\src\backend\app\sumo_rl\sumo_files\Nga4ThuDuc\Nga4ThuDuc.add.xml"/>
+        <net-file value="/app/sumo_files/Nga4ThuDuc/Nga4ThuDuc.net.xml"/>
+        <route-files value="/app/sumo_files/Nga4ThuDuc/routes.rou.xml"/>
+        <additional-files value="/app/sumo_files/Nga4ThuDuc/Nga4ThuDuc.add.xml"/>
     </input>
-
-    <time>
-        <step-length value="1.0"/>
-    </time>
 
     <traci_server>
         <remote-port value="8813"/>
     </traci_server>
 
-    <gui_only>
-        <start value="true"/>
-    </gui_only>
-
 </sumoConfiguration>
--->
-
-<detector xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/det_e1_file.xsd">
-    <interval begin="0.00" end="300.00" id="e1_3" nVehContrib="0" flow="0.00" occupancy="0.00" speed="-1.00" harmonicMeanSpeed="-1.00" length="-1.00" nVehEntered="0"/>

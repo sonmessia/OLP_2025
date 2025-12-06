@@ -88,7 +88,7 @@ export const SystemLogs: React.FC<SystemLogsProps> = ({
         {displayLogs.length} / {maxLogs} logs
       </div>
 
-      <style jsx>{`
+      <style>{`
         .custom-scrollbar::-webkit-scrollbar {
           width: 6px;
         }

@@ -50,7 +50,7 @@ graph TB
         B4 --> C
         B5 --> C
         C --> D[QuantumLeap]
-        D --> E[TimescaleDB]
+        D --> E[CrateDB]
     end
 
     subgraph "3. Application Layer - FastAPI Backend"
@@ -294,9 +294,9 @@ Container Orchestration (Docker Compose)
     │     image: orchestracities/quantumleap:latest
     │     ports: ["8668:8668"]
     │
-    │   timescaledb:            # PostgreSQL with TimescaleDB
-    │     image: timescale/timescaledb:latest-pg14
-    │     ports: ["5432:5432"]
+    │   cratedb:                # Time-series Database
+    │     image: crate:5.4
+    │     ports: ["4200:4200"]
     │
     │   backend:                # FastAPI application
     │     build: ./backend
@@ -386,7 +386,7 @@ Weather API     ──┘                                           │
             [QuantumLeap]                              [Subscriptions]  [FastAPI]
                     │                                         │             │
                     ▼                                         ▼             ▼
-            [TimescaleDB]                            [AI Agent (DQN)]  [API Routes]
+            [CrateDB]                                [AI Agent (DQN)]  [API Routes]
                     │                                         │             │
                     ▼                                         ▼             ▼
           [Historical Data]                          [TrafficLight]  [Dashboard]
@@ -478,8 +478,7 @@ AI/ML LAYER:
 DATA LAYER:
 ├─ Orion-LD                     (Context Broker - NGSI-LD)
 ├─ QuantumLeap                  (Time-series Adapter)
-├─ TimescaleDB                  (Time-series Database)
-└─ PostgreSQL 14                (Relational Database)
+├─ CrateDB                    (Time-series & Geospatial Database)
 
 INFRASTRUCTURE LAYER:
 ├─ Docker                       (Containerization)

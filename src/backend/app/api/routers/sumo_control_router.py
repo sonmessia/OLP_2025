@@ -9,6 +9,7 @@ Updated: 2025-11-30 - Added TraCI connector support
 """
 import logging
 import time
+import os
 from typing import Dict, Optional
 
 from fastapi import APIRouter, HTTPException
@@ -149,75 +150,119 @@ async def connect_to_simulation(request: ConnectSimulationRequest):
 @router.post("/start")
 async def start_simulation(request: StartSimulationRequest):
     """
-    Start SUMO simulation - FULLY AUTOMATED!
+    Start SUMO simulation - AUTOMATED with FALLBACK
     
-    This endpoint will:
-    1. Kill any existing SUMO on port 8813
-    2. Start new SUMO on host machine for requested scenario
-    3. Connect to it via TraCI
-    
-    No manual SUMO startup required!
+    Attempts:
+    1. Start on Host (via starter service)
+    2. Fallback: Connect directly to 'sumo-simulation' container
     """
     global traci_connector
     
+    # Track errors to report if all methods fail
+    errors = []
+    
+    # HOT SWAP TRIGGER
+    # Write requested scenario to shared volume to trigger SUMO hot-reload if needed
     try:
-        # Step 1: Start SUMO on host
-        logger.info(f"Starting SUMO for scenario: {request.scenario}")
+        base_path = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(__file__))))
+        trigger_file = os.path.join(base_path, "app", "sumo_rl", "sumo_files", "current_scenario.txt")
         
-        if not start_sumo_on_host(request.scenario):
-            raise HTTPException(
-                status_code=500,
-                detail=f"Failed to start SUMO on host. Check /tmp/sumo_{request.scenario}.log for details."
+        # Verify if file exists (it should be mounted)
+        # We only write if the content is different to avoid unnecessary restarts if launcher logic changes
+        current_content = ""
+        if os.path.exists(trigger_file):
+            with open(trigger_file, "r") as f:
+                current_content = f.read().strip()
+        
+        if current_content != request.scenario:
+            logger.info(f"REQUESTING SCENARIO SWITCH: {request.scenario}")
+            with open(trigger_file, "w") as f:
+                f.write(request.scenario)
+            
+            # Wait a bit for the launcher to restart SUMO
+            logger.info("Waiting for SUMO to restart with new scenario...")
+            time.sleep(5) 
+    except Exception as e:
+        logger.warning(f"Failed to write hot-swap trigger file: {e}")
+
+    # METHOD 1: Try Host Starter Service
+    host_started = False
+    try:
+        logger.info(f"Method 1: Attempting to start SUMO on host via starter service...")
+        if start_sumo_on_host(request.scenario):
+            logger.info("Host starter service returned success. Waiting for initialization...")
+            time.sleep(3)
+            
+            # Connect via TraCI using Docker Bridge IP
+            if traci_connector is None:
+                traci_connector = TraCIConnector()
+            elif traci_connector.is_connected():
+                traci_connector.close()
+                
+            success = traci_connector.connect(
+                host="172.17.0.1",
+                port=request.port,
+                scenario=request.scenario
             )
-        
-        # Step 2: Wait for SUMO to be ready
-        logger.info("Waiting for SUMO to initialize...")
-        time.sleep(3)
-        
-        # Step 3: Connect via TraCI
+            
+            if success:
+                return _build_connection_response(request.scenario, "connected_host")
+            else:
+                 errors.append("Host starter succeeded but TraCI connection failed")
+        else:
+             errors.append("Host starter service returned failure")
+             
+    except Exception as e:
+        logger.warning(f"Method 1 failed: {e}")
+        errors.append(f"Host starter exception: {e}")
+
+    # METHOD 2: Fallback to Direct Container Connection (Headless/Containerized)
+    logger.info("Method 2: Falling back to direct container connection (sumo-simulation)...")
+    try:
         if traci_connector is None:
             traci_connector = TraCIConnector()
-        else:
-            # Close existing connection if any
-            if traci_connector.is_connected():
-                logger.info("Closing existing SUMO connection")
-                traci_connector.close()
-                time.sleep(1)
+        elif traci_connector.is_connected():
+            traci_connector.close()
+            
+        target_host = os.getenv("SUMO_HOST", "sumo-simulation")
         
-        # Use bridge IP for Docker -> Host communication
-        logger.info("Connecting to SUMO via TraCI...")
+        # Determine port - if running in same network, use 8813
+        # If testing locally outside docker, might need localhost
         success = traci_connector.connect(
-            host="172.17.0.1",  # Docker bridge IP to reach host
-            port=request.port,
+            host=target_host,
+            port=request.port, # default 8813
             scenario=request.scenario
         )
         
-        if not success:
-            raise HTTPException(
-                status_code=500,
-                detail="SUMO started but failed to connect via TraCI. Check backend logs."
-            )
-        
-        # Get initial state
-        state = traci_connector.get_traffic_state()
-        scenario_info = traci_connector.get_scenario_info()
-        
-        logger.info(f"Successfully connected to SUMO scenario: {request.scenario}")
-        
-        return {
-            "status": "connected",
-            "message": f"Successfully started and connected to SUMO scenario {request.scenario}",
-            **scenario_info,
-            "initial_state": state
-        }
-        
-    except HTTPException:
-        raise
+        if success:
+            return _build_connection_response(request.scenario, "connected_container_fallback")
+        else:
+            errors.append(f"Direct connection to {target_host}:{request.port} failed")
+            
     except Exception as e:
-        logger.error(f"Failed to start SUMO: {e}")
-        import traceback
-        logger.error(traceback.format_exc())
-        raise HTTPException(status_code=500, detail=str(e)) from e
+        logger.error(f"Method 2 failed: {e}")
+        errors.append(f"Direct connection exception: {e}")
+
+    # If we get here, all methods failed
+    error_msg = "; ".join(errors)
+    logger.error(f"All SUMO start methods failed. Errors: {error_msg}")
+    raise HTTPException(
+        status_code=500, 
+        detail=f"Failed to start/connect to SUMO. Details: {error_msg}"
+    )
+
+def _build_connection_response(scenario, mode):
+    global traci_connector
+    state = traci_connector.get_traffic_state()
+    scenario_info = traci_connector.get_scenario_info()
+    return {
+        "status": "connected",
+        "mode": mode,
+        "message": f"Successfully connected to SUMO scenario {scenario}",
+        **scenario_info,
+        "initial_state": state
+    }
+
 
 
 @router.post("/stop")
