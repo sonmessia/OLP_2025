@@ -4,6 +4,22 @@
 # https://opensource.org/licenses/MIT
 
 services:
+  frontend:
+    build:
+      context: ./src/frontend
+      args:
+        VITE_API_URL: http://localhost:8000
+        VITE_ORION_URL: http://localhost:1026/ngsi-ld/v1
+        VITE_WS_URL: http://localhost:8000/sumo/socket  # Updated based on backend assumptions, looking for websocket
+    container_name: frontend
+    networks:
+      - fiware_default
+    ports:
+      - "5173:80"
+    restart: unless-stopped
+    depends_on:
+      - backend
+
   mongo-db:
     image: mongo:5.0
     container_name: mongo-db
@@ -15,21 +31,20 @@ services:
       - mongo-db:/data/db
     command: --bind_ip_all
 
-  postgres-db:
-    image: postgres:15-alpine
-    container_name: postgres-db
-    restart: unless-stopped
-    environment:
-      POSTGRES_USER: ${POSTGRES_USER}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-      POSTGRES_DB: ${POSTGRES_DB}
+  cratedb:
+    image: crate:5.4
+    container_name: cratedb
+    hostname: cratedb
+    networks:
+      - fiware_default
     ports:
-      - "5432:5432"
+      - "4200:4200"
+      - "4300:4300"
+    command: crate -Cauth.host_based.enabled=false  -Ccluster.name=democluster -Chttp.cors.enabled=true -Chttp.cors.allow-origin="*"
     volumes:
-      - ./config/postgres/init:/docker-entrypoint-initdb.d
-      - postgres-db:/var/lib/postgresql/data
+      - cratedb:/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U $$POSTGRES_USER"]
+      test: curl --fail -s http://localhost:4200/ || exit 1
       interval: 10s
       timeout: 5s
       retries: 5
@@ -82,14 +97,11 @@ services:
     ports:
       - "8668:8668"
     environment:
-      POSTGRES_HOST: postgres-db
-      POSTGRES_PORT: 5432
-      POSTGRES_DB: ${POSTGRES_DB}
-      POSTGRES_USER: ${POSTGRES_USER}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      CRATE_HOST: cratedb
+      USE_GEOCODING: "False"
       LOGLEVEL: INFO
     depends_on:
-      postgres-db:
+      cratedb:
         condition: service_healthy
       orion-ld:
         condition: service_started
@@ -140,7 +152,7 @@ services:
       BACKEND_URL: http://backend:8000
     volumes:
       - /tmp/.X11-unix:/tmp/.X11-unix:rw
-      - ./src/backend/app/sumo_rl/sumo_files:/app/sumo_files:ro
+      - ./src/backend/app/sumo_rl/sumo_files:/app/sumo_files:rw
       - ./src/backend/app/sumo_rl:/app/sumo_rl:ro
     depends_on:
       - orion-ld
@@ -148,9 +160,8 @@ services:
     restart: unless-stopped
     command: >
       bash -c "
-        echo 'Starting SUMO Simulation with scenario: ${SUMO_SCENARIO:-Nga4ThuDuc}';
-        sleep 5;
-        python3 /app/sumo_rl/agents/iot_agent.py --scenario ${SUMO_SCENARIO:-Nga4ThuDuc} --gui
+        echo 'Starting SUMO Simulation with Hot-Swap Launcher';
+        python3 /app/sumo_rl/launcher.py
       "
 
 networks:
@@ -159,4 +170,4 @@ networks:
 
 volumes:
   mongo-db:
-  postgres-db:
+  cratedb:

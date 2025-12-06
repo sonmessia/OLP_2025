@@ -37,9 +37,8 @@ nano .env
 **Default `.env` values:**
 ```env
 # Database
-POSTGRES_USER=postgres
-POSTGRES_PASSWORD=postgres
-POSTGRES_DB=fiware
+# Database (CrateDB uses defaults: http://localhost:4200)
+# No authentication by default in this dev setup
 
 # SUMO Configuration
 SUMO_SCENARIO=Nga4ThuDuc  # Options: Nga4ThuDuc, NguyenThaiSon, QuangTrung
@@ -327,7 +326,7 @@ docker-compose ps
 # backend             Up
 # fiware-orionld      Up (healthy)
 # mongo-db            Up
-# postgres-db         Up (healthy)
+# cratedb             Up (healthy)
 # quantumleap         Up (healthy)
 # sumo-simulation     Up
 ```
@@ -398,9 +397,8 @@ sumo-simulation:
    ```
 
 2. **Update default passwords**
-   ```env
-   POSTGRES_PASSWORD=<strong-random-password>
-   ```
+   # Secure CrateDB if needed (refer to CrateDB docs)
+   # CRATE_HOST=...
 
 3. **Restrict network access**
    ```yaml
