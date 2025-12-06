@@ -14,9 +14,7 @@ export class AirQualityApiClient {
   /**
    * Query AirQualityObserved Entities
    */
-  async getAll(
-    params?: QueryParams
-  ): Promise<AirQualityObservedDto[] | number> {
+  async getAll(): Promise<AirQualityObservedDto[] | number> {
     // Mock data implementation
     await new Promise((resolve) => setTimeout(resolve, 800)); // Simulate network delay
     return generateMockAirQualityData();

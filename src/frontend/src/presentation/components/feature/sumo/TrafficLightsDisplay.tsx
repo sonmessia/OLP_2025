@@ -1,10 +1,12 @@
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { useAppSelector } from "../../../../data/redux/hooks";
 import { TrafficCone, Star, Circle } from "lucide-react";
 import { TrafficLightCard } from "./components/TrafficLightCard";
 import { TrafficLightSkeleton } from "./components/TrafficLightSkeleton";
 
 export const TrafficLightsDisplay: React.FC = () => {
+  const { t } = useTranslation("sumo");
   const { simulationState } = useAppSelector((state) => state.sumo);
 
   const totalLights = simulationState?.totalTrafficLights || 0;
@@ -15,10 +17,10 @@ export const TrafficLightsDisplay: React.FC = () => {
       <div className="flex items-center gap-3 mb-4">
         <TrafficCone className="w-6 h-6 text-emerald-600 dark:text-emerald-400" />
         <h2 className="text-xl font-bold text-gray-900 dark:text-white">
-          Traffic Lights
+          {t("trafficLight.title")}
           {totalLights > 0 && (
             <span className="ml-2 text-sm font-normal text-gray-600 dark:text-gray-400">
-              ({totalLights} lights)
+              ({totalLights} {t("trafficLight.lights")})
             </span>
           )}
         </h2>
@@ -49,7 +51,7 @@ export const TrafficLightsDisplay: React.FC = () => {
             >
               <Circle className="w-4 h-4 text-blue-600 dark:text-blue-400 animate-pulse" />
               <span className="text-sm text-blue-800 dark:text-blue-200">
-                Waiting for traffic light data...
+                {t("trafficLight.waiting")}
               </span>
             </div>
           </div>
@@ -62,19 +64,19 @@ export const TrafficLightsDisplay: React.FC = () => {
           <div className="flex items-center gap-4 text-xs text-gray-600 dark:text-gray-400">
             <div className="flex items-center gap-2">
               <div className="w-3 h-3 rounded-full bg-emerald-500 shadow-lg shadow-emerald-500/50" />
-              <span>Green</span>
+              <span>{t("trafficLight.legend.green")}</span>
             </div>
             <div className="flex items-center gap-2">
               <div className="w-3 h-3 rounded-full bg-yellow-500 shadow-lg shadow-yellow-500/50" />
-              <span>Yellow</span>
+              <span>{t("trafficLight.legend.yellow")}</span>
             </div>
             <div className="flex items-center gap-2">
               <div className="w-3 h-3 rounded-full bg-red-500 shadow-lg shadow-red-500/50" />
-              <span>Red</span>
+              <span>{t("trafficLight.legend.red")}</span>
             </div>
             <div className="flex items-center gap-2">
               <Star className="w-3 h-3 text-emerald-600 dark:text-emerald-400 fill-current" />
-              <span>Main Control</span>
+              <span>{t("trafficLight.mainControl")}</span>
             </div>
           </div>
         </div>

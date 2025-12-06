@@ -137,7 +137,7 @@ export const UserMap: React.FC = () => {
       />
 
       {/* Main Content */}
-      <div className="relative h-[calc(100vh-72px)]">
+      <div className="relative z-0 h-[calc(100vh-72px)]">
         {/* Map View */}
         <UserMapView
           isDarkMode={isDarkMode}

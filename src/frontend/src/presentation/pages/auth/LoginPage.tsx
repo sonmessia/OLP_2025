@@ -1,12 +1,15 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
+import { useTranslation } from "react-i18next";
 import type { AppDispatch } from "../../../data/redux/store";
 import { login, clearError } from "../../../data/redux/authSlice";
 import type { RootState } from "../../../data/redux/store";
 import type { LoginCredentials } from "../../../domain/models/AuthModels";
 
 const LoginPage: React.FC = () => {
+  const { t } = useTranslation("auth");
+
   const [credentials, setCredentials] = useState<LoginCredentials>({
     email: "",
     password: "",
@@ -46,15 +49,15 @@ const LoginPage: React.FC = () => {
     const newErrors: typeof errors = {};
 
     if (!credentials.email.trim()) {
-      newErrors.email = "Email là bắt buộc";
+      newErrors.email = t("validation.emailRequired");
     } else if (!/\S+@\S+\.\S+/.test(credentials.email)) {
-      newErrors.email = "Email không hợp lệ";
+      newErrors.email = t("validation.emailInvalid");
     }
 
     if (!credentials.password.trim()) {
-      newErrors.password = "Mật khẩu là bắt buộc";
+      newErrors.password = t("validation.passwordRequired");
     } else if (credentials.password.length < 6) {
-      newErrors.password = "Mật khẩu phải có ít nhất 6 ký tự";
+      newErrors.password = t("validation.passwordMinLength");
     }
 
     setErrors(newErrors);
@@ -113,15 +116,15 @@ const LoginPage: React.FC = () => {
             </div>
           </div>
           <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
-            Đăng nhập vào hệ thống
+            {t("login.title")}
           </h2>
           <p className="mt-2 text-center text-sm text-gray-600">
-            Hoặc{" "}
+            {t("login.subtitle")}{" "}
             <Link
               to="/register"
               className="font-medium text-indigo-600 hover:text-indigo-500"
             >
-              đăng ký tài khoản mới
+              {t("login.registerLink")}
             </Link>
           </p>
         </div>
@@ -156,7 +159,7 @@ const LoginPage: React.FC = () => {
                 htmlFor="email"
                 className="block text-sm font-medium text-gray-700"
               >
-                Email
+                {t("login.emailLabel")}
               </label>
               <input
                 id="email"
@@ -168,7 +171,7 @@ const LoginPage: React.FC = () => {
                 className={`mt-1 block w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm ${
                   errors.email ? "border-red-300" : "border-gray-300"
                 }`}
-                placeholder="example@email.com"
+                placeholder={t("login.emailPlaceholder")}
               />
               {errors.email && (
                 <p className="mt-1 text-sm text-red-600">{errors.email}</p>
@@ -180,7 +183,7 @@ const LoginPage: React.FC = () => {
                 htmlFor="password"
                 className="block text-sm font-medium text-gray-700"
               >
-                Mật khẩu
+                {t("login.passwordLabel")}
               </label>
               <input
                 id="password"
@@ -192,7 +195,7 @@ const LoginPage: React.FC = () => {
                 className={`mt-1 block w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm ${
                   errors.password ? "border-red-300" : "border-gray-300"
                 }`}
-                placeholder="••••••••"
+                placeholder={t("login.passwordPlaceholder")}
               />
               {errors.password && (
                 <p className="mt-1 text-sm text-red-600">{errors.password}</p>
@@ -232,37 +235,12 @@ const LoginPage: React.FC = () => {
                       d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
                     ></path>
                   </svg>
-                  Đang đăng nhập...
+                  {t("login.loggingIn")}
                 </>
               ) : (
-                "Đăng nhập"
+                t("login.loginButton")
               )}
             </button>
-          </div>
-
-          <div className="mt-6 border-t border-gray-200 pt-6">
-            <div className="text-sm text-gray-600">
-              <h3 className="font-medium text-gray-900 mb-2">
-                Tài khoản demo:
-              </h3>
-              <div className="space-y-1">
-                <p>
-                  <strong>Quản lý chính:</strong> admin@olp.vn / admin123
-                </p>
-                <p>
-                  <strong>Quản lý khu vực:</strong> manager.thuduc@olp.vn /
-                  manager123
-                </p>
-                <p>
-                  <strong>Quản lý khu vực:</strong> manager.nguyenthaison@olp.vn
-                  / manager123
-                </p>
-                <p>
-                  <strong>Quản lý khu vực:</strong> manager.quangtrung@olp.vn /
-                  manager123
-                </p>
-              </div>
-            </div>
           </div>
         </form>
       </div>

@@ -1,6 +1,18 @@
 import React, { useState } from "react";
-import { Moon, Sun, User, Monitor, Cpu, Route, Bell } from "lucide-react";
+import {
+  Moon,
+  Sun,
+  User,
+  Monitor,
+  Cpu,
+  Route,
+  Bell,
+  Globe,
+  Settings,
+  LogOut,
+} from "lucide-react";
 import { useNavigate, useLocation } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 import { useAppDispatch, useAppSelector } from "../../../../data/redux/hooks";
 import { UserRole } from "../../../../domain/models/AuthModels";
@@ -23,6 +35,13 @@ export const DashboardHeader: React.FC<DashboardHeaderProps> = ({
   onThemeToggle,
   isDarkMode = false,
 }) => {
+  const { t, i18n } = useTranslation([
+    "navigation",
+    "dashboard",
+    "user",
+    "common",
+    "alerts",
+  ]);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
@@ -34,21 +53,24 @@ export const DashboardHeader: React.FC<DashboardHeaderProps> = ({
     navigate("/login");
   };
 
+  const changeLanguage = (lng: string) => {
+    i18n.changeLanguage(lng);
+  };
+
   // Mock notifications state (In a real app, this would come from a store or context)
   const [notifications, setNotifications] = useState<AlertLog[]>([
     {
       id: "1",
       timestamp: new Date().toISOString(),
       type: "warning",
-      message: "Chỉ số PM2.5 tại Quận 1 vượt ngưỡng an toàn (160)",
+      message: t("alerts:pm25Warning", { location: "Quận 1", value: 160 }),
       resolved: false,
     },
     {
       id: "2",
       timestamp: new Date(Date.now() - 3600000).toISOString(),
       type: "info",
-      message:
-        "Hệ thống đã tự động điều chỉnh đèn tín hiệu tại Ngã tư Hàng Xanh",
+      message: t("alerts:systemAdjusted", { location: "Ngã tư Hàng Xanh" }),
       resolved: true,
     },
   ]);
@@ -65,22 +87,25 @@ export const DashboardHeader: React.FC<DashboardHeaderProps> = ({
 
   const navItems: NavItem[] = [
     {
-      label: "Dashboard",
+      label: t("navigation:dashboard"),
       path: "/admin",
       icon: Monitor,
     },
     {
-      label: "Điều phối giao thông",
+      label:
+        user?.role === UserRole.AREA_MANAGER
+          ? t("navigation:areaControl")
+          : t("navigation:trafficControl"),
       path: user?.role === UserRole.AREA_MANAGER ? "/area-manager" : "/control",
       icon: Route,
     },
     {
-      label: "Quản lý Thiết bị",
+      label: t("navigation:deviceManagement"),
       path: "/devices",
       icon: Cpu,
     },
     {
-      label: "Cảnh báo",
+      label: t("navigation:alerts"),
       path: "/subscriptions",
       icon: Bell,
     },
@@ -90,7 +115,10 @@ export const DashboardHeader: React.FC<DashboardHeaderProps> = ({
     <header className="bg-white dark:bg-gray-800 border-b-2 border-gray-200 dark:border-gray-700 px-6 py-2">
       <div className="flex items-center justify-between">
         {/* Logo and Title */}
-        <div className="flex items-center gap-3">
+        <div
+          className="flex items-center gap-3 cursor-pointer"
+          onClick={() => navigate("/")}
+        >
           <img
             src="/logo.png"
             alt="GreenWave Logo"
@@ -98,10 +126,10 @@ export const DashboardHeader: React.FC<DashboardHeaderProps> = ({
           />
           <div>
             <h1 className="text:xl md:text-2xl font-bold text-gray-900 dark:text-white">
-              GreenWave
+              {t("dashboard:title")}
             </h1>
             <p className="text-xs md:text-sm text-gray-600 dark:text-gray-400">
-              Hệ thống Điều phối Giao thông Thông minh
+              {t("dashboard:subtitle")}
             </p>
           </div>
         </div>
@@ -138,19 +166,6 @@ export const DashboardHeader: React.FC<DashboardHeaderProps> = ({
             onClearAll={handleClearAll}
           />
 
-          {/* Theme Toggle */}
-          <button
-            onClick={onThemeToggle}
-            className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
-            aria-label="Toggle theme"
-          >
-            {isDarkMode ? (
-              <Sun className="w-5 h-5 text-gray-600 dark:text-gray-400" />
-            ) : (
-              <Moon className="w-5 h-5 text-gray-600 dark:text-gray-400" />
-            )}
-          </button>
-
           {/* User Profile */}
           <div className="relative">
             <button
@@ -166,33 +181,98 @@ export const DashboardHeader: React.FC<DashboardHeaderProps> = ({
               </div>
               <div className="text-left hidden md:block">
                 <p className="text-sm font-medium text-gray-900 dark:text-white">
-                  {user?.name || "Người dùng"}
+                  {user?.name || t("user:guest")}
                 </p>
                 <p className="text-xs text-gray-500 dark:text-gray-400">
                   {user?.role === UserRole.ADMIN
-                    ? "Quản lý chính"
+                    ? t("user:admin")
                     : user?.role === UserRole.AREA_MANAGER
-                    ? `QL Khu vực: ${user.areaName}`
-                    : "Nhân viên"}
+                    ? `${t("user:areaManager")}: ${user.areaName}`
+                    : t("user:operator")}
                 </p>
               </div>
             </button>
 
             {/* Dropdown Menu */}
             {isProfileOpen && (
-              <div className="absolute right-0 mt-2 w-48 bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 py-2 z-50">
-                <button className="w-full px-4 py-2 text-left text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700">
-                  Hồ sơ
+              <div className="absolute right-0 mt-2 w-64 bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 py-2 z-50">
+                {/* Profile Links */}
+                <button className="w-full px-4 py-2 text-left text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 flex items-center gap-2">
+                  <User className="w-4 h-4" />
+                  {t("navigation:profile")}
                 </button>
-                <button className="w-full px-4 py-2 text-left text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700">
-                  Cài đặt
+                <button className="w-full px-4 py-2 text-left text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 flex items-center gap-2">
+                  <Settings className="w-4 h-4" />
+                  {t("navigation:settings")}
                 </button>
+
                 <hr className="my-2 border-gray-200 dark:border-gray-700" />
+
+                {/* Appearance & Language */}
+                <div className="px-4 py-2">
+                  <p className="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-2">
+                    {t("common:preferences", "Preferences")}
+                  </p>
+
+                  {/* Theme Toggle */}
+                  <button
+                    onClick={onThemeToggle}
+                    className="w-full flex items-center justify-between py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-md px-2 -mx-2 mb-1"
+                  >
+                    <div className="flex items-center gap-2">
+                      {isDarkMode ? (
+                        <Moon className="w-4 h-4" />
+                      ) : (
+                        <Sun className="w-4 h-4" />
+                      )}
+                      <span>{t("dashboard:theme", "Theme")}</span>
+                    </div>
+                    <span className="text-xs text-gray-500">
+                      {isDarkMode
+                        ? t("common:dark", "Dark")
+                        : t("common:light", "Light")}
+                    </span>
+                  </button>
+
+                  {/* Language Selection */}
+                  <div className="flex items-center justify-between py-2 text-sm text-gray-700 dark:text-gray-300">
+                    <div className="flex items-center gap-2">
+                      <Globe className="w-4 h-4" />
+                      <span>{t("common:language", "Language")}</span>
+                    </div>
+                    <div className="flex gap-1">
+                      <button
+                        onClick={() => changeLanguage("vi")}
+                        className={`px-2 py-1 text-xs rounded transition-colors ${
+                          i18n.language === "vi"
+                            ? "bg-emerald-100 text-emerald-700 dark:bg-emerald-900/50 dark:text-emerald-400 font-bold"
+                            : "hover:bg-gray-100 dark:hover:bg-gray-700"
+                        }`}
+                      >
+                        VI
+                      </button>
+                      <button
+                        onClick={() => changeLanguage("en")}
+                        className={`px-2 py-1 text-xs rounded transition-colors ${
+                          i18n.language === "en"
+                            ? "bg-emerald-100 text-emerald-700 dark:bg-emerald-900/50 dark:text-emerald-400 font-bold"
+                            : "hover:bg-gray-100 dark:hover:bg-gray-700"
+                        }`}
+                      >
+                        EN
+                      </button>
+                    </div>
+                  </div>
+                </div>
+
+                <hr className="my-2 border-gray-200 dark:border-gray-700" />
+
                 <button
                   onClick={handleLogout}
-                  className="w-full px-4 py-2 text-left text-sm text-red-600 dark:text-red-400 hover:bg-gray-100 dark:hover:bg-gray-700"
+                  className="w-full px-4 py-2 text-left text-sm text-red-600 dark:text-red-400 hover:bg-gray-100 dark:hover:bg-gray-700 flex items-center gap-2"
                 >
-                  Đăng xuất
+                  <LogOut className="w-4 h-4" />
+                  {t("common:logout")}
                 </button>
               </div>
             )}

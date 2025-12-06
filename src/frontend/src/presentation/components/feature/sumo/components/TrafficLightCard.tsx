@@ -1,4 +1,5 @@
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { Star, Clock } from "lucide-react";
 import type { TrafficLight } from "../../../../../domain/models/SumoModels";
 
@@ -7,6 +8,8 @@ interface TrafficLightCardProps {
 }
 
 export const TrafficLightCard: React.FC<TrafficLightCardProps> = ({ tls }) => {
+  const { t } = useTranslation("sumo");
+
   const getLightColor = (color: string) => {
     const colors = {
       green: "bg-emerald-500 shadow-lg shadow-emerald-500/50",
@@ -62,7 +65,7 @@ export const TrafficLightCard: React.FC<TrafficLightCardProps> = ({ tls }) => {
             className={`w-5 h-5 rounded-full border-2 border-gray-300 dark:border-gray-600 
                        ${getLightColor(light.color)} 
                        transition-all duration-300`}
-            title={`Signal ${light.index}: ${light.state}`}
+            title={`${t("trafficLight.signal")} ${light.index}: ${light.state}`}
           />
         ))}
       </div>
@@ -70,14 +73,14 @@ export const TrafficLightCard: React.FC<TrafficLightCardProps> = ({ tls }) => {
       {/* Info */}
       <div className="text-xs text-gray-600 dark:text-gray-400 flex items-center gap-2 flex-wrap">
         <span className="bg-gray-200 dark:bg-gray-700 px-2 py-1 rounded">
-          Phase {tls.currentPhase}
+          {t("trafficLight.phase")} {tls.currentPhase}
         </span>
         <span className="bg-gray-200 dark:bg-gray-700 px-2 py-1 rounded">
           {tls.phaseDuration.toFixed(1)}s
         </span>
         {isMain && (
           <span className="bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-300 px-2 py-1 rounded font-semibold">
-            Main Control
+            {t("trafficLight.mainControl")}
           </span>
         )}
       </div>

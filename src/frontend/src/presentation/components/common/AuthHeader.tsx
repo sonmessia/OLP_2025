@@ -3,6 +3,7 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import type { AppDispatch } from "../../../data/redux/store";
 import { logout } from "../../../data/redux/authSlice";
 import type { RootState } from "../../../data/redux/store";
@@ -13,9 +14,8 @@ interface AuthHeaderProps {
   title?: string;
 }
 
-const AuthHeader: React.FC<AuthHeaderProps> = ({
-  title = "Hệ thống điều khiển giao thông",
-}) => {
+const AuthHeader: React.FC<AuthHeaderProps> = ({ title }) => {
+  const { t } = useTranslation(["navigation", "user", "common"]);
   const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
   const { user } = useSelector((state: RootState) => state.auth);
@@ -37,20 +37,20 @@ const AuthHeader: React.FC<AuthHeaderProps> = ({
 
   const navItems = [
     {
-      label: "Dashboard",
+      label: t("navigation:dashboard"),
       path: "/admin",
       icon: Monitor,
     },
     {
       label:
         user?.role === UserRole.AREA_MANAGER
-          ? "Điều phối khu vực"
-          : "Điều khiển",
+          ? t("navigation:areaControl")
+          : t("navigation:trafficControl"),
       path: user?.role === UserRole.AREA_MANAGER ? "/area-manager" : "/control",
       icon: Route,
     },
     {
-      label: "Thiết bị",
+      label: t("navigation:deviceManagement"),
       path: "/devices",
       icon: Cpu,
     },
@@ -66,7 +66,7 @@ const AuthHeader: React.FC<AuthHeaderProps> = ({
               onClick={handleHome}
               className="text-xl font-semibold text-gray-900 hover:text-indigo-600 transition-colors"
             >
-              {title}
+              {title || t("navigation:home")}
             </button>
 
             {/* Navigation for Admin and Area Manager */}
@@ -97,8 +97,8 @@ const AuthHeader: React.FC<AuthHeaderProps> = ({
                 </p>
                 <p className="text-xs text-gray-500">
                   {user?.role === UserRole.ADMIN
-                    ? "Quản lý chính"
-                    : "Quản lý khu vực"}
+                    ? t("user:admin")
+                    : t("user:areaManager")}
                   {user?.areaName && ` • ${user.areaName}`}
                 </p>
               </div>
@@ -127,7 +127,7 @@ const AuthHeader: React.FC<AuthHeaderProps> = ({
                   d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"
                 />
               </svg>
-              Đăng xuất
+              {t("common:logout")}
             </button>
           </div>
         </div>

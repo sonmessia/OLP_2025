@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import {
   Server,
   Battery,
@@ -11,6 +12,7 @@ import { deviceApi } from "../../../../api/deviceApi";
 import type { DeviceResponseDTO } from "../../../../data/dtos/DeviceDTOs";
 
 export const DeviceHealthPanel: React.FC = () => {
+  const { t, i18n } = useTranslation(["devices"]);
   const [devices, setDevices] = useState<DeviceResponseDTO[]>([]);
   const [loading, setLoading] = useState(true);
   const [stats, setStats] = useState({
@@ -64,10 +66,10 @@ export const DeviceHealthPanel: React.FC = () => {
       <div className="flex items-center justify-between mb-4">
         <h3 className="text-lg font-semibold text-gray-900 dark:text-white flex items-center gap-2">
           <Server className="w-5 h-5 text-blue-500" />
-          Trạng thái thiết bị
+          {t("healthTitle")}
         </h3>
         <span className="px-2 py-1 text-xs font-medium rounded-full bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-300">
-          {stats.total} Thiết bị
+          {stats.total} {t("deviceCount")}
         </span>
       </div>
 
@@ -77,7 +79,7 @@ export const DeviceHealthPanel: React.FC = () => {
           <div className="flex items-center gap-2 mb-1">
             <CheckCircle className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
             <span className="text-xs font-medium text-emerald-700 dark:text-emerald-300">
-              Hoạt động
+              {t("status.active")}
             </span>
           </div>
           <span className="text-xl font-bold text-emerald-800 dark:text-emerald-200">
@@ -89,7 +91,7 @@ export const DeviceHealthPanel: React.FC = () => {
           <div className="flex items-center gap-2 mb-1">
             <WifiOff className="w-4 h-4 text-red-600 dark:text-red-400" />
             <span className="text-xs font-medium text-red-700 dark:text-red-300">
-              Mất kết nối
+              {t("status.inactive")}
             </span>
           </div>
           <span className="text-xl font-bold text-red-800 dark:text-red-200">
@@ -101,7 +103,7 @@ export const DeviceHealthPanel: React.FC = () => {
           <div className="flex items-center gap-2 mb-1">
             <Battery className="w-4 h-4 text-yellow-600 dark:text-yellow-400" />
             <span className="text-xs font-medium text-yellow-700 dark:text-yellow-300">
-              Pin yếu
+              {t("status.lowBattery")}
             </span>
           </div>
           <span className="text-xl font-bold text-yellow-800 dark:text-yellow-200">
@@ -137,7 +139,7 @@ export const DeviceHealthPanel: React.FC = () => {
                 </p>
                 <p className="text-xs text-gray-500 dark:text-gray-400">
                   {device.device_type} •{" "}
-                  {device.location_desc || "Không xác định"}
+                  {device.location_desc || t("unknownLocation")}
                 </p>
               </div>
             </div>
@@ -153,10 +155,13 @@ export const DeviceHealthPanel: React.FC = () => {
                 {device.status}
               </span>
               <span className="text-[10px] text-gray-400">
-                {new Date(device.updated_at).toLocaleTimeString("vi-VN", {
-                  hour: "2-digit",
-                  minute: "2-digit",
-                })}
+                {new Date(device.updated_at).toLocaleTimeString(
+                  i18n.language === "en" ? "en-US" : "vi-VN",
+                  {
+                    hour: "2-digit",
+                    minute: "2-digit",
+                  }
+                )}
               </span>
             </div>
           </div>
@@ -165,7 +170,7 @@ export const DeviceHealthPanel: React.FC = () => {
         {devices.length === 0 && (
           <div className="text-center py-8 text-gray-500 dark:text-gray-400">
             <Activity className="w-8 h-8 mx-auto mb-2 opacity-50" />
-            <p className="text-sm">Chưa có thiết bị nào</p>
+            <p className="text-sm">{t("noDevices")}</p>
           </div>
         )}
       </div>

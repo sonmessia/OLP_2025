@@ -1,4 +1,5 @@
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { Bell } from "lucide-react";
 import { SubscriptionCard } from "./SubscriptionCard";
 import type { Subscription } from "../../../../domain/models/SubscriptionModels";
@@ -14,6 +15,8 @@ export const SubscriptionList: React.FC<SubscriptionListProps> = ({
   loading,
   onDelete,
 }) => {
+  const { t } = useTranslation("subscription");
+
   if (loading) {
     return (
       <div className="flex justify-center py-12">
@@ -26,7 +29,7 @@ export const SubscriptionList: React.FC<SubscriptionListProps> = ({
     return (
       <div className="col-span-full text-center py-12 text-gray-500 dark:text-gray-400 bg-white dark:bg-gray-800 rounded-xl border border-dashed border-gray-300 dark:border-gray-700">
         <Bell className="w-12 h-12 mx-auto mb-3 opacity-20" />
-        <p>Chưa có cảnh báo nào được tạo.</p>
+        <p>{t("noAlertsCreated")}</p>
       </div>
     );
   }

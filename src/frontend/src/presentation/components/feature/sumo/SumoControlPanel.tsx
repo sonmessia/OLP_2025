@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback } from "react";
+import { useTranslation } from "react-i18next";
 import { useAppDispatch, useAppSelector } from "../../../../data/redux/hooks";
 import {
   startSimulation,
@@ -19,6 +20,7 @@ interface SumoControlPanelProps {
 export const SumoControlPanel: React.FC<SumoControlPanelProps> = ({
   onLog,
 }) => {
+  const { t } = useTranslation("sumo");
   const dispatch = useAppDispatch();
   const { status, isLoading, isSimulationRunning, simulationState, error } =
     useAppSelector((state) => state.sumo);
@@ -37,21 +39,20 @@ export const SumoControlPanel: React.FC<SumoControlPanelProps> = ({
         port
       );
       await dispatch(startSimulation(config)).unwrap();
-      onLog?.(
-        `✅ SUMO started successfully with scenario: ${selectedScenario}`
-      );
+      onLog?.(t("controlPanel.log.started", { scenario: selectedScenario }));
     } catch (error) {
-      onLog?.(`❌ Failed to start SUMO: ${error}`);
+      onLog?.(t("controlPanel.log.startFailed", { error }));
     }
   };
 
   const handleStopSumo = async () => {
     try {
       setAutoStep(false);
+      setAutoStep(false);
       await dispatch(stopSimulation()).unwrap();
-      onLog?.("🛑 SUMO stopped successfully");
+      onLog?.(t("controlPanel.log.stopped"));
     } catch (error) {
-      onLog?.(`❌ Failed to stop SUMO: ${error}`);
+      onLog?.(t("controlPanel.log.stopFailed", { error }));
     }
   };
 
@@ -61,23 +62,29 @@ export const SumoControlPanel: React.FC<SumoControlPanelProps> = ({
     try {
       await dispatch(performSimulationStep()).unwrap();
       onLog?.(
-        `⏭️ Simulation step executed at time: ${
-          simulationState?.simulationTime || "N/A"
-        }`
+        t("controlPanel.log.stepExecuted", {
+          time: simulationState?.simulationTime || "N/A",
+        })
       );
     } catch (error) {
-      onLog?.(`❌ Failed to execute step: ${error}`);
+      onLog?.(t("controlPanel.log.stepFailed", { error }));
     } finally {
       setIsStepping(false);
     }
-  }, [dispatch, isSimulationRunning, onLog, simulationState?.simulationTime]);
+  }, [
+    dispatch,
+    isSimulationRunning,
+    onLog,
+    simulationState?.simulationTime,
+    t,
+  ]);
 
   const handleRefreshStatus = async () => {
     try {
       await dispatch(fetchSumoStatus()).unwrap();
-      onLog?.("🔄 SUMO status refreshed");
+      onLog?.(t("controlPanel.log.refreshed"));
     } catch (error) {
-      onLog?.(`❌ Failed to refresh status: ${error}`);
+      onLog?.(t("controlPanel.log.refreshFailed", { error }));
     }
   };
 
@@ -95,7 +102,7 @@ export const SumoControlPanel: React.FC<SumoControlPanelProps> = ({
       <div className="flex items-center gap-3 mb-6">
         <Settings className="w-6 h-6 text-emerald-600 dark:text-emerald-400" />
         <h2 className="text-xl font-bold text-gray-900 dark:text-white">
-          SUMO Control
+          {t("controlPanel.title")}
         </h2>
       </div>
 

@@ -1,14 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { Plus, Trash2 } from "lucide-react";
+import { useTranslation } from "react-i18next";
 import type {
   SubscriptionCreate,
   EntityPattern,
 } from "../../../../domain/models/SubscriptionModels";
-import {
-  AIR_QUALITY_ATTRIBUTES,
-  TRAFFIC_FLOW_ATTRIBUTES,
-  OPERATORS,
-} from "./constants";
+import { useLocalizedSubscriptionConstants } from "./LocalizedConstants";
 
 interface SubscriptionFormProps {
   isOpen: boolean;
@@ -27,6 +24,10 @@ export const SubscriptionForm: React.FC<SubscriptionFormProps> = ({
   onClose,
   onSubmit,
 }) => {
+  const { t } = useTranslation(["subscription", "common", "forms"]);
+  const { AIR_QUALITY_ATTRIBUTES, TRAFFIC_FLOW_ATTRIBUTES, OPERATORS } =
+    useLocalizedSubscriptionConstants();
+
   const [description, setDescription] = useState("");
   const [entityType, setEntityType] = useState("AirQualityObserved");
   const [notificationUri, setNotificationUri] = useState("");
@@ -111,7 +112,7 @@ export const SubscriptionForm: React.FC<SubscriptionFormProps> = ({
       <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl w-full max-w-2xl overflow-hidden max-h-[90vh] flex flex-col">
         <div className="px-6 py-4 border-b border-gray-200 dark:border-gray-700 flex justify-between items-center">
           <h2 className="text-xl font-bold text-gray-900 dark:text-white">
-            Tạo Cảnh báo Mới
+            {t("createAlert")}
           </h2>
           <button
             onClick={onClose}
@@ -128,14 +129,14 @@ export const SubscriptionForm: React.FC<SubscriptionFormProps> = ({
           {/* Description */}
           <div>
             <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-              Mô tả
+              {t("description")}
             </label>
             <input
               type="text"
               required
               value={description}
               onChange={(e) => setDescription(e.target.value)}
-              placeholder="Ví dụ: Cảnh báo ô nhiễm cao tại Quận 1"
+              placeholder={t("placeholder")}
               className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-emerald-500 dark:bg-gray-700 dark:text-white"
             />
           </div>
@@ -143,7 +144,7 @@ export const SubscriptionForm: React.FC<SubscriptionFormProps> = ({
           {/* Entity Type */}
           <div>
             <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-              Loại dữ liệu theo dõi
+              {t("dataType")}
             </label>
             <select
               value={entityType}
@@ -154,19 +155,15 @@ export const SubscriptionForm: React.FC<SubscriptionFormProps> = ({
               }}
               className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-emerald-500 dark:bg-gray-700 dark:text-white"
             >
-              <option value="AirQualityObserved">
-                Chất lượng không khí (AirQualityObserved)
-              </option>
-              <option value="TrafficFlowObserved">
-                Lưu lượng giao thông (TrafficFlowObserved)
-              </option>
+              <option value="AirQualityObserved">{t("airQuality")}</option>
+              <option value="TrafficFlowObserved">{t("trafficFlow")}</option>
             </select>
           </div>
 
           {/* Watched Attributes (Multi-select) */}
           <div>
             <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-              Thuộc tính theo dõi
+              {t("watchedAttributes")}
             </label>
             <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
               {availableAttributes.map((attr) => (
@@ -192,8 +189,8 @@ export const SubscriptionForm: React.FC<SubscriptionFormProps> = ({
             </div>
             <p className="text-xs text-gray-500 mt-1">
               {selectedAttributes.length === 0
-                ? "Theo dõi tất cả thuộc tính nếu không chọn."
-                : `Đã chọn ${selectedAttributes.length} thuộc tính.`}
+                ? t("monitorAll")
+                : t("selectedCount", { count: selectedAttributes.length })}
             </p>
           </div>
 
@@ -201,14 +198,14 @@ export const SubscriptionForm: React.FC<SubscriptionFormProps> = ({
           <div>
             <div className="flex justify-between items-center mb-2">
               <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
-                Điều kiện lọc (Query)
+                {t("queryConditions")}
               </label>
               <button
                 type="button"
                 onClick={addQueryCondition}
                 className="text-xs flex items-center gap-1 text-emerald-600 hover:text-emerald-700 font-medium"
               >
-                <Plus className="w-3 h-3" /> Thêm điều kiện
+                <Plus className="w-3 h-3" /> {t("addCondition")}
               </button>
             </div>
 
@@ -247,7 +244,7 @@ export const SubscriptionForm: React.FC<SubscriptionFormProps> = ({
                     onChange={(e) =>
                       updateQueryCondition(index, "value", e.target.value)
                     }
-                    placeholder="Giá trị"
+                    placeholder={t("forms:value")}
                     className="flex-1 px-2 py-1.5 text-sm border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-700 dark:text-white"
                   />
                   <button
@@ -261,7 +258,7 @@ export const SubscriptionForm: React.FC<SubscriptionFormProps> = ({
               ))}
               {queryConditions.length === 0 && (
                 <div className="text-sm text-gray-500 italic bg-gray-50 dark:bg-gray-800/50 p-2 rounded border border-dashed border-gray-200 dark:border-gray-700">
-                  Không có điều kiện lọc. Nhận thông báo cho mọi thay đổi.
+                  {t("noConditions")}
                 </div>
               )}
             </div>
@@ -270,14 +267,14 @@ export const SubscriptionForm: React.FC<SubscriptionFormProps> = ({
           {/* Notification URI */}
           <div>
             <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-              Địa chỉ nhận thông báo (Notification URI)
+              {t("notificationUri")}
             </label>
             <input
               type="text"
               required
               value={notificationUri}
               onChange={(e) => setNotificationUri(e.target.value)}
-              placeholder="http://myserver.com/api/notify"
+              placeholder={t("notificationPlaceholder")}
               className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-emerald-500 dark:bg-gray-700 dark:text-white"
             />
           </div>
@@ -289,13 +286,13 @@ export const SubscriptionForm: React.FC<SubscriptionFormProps> = ({
             onClick={onClose}
             className="px-4 py-2 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors"
           >
-            Hủy
+            {t("common:cancel")}
           </button>
           <button
             onClick={handleSubmit}
             className="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg transition-colors font-medium"
           >
-            Tạo Cảnh báo
+            {t("create")}
           </button>
         </div>
       </div>

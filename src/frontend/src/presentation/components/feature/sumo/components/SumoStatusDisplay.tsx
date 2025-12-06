@@ -1,4 +1,5 @@
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { Wifi, WifiOff } from "lucide-react";
 
 import type {
@@ -17,6 +18,8 @@ export const SumoStatusDisplay: React.FC<SumoStatusDisplayProps> = ({
   simulationState,
   error,
 }) => {
+  const { t } = useTranslation("sumo");
+
   const getStatusIcon = () => {
     if (status.connected) return <Wifi className="w-5 h-5" />;
     return <WifiOff className="w-5 h-5" />;
@@ -34,30 +37,34 @@ export const SumoStatusDisplay: React.FC<SumoStatusDisplayProps> = ({
           {getStatusIcon()}
           <div>
             <span className="text-gray-600 dark:text-gray-400 text-xs">
-              Status
+              {t("status.status")}
             </span>
             <p className={`font-bold ${getStatusColor()}`}>
-              {status.connected ? "Connected" : "Disconnected"}
+              {status.connected
+                ? t("status.connected")
+                : t("status.disconnected")}
             </p>
           </div>
         </div>
         <div>
           <span className="text-gray-600 dark:text-gray-400 text-xs">
-            Scenario
+            {t("status.scenario")}
           </span>
           <p className="font-bold text-gray-900 dark:text-white truncate">
-            {status.scenario || "Not running"}
+            {status.scenario || t("status.notRunning")}
           </p>
         </div>
         <div>
-          <span className="text-gray-600 dark:text-gray-400 text-xs">Time</span>
+          <span className="text-gray-600 dark:text-gray-400 text-xs">
+            {t("status.time")}
+          </span>
           <p className="font-bold text-gray-900 dark:text-white">
             {simulationState?.simulationTime.toFixed(1) || "0.0"}s
           </p>
         </div>
         <div>
           <span className="text-gray-600 dark:text-gray-400 text-xs">
-            Vehicles
+            {t("status.vehicles")}
           </span>
           <p className="font-bold text-gray-900 dark:text-white">
             {simulationState?.vehicleCount || 0}
@@ -68,7 +75,7 @@ export const SumoStatusDisplay: React.FC<SumoStatusDisplayProps> = ({
       {error && (
         <div className="mt-3 bg-red-50 dark:bg-red-900/20 border-l-4 border-red-500 p-2 rounded">
           <p className="text-xs text-red-800 dark:text-red-200">
-            <strong>Error:</strong> {error}
+            <strong>{t("status.error")}:</strong> {error}
           </p>
         </div>
       )}

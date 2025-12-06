@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback } from "react";
+import { useTranslation } from "react-i18next";
 import { useAppDispatch, useAppSelector } from "../../../../data/redux/hooks";
 import {
   startSimulation,
@@ -22,12 +23,15 @@ export const AreaControlPanel: React.FC<AreaControlPanelProps> = ({
   areaName,
   onLog,
 }) => {
+  const { t } = useTranslation(["areaControl"]);
   const dispatch = useAppDispatch();
   const { status, isLoading, isSimulationRunning, simulationState, error } =
     useAppSelector((state) => state.sumo);
 
   // Find scenario ID based on areaName
-  const scenario = TRAFFIC_LOCATIONS.find((loc) => loc.name === areaName)?.id;
+  const scenario = TRAFFIC_LOCATIONS.find(
+    (loc) => loc.nameKey === areaName
+  )?.id;
 
   const [useGUI, setUseGUI] = useState(false);
   const [port] = useState(8813);
@@ -36,7 +40,7 @@ export const AreaControlPanel: React.FC<AreaControlPanelProps> = ({
 
   const handleStartSumo = async () => {
     if (!scenario) {
-      onLog?.(`❌ Không tìm thấy kịch bản cho khu vực: ${areaName}`);
+      onLog?.(`❌ ${t("messages.noScenario", { area: areaName })}`);
       return;
     }
 
@@ -47,9 +51,9 @@ export const AreaControlPanel: React.FC<AreaControlPanelProps> = ({
         port
       );
       await dispatch(startSimulation(config)).unwrap();
-      onLog?.(`✅ Đã kết nối tới hệ thống điều khiển tại: ${areaName}`);
+      onLog?.(`✅ ${t("messages.connected", { area: areaName })}`);
     } catch (error) {
-      onLog?.(`❌ Kết nối thất bại: ${error}`);
+      onLog?.(`❌ ${t("messages.connectFailed", { error })}`);
     }
   };
 
@@ -57,9 +61,9 @@ export const AreaControlPanel: React.FC<AreaControlPanelProps> = ({
     try {
       setAutoStep(false);
       await dispatch(stopSimulation()).unwrap();
-      onLog?.("🛑 Đã ngắt kết nối hệ thống");
+      onLog?.(`🛑 ${t("messages.disconnected")}`);
     } catch (error) {
-      onLog?.(`❌ Ngắt kết nối thất bại: ${error}`);
+      onLog?.(`❌ ${t("messages.disconnectFailed", { error })}`);
     }
   };
 
@@ -83,9 +87,9 @@ export const AreaControlPanel: React.FC<AreaControlPanelProps> = ({
   const handleRefreshStatus = async () => {
     try {
       await dispatch(fetchSumoStatus()).unwrap();
-      onLog?.("🔄 Đã cập nhật trạng thái");
+      onLog?.(`🔄 ${t("messages.statusUpdated")}`);
     } catch (error) {
-      onLog?.(`❌ Cập nhật thất bại: ${error}`);
+      onLog?.(`❌ ${t("messages.updateFailed", { error })}`);
     }
   };
 
@@ -114,7 +118,7 @@ export const AreaControlPanel: React.FC<AreaControlPanelProps> = ({
         <div className="flex items-center gap-3">
           <Settings className="w-6 h-6 text-emerald-600 dark:text-emerald-400" />
           <h2 className="text-xl font-bold text-gray-900 dark:text-white">
-            Điều khiển khu vực
+            {t("title")}
           </h2>
         </div>
         <div className="flex items-center gap-2 px-3 py-1 bg-blue-50 dark:bg-blue-900/20 rounded-full">
@@ -141,7 +145,7 @@ export const AreaControlPanel: React.FC<AreaControlPanelProps> = ({
             className="form-checkbox h-4 w-4 text-emerald-600 rounded border-gray-300 focus:ring-emerald-500"
           />
           <span className="text-sm text-gray-700 dark:text-gray-300">
-            Hiển thị giao diện mô phỏng (SUMO GUI)
+            {t("useGui")}
           </span>
         </label>
       </div>

@@ -1,14 +1,36 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
+import { useTranslation } from "react-i18next";
 
 const PipelineAnimation: React.FC = () => {
   const [activeStep, setActiveStep] = useState(0);
+  const { t } = useTranslation("landing");
 
   const steps = [
-    { title: 'SUMO', desc: 'Mô phỏng giao thông 3D', color: 'var(--color-traffic-info)' },
-    { title: 'IoT Agent', desc: 'Raw Data → JSON-LD', color: 'var(--color-traffic-yellow)' },
-    { title: 'Orion-LD', desc: 'Context Broker', color: 'var(--color-greenwave-primary-light)' },
-    { title: 'AI Agent', desc: 'MORL Processing', color: 'var(--color-greenwave-primary-light)' },
-    { title: 'Dashboard', desc: 'Giao diện người dùng', color: 'var(--color-traffic-info)' }
+    {
+      title: t("pipeline.steps.sumo.title"),
+      desc: t("pipeline.steps.sumo.desc"),
+      color: "var(--color-traffic-info)",
+    },
+    {
+      title: t("pipeline.steps.iotAgent.title"),
+      desc: t("pipeline.steps.iotAgent.desc"),
+      color: "var(--color-traffic-yellow)",
+    },
+    {
+      title: t("pipeline.steps.orion.title"),
+      desc: t("pipeline.steps.orion.desc"),
+      color: "var(--color-greenwave-primary-light)",
+    },
+    {
+      title: t("pipeline.steps.aiAgent.title"),
+      desc: t("pipeline.steps.aiAgent.desc"),
+      color: "var(--color-greenwave-primary-light)",
+    },
+    {
+      title: t("pipeline.steps.dashboard.title"),
+      desc: t("pipeline.steps.dashboard.desc"),
+      color: "var(--color-traffic-info)",
+    },
   ];
 
   React.useEffect(() => {
@@ -26,9 +48,10 @@ const PipelineAnimation: React.FC = () => {
         <div
           className="h-full pipeline-flow rounded-full"
           style={{
-            background: 'linear-gradient(90deg, transparent 0%, var(--color-greenwave-primary-light) 50%, transparent 100%)',
-            backgroundSize: '200% 100%',
-            animation: 'flow-pulse 3s ease-in-out infinite'
+            background:
+              "linear-gradient(90deg, transparent 0%, var(--color-greenwave-primary-light) 50%, transparent 100%)",
+            backgroundSize: "200% 100%",
+            animation: "flow-pulse 3s ease-in-out infinite",
           }}
         />
       </div>
@@ -50,13 +73,18 @@ const PipelineAnimation: React.FC = () => {
             {/* Main node */}
             <div
               className={`relative w-32 h-32 rounded-full flex flex-col items-center justify-center text-center p-4 transition-all duration-300 cursor-pointer ${
-                activeStep === index ? 'scale-110 z-20' : 'scale-100'
+                activeStep === index ? "scale-110 z-20" : "scale-100"
               }`}
               style={{
-                background: `rgba(255, 255, 255, ${activeStep === index ? 0.15 : 0.05})`,
-                backdropFilter: 'blur(10px)',
-                border: `2px solid ${activeStep === index ? step.color : 'rgba(255, 255, 255, 0.1)'}`,
-                boxShadow: activeStep === index ? `0 0 30px ${step.color}` : 'none'
+                background: `rgba(255, 255, 255, ${
+                  activeStep === index ? 0.15 : 0.05
+                })`,
+                backdropFilter: "blur(10px)",
+                border: `2px solid ${
+                  activeStep === index ? step.color : "rgba(255, 255, 255, 0.1)"
+                }`,
+                boxShadow:
+                  activeStep === index ? `0 0 30px ${step.color}` : "none",
               }}
               onMouseEnter={() => setActiveStep(index)}
             >
@@ -88,8 +116,10 @@ const PipelineAnimation: React.FC = () => {
                       className="absolute w-2 h-2 rounded-full"
                       style={{
                         backgroundColor: step.color,
-                        animation: `orbit-particle ${1.5 + i * 0.3}s linear infinite`,
-                        transform: `rotate(${i * 120}deg) translateX(20px)`
+                        animation: `orbit-particle ${
+                          1.5 + i * 0.3
+                        }s linear infinite`,
+                        transform: `rotate(${i * 120}deg) translateX(20px)`,
                       }}
                     />
                   ))}
@@ -116,16 +146,19 @@ const PipelineAnimation: React.FC = () => {
 
       {/* Data flow indicators */}
       <div className="mt-16 text-center">
-        <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full"
-             style={{ background: 'rgba(255, 255, 255, 0.05)', backdropFilter: 'blur(10px)' }}
+        <div
+          className="inline-flex items-center gap-2 px-4 py-2 rounded-full"
+          style={{
+            background: "rgba(255, 255, 255, 0.05)",
+            backdropFilter: "blur(10px)",
+          }}
         >
           <div className="w-2 h-2 rounded-full bg-greenwave-primary-light animate-pulse" />
           <span className="text-sm text-text-muted-dark">
-            Real-time NGSI-LD Data Flow Active
+            {t("pipeline.flowActive")}
           </span>
         </div>
       </div>
-
     </div>
   );
 };

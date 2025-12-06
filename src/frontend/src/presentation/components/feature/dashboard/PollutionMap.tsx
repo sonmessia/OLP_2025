@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
+import { useTranslation } from "react-i18next";
 import {
   MapContainer,
   TileLayer,
@@ -28,13 +29,6 @@ const severityColors = {
   critical: "#D9232F",
 };
 
-const severityLabels = {
-  low: "Thấp",
-  medium: "Trung bình",
-  high: "Cao",
-  critical: "Nguy hại",
-};
-
 // Component to handle map navigation
 const MapController: React.FC<{
   center: [number, number] | null;
@@ -56,6 +50,7 @@ const MapController: React.FC<{
 export const PollutionMap: React.FC<
   PollutionMapProps & { onHotspotSelect?: (hotspot: PollutionHotspot) => void }
 > = ({ hotspots, onHotspotSelect }) => {
+  const { t } = useTranslation(["maps"]);
   // Default center (Ho Chi Minh City)
   const defaultCenter: [number, number] = [10.8231, 106.6297];
   const center: [number, number] =
@@ -150,7 +145,7 @@ export const PollutionMap: React.FC<
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             onFocus={() => searchResults.length > 0 && setShowResults(true)}
-            placeholder="Tìm kiếm địa điểm (VD: Đường Cầu Giấy)..."
+            placeholder={t("searchPlaceholder")}
             className="w-full px-4 py-2 pl-10 pr-10 text-sm border-2 border-gray-300 dark:border-gray-600 rounded-lg 
                      bg-white dark:bg-gray-700 text-gray-900 dark:text-white
                      focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent
@@ -254,7 +249,7 @@ export const PollutionMap: React.FC<
           searchQuery.length >= 3 && (
             <div className="absolute z-50 w-full mt-1 bg-white dark:bg-gray-700 border-2 border-gray-200 dark:border-gray-600 rounded-lg shadow-lg p-4">
               <p className="text-sm text-gray-500 dark:text-gray-400 text-center">
-                Không tìm thấy kết quả cho "{searchQuery}"
+                {t("noResults", { query: searchQuery })}
               </p>
             </div>
           )}
@@ -296,19 +291,20 @@ export const PollutionMap: React.FC<
                   </h4>
                   <div className="space-y-1 text-sm">
                     <p>
-                      <span className="font-medium">PM2.5:</span>{" "}
+                      <span className="font-medium">{t("pm25")}</span>{" "}
                       {hotspot.pm25.toFixed(1)} μg/m³
                     </p>
                     <p>
-                      <span className="font-medium">AQI:</span> {hotspot.aqi}
+                      <span className="font-medium">{t("aqi")}</span>{" "}
+                      {hotspot.aqi}
                     </p>
                     <p>
-                      <span className="font-medium">Mức độ:</span>{" "}
+                      <span className="font-medium">{t("severityLabel")}</span>{" "}
                       <span
                         className="font-semibold"
                         style={{ color: severityColors[hotspot.severity] }}
                       >
-                        {severityLabels[hotspot.severity]}
+                        {t(`severity.${hotspot.severity}`)}
                       </span>
                     </p>
                   </div>

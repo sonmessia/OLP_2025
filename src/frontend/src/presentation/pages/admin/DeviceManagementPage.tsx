@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useTranslation } from "react-i18next";
 import {
   DeviceType,
   DeviceStatus,
@@ -21,6 +22,8 @@ interface DeviceFilters {
 }
 
 export const DeviceManagementPage: React.FC = () => {
+  const { t } = useTranslation(["devices", "common"]);
+
   // Initialize dark mode from localStorage or system preference
   const getInitialDarkMode = () => {
     if (typeof window !== "undefined") {
@@ -226,11 +229,10 @@ export const DeviceManagementPage: React.FC = () => {
           <div className="flex items-center justify-between mb-6">
             <div>
               <h1 className="text-4xl font-bold text-text-main mb-2">
-                Quản lý Thiết bị IoT
+                {t("devices:management.title")}
               </h1>
               <p className="text-lg text-text-muted">
-                Giám sát và quản lý tất cả các thiết bị trong hệ thống Smart
-                City
+                {t("devices:management.subtitle")}
               </p>
             </div>
             <button
@@ -243,7 +245,7 @@ export const DeviceManagementPage: React.FC = () => {
               }}
             >
               <Plus className="w-6 h-6" />
-              Thêm Thiết bị Mới
+              {t("devices:management.addNew")}
             </button>
           </div>
 
@@ -253,7 +255,9 @@ export const DeviceManagementPage: React.FC = () => {
               <div className="text-3xl font-bold text-text-main mb-2">
                 {stats.total}
               </div>
-              <div className="text-sm text-text-muted">Tổng thiết bị</div>
+              <div className="text-sm text-text-muted">
+                {t("devices:management.total")}
+              </div>
             </div>
 
             <div className="glass-card p-6 rounded-2xl text-center bg-green-50/50 dark:bg-green-900/20 border-green-200 dark:border-green-800">
@@ -263,7 +267,9 @@ export const DeviceManagementPage: React.FC = () => {
                   {stats.online}
                 </div>
               </div>
-              <div className="text-sm text-text-muted">Online</div>
+              <div className="text-sm text-text-muted">
+                {t("devices:status.online")}
+              </div>
             </div>
 
             <div className="glass-card p-6 rounded-2xl text-center bg-red-50/50 dark:bg-red-900/20 border-red-200 dark:border-red-800">
@@ -273,7 +279,9 @@ export const DeviceManagementPage: React.FC = () => {
                   {stats.offline}
                 </div>
               </div>
-              <div className="text-sm text-text-muted">Offline</div>
+              <div className="text-sm text-text-muted">
+                {t("devices:status.offline")}
+              </div>
             </div>
 
             <div className="glass-card p-6 rounded-2xl text-center bg-yellow-50/50 dark:bg-yellow-900/20 border-yellow-200 dark:border-yellow-800">
@@ -283,7 +291,9 @@ export const DeviceManagementPage: React.FC = () => {
                   {stats.maintenance}
                 </div>
               </div>
-              <div className="text-sm text-text-muted">Bảo trì</div>
+              <div className="text-sm text-text-muted">
+                {t("devices:status.maintenance")}
+              </div>
             </div>
 
             <div className="glass-card p-6 rounded-2xl text-center bg-red-50/50 dark:bg-red-900/20 border-red-200 dark:border-red-800">
@@ -293,7 +303,9 @@ export const DeviceManagementPage: React.FC = () => {
                   {stats.error}
                 </div>
               </div>
-              <div className="text-sm text-text-muted">Lỗi</div>
+              <div className="text-sm text-text-muted">
+                {t("devices:status.error")}
+              </div>
             </div>
           </div>
         </div>
@@ -310,17 +322,19 @@ export const DeviceManagementPage: React.FC = () => {
         <div className="flex items-center justify-between mb-6">
           <div className="flex items-center gap-4">
             <h2 className="text-xl font-semibold text-text-main">
-              Danh sách Thiết bị ({filteredDevices.length})
+              {t("devices:management.listTitle")} ({filteredDevices.length})
             </h2>
             {Object.keys(filters).length > 0 && (
-              <span className="text-sm text-text-muted">(Đang lọc)</span>
+              <span className="text-sm text-text-muted">
+                {t("devices:management.filtering")}
+              </span>
             )}
           </div>
 
           <div className="flex items-center gap-3">
             <button className="flex items-center gap-2 px-4 py-2 rounded-lg border border-greenwave-primary-light/20 bg-greenwave-accent-light/50 dark:bg-greenwave-accent-dark/50 text-text-main hover:bg-greenwave-accent-light/70 transition-colors">
               <Map className="w-4 h-4" />
-              Xem trên Bản đồ
+              {t("devices:management.viewMap")}
             </button>
           </div>
         </div>
@@ -345,19 +359,19 @@ export const DeviceManagementPage: React.FC = () => {
                 <WifiOff className="w-10 h-10 text-gray-400" />
               </div>
               <h3 className="text-xl font-semibold text-text-main mb-2">
-                Không tìm thấy thiết bị
+                {t("devices:management.notFound")}
               </h3>
               <p className="text-text-muted mb-6">
                 {Object.keys(filters).length > 0
-                  ? "Thử điều chỉnh bộ lọc để tìm thấy thiết bị bạn cần."
-                  : "Chưa có thiết bị nào trong hệ thống. Hãy thêm thiết bị đầu tiên."}
+                  ? t("devices:management.adjustFilter")
+                  : t("devices:management.noDevices")}
               </p>
               {Object.keys(filters).length > 0 ? (
                 <button
                   onClick={() => setFilters({})}
                   className="px-6 py-3 rounded-lg border border-gray-300 dark:border-gray-600 text-text-main hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
                 >
-                  Xóa bộ lọc
+                  {t("devices:management.clearFilters")}
                 </button>
               ) : (
                 <button
@@ -368,7 +382,7 @@ export const DeviceManagementPage: React.FC = () => {
                       "linear-gradient(135deg, var(--color-greenwave-primary-light) 0%, var(--color-greenwave-primary-dark) 100%)",
                   }}
                 >
-                  Thêm thiết bị đầu tiên
+                  {t("devices:management.addFirst")}
                 </button>
               )}
             </div>

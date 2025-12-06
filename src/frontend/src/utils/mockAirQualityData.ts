@@ -7,7 +7,53 @@ const seededRandom = (seed: number) => {
   return x - Math.floor(x);
 };
 
-export const generateMockAirQualityData = (): AirQualityObservedDto[] => {
+export interface MockLocation {
+  id: string;
+  nameKey: string;
+  areaKey: string;
+  coords: [number, number];
+  baseAQI: number;
+}
+
+const LOCATIONS: MockLocation[] = [
+  {
+    id: "urn:ngsi-ld:AirQualityObserved:ThuDuc:Crossroads",
+    nameKey: "locations.thuDucCrossroads",
+    areaKey: "locations.thuDucCity, locations.hcmc",
+    coords: [106.7718, 10.8505],
+    baseAQI: 110,
+  },
+  {
+    id: "urn:ngsi-ld:AirQualityObserved:GoVap:QuangTrung",
+    nameKey: "locations.goVapQuangTrung",
+    areaKey: "locations.goVapQuangTrung, locations.hcmc",
+    coords: [106.6816, 10.822], // Tọa độ xấp xỉ Ngã 5 Chuồng Chó (Quang Trung)
+    baseAQI: 145,
+  },
+  {
+    id: "urn:ngsi-ld:AirQualityObserved:HCMC:D1",
+    nameKey: "locations.d1Center",
+    areaKey: "locations.d1Center, locations.hcmc",
+    coords: [106.7009, 10.7769],
+    baseAQI: 85,
+  },
+  {
+    id: "urn:ngsi-ld:AirQualityObserved:Hanoi:BaDinh",
+    nameKey: "locations.baDinhHanoi",
+    areaKey: "locations.baDinhHanoi, locations.hanoi",
+    coords: [105.8342, 21.0278],
+    baseAQI: 160,
+  },
+  {
+    id: "urn:ngsi-ld:AirQualityObserved:DaNang:HaiChau",
+    nameKey: "locations.haiChauDaNang",
+    areaKey: "locations.haiChauDaNang, locations.danang",
+    coords: [108.2208, 16.0544],
+    baseAQI: 45,
+  },
+];
+
+export const generateMockAirQualityData = (t?: (key: string) => string): AirQualityObservedDto[] => {
   // Create a time slot that changes every 10 seconds
   // Date.now() is in ms. /1000 -> seconds. /10 -> 10s blocks.
   const timeSlot = Math.floor(Date.now() / 10000);
@@ -27,54 +73,33 @@ export const generateMockAirQualityData = (): AirQualityObservedDto[] => {
     return Number((baseValue + fluctuation).toFixed(1));
   };
 
-  const getAQILevel = (aqi: number) => {
-    if (aqi <= 50) return "Good";
-    if (aqi <= 100) return "Moderate";
-    if (aqi <= 150) return "Unhealthy for Sensitive Groups";
-    if (aqi <= 200) return "Unhealthy";
-    if (aqi <= 300) return "Very Unhealthy";
-    return "Hazardous";
+  const getAQILevel = (aqi: number, t?: (key: string) => string) => {
+    if (!t) {
+      // Fallback to English if no translation function provided
+      if (aqi <= 50) return "Good";
+      if (aqi <= 100) return "Moderate";
+      if (aqi <= 150) return "Unhealthy for Sensitive Groups";
+      if (aqi <= 200) return "Unhealthy";
+      if (aqi <= 300) return "Very Unhealthy";
+      return "Hazardous";
+    }
+
+    if (aqi <= 50) return t("aqi.good");
+    if (aqi <= 100) return t("aqi.moderate");
+    if (aqi <= 150) return t("aqi.unhealthyForSensitive");
+    if (aqi <= 200) return t("aqi.unhealthy");
+    if (aqi <= 300) return t("aqi.veryUnhealthy");
+    return t("aqi.hazardous");
   };
 
-  const locations = [
-    {
-      id: "urn:ngsi-ld:AirQualityObserved:ThuDuc:Crossroads",
-      name: "Ngã Tư Thủ Đức",
-      area: "TP. Thủ Đức, TP.HCM",
-      coords: [106.7718, 10.8505],
-      baseAQI: 110,
-    },
-    {
-      id: "urn:ngsi-ld:AirQualityObserved:GoVap:QuangTrung",
-      name: "Ngã 5 Quang Trung",
-      area: "Gò Vấp, TP.HCM",
-      coords: [106.6816, 10.822], // Tọa độ xấp xỉ Ngã 5 Chuồng Chó (Quang Trung)
-      baseAQI: 145,
-    },
-    {
-      id: "urn:ngsi-ld:AirQualityObserved:HCMC:D1",
-      name: "Quận 1 - Trung tâm",
-      area: "Quận 1, TP.HCM",
-      coords: [106.7009, 10.7769],
-      baseAQI: 85,
-    },
-    {
-      id: "urn:ngsi-ld:AirQualityObserved:Hanoi:BaDinh",
-      name: "Ba Đình - Hà Nội",
-      area: "Ba Đình, Hà Nội",
-      coords: [105.8342, 21.0278],
-      baseAQI: 160,
-    },
-    {
-      id: "urn:ngsi-ld:AirQualityObserved:DaNang:HaiChau",
-      name: "Hải Châu - Đà Nẵng",
-      area: "Hải Châu, Đà Nẵng",
-      coords: [108.2208, 16.0544],
-      baseAQI: 45,
-    },
-  ];
+  const getLocalizedString = (key: string, fallback: string): string => {
+    if (!t) return fallback;
+    return key.includes(",")
+      ? key.split(", ").map(k => t(k)).join(", ")
+      : t(key);
+  };
 
-  return locations.map((loc) => {
+  return LOCATIONS.map((loc) => {
     const aqi = Math.max(
       0,
       Math.round(getFluctuatedValue(loc.baseAQI, 20, loc.id))
@@ -89,8 +114,8 @@ export const generateMockAirQualityData = (): AirQualityObservedDto[] => {
         coordinates: loc.coords,
       },
       airQualityIndex: aqi,
-      airQualityLevel: getAQILevel(aqi),
-      areaServed: loc.area,
+      airQualityLevel: getAQILevel(aqi, t),
+      areaServed: getLocalizedString(loc.areaKey, "Unknown Area"),
       co: Math.max(0, getFluctuatedValue(5, 2, loc.id)),
       no2: Math.max(0, getFluctuatedValue(40, 10, loc.id)),
       o3: Math.max(0, getFluctuatedValue(25, 10, loc.id)),

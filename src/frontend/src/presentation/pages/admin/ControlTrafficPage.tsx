@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useTranslation } from "react-i18next";
 import { useAppDispatch, useAppSelector } from "../../../data/redux/hooks";
 import { fetchSumoStatus, fetchSumoState } from "../../../data/redux/sumoSlice";
 import { DashboardHeader } from "../../components/feature/dashboard/DashboardHeader";
@@ -13,6 +14,7 @@ import { SimulationControlPanel } from "../../components/feature/sumo/Simulation
 export const ControlTrafficPage: React.FC = () => {
   const dispatch = useAppDispatch();
   const { status, isSimulationRunning } = useAppSelector((state) => state.sumo);
+  const { t } = useTranslation(["traffic", "common"]);
 
   // Initialize dark mode from localStorage or system preference
   const getInitialDarkMode = () => {
@@ -28,8 +30,8 @@ export const ControlTrafficPage: React.FC = () => {
 
   const [isDarkMode, setIsDarkMode] = useState(getInitialDarkMode);
   const [systemLogs, setSystemLogs] = useState<string[]>([
-    "System initialized successfully",
-    "Waiting for SUMO connection...",
+    t("traffic:logs.initSuccess"),
+    t("traffic:logs.waitingConnection"),
   ]);
 
   // Apply dark mode class on mount
@@ -47,9 +49,9 @@ export const ControlTrafficPage: React.FC = () => {
     const initializeData = async () => {
       try {
         await dispatch(fetchSumoStatus()).unwrap();
-        addLog("📡 SUMO API initialized successfully");
+        addLog(t("traffic:logs.sumoInitSuccess"));
       } catch (error) {
-        addLog(`⚠️ Failed to initialize SUMO API: ${error}`);
+        addLog(t("traffic:logs.sumoInitFailed", { error }));
       }
     };
 
@@ -61,7 +63,7 @@ export const ControlTrafficPage: React.FC = () => {
     }, 5000);
 
     return () => clearInterval(statusInterval);
-  }, [dispatch]);
+  }, [dispatch, t]);
 
   // Fetch SUMO state when simulation is running
   useEffect(() => {
@@ -135,10 +137,10 @@ export const ControlTrafficPage: React.FC = () => {
         {/* Footer Info */}
         <div className="mt-6 text-center">
           <p className="text-sm text-gray-500 dark:text-gray-400">
-            GreenWave AI - Intelligent Traffic Management System
+            {t("traffic:footer.systemName")}
           </p>
           <p className="text-xs text-gray-400 dark:text-gray-500 mt-1">
-            Powered by SUMO & Deep Reinforcement Learning
+            {t("traffic:footer.poweredBy")}
           </p>
         </div>
       </main>

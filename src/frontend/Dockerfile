@@ -1,5 +1,5 @@
 # Build stage
-FROM node:20-alpine AS builder
+FROM node:24-alpine AS builder
 
 WORKDIR /app
 
@@ -9,6 +9,16 @@ RUN npm ci
 
 # Copy source code
 COPY . .
+
+# Build args
+ARG VITE_API_URL
+ARG VITE_WS_URL
+ARG VITE_ORION_URL
+
+# Set env vars for build
+ENV VITE_API_URL=$VITE_API_URL
+ENV VITE_WS_URL=$VITE_WS_URL
+ENV VITE_ORION_URL=$VITE_ORION_URL
 
 # Build application
 RUN npm run build

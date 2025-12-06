@@ -1,0 +1,866 @@
+{
+  "common": {
+    "welcome": "Welcome",
+    "login": "Login",
+    "logout": "Logout",
+    "language": "Language",
+    "loading": "Loading",
+    "save": "Save",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "edit": "Edit",
+    "add": "Add",
+    "search": "Search",
+    "filter": "Filter",
+    "refresh": "Refresh",
+    "settings": "Settings",
+    "start": "Start",
+    "stop": "Stop",
+    "pause": "Pause",
+    "resume": "Resume",
+    "confirm": "Confirm",
+    "close": "Close",
+    "back": "Back",
+    "next": "Next",
+    "previous": "Previous",
+    "submit": "Submit",
+    "clear": "Clear",
+    "reset": "Reset",
+    "view": "View",
+    "details": "Details",
+    "status": "Status",
+    "name": "Name",
+    "description": "Description",
+    "location": "Location",
+    "time": "Time",
+    "date": "Date",
+    "all": "All",
+    "none": "None",
+    "online": "Online",
+    "offline": "Offline",
+    "error": "Error",
+    "warning": "Warning",
+    "info": "Info",
+    "success": "Success",
+    "type": "Type"
+  },
+  "locations": {
+    "nga4ThuDuc": "Thu Duc 4-way Intersection",
+    "nguyenThaiSon": "Nguyen Thai Son Roundabout",
+    "quangTrung": "Quang Trung 5-way Intersection",
+    "thuDucCrossroads": "Thu Duc Crossroads",
+    "goVapQuangTrung": "Go Vap, Quang Trung",
+    "d1Center": "District 1 - Center",
+    "baDinhHanoi": "Ba Dinh - Hanoi",
+    "haiChauDaNang": "Hai Chau - Da Nang",
+    "hcmc": "Ho Chi Minh City",
+    "hanoi": "Hanoi",
+    "danang": "Da Nang",
+    "thuDucCity": "Thu Duc City",
+    "description": {
+      "thuDucCrossroads": "Hanoi Highway - Vo Van Ngan Intersection",
+      "nguyenThaiSonRoundabout": "Nguyen Thai Son - Nguyen Kiem Roundabout",
+      "quangTrungIntersection": "Quang Trung - Nguyen Oanh - Nguyen Kiem Intersection"
+    }
+  },
+  "navigation": {
+    "dashboard": "Dashboard",
+    "trafficControl": "Traffic Control",
+    "areaControl": "Area Control",
+    "deviceManagement": "Device Management",
+    "alerts": "Alerts",
+    "subscriptions": "Subscriptions",
+    "home": "Home",
+    "profile": "Profile",
+    "settings": "Settings"
+  },
+  "dashboard": {
+    "title": "GreenWave",
+    "subtitle": "Smart Traffic Coordination System",
+    "notifications": "Notifications",
+    "viewAll": "View All",
+    "markAsRead": "Mark as Read",
+    "clearAll": "Clear All",
+    "noNotifications": "No new notifications",
+    "systemHealth": "System Health",
+    "activeDevices": "Active Devices",
+    "alertsCount": "Active Alerts",
+    "lastUpdate": "Last Update",
+    "updatedAt": "Last updated: {{time}}",
+    "kpi": {
+      "waitingTime": "Waiting Time",
+      "unit": {
+        "seconds": "seconds",
+        "vehiclePerHour": "vehicles/h"
+      },
+      "vehicleCount": "Vehicle Count",
+      "aiScore": "AI Score"
+    }
+  },
+  "landing": {
+    "title": "GreenWave",
+    "subtitle": "Multi-Objective Adaptive Traffic Coordination System",
+    "description": "Not just solving traffic jams. We're saving the city's lungs with AI & NGSI-LD standardized data.",
+    "getStarted": "Get Started",
+    "viewGithub": "View Github",
+    "documentation": "Documentation",
+    "features": {
+      "title": "Key Features",
+      "realTimeMonitoring": "Real-time Monitoring",
+      "airQualityTracking": "Air Quality Tracking",
+      "trafficOptimization": "Traffic Optimization",
+      "alertSystem": "Smart Alert System"
+    },
+    "keyFeaturesSection": {
+      "title": "Key Features",
+      "digitalTwin": {
+        "title": "Digital Twin",
+        "description": "Integrates real-time traffic information to create a precise digital twin of the city."
+      },
+      "globalStandard": {
+        "title": "Global Standard",
+        "description": "Fully compliant with NGSI-LD, FIWARE Data Models & SOSA/SSN, ensuring global compatibility."
+      },
+      "dynamicResponse": {
+        "title": "Dynamic Response",
+        "description": "Automatically detects and responds when PM2.5 exceeds safe thresholds, changing alert colors instantly."
+      }
+    },
+    "pipeline": {
+      "steps": {
+        "sumo": { "title": "SUMO", "desc": "3D Traffic Simulation" },
+        "iotAgent": { "title": "IoT Agent", "desc": "Raw Data → JSON-LD" },
+        "orion": { "title": "Orion-LD", "desc": "Context Broker" },
+        "aiAgent": { "title": "AI Agent", "desc": "MORL Processing" },
+        "dashboard": { "title": "Dashboard", "desc": "User Interface" }
+      },
+      "flowActive": "Real-time NGSI-LD Data Flow Active"
+    },
+    "problem": {
+      "title": "The Challenge",
+      "description": "Urban traffic congestion and air pollution are major challenges in modern cities.",
+      "blindOptimization": "Blind Optimization",
+      "blindOptimizationSub": "(Optimization Blindness)",
+      "statusDescription": "Current traffic lights cause 'Pollution Hotspots' by forcing vehicles to stop/start frequently. Speed-optimized systems are creating 'pollution oases' that silently kill community health.",
+      "speedOrientedStatus": "Status of Speed-Oriented Optimization",
+      "vehicleSpeed": "Traffic Speed",
+      "high": "High",
+      "lungHealth": "Lung Health",
+      "critical": "Critical",
+      "pm25Warning": "⚠️ PM2.5 exceeds safe threshold by 300% in school areas"
+    },
+    "solution": {
+      "title": "Our Solution",
+      "description": "AI-powered traffic coordination system that optimizes flow while reducing emissions.",
+      "tradeOffTitle": "Trade-off for a Better Life",
+      "tradeOffSubtitle": "Trading off for a better life with Multi-Objective Reinforcement Learning (MORL)",
+      "trafficSpeed": "Traffic Speed",
+      "airQuality": "Air Quality",
+      "weightSpeed": "Weight w₁ (Speed)",
+      "weightAir": "Weight w₂ (Air)",
+      "sliderInstruction": "Drag the slider to adjust the priority between traffic speed and air quality.",
+      "morlExplanation": "The MORL system will automatically optimize the signal cycle based on weights w₁ and w₂."
+    },
+    "team": {
+      "title": "Development Team",
+      "roles": {
+        "aiData": "AI & Data Engineer",
+        "backend": "Backend & Architect",
+        "frontend": "Frontend & Mascot"
+      }
+    },
+    "architecture": {
+      "title": "System Architecture",
+      "description": "Modular, scalable architecture built on open standards."
+    },
+    "footer": {
+      "rights": "© 2025 GreenWave Project.",
+      "sourceCode": "Source Code",
+      "dataModels": "Data Models Documentation",
+      "contact": "Contact"
+    }
+  },
+  "traffic": {
+    "control": "Traffic Control",
+    "simulation": "Simulation",
+    "sumoControl": "SUMO Control",
+    "startSimulation": "Start Simulation",
+    "stopSimulation": "Stop Simulation",
+    "stepForward": "Step Forward",
+    "autoStep": "Auto Step",
+    "connecting": "Connecting...",
+    "scenario": "Scenario",
+    "useGUI": "Use GUI",
+    "port": "Port",
+    "simulationTime": "Simulation Time",
+    "trafficFlow": "Traffic Flow",
+    "averageSpeed": "Average Speed",
+    "queueLength": "Queue Length",
+    "vehicleCount": "Vehicle Count",
+    "trafficLights": "Traffic Lights",
+    "congestionLevel": "Congestion Level",
+    "statusCard": {
+      "title": "Traffic Status",
+      "live": "Live",
+      "avgSpeed": "Average Speed",
+      "vehicleCount": "Vehicle Count",
+      "waitingTime": "Waiting Time",
+      "updated": "Updated"
+    },
+    "logs": {
+      "initSuccess": "System initialized successfully",
+      "waitingConnection": "Waiting for SUMO connection...",
+      "sumoInitSuccess": "SUMO API initialized successfully",
+      "sumoInitFailed": "Failed to initialize SUMO API: {{error}}"
+    },
+    "footer": {
+      "systemName": "GreenWave AI - Intelligent Traffic Management System",
+      "poweredBy": "Powered by SUMO & Deep Reinforcement Learning"
+    }
+  },
+  "devices": {
+    "deviceList": "Device List",
+    "addDevice": "Add Device",
+    "editDevice": "Edit Device",
+    "deviceInfo": "Device Information",
+    "manufacturer": "Manufacturer",
+    "serialNumber": "Serial Number",
+    "lastSeen": "Last Seen",
+    "lastUpdate": "Last Update",
+    "unknown": "Unknown",
+    "justNow": "Just now",
+    "minutesAgo": "{{count}} minutes ago",
+    "hoursAgo": "{{count}} hours ago",
+    "daysAgo": "{{count}} days ago",
+    "noData": "No data available",
+    "restart": "Restart",
+    "logs": "Logs",
+    "needsAttention": "Needs Attention",
+    "trafficCam": "Traffic Camera",
+    "airQualitySensor": "Air Quality Sensor",
+    "device": "Device",
+    "status": {
+      "online": "Online",
+      "offline": "Offline",
+      "maintenance": "Maintenance",
+      "error": "Error",
+      "lowBattery": "Low Battery",
+      "active": "Active",
+      "inactive": "Inactive"
+    },
+    "quickStats": {
+      "trafficFlow": "Traffic Flow",
+      "aqiIndex": "AQI Index",
+      "activity": "Activity"
+    },
+    "healthTitle": "Device Health",
+    "deviceCount": "Devices",
+    "noDevices": "No devices available",
+    "unknownLocation": "Unknown Location",
+    "types": {
+      "trafficCam": "Traffic Camera",
+      "airQualitySensor": "Air Quality Sensor",
+      "smartLight": "Smart Light",
+      "inductiveLoop": "Inductive Loop",
+      "radarSensor": "Radar Sensor"
+    },
+    "protocols": {
+      "mqtt": "MQTT",
+      "http": "HTTP",
+      "rtsp": "RTSP",
+      "modbusTcp": "Modbus TCP"
+    },
+    "wizard": {
+      "title": {
+        "add": "Add New Device",
+        "edit": "Edit Device"
+      },
+      "steps": {
+        "type": "Select Device Type",
+        "connection": "Connection Config",
+        "location": "Location Map",
+        "confirm": "Confirm Info"
+      },
+      "stepTitles": {
+        "type": "Select the type of device to add",
+        "connection": "Device connection configuration",
+        "location": "Locate device on map",
+        "confirm": "Confirm device information"
+      },
+      "labels": {
+        "generalInfo": "General Information",
+        "name": "Device Name",
+        "serial": "Serial Number",
+        "manufacturer": "Manufacturer",
+        "protocol": "Protocol",
+        "mqttConfig": "MQTT Configuration",
+        "brokerUrl": "Broker URL",
+        "port": "Port",
+        "topicSubscribe": "Topic Subscribe",
+        "topicPublish": "Topic Publish",
+        "rtspConfig": "RTSP Configuration",
+        "ipAddress": "IP Address",
+        "rtspUrl": "RTSP URL",
+        "connectionTest": "Connection Test",
+        "checkConnection": "Check Connection",
+        "checking": "Checking...",
+        "testDescription": "Check if the system can connect to the device",
+        "enterCoordinates": "Enter Coordinates",
+        "latitude": "Latitude",
+        "longitude": "Longitude",
+        "locationDesc": "Location Description",
+        "selectOnMap": "Select location on map",
+        "mapPlaceholder": "Map will be integrated here",
+        "dragPin": "Users can drag and drop pin to select location",
+        "confirmInfo": "Confirm Information"
+      },
+      "placeholders": {
+        "name": "e.g. Hang Xanh Crossroad Camera",
+        "serial": "SN-2024-X99",
+        "manufacturer": "Bosch, Honeywell...",
+        "brokerUrl": "mqtt://broker.hivemq.com",
+        "topicSubscribe": "hcm/d1/hangxanh/traffic/data",
+        "topicPublish": "hcm/d1/hangxanh/traffic/cmd",
+        "ipAddress": "192.168.1.105",
+        "rtspUrl": "rtsp://admin:12345@192.168.1.105/stream",
+        "locationDesc": "Lamp post #5, facing District 1"
+      },
+      "messages": {
+        "connectSuccess": "Connection successful! Device is ready to be added.",
+        "connectError": "Could not connect to device. Please check configuration.",
+        "required": "Required"
+      },
+      "typeDescriptions": {
+        "trafficCam": "Vehicle counting, license plate recognition, congestion detection",
+        "airQualitySensor": "Measure PM2.5, PM10, CO, NO2, temperature, humidity",
+        "smartLight": "Control traffic light phases",
+        "inductiveLoop": "Measure traffic flow and speed",
+        "radarSensor": "Radar sensor for vehicle detection"
+      }
+    },
+    "filter": {
+      "allDevices": "All Devices",
+      "allStatuses": "All Statuses",
+      "allDistricts": "All Districts",
+      "searchPlaceholder": "Search devices, address...",
+      "addDevice": "Add Device",
+      "clearFilters": "Clear Filters"
+    },
+    "districts": {
+      "quan1": "District 1",
+      "quan3": "District 3",
+      "quan5": "District 5",
+      "quan7": "District 7",
+      "binhthanh": "Binh Thanh District",
+      "phunhuan": "Phu Nhuan District",
+      "thuduc": "Thu Duc City"
+    },
+    "management": {
+      "title": "IoT Device Management",
+      "subtitle": "Monitor and manage all devices in Smart City system",
+      "addNew": "Add New Device",
+      "total": "Total Devices",
+      "listTitle": "Device List",
+      "filtering": "(Filtering)",
+      "viewMap": "View on Map",
+      "notFound": "No devices found",
+      "adjustFilter": "Try adjusting filters to find the device you need.",
+      "noDevices": "No devices in the system yet. Add your first device.",
+      "clearFilters": "Clear Filters",
+      "addFirst": "Add first device"
+    }
+  },
+  "subscription": {
+    "title": "Alert Management",
+    "createAlert": "Create New Alert",
+    "editAlert": "Edit Alert",
+    "alertList": "Alert List",
+    "description": "Description",
+    "placeholder": "e.g., High pollution alert in District 1",
+    "dataType": "Data Type to Monitor",
+    "airQuality": "Air Quality (AirQualityObserved)",
+    "trafficFlow": "Traffic Flow (TrafficFlowObserved)",
+    "watchedAttributes": "Watched Attributes",
+    "selectAll": "Select All",
+    "clearSelection": "Clear Selection",
+    "selectedCount": "Selected {{count}} attributes",
+    "monitorAll": "Monitor all attributes if none selected",
+    "queryConditions": "Filter Conditions (Query)",
+    "addCondition": "Add Condition",
+    "noConditions": "No filter conditions. Receive notifications for all changes.",
+    "notificationUri": "Notification URI",
+    "notificationPlaceholder": "http://myserver.com/api/notify",
+    "create": "Create Alert",
+    "update": "Update Alert",
+    "delete": "Delete Alert",
+    "attributes": {
+      "aqi": "AQI Index",
+      "pm25": "PM2.5",
+      "pm10": "PM10",
+      "co": "CO",
+      "no2": "NO2",
+      "o3": "O3",
+      "temperature": "Temperature",
+      "humidity": "Humidity",
+      "windSpeed": "Wind Speed",
+      "vehicleCount": "Vehicle Count",
+      "avgSpeed": "Average Speed",
+      "queues": "Queue Length"
+    },
+    "operators": {
+      "equals": "=",
+      "notEquals": "!",
+      "greaterThan": ">",
+      "lessThan": "<",
+      "greaterThanOrEqual": ">=",
+      "lessThanOrEqual": "<="
+    },
+    "typeLabel": "Type:",
+    "conditionLabel": "Condition:",
+    "sentLabel": "Sent:",
+    "noAlertsCreated": "No alerts have been created.",
+    "deleteTooltip": "Delete Alert",
+    "management": {
+      "subtitle": "Manage subscriptions regarding air quality and traffic flow changes.",
+      "deleteConfirm": "Are you sure you want to delete this alert?",
+      "deleteError": "Cannot delete alert",
+      "createError": "Cannot create alert. Please check information."
+    }
+  },
+  "aqi": {
+    "title": "AQI Index",
+    "good": "Good",
+    "moderate": "Moderate",
+    "unhealthyForSensitive": "Unhealthy for Sensitive Groups",
+    "unhealthy": "Unhealthy",
+    "veryUnhealthy": "Very Unhealthy",
+    "hazardous": "Hazardous",
+    "descriptions": {
+      "good": "Air quality is satisfactory",
+      "moderate": "Acceptable air quality",
+      "unhealthyForSensitive": "Sensitive groups may experience health effects",
+      "unhealthy": "Health warnings for everyone",
+      "veryUnhealthy": "Health alert conditions",
+      "hazardous": "Health emergency conditions"
+    },
+    "healthInsight": {
+      "status": "Status",
+      "index": "AQI Index",
+      "recommendations": "Health Recommendations",
+      "windSpeed": "Wind Speed",
+      "windDirection": "Wind Direction",
+      "updated": "Updated",
+      "levels": {
+        "safe": "Safe",
+        "poor": "Poor",
+        "hazardous": "Hazardous"
+      },
+      "advice": {
+        "safe": [
+          "Open windows for ventilation",
+          "Enjoy outdoor activities",
+          "Air is clean and safe"
+        ],
+        "poor": [
+          "Sensitive groups should limit exertion",
+          "Close windows if windy",
+          "Consider wearing a mask"
+        ],
+        "hazardous": [
+          "Wear N95/PM2.5 mask",
+          "Close windows immediately",
+          "Use air purifier",
+          "Avoid going outside",
+          "Wash eyes/nose when entering"
+        ]
+      }
+    }
+  },
+  "alerts": {
+    "highPollution": "High pollution levels detected",
+    "trafficAlert": "Traffic congestion detected",
+    "systemAlert": "System alert",
+    "deviceOffline": "Device offline",
+    "thresholdExceeded": "Threshold exceeded: {{value}}",
+    "pm25Warning": "PM2.5 levels at {{location}} exceed safe threshold ({{value}})",
+    "systemAdjusted": "System automatically adjusted traffic lights at {{location}}",
+    "newAlert": "New Alert",
+    "alertResolved": "Alert Resolved",
+    "criticalAlert": "Critical Alert",
+    "title": "Alerts",
+    "noAlerts": "No alerts",
+    "aiIntervention": "AI Intervention",
+    "noIntervention": "No interventions",
+    "status": {
+      "pending": "Pending",
+      "inProgress": "In Progress",
+      "completed": "Completed"
+    },
+    "aiTag": "AI"
+  },
+  "user": {
+    "profile": "Profile",
+    "userSettings": "User Settings",
+    "admin": "Administrator",
+    "areaManager": "Area Manager",
+    "operator": "Operator",
+    "guest": "Guest",
+    "role": "Role",
+    "area": "Area",
+    "loginRequired": "Login required",
+    "accessDenied": "Access denied",
+    "invalidCredentials": "Invalid credentials"
+  },
+  "auth": {
+    "login": {
+      "title": "Login to System",
+      "subtitle": "Or",
+      "registerLink": "create a new account",
+      "emailLabel": "Email",
+      "emailPlaceholder": "example@email.com",
+      "passwordLabel": "Password",
+      "passwordPlaceholder": "••••••••",
+      "loginButton": "Login",
+      "loggingIn": "Logging in...",
+      "demoAccounts": {
+        "title": "Demo Accounts:",
+        "admin": "Administrator: admin@olp.vn / admin123",
+        "managerThuDuc": "Area Manager: manager.thuduc@olp.vn / manager123",
+        "managerNguyenThaiSon": "Area Manager: manager.nguyenthaison@olp.vn / manager123",
+        "managerQuangTrung": "Area Manager: manager.quangtrung@olp.vn / manager123"
+      }
+    },
+    "register": {
+      "title": "Register New Account",
+      "subtitle": "Or",
+      "loginLink": "login to existing account",
+      "nameLabel": "Full Name",
+      "namePlaceholder": "John Doe",
+      "emailLabel": "Email",
+      "emailPlaceholder": "example@email.com",
+      "passwordLabel": "Password",
+      "passwordPlaceholder": "••••••••",
+      "roleLabel": "Role",
+      "rolePlaceholder": "Select role",
+      "areaNameLabel": "Managed Area Name",
+      "areaNamePlaceholder": "Thu Duc Crossroads",
+      "registerButton": "Register",
+      "registering": "Registering..."
+    },
+    "unauthorized": {
+      "title": "Access Denied",
+      "notLoggedIn": "You need to login to access this page.",
+      "loggedInDenied": "Sorry {{name}}, you don't have permission to access this page.",
+      "accountInfo": "Account Information:",
+      "email": "Email: {{email}}",
+      "role": "Role: {{role}}",
+      "goHome": "Go to Homepage",
+      "goToControl": "Go to Control Page",
+      "goToAreaManager": "Go to Area Manager Page",
+      "login": "Login",
+      "goBack": "Go Back"
+    },
+    "validation": {
+      "emailRequired": "Email is required",
+      "emailInvalid": "Email is invalid",
+      "passwordRequired": "Password is required",
+      "passwordMinLength": "Password must be at least 6 characters",
+      "nameRequired": "Full name is required",
+      "roleRequired": "Role is required",
+      "areaNameRequired": "Area name is required for Area Manager"
+    }
+  },
+  "forms": {
+    "required": "This field is required",
+    "invalidEmail": "Please enter a valid email address",
+    "invalidUrl": "Please enter a valid URL",
+    "minLength": "Minimum {{min}} characters required",
+    "maxLength": "Maximum {{max}} characters allowed",
+    "invalidNumber": "Please enter a valid number",
+    "value": "Value"
+  },
+  "maps": {
+    "loading": "Loading map...",
+    "error": "Failed to load map",
+    "searchLocation": "Search location...",
+    "currentLocation": "Current Location",
+    "trafficDensity": "Traffic Density",
+    "airQuality": "Air Quality",
+    "sensors": "Sensors",
+    "cameras": "Cameras",
+    "trafficLights": "Traffic Lights",
+    "zoomIn": "Zoom In",
+    "zoomOut": "Zoom Out",
+    "fullscreen": "Fullscreen",
+    "resetView": "Reset View",
+    "severity": {
+      "low": "Low",
+      "medium": "Medium",
+      "high": "High",
+      "critical": "Critical"
+    },
+    "searchPlaceholder": "Search location...",
+    "noResults": "No results found for \"{{query}}\"",
+    "pm25": "PM2.5:",
+    "aqi": "AQI:",
+    "severityLabel": "Severity:",
+    "userLocation": {
+      "title": "Your Location",
+      "lat": "Latitude",
+      "lng": "Longitude",
+      "accuracy": "Accuracy",
+      "speed": "Speed",
+      "updated": "Updated",
+      "youAreHere": "You are here",
+      "locateMe": "Locate Me",
+      "following": "Following location"
+    },
+    "trafficMarker": {
+      "clickToView": "Click to view traffic status",
+      "name": "Name",
+      "description": "Description"
+    },
+    "header": {
+      "searchPlaceholder": "Search location (e.g., District 1...)",
+      "legendTitle": "AQI:",
+      "about": "About Us",
+      "admin": "Admin Panel",
+      "toggleLight": "Switch to Light Mode",
+      "toggleDark": "Switch to Dark Mode"
+    }
+  },
+  "errors": {
+    "networkError": "Network error. Please check your connection.",
+    "serverError": "Server error. Please try again later.",
+    "notFound": "Page not found",
+    "unauthorized": "Unauthorized access",
+    "forbidden": "Access forbidden",
+    "validationError": "Validation error",
+    "unknownError": "An unknown error occurred",
+    "retry": "Retry",
+    "goHome": "Go Home"
+  },
+  "manualControl": {
+    "title": "Manual Control",
+    "noDeviceSelected": {
+      "title": "No Device Selected",
+      "message": "Please select a monitoring point on the map to access the manual control panel."
+    },
+    "status": {
+      "online": "Online",
+      "offline": "Offline"
+    },
+    "timeConfig": "Time Configuration (seconds)",
+    "greenLight": "Green Light",
+    "yellowLight": "Yellow Light",
+    "redLight": "Red Light",
+    "sensorInfo": "Sensor Information",
+    "saveConfig": "Save Configuration",
+    "switchNow": "Switch Now",
+    "messages": {
+      "configUpdated": "Configuration updated for {{name}}",
+      "commandSent": "Switch command sent immediately to {{name}}"
+    }
+  },
+  "monitoring": {
+    "realTimeMonitoring": "Real-time Monitoring",
+    "updateInterval": "Updates every 30 seconds",
+    "waitingTime": "Waiting Time (s)",
+    "pm25": "PM2.5 (μg/m³)",
+    "waitingTimeLabel": "Waiting Time",
+    "averageAbbr": "Avg:",
+    "secondsAbbr": "s",
+    "microgramAbbr": "μg"
+  },
+  "charts": {
+    "rewards": {
+      "title": "AI Performance",
+      "subtitle": "Traffic & Environment Reward Distribution",
+      "vsAverage": "% vs Avg",
+      "traffic": "Traffic",
+      "environment": "Environment",
+      "trafficAvg": "Traffic (Avg)",
+      "environmentAvg": "Environment (Avg)",
+      "totalLatest": "Total Score (Latest)"
+    }
+  },
+  "areaControl": {
+    "title": "Area Control",
+    "useGui": "Show Simulation GUI (SUMO GUI)",
+    "messages": {
+      "noScenario": "No scenario found for area: {{area}}",
+      "connected": "Connected to control system at: {{area}}",
+      "connectFailed": "Connection failed: {{error}}",
+      "disconnected": "System disconnected",
+      "disconnectFailed": "Disconnection failed: {{error}}",
+      "statusUpdated": "Status updated",
+      "updateFailed": "Update failed: {{error}}",
+      "accessDenied": "Access Denied",
+      "noPermission": "You do not have permission to access this page",
+      "yourArea": "Your Area",
+      "footer": "Smart Traffic Management System - Area {{area}}",
+      "logs": {
+        "connectedSuccess": "Connected to server successfully",
+        "connectError": "Cannot connect to server: {{error}}",
+        "scenarioMismatch": "Running scenario {{scenario}} (Different from your area). Please restart with correct area.",
+        "autoStart": "Auto starting simulation for area: {{area}}"
+      }
+    }
+  },
+  "sumo": {
+    "ai": {
+      "title": "AI Model Details",
+      "algorithm": "Algorithm",
+      "features": "Features",
+      "totalActions": "Total Actions",
+      "actionDesc": "Traffic light switches executed",
+      "controlled": "Controlled",
+      "lights": "lights",
+      "status": "Status",
+      "statusLabel": "AI Status",
+      "modelPerformance": "Model Performance",
+      "dqnScore": "DQN Score",
+      "points": "points",
+      "vsBaseline": "vs Baseline",
+      "modelSize": "Model Size",
+      "inferenceTime": "Inference Time",
+      "performanceComparison": "Performance Comparison",
+      "algorithmComparison": "Algorithm Comparison",
+      "avgReward": "Avg Reward",
+      "speed": "Speed",
+      "waitTime": "Wait Time",
+      "throughput": "Throughput",
+      "lastDecision": "Last Decision",
+      "model": "AI Model",
+      "defaultModel": "GreenWave DQN"
+    },
+    "status": {
+      "status": "Status",
+      "connected": "Connected",
+      "disconnected": "Disconnected",
+      "scenario": "Scenario",
+      "notRunning": "Not running",
+      "time": "Time",
+      "vehicles": "Vehicles",
+      "error": "Error"
+    },
+    "settings": {
+      "scenario": "Traffic Scenario",
+      "port": "Port",
+      "useGui": "Use GUI",
+      "scenarios": {
+        "nga4ThuDuc": "Nga Tu Thu Duc (4-way)",
+        "nguyenThaiSon": "Nga 6 Nguyen Thai Son (6-way)",
+        "quangTrung": "Quang Trung (Complex)"
+      }
+    },
+    "chart": {
+      "vehicleCount": "Vehicle Count",
+      "avgSpeed": "Average Speed",
+      "speedUnit": "Speed (km/h)",
+      "time": "Time:",
+      "vehicles": "vehicles"
+    },
+    "trafficLight": {
+      "title": "Traffic Lights",
+      "signal": "Signal",
+      "phase": "Phase",
+      "mainControl": "Main Control",
+      "lights": "lights",
+      "waiting": "Waiting for traffic light data...",
+      "legend": {
+        "green": "Green",
+        "yellow": "Yellow",
+        "red": "Red"
+      }
+    },
+    "algorithms": {
+      "dqn": "🥇 DQN (AI)",
+      "baseline": "🥈 Baseline",
+      "baselineFixed": "🥈 Baseline (Fixed)",
+      "random": "🥉 Random"
+    },
+    "controlPanel": {
+      "title": "SUMO Control",
+      "simulation": {
+        "title": "Control Panel",
+        "start": "▶ Start",
+        "pause": "⏸ Pause",
+        "reset": "🔄 Reset",
+        "speed": "Simulation Speed:",
+        "status": "Status:",
+        "running": "🟢 Running",
+        "paused": "🟡 Paused",
+        "stopped": "⚫ Stopped",
+        "time": "Sim Time:",
+        "warning": {
+          "title": "⚠️ SUMO Status:",
+          "connectedNotStarted": "🟢 Connected to {{scenario}} but simulation not started.",
+          "startInstruction": "Please click \"Start SUMO\" button to begin simulation.",
+          "notConnected": "⚫ Not connected. Please start SUMO connection first.",
+          "connectFirst": "❌ Please connect to SUMO first by clicking \"Start SUMO\" button"
+        },
+        "log": {
+          "started": "▶ Simulation started - Running SUMO steps",
+          "paused": "⏸ Simulation paused",
+          "reset": "🔄 Simulation reset - SUMO stopped",
+          "resetFailed": "❌ Failed to reset: {{error}}",
+          "speedChanged": "Simulation speed changed to {{speed}}x"
+        }
+      },
+      "ai": {
+        "title": "AI Control",
+        "enable": "Enable AI Control",
+        "disable": "Disable AI",
+        "disabledMessage": "AI Control is disabled",
+        "startSumoMessage": "Start SUMO, then enable AI control",
+        "log": {
+          "enabled": "🧠 AI Traffic Control enabled successfully!",
+          "enableFailed": "❌ Failed to enable AI: {{error}}",
+          "disabled": "🛑 AI Traffic Control disabled",
+          "disableFailed": "❌ Failed to disable AI: {{error}}",
+          "decision": "🚦 AI Decision: {{switches}} switches, {{holds}} holds (t={{time}}s)"
+        }
+      },
+      "log": {
+        "started": "✅ SUMO started successfully with scenario: {{scenario}}",
+        "startFailed": "❌ Failed to start SUMO: {{error}}",
+        "stopped": "🛑 SUMO stopped successfully",
+        "stopFailed": "❌ Failed to stop SUMO: {{error}}",
+        "stepExecuted": "⏭️ Simulation step executed at time: {{time}}",
+        "stepFailed": "❌ Failed to execute step: {{error}}",
+        "refreshed": "🔄 SUMO status refreshed",
+        "refreshFailed": "❌ Failed to refresh status: {{error}}"
+      }
+    },
+    "logs": {
+      "title": "System Logs",
+      "empty": "No logs yet. System is ready.",
+      "count": "logs"
+    },
+    "metrics": {
+      "title": "Real-time Traffic Metrics",
+      "avgSpeed": "Avg Speed",
+      "vehicles": "Vehicles",
+      "active": "active",
+      "occupancy": "Occupancy",
+      "queue": "Queue",
+      "roadOccupancy": "Road Occupancy",
+      "loaded": "Loaded",
+      "departed": "Departed",
+      "arrived": "Arrived",
+      "waitingTime": "Total Waiting Time"
+    },
+    "flowChart": {
+      "title": "Real-time Traffic Flow",
+      "ready": "Chart Ready",
+      "startSumo": "Start SUMO, then enable AI control",
+      "dataPoints": "data points",
+      "liveUpdating": "Live updating",
+      "legend": {
+        "vehicles": "Vehicles",
+        "speed": "Speed"
+      }
+    }
+  }
+}

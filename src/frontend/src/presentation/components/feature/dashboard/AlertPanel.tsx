@@ -1,4 +1,5 @@
 import React from "react";
+import { useTranslation } from "react-i18next";
 import type {
   AlertLog,
   InterventionAction,
@@ -29,22 +30,24 @@ const statusIcons = {
   completed: <CheckCircle className="w-4 h-4 text-green-500" />,
 };
 
-const statusLabels = {
-  pending: "Chờ xử lý",
-  "in-progress": "Đang thực hiện",
-  completed: "Hoàn thành",
-};
-
 export const AlertPanel: React.FC<AlertPanelProps> = ({
   alerts,
   interventions,
 }) => {
+  const { t, i18n } = useTranslation(["alerts"]);
+
   const formatTime = (timestamp: string) => {
     const date = new Date(timestamp);
-    return date.toLocaleTimeString("vi-VN", {
+    return date.toLocaleTimeString(i18n.language === "en" ? "en-US" : "vi-VN", {
       hour: "2-digit",
       minute: "2-digit",
     });
+  };
+
+  const getStatusLabel = (status: string) => {
+    const key = status === "in-progress" ? "inProgress" : status;
+    // @ts-expect-error - dynamic key
+    return t(`status.${key}`) as string;
   };
 
   return (
@@ -53,12 +56,12 @@ export const AlertPanel: React.FC<AlertPanelProps> = ({
       <div className="mb-4 flex-shrink-0">
         <h3 className="text-base font-bold text-gray-900 dark:text-white mb-3 flex items-center gap-2">
           <AlertTriangle className="w-4 h-4" />
-          Cảnh báo
+          {t("title")}
         </h3>
         <div className="space-y-2 max-h-32 overflow-y-auto pr-1">
           {alerts.length === 0 ? (
             <p className="text-xs text-gray-500 dark:text-gray-400 italic">
-              Không có cảnh báo
+              {t("noAlerts")}
             </p>
           ) : (
             alerts.slice(0, 3).map((alert) => (
@@ -108,12 +111,12 @@ export const AlertPanel: React.FC<AlertPanelProps> = ({
       <div className="flex-1 min-h-0 flex flex-col">
         <h3 className="text-base font-bold text-gray-900 dark:text-white mb-3 flex items-center gap-2 flex-shrink-0">
           <Play className="w-4 h-4" />
-          Can thiệp AI
+          {t("aiIntervention")}
         </h3>
         <div className="space-y-2 overflow-y-auto pr-1 flex-1">
           {interventions.length === 0 ? (
             <p className="text-xs text-gray-500 dark:text-gray-400 italic">
-              Không có can thiệp
+              {t("noIntervention")}
             </p>
           ) : (
             interventions.slice(0, 10).map((intervention) => (
@@ -139,13 +142,13 @@ export const AlertPanel: React.FC<AlertPanelProps> = ({
                   <div className="flex flex-col items-end gap-1 flex-shrink-0">
                     {intervention.aiTriggered && (
                       <span className="px-1.5 py-0.5 text-xs font-medium bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300 rounded">
-                        AI
+                        {t("aiTag")}
                       </span>
                     )}
                     <div className="flex items-center gap-1">
                       {statusIcons[intervention.status]}
                       <span className="text-xs text-gray-600 dark:text-gray-400 whitespace-nowrap">
-                        {statusLabels[intervention.status]}
+                        {getStatusLabel(intervention.status)}
                       </span>
                     </div>
                   </div>

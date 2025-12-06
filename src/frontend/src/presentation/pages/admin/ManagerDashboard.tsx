@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useTranslation } from "react-i18next";
 import { DashboardHeader } from "../../components/feature/dashboard/DashboardHeader";
 import { KPICard } from "../../components/feature/dashboard/KPICard";
 import { MonitoringChart } from "../../components/feature/dashboard/MonitoringChart";
@@ -19,99 +20,17 @@ import { sumoApi } from "../../../api/sumoApi";
 import { airQualityApi } from "../../../api/airQualityApi";
 import type { AirQualityObservedDto } from "../../../data/dtos/AirQualityDTOs";
 import { TRAFFIC_LOCATIONS } from "../../../utils/trafficLocations";
-
-// Mock data generator (kept for initialization and aesthetics)
-const generateMockData = (): DashboardStateModel => {
-  const now = new Date();
-  const timePoints = Array.from({ length: 20 }, (_, i) => {
-    const time = new Date(now.getTime() - (19 - i) * 5 * 60 * 1000);
-    return time.toISOString();
-  });
-
-  const kpis: KPICardModel[] = [
-    {
-      id: "1",
-      title: "Thời gian chờ",
-      value: 45,
-      unit: "giây",
-      trend: "down",
-      trendValue: -12,
-      icon: "Clock",
-      color: "blue",
-    },
-    {
-      id: "2",
-      title: "PM2.5",
-      value: 35,
-      unit: "μg/m³",
-      trend: "down",
-      trendValue: -8,
-      icon: "Leaf",
-      color: "green",
-    },
-    {
-      id: "3",
-      title: "Số xe",
-      value: 1248,
-      unit: "xe/h",
-      trend: "up",
-      trendValue: 5,
-      icon: "Car",
-      color: "yellow",
-    },
-    {
-      id: "4",
-      title: "Điểm AI",
-      value: 87,
-      unit: "%",
-      trend: "up",
-      trendValue: 3,
-      icon: "Brain",
-      color: "blue",
-    },
-  ];
-
-  const monitoringData: MonitoringDataPoint[] = timePoints.map(
-    (time, index) => ({
-      timestamp: time,
-      avgWaitingTime: 40 + Math.sin(index / 3) * 15 + Math.random() * 5,
-      pm25Level: 30 + Math.cos(index / 4) * 20 + Math.random() * 8,
-    })
-  );
-
-  const rewardData: RewardDataPoint[] = timePoints.map((time) => ({
-    timestamp: time,
-    trafficReward: 40 + Math.random() * 20,
-    environmentReward: 30 + Math.random() * 25,
-  }));
-
-  const pollutionHotspots: PollutionHotspot[] = TRAFFIC_LOCATIONS.map(
-    (loc) => ({
-      id: loc.id,
-      name: loc.name,
-      latitude: loc.coordinates[0],
-      longitude: loc.coordinates[1],
-      pm25: 30 + Math.random() * 30, // Random initial value
-      aqi: 50 + Math.random() * 50, // Random initial value
-      severity: "medium",
-    })
-  );
-
-  const alerts: AlertLog[] = [];
-  const interventions: InterventionAction[] = [];
-
-  return {
-    kpis,
-    monitoringData,
-    rewardData,
-    pollutionHotspots,
-    alerts,
-    interventions,
-    lastUpdated: now.toISOString(),
-  };
-};
+import type { TFunction } from "i18next";
 
 export const ManagerDashboard: React.FC = () => {
+  const { t } = useTranslation([
+    "dashboard",
+    "monitoring",
+    "traffic",
+    "devices",
+    "common",
+  ]);
+
   // Initialize dark mode from localStorage or system preference
   const getInitialDarkMode = () => {
     if (typeof window !== "undefined") {
@@ -125,9 +44,105 @@ export const ManagerDashboard: React.FC = () => {
   };
 
   const [isDarkMode, setIsDarkMode] = useState(getInitialDarkMode);
-  const [dashboardData, setDashboardData] = useState<DashboardStateModel>(
-    generateMockData()
+
+  // Mock data generator (moved inside component to access t)
+  const generateMockData = (
+    translate: TFunction<["dashboard", "devices", "common"]>
+  ): DashboardStateModel => {
+    const now = new Date();
+    const timePoints = Array.from({ length: 20 }, (_, i) => {
+      const time = new Date(now.getTime() - (19 - i) * 5 * 60 * 1000);
+      return time.toISOString();
+    });
+
+    const kpis: KPICardModel[] = [
+      {
+        id: "1",
+        title: translate("dashboard:kpi.waitingTime"),
+        value: 45,
+        unit: translate("dashboard:kpi.unit.seconds"),
+        trend: "down",
+        trendValue: -12,
+        icon: "Clock",
+        color: "blue",
+      },
+      {
+        id: "2",
+        title: "PM2.5",
+        value: 35,
+        unit: "μg/m³",
+        trend: "down",
+        trendValue: -8,
+        icon: "Leaf",
+        color: "green",
+      },
+      {
+        id: "3",
+        title: translate("dashboard:kpi.vehicleCount"),
+        value: 1248,
+        unit: translate("dashboard:kpi.unit.vehiclePerHour"),
+        trend: "up",
+        trendValue: 5,
+        icon: "Car",
+        color: "yellow",
+      },
+      {
+        id: "4",
+        title: translate("dashboard:kpi.aiScore"),
+        value: 87,
+        unit: "%",
+        trend: "up",
+        trendValue: 3,
+        icon: "Brain",
+        color: "blue",
+      },
+    ];
+
+    const monitoringData: MonitoringDataPoint[] = timePoints.map(
+      (time, index) => ({
+        timestamp: time,
+        avgWaitingTime: 40 + Math.sin(index / 3) * 15 + Math.random() * 5,
+        pm25Level: 30 + Math.cos(index / 4) * 20 + Math.random() * 8,
+      })
+    );
+
+    const rewardData: RewardDataPoint[] = timePoints.map((time) => ({
+      timestamp: time,
+      trafficReward: 40 + Math.random() * 20,
+      environmentReward: 30 + Math.random() * 25,
+    }));
+
+    const pollutionHotspots: PollutionHotspot[] = TRAFFIC_LOCATIONS.map(
+      (loc) => ({
+        id: loc.id,
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        name: translate(loc.nameKey as any),
+        latitude: loc.coordinates[0],
+        longitude: loc.coordinates[1],
+        pm25: 30 + Math.random() * 30, // Random initial value
+        aqi: 50 + Math.random() * 50, // Random initial value
+        severity: "medium",
+      })
+    );
+
+    const alerts: AlertLog[] = [];
+    const interventions: InterventionAction[] = [];
+
+    return {
+      kpis,
+      monitoringData,
+      rewardData,
+      pollutionHotspots,
+      alerts,
+      interventions,
+      lastUpdated: now.toISOString(),
+    };
+  };
+
+  const [dashboardData, setDashboardData] = useState<DashboardStateModel>(() =>
+    generateMockData(t)
   );
+
   const [selectedSensor, setSelectedSensor] = useState<PollutionHotspot | null>(
     null
   );
@@ -140,6 +155,34 @@ export const ManagerDashboard: React.FC = () => {
       document.documentElement.classList.remove("dark");
     }
   }, [isDarkMode]);
+
+  // Update titles when language changes
+  useEffect(() => {
+    setDashboardData((prev) => ({
+      ...prev,
+      kpis: prev.kpis.map((kpi, index) => {
+        let title = kpi.title;
+        let unit = kpi.unit;
+        if (index === 0) {
+          title = t("dashboard:kpi.waitingTime");
+          unit = t("dashboard:kpi.unit.seconds");
+        } else if (index === 2) {
+          title = t("dashboard:kpi.vehicleCount");
+          unit = t("dashboard:kpi.unit.vehiclePerHour");
+        } else if (index === 3) {
+          title = t("dashboard:kpi.aiScore");
+        }
+        return { ...kpi, title, unit };
+      }),
+      pollutionHotspots: prev.pollutionHotspots.map((spot) => ({
+        ...spot,
+        name:
+          spot.name === "Unknown Location"
+            ? t("devices:unknownLocation")
+            : spot.name,
+      })),
+    }));
+  }, [t]);
 
   // Real-time data fetching
   useEffect(() => {
@@ -225,7 +268,7 @@ export const ManagerDashboard: React.FC = () => {
             airQualityData.length > 0
               ? airQualityData.map((aq) => ({
                   id: aq.id,
-                  name: aq.areaServed || "Unknown Location",
+                  name: aq.areaServed || t("devices:unknownLocation"),
                   latitude: aq.location?.coordinates[1] || 0,
                   longitude: aq.location?.coordinates[0] || 0,
                   pm25: aq.pm25 || 0,
@@ -263,7 +306,7 @@ export const ManagerDashboard: React.FC = () => {
     const interval = setInterval(fetchData, 5000);
 
     return () => clearInterval(interval);
-  }, []);
+  }, [t]);
 
   const handleThemeToggle = () => {
     const newDarkMode = !isDarkMode;
@@ -332,8 +375,9 @@ export const ManagerDashboard: React.FC = () => {
         {/* Last Updated */}
         <div className="mt-6 text-center">
           <p className="text-sm text-gray-500 dark:text-gray-400">
-            Cập nhật lần cuối:{" "}
-            {new Date(dashboardData.lastUpdated).toLocaleString("vi-VN")}
+            {t("dashboard:updatedAt", {
+              time: new Date(dashboardData.lastUpdated).toLocaleString("vi-VN"),
+            })}
           </p>
         </div>
       </main>

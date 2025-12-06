@@ -29,12 +29,13 @@ class IoTAgent:
         logger.info("[IoT Agent] Initialized")
         logger.info(f"  SUMO Connected: {self.sumo_connected}")
     
-    def connect_sumo(self, sumo_config: list):
+    def connect_sumo(self, sumo_config: list, port: int = 8813):
         """
         Connect to SUMO simulation
         
         Args:
             sumo_config: SUMO command line configuration
+            port: Port to listen/connect to
         """
         try:
             if 'SUMO_HOME' in os.environ:
@@ -44,13 +45,38 @@ class IoTAgent:
                 logger.warning("[IoT Agent] SUMO_HOME not set")
                 return False
             
+            import subprocess
+            import time
+
             import traci
             
-            traci.start(sumo_config)
+            # Use subprocess to start SUMO exactly as requested (no auto-magic arg injection)
+            logger.info(f"[IoT Agent] Executing SUMO command: {' '.join(sumo_config)}")
+            
+            # Start process non-blocking
+            self.sumo_proc = subprocess.Popen(sumo_config, stdout=sys.stdout, stderr=sys.stderr)
+            
+            # Wait for SUMO to initialize and open port (it might wait for clients)
+            # With num-clients=2, it waits for client 1.
+            time.sleep(2)
+            
+            # Check if process died immediately (e.g. Display error)
+            if self.sumo_proc.poll() is not None:
+                logger.error(f"[IoT Agent] SUMO process exited successfully with code {self.sumo_proc.returncode}")
+                return False
+            
+            # Connect as Client
+            if port:
+                traci.init(port=port)
+                traci.setOrder(2) # Order 2: IoT Agent (Master/Last Client) -> Drives Simulation
+            else:
+                # If no port, traci must guess or use default, but we are explicit now
+                traci.init()
+                
             self.traci = traci
             self.sumo_connected = True
             
-            logger.info("[IoT Agent] ✅ Connected to SUMO")
+            logger.info(f"[IoT Agent] ✅ Connected to SUMO on port {port}")
             return True
             
         except Exception as e:
@@ -66,7 +92,12 @@ class IoTAgent:
                 logger.info("[IoT Agent] Disconnected from SUMO")
             except Exception as e:
                 logger.error(f"[IoT Agent] Error disconnecting: {e}")
-    
+            
+            # Kill process if we started it
+            if hasattr(self, 'sumo_proc') and self.sumo_proc:
+                self.sumo_proc.kill()
+
+    # ... process_notification, apply_phase, get_traffic_state, get_status remain same ...
     def process_notification(self, notification_data: Dict[str, Any]) -> Dict[str, Any]:
         """
         Process notification from Orion-LD with TrafficLight commands
@@ -168,3 +199,111 @@ class IoTAgent:
             "sumo_connected": self.sumo_connected,
             "traci_available": self.traci is not None
         }
+
+if __name__ == "__main__":
+    import argparse
+    import shutil
+    
+    parser = argparse.ArgumentParser(description='IoT Agent for SUMO')
+    parser.add_argument('--scenario', type=str, default='Nga4ThuDuc', help='Scenario name')
+    parser.add_argument('--gui', action='store_true', help='Run with GUI')
+    args = parser.parse_args()
+    
+    logging.basicConfig(level=logging.INFO)
+    
+    # Check if DISPLAY is set
+    has_display = os.environ.get('DISPLAY')
+    sumo_binary = "sumo-gui" if (args.gui and has_display) else "sumo"
+    
+    if args.gui and not has_display:
+        logging.warning("GUI requested but DISPLAY not set. Falling back to headless 'sumo'.")
+    
+    # Check if binary exists
+    if not shutil.which(sumo_binary):
+        logging.error(f"{sumo_binary} not found!")
+        exit(1)
+
+    agent = IoTAgent()
+
+    # Check if SUMO_HOME is set
+    if 'SUMO_HOME' not in os.environ:
+        logger.warning("SUMO_HOME not set, using default /usr/share/sumo")
+        os.environ['SUMO_HOME'] = '/usr/share/sumo'
+        # Scenario config mapping
+    scenario_configs = {
+        'Nga4ThuDuc': 'Nga4ThuDuc/Nga4ThuDuc.sumocfg',
+        'NguyenThaiSon': 'NguyenThaiSon/Nga6NguyenThaiSon.sumocfg',
+        'QuangTrung': 'QuangTrung/quangtrungcar.sumocfg'
+    }
+    
+    if args.scenario in scenario_configs:
+         config_rel_path = scenario_configs[args.scenario]
+    else:
+         # Fallback to default naming convention
+         config_rel_path = f"{args.scenario}/{args.scenario}.sumocfg"
+
+    # Try different base paths to find the file
+    possible_bases = [
+        "/app/sumo_files",  # Container path
+        "src/backend/app/sumo_rl/sumo_files", # Host relative path (fallback)
+    ]
+    
+    config_file = None
+    for base in possible_bases:
+        path = os.path.join(base, config_rel_path)
+        if os.path.exists(path):
+            config_file = path
+            break
+            
+    if not config_file:
+         logger.error(f"Config file not found for scenario {args.scenario} in {possible_bases}")
+         # Default fallback that might fail but shows intent
+         config_file = os.path.join("/app/sumo_files", config_rel_path)
+
+     # Explicitly construct arguments for subprocess
+    # num-clients=2 (REMOVED): Caused blocking/connection closed errors.
+    # We use explicit setOrder() in code to manage synchronization instead.
+    base_cmd = ["-c", config_file, "--remote-port", "8813"]
+    
+    # Try GUI first if requested and DISPLAY is set
+    success = False
+    if args.gui and has_display:
+        cmd = ["sumo-gui"] + base_cmd
+        logger.info(f"Attempting to start SUMO GUI: {' '.join(cmd)}")
+        if agent.connect_sumo(cmd, port=8813):
+            success = True
+        else:
+            logger.warning("Failed to start SUMO GUI (likely Display issues). Falling back to headless.")
+            # Ensure previous process is dead if it started but failed connection
+            agent.disconnect_sumo()
+
+    # Fallback to headless if GUI failed or not requested
+    if not success:
+        cmd = ["sumo"] + base_cmd
+        logger.info(f"Starting SUMO Headless: {' '.join(cmd)}")
+        if not agent.connect_sumo(cmd, port=8813):
+            logger.error("Failed to start SUMO Headless. Exiting.")
+            exit(1)
+    
+    # Keep alive loop
+    import time
+    try:
+        while True:
+            time.sleep(1)
+            # Process Orion notifications or just fetch state
+            # In a real deployment, this would be an HTTP server or MQTT client
+            # listening for updates. For now, it just keeps the simulation open.
+            if agent.sumo_connected and agent.traci:
+                try:
+                    agent.traci.simulationStep()
+                except Exception as e:
+                    # Look for specific connection errors
+                    if "connection closed" in str(e).lower():
+                        logger.error("SUMO connection closed, exiting...")
+                        break
+                    # If waiting for second client, this might throw?
+                    # No, simulationStep usually blocks if waiting.
+                    logger.error(f"Simulation step failed: {e}")
+                    
+    except KeyboardInterrupt:
+        agent.disconnect_sumo()
