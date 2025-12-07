@@ -5,7 +5,38 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [0.1.0] - 2025-12-06
+## [0.2.0] - 2025-12-07
+
+### Added
+
+- **Development Tools**:
+  - Husky pre-commit hooks for automated code quality checks.
+  - Lint-staged configuration for efficient code formatting on commit.
+  - Prettier and ESLint integration for consistent code style.
+
+### Changed
+
+- **Documentation**:
+  - Added initial changelog for project tracking ([#47](https://github.com/sonmessia/GreenWave/pull/47)).
+  - Improved documentation structure and organization ([#51](https://github.com/sonmessia/GreenWave/pull/51)).
+
+### Fixed
+
+- **Frontend**:
+  - Fixed frontend Docker configuration for proper containerization.
+  - Resolved device management wizard issues ([#50](https://github.com/sonmessia/GreenWave/pull/50)).
+- **SUMO Integration**:
+  - Fixed SUMO integration issues ([#52](https://github.com/sonmessia/GreenWave/pull/52)).
+
+### Contributors
+
+- [@sonmessia](https://github.com/sonmessia)
+- [@CrafterTA](https://github.com/CrafterTA)
+- [@HuynhTri-dev](https://github.com/HuynhTri-dev)
+
+**Full Changelog**: [v0.1.0...v0.2.0](https://github.com/sonmessia/GreenWave/compare/v0.1.0...v0.2.0)
+
+## [0.1.0] - 2025-12-06                      
 
 ### Added
 
