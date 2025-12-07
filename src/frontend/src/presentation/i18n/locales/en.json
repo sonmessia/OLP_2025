@@ -164,9 +164,9 @@
     "team": {
       "title": "Development Team",
       "roles": {
-        "aiData": "AI & Data Engineer",
-        "backend": "Backend & Architect",
-        "frontend": "Frontend & Mascot"
+        "aiData": "AI Engineer",
+        "backend": "Backend",
+        "frontend": "Frontend"
       }
     },
     "architecture": {
