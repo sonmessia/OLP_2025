@@ -1,6 +1,6 @@
 <!--
  Copyright (c) 2025 Green Wave Team
- 
+
  This software is released under the MIT License.
  https://opensource.org/licenses/MIT
 -->
@@ -17,10 +17,13 @@
 [![Docker](https://img.shields.io/badge/Docker-Ready-2496ED?style=for-the-badge&logo=docker&logoColor=white)](https://www.docker.com/)
 
   <br />
+  <br />
 
-[**Documentation**](http://localhost:3000/GreenWave/) • [**Quick Start**](#-quick-start) • [**Architecture**](#-architecture) • [**Features**](#-features)
+[**Documentation**](https://sonmessia.github.io/GreenWave/) • [**Quick Start**](#-quick-start) • [**Architecture**](#-architecture) • [**Features**](#-features)
 
 </div>
+
+<br />
 
 <br />
 
@@ -100,13 +103,16 @@
 
 ## Getting Started
 
+## Getting Started
+
 ### Prerequisites
 
-| Requirement | Version | Download                                           |
-| :---------- | :------ | :------------------------------------------------- |
-| **Docker**  | 28.3.2+ | [Get Docker](https://www.docker.com/get-started/)  |
-| **Node.js** | 24.6.0+ | [Get Node.js](https://nodejs.org/en/download)      |
-| **SUMO**    | 1.25.0+ | [Get SUMO](https://sumo.dlr.de/docs/Downloads.php) |
+| Requirement | Version | Download |
+| :---------- | :------ | :------- |
+
+| **Docker** | 28.3.2+ | [Get Docker](https://www.docker.com/get-started/) |
+| **Node.js** | 24.6.0+ | [Get Node.js](https://nodejs.org/en/download) |
+| **SUMO** | 1.25.0+ | [Get SUMO](https://sumo.dlr.de/docs/Downloads.php) |
 
 > **Note:** If you want to run SUMO on your local machine, you need to download and install it from the [SUMO website](https://sumo.dlr.de/docs/Downloads.php).
 
@@ -193,6 +199,21 @@ Once services are running, access them at:
 ### **[Read Full Documentation](https://sonmessia.github.io/GreenWave)**
 
 Explore detailed tutorials, API references, architecture guides, and more!
+
+</div>
+
+## Support and Organization
+
+<div align="center">
+
+  <div style="display: flex; justify-content: center; align-items: center; gap: 10px; flex-wrap: wrap;">
+    <img src="./assets/organization/hutech_logo.png" alt="HUTECH" height="100" style="object-fit: contain;  ">
+    <img src="./assets/organization/fossa_log.png" alt="FOSSA" height="100" style="object-fit: contain;">
+    <div>
+      <img src="./assets/organization/olp_logo.jpg" alt="OLP" height="100">
+      <img src="./assets/organization/olp_banner.png" alt="OLP Banner" height="100">
+    </div>
+  </div>
 
 </div>
 
