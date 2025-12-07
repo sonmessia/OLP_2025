@@ -522,7 +522,7 @@ export const DeviceWizard: React.FC<DeviceWizardProps> = ({
                         </label>
                         <input
                           type="text"
-                          value={deviceData.httpConfig?.ipAddress || ""}
+                          value={deviceData.httpConfig?.ipAddress}
                           onChange={(e) =>
                             setDeviceData({
                               ...deviceData,
@@ -549,7 +549,6 @@ export const DeviceWizard: React.FC<DeviceWizardProps> = ({
                             setDeviceData({
                               ...deviceData,
                               httpConfig: {
-                                ipAddress: "", // Default ipAddress if missing
                                 ...deviceData.httpConfig,
                                 rtspUrl: e.target.value,
                                 ipAddress: deviceData.httpConfig?.ipAddress || "",

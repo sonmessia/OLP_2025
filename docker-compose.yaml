@@ -111,17 +111,6 @@ services:
       timeout: 10s
       retries: 5
 
-  # Documentation Site
-  docs:
-    build: ./docs
-    container_name: docs
-    hostname: docs
-    networks:
-      - fiware_default
-    ports:
-      - "3000:80"
-    restart: unless-stopped
-
   # SUMO Simulation with GUI (choose scenario via environment variable)
   sumo-simulation:
     build:

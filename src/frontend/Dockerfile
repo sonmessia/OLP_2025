@@ -26,6 +26,7 @@ ENV VITE_WS_URL=$VITE_WS_URL
 ENV VITE_ORION_URL=$VITE_ORION_URL
 
 # Build application
+RUN npm install
 RUN npm run build
 
 # Production stage
