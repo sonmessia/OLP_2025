@@ -1,0 +1,20 @@
+{
+  "name": "greenwave-root",
+  "private": true,
+  "scripts": {
+    "prepare": "husky"
+  },
+  "devDependencies": {
+    "husky": "^9.0.0",
+    "lint-staged": "^15.0.0"
+  },
+  "lint-staged": {
+    "src/backend/**/*.py": [
+      "black",
+      "ruff check --fix"
+    ],
+    "src/frontend/**/*.{ts,tsx,js,jsx}": [
+      "bash -c 'cd src/frontend && npx eslint --fix ${0}'"
+    ]
+  }
+}
