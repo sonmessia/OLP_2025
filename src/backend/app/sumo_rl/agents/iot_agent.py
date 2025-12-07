@@ -266,9 +266,10 @@ if __name__ == "__main__":
          config_file = os.path.join("/app/sumo_files", config_rel_path)
 
      # Explicitly construct arguments for subprocess
-    # num-clients=2 (REMOVED): Caused blocking/connection closed errors.
-    # We use explicit setOrder() in code to manage synchronization instead.
-    base_cmd = ["-c", config_file, "--remote-port", "8813"]
+    # num-clients=2: Allow multiple TraCI connections (IoT Agent + Backend)
+    # Order 1: Backend (Passive/Observer)
+    # Order 2: IoT Agent (Active/Driver)
+    base_cmd = ["-c", config_file, "--remote-port", "8813", "--num-clients", "2"]
     
     # Try GUI first if requested and DISPLAY is set
     success = False

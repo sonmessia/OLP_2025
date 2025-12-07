@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<!-- generated on 2025-12-07T13:23:47.665599+00:00 by Eclipse SUMO sumo 1.25.0
+<!-- generated on 2025-12-07T15:09:44.094259+00:00 by Eclipse SUMO sumo 1.25.0
 <sumoConfiguration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/sumoConfiguration.xsd">
 
     <input>
@@ -11,12 +11,11 @@
 
     <traci_server>
         <remote-port value="8813"/>
+        <num-clients value="2"/>
     </traci_server>
 
 </sumoConfiguration>
 -->
 
 <instantE1 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/instant_e1_file.xsd">
-    <instantOut id="e1i_0" time="9.34" state="enter" vehID="1" speed="9.91" length="5.00" type="DEFAULT_VEHTYPE"/>
-    <instantOut id="e1i_0" time="9.84" state="leave" vehID="1" speed="9.91" length="5.00" type="DEFAULT_VEHTYPE" occupancy="0.50"/>
 </instantE1>
