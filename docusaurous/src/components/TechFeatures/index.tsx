@@ -102,7 +102,7 @@ export default function TechFeatures(): ReactNode {
       <div className="container">
         <div className="text--center">
           <Heading as="h2" style={{ marginBottom: "3rem" }}>
-            Công Nghệ Sử Dụng
+            Technical
           </Heading>
         </div>
       </div>

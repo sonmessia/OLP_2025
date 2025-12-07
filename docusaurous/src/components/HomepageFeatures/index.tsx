@@ -78,11 +78,6 @@ export default function HomepageFeatures(): ReactNode {
   return (
     <section className={styles.features}>
       <div className="container">
-        <div className="text--center">
-          <Heading as="h2" style={{ marginBottom: "3rem" }}>
-            Tính Năng Nổi Bật
-          </Heading>
-        </div>
         <div className="row">
           {FeatureList.map((props, idx) => (
             <Feature key={idx} {...props} />

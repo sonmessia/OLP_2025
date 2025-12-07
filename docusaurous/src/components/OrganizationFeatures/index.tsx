@@ -66,7 +66,7 @@ export default function OrganizationFeatures(): ReactNode {
       <div className="container">
         <div className="text--center">
           <Heading as="h1" style={{ marginBottom: "2rem" }}>
-            Đơn Vị Tổ Chức
+            Support & Organization
           </Heading>
         </div>
         <div className="row">
