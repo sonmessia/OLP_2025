@@ -1,33 +1,33 @@
 // Copyright (c) 2025 Green Wave Team
-// 
+//
 // This software is released under the MIT License.
 // https://opensource.org/licenses/MIT
 
-import React, { useState, useEffect } from "react";
-import { ArrowRight, Github, BookOpen, Car, Zap } from "lucide-react";
-import { useTranslation } from "react-i18next";
-import ParticleBackground from "./ParticleBackground";
-import ThreeDVisualization from "./ThreeDVisualization";
-import LandingImage from "../../../../assets/landing.png";
+import React, { useState, useEffect } from 'react'
+import { ArrowRight, Github, BookOpen, Car, Zap } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
+import ParticleBackground from './ParticleBackground'
+import ThreeDVisualization from './ThreeDVisualization'
+import LandingImage from '../../../../assets/landing.png'
 
 export const HeroSection: React.FC = () => {
-  const { t } = useTranslation("landing");
-  const [scrollY, setScrollY] = useState(0);
-  const [isHovered, setIsHovered] = useState(false);
+  const { t } = useTranslation('landing')
+  const [scrollY, setScrollY] = useState(0)
+  const [isHovered, setIsHovered] = useState(false)
 
   useEffect(() => {
-    const handleScroll = () => setScrollY(window.scrollY);
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+    const handleScroll = () => setScrollY(window.scrollY)
+    window.addEventListener('scroll', handleScroll)
+    return () => window.removeEventListener('scroll', handleScroll)
+  }, [])
 
   const handleGetStarted = () => {
-    window.location.href = "/";
-  };
+    window.location.href = '/'
+  }
 
   const handleViewGithub = () => {
-    window.open("https://github.com/sonmessia/GreenWave.git", "_blank");
-  };
+    window.open('https://github.com/sonmessia/GreenWave.git', '_blank')
+  }
 
   return (
     <section className="relative min-h-screen flex items-center justify-center px-4">
@@ -41,22 +41,21 @@ export const HeroSection: React.FC = () => {
           style={{
             background: `linear-gradient(45deg, var(--color-greenwave-primary-light) 0%, var(--color-traffic-info) 100%)`,
             transform: `translateY(${scrollY * 0.5}px) scale(1.1)`,
-            filter: "blur(100px)",
+            filter: 'blur(100px)',
           }}
         />
         <div
           className="absolute top-1/4 left-1/4 w-96 h-96 rounded-full float-animation"
           style={{
             background:
-              "radial-gradient(circle, var(--color-greenwave-primary-light) 0%, transparent 70%)",
+              'radial-gradient(circle, var(--color-greenwave-primary-light) 0%, transparent 70%)',
             opacity: 0.3,
           }}
         />
         <div
           className="absolute bottom-1/4 right-1/4 w-80 h-80 rounded-full float-animation-reverse"
           style={{
-            background:
-              "radial-gradient(circle, var(--color-traffic-info) 0%, transparent 70%)",
+            background: 'radial-gradient(circle, var(--color-traffic-info) 0%, transparent 70%)',
             opacity: 0.3,
           }}
         />
@@ -67,10 +66,10 @@ export const HeroSection: React.FC = () => {
         <div
           className="glass-card p-8 rounded-3xl"
           style={{
-            background: "rgba(255, 255, 255, 0.05)",
-            backdropFilter: "blur(20px)",
-            border: "1px solid rgba(255, 255, 255, 0.1)",
-            boxShadow: "0 25px 50px -12px rgba(0, 0, 0, 0.5)",
+            background: 'rgba(255, 255, 255, 0.05)',
+            backdropFilter: 'blur(20px)',
+            border: '1px solid rgba(255, 255, 255, 0.1)',
+            boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.5)',
           }}
         >
           <div className="grid lg:grid-cols-2 gap-8 items-center">
@@ -83,14 +82,14 @@ export const HeroSection: React.FC = () => {
                   className="w-24 h-24 object-contain mr-2"
                 />
                 <h1 className="text-5xl md:text-7xl font-bold mb-6 bg-gradient-to-r from-greenwave-primary-light to-traffic-info bg-clip-text text-transparent">
-                  {t("title")}
+                  {t('title')}
                 </h1>
               </div>
               <h2 className="text-2xl md:text-4xl font-semibold mb-4 text-text-main-dark">
-                {t("subtitle")}
+                {t('subtitle')}
               </h2>
               <p className="text-lg md:text-xl text-text-muted-dark mb-8 max-w-2xl leading-relaxed">
-                {t("description")}
+                {t('description')}
               </p>
 
               <div className="flex flex-wrap gap-4 justify-center lg:justify-start items-center w-full">
@@ -101,17 +100,17 @@ export const HeroSection: React.FC = () => {
                   className="group relative px-6 py-3 sm:px-8 sm:py-4 rounded-full font-semibold text-base sm:text-lg transition-all duration-300 transform hover:scale-105 whitespace-nowrap"
                   style={{
                     background:
-                      "linear-gradient(135deg, var(--color-greenwave-primary-light) 0%, var(--color-traffic-info) 100%)",
-                    boxShadow: "0 10px 30px -10px rgba(16, 124, 65, 0.5)",
+                      'linear-gradient(135deg, var(--color-greenwave-primary-light) 0%, var(--color-traffic-info) 100%)',
+                    boxShadow: '0 10px 30px -10px rgba(16, 124, 65, 0.5)',
                   }}
                 >
                   <span className="relative z-10 text-white flex items-center gap-2">
-                    {t("getStarted")}
+                    {t('getStarted')}
                     <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
                   </span>
                   <div
                     className="absolute inset-0 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-                    style={{ boxShadow: "0 0 30px rgba(16, 124, 65, 0.6)" }}
+                    style={{ boxShadow: '0 0 30px rgba(16, 124, 65, 0.6)' }}
                   />
                 </button>
 
@@ -119,26 +118,24 @@ export const HeroSection: React.FC = () => {
                   onClick={handleViewGithub}
                   className="px-6 py-3 sm:px-8 sm:py-4 rounded-full font-semibold text-base sm:text-lg border-2 transition-all duration-300 hover:bg-white hover:bg-opacity-10 flex items-center gap-2 whitespace-nowrap"
                   style={{
-                    borderColor: "rgba(255, 255, 255, 0.2)",
-                    color: "var(--color-text-main-dark)",
+                    borderColor: 'rgba(255, 255, 255, 0.2)',
+                    color: 'var(--color-text-main-dark)',
                   }}
                 >
                   <Github className="w-5 h-5" />
-                  {t("viewGithub")}
+                  {t('viewGithub')}
                 </button>
 
                 <button
-                  onClick={() =>
-                    window.open("http://localhost:3000/", "_blank")
-                  }
+                  onClick={() => window.open('https://sonmessia.github.io/GreenWave/', '_blank')}
                   className="px-6 py-3 sm:px-8 sm:py-4 rounded-full font-semibold text-base sm:text-lg border-2 transition-all duration-300 hover:bg-white hover:bg-opacity-10 flex items-center gap-2 whitespace-nowrap"
                   style={{
-                    borderColor: "rgba(255, 255, 255, 0.2)",
-                    color: "var(--color-text-main-dark)",
+                    borderColor: 'rgba(255, 255, 255, 0.2)',
+                    color: 'var(--color-text-main-dark)',
                   }}
                 >
                   <BookOpen className="w-5 h-5" />
-                  {t("documentation")}
+                  {t('documentation')}
                 </button>
               </div>
             </div>
@@ -149,7 +146,7 @@ export const HeroSection: React.FC = () => {
                 {/* Pollution Smoke Effect */}
                 <div
                   className={`pollution-smoke absolute inset-0 transition-all duration-1000 ${
-                    isHovered ? "opacity-10 scale-95" : "opacity-60"
+                    isHovered ? 'opacity-10 scale-95' : 'opacity-60'
                   }`}
                 />
 
@@ -168,7 +165,7 @@ export const HeroSection: React.FC = () => {
                 {/* GreenWave Team Car (The Hero) */}
                 <div
                   className="absolute bottom-2 left-0 car-animation z-20"
-                  style={{ animationDelay: "1.5s" }}
+                  style={{ animationDelay: '1.5s' }}
                 >
                   <div className="relative">
                     <Car className="w-16 h-16 text-green-500 fill-current drop-shadow-[0_0_15px_rgba(16,185,129,0.8)]" />
@@ -183,7 +180,7 @@ export const HeroSection: React.FC = () => {
                 {/* Background Traffic (Atmosphere) */}
                 <div
                   className="absolute bottom-16 right-0 car-animation-reverse opacity-50"
-                  style={{ animationDuration: "12s" }}
+                  style={{ animationDuration: '12s' }}
                 >
                   <Car className="w-10 h-10 text-blue-400 fill-current transform scale-x-[-1]" />
                 </div>
@@ -191,7 +188,7 @@ export const HeroSection: React.FC = () => {
                 {/* Green Wave Effect */}
                 <div
                   className={`green-wave absolute bottom-0 left-0 right-0 transition-all duration-1000 ${
-                    isHovered ? "h-full translate-y-0" : "h-0 translate-y-full"
+                    isHovered ? 'h-full translate-y-0' : 'h-0 translate-y-full'
                   }`}
                 >
                   {isHovered && (
@@ -200,7 +197,7 @@ export const HeroSection: React.FC = () => {
                       className="absolute top-0 left-0 w-full h-full wave-sweep"
                       style={{
                         background:
-                          "linear-gradient(90deg, transparent 0%, rgba(16, 124, 65, 0.8) 45%, rgba(59, 130, 246, 0.6) 50%, rgba(16, 124, 65, 0.8) 55%, transparent 100%)",
+                          'linear-gradient(90deg, transparent 0%, rgba(16, 124, 65, 0.8) 45%, rgba(59, 130, 246, 0.6) 50%, rgba(16, 124, 65, 0.8) 55%, transparent 100%)',
                       }}
                     />
                   )}
@@ -211,11 +208,9 @@ export const HeroSection: React.FC = () => {
                   src={LandingImage}
                   alt="GreenWave Traffic System"
                   className={`w-full h-full object-cover rounded-2xl transition-all duration-1000 ${
-                    isHovered
-                      ? "brightness-110 contrast-125 saturate-130 scale-102"
-                      : ""
+                    isHovered ? 'brightness-110 contrast-125 saturate-130 scale-102' : ''
                   }`}
-                  style={{ filter: "brightness(0.8) contrast(1.1)" }}
+                  style={{ filter: 'brightness(0.8) contrast(1.1)' }}
                 />
               </div>
             </div>
@@ -228,5 +223,5 @@ export const HeroSection: React.FC = () => {
         <ThreeDVisualization />
       </div>
     </section>
-  );
-};
+  )
+}
