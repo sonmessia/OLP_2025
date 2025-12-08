@@ -1,4 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!--
+ Copyright (c) 2025 Green Wave Team
+ 
+ This software is released under the MIT License.
+ https://opensource.org/licenses/MIT
+-->
+
+
 
 <!-- generated on 2025-11-17T21:10:46.530571+07:00 by Eclipse SUMO netedit 1.25.0
 <neteditConfiguration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/neteditConfiguration.xsd">
