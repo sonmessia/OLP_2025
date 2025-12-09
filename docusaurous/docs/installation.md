@@ -47,6 +47,8 @@ Copy the example configuration file to the official `.env` file:
 
 ```bash
 cp .env.example .env
+cd src/backend
+cp .env.example .env
 ```
 
 ### 3. Run the Application
