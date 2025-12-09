@@ -154,9 +154,11 @@ export const ManagerDashboard: React.FC = () => {
       {
         id: 'int_1',
         timestamp: new Date(now.getTime() - 10 * 60000).toISOString(),
-        action: translate('alerts:interventions.signalAdjustment', {
-          direction: 'North-South',
-        } as any),
+        action: String(
+          translate('alerts:interventions.signalAdjustment', {
+            direction: 'North-South',
+          } as any)
+        ),
         target: 'Ngã 4 Thủ Đức',
         status: 'completed',
         aiTriggered: true,
@@ -164,9 +166,11 @@ export const ManagerDashboard: React.FC = () => {
       {
         id: 'int_2',
         timestamp: new Date(now.getTime() - 120 * 60000).toISOString(),
-        action: translate('alerts:interventions.routeRebalancing', {
-          route: 'Pham Van Dong',
-        } as any),
+        action: String(
+          translate('alerts:interventions.routeRebalancing', {
+            route: 'Pham Van Dong',
+          } as any)
+        ),
         target: 'Hàng Xanh',
         status: 'pending',
         aiTriggered: false,

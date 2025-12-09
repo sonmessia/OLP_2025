@@ -11,20 +11,21 @@ import {
   deactivateAIControl,
   performAIStep,
 } from '../../../../data/redux/sumoSlice'
-import { Brain, Circle, Zap, ScrollText } from 'lucide-react'
+import { Brain, Circle, Zap } from 'lucide-react'
 import { AIStatusCard } from './components/AIStatusCard'
 import { AIModelDetailsDialog } from './components/AIModelDetailsDialog'
 import type { AIDecision } from '../../../../domain/models/SumoModels'
 
-interface AIControlPanelProps {
-  onLog?: (message: string) => void
-}
-
-interface AIDecisionLog extends AIDecision {
+export interface AIDecisionLog extends AIDecision {
   timestamp: number
 }
 
-export const AIControlPanel: React.FC<AIControlPanelProps> = ({ onLog }) => {
+interface AIControlPanelProps {
+  onLog?: (message: string) => void
+  onDecisionLogsChange?: (logs: AIDecisionLog[]) => void
+}
+
+export const AIControlPanel: React.FC<AIControlPanelProps> = ({ onLog, onDecisionLogsChange }) => {
   const { t } = useTranslation('sumo')
   const dispatch = useAppDispatch()
   const { aiControlState, isAIControlActive, isLoading, simulationState } = useAppSelector(
@@ -33,7 +34,7 @@ export const AIControlPanel: React.FC<AIControlPanelProps> = ({ onLog }) => {
 
   const aiIntervalRef = useRef<number | null>(null)
   const [showDetailsDialog, setShowDetailsDialog] = useState(false)
-  const [aiDecisionLogs, setAiDecisionLogs] = useState<AIDecisionLog[]>([])
+  const decisionLogsRef = useRef<AIDecisionLog[]>([])
 
   // AI Control Loop
   useEffect(() => {
@@ -42,13 +43,23 @@ export const AIControlPanel: React.FC<AIControlPanelProps> = ({ onLog }) => {
         try {
           const result = await dispatch(performAIStep()).unwrap()
 
+          // Debug: Log the entire result
+          console.log('🔍 AI Step Result:', result)
+          console.log('🔍 Decisions:', result.decisions)
+          console.log('🔍 Decisions length:', result.decisions?.length)
+
           // Add decisions to log
           if (result.decisions && result.decisions.length > 0) {
             const newLogs: AIDecisionLog[] = result.decisions.map((decision) => ({
               ...decision,
               timestamp: result.simulationTime,
             }))
-            setAiDecisionLogs((prev) => [...newLogs, ...prev].slice(0, 50)) // Keep last 50 decisions
+            const updated = [...newLogs, ...decisionLogsRef.current].slice(0, 50) // Keep last 50 decisions
+            decisionLogsRef.current = updated
+            onDecisionLogsChange?.(updated)
+            console.log('✅ Updated decision logs:', updated.length, 'decisions')
+          } else {
+            console.log('⚠️ No decisions in result')
           }
 
           if (result.totalSwitches > 0) {
@@ -71,7 +82,7 @@ export const AIControlPanel: React.FC<AIControlPanelProps> = ({ onLog }) => {
         }
       }
     }
-  }, [isAIControlActive, dispatch, onLog, aiControlState, t])
+  }, [isAIControlActive, dispatch, onLog, aiControlState, t, onDecisionLogsChange])
 
   const handleEnableAI = async () => {
     try {
@@ -135,54 +146,6 @@ export const AIControlPanel: React.FC<AIControlPanelProps> = ({ onLog }) => {
               aiControlState={aiControlState}
               onShowDetails={() => setShowDetailsDialog(true)}
             />
-
-            {/* AI Decision Log */}
-            {aiDecisionLogs.length > 0 && (
-              <div className="mt-4">
-                <div className="flex items-center gap-2 mb-3">
-                  <ScrollText className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
-                  <h3 className="text-sm font-semibold text-gray-900 dark:text-white">
-                    {t('controlPanel.ai.decisionLog')}
-                  </h3>
-                </div>
-                <div className="bg-gray-50 dark:bg-gray-800 rounded-lg p-3 max-h-64 overflow-y-auto space-y-2">
-                  {aiDecisionLogs.map((log, index) => (
-                    <div
-                      key={`${log.tlsId}-${log.timestamp}-${index}`}
-                      className="bg-white dark:bg-gray-700 rounded-md p-2 text-xs border border-gray-200 dark:border-gray-600"
-                    >
-                      <div className="flex items-center justify-between mb-1">
-                        <span className="font-semibold text-emerald-600 dark:text-emerald-400">
-                          {log.tlsId}
-                        </span>
-                        <span className="text-gray-500 dark:text-gray-400">
-                          t={log.timestamp.toFixed(0)}s
-                        </span>
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <span
-                          className={`px-2 py-0.5 rounded text-xs font-medium ${
-                            log.action === 'switch'
-                              ? 'bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300'
-                              : 'bg-gray-100 dark:bg-gray-600 text-gray-700 dark:text-gray-300'
-                          }`}
-                        >
-                          {log.action}
-                        </span>
-                        <span className="text-gray-600 dark:text-gray-300">
-                          Phase {log.fromPhase} → {log.toPhase}
-                        </span>
-                      </div>
-                      {log.reason && (
-                        <div className="mt-1 text-gray-500 dark:text-gray-400 italic">
-                          {log.reason}
-                        </div>
-                      )}
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
           </>
         )}
 

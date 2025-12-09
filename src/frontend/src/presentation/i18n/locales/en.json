@@ -823,6 +823,8 @@
         "disabledMessage": "AI Control is disabled",
         "startSumoMessage": "Start SUMO, then enable AI control",
         "decisionLog": "AI Decision Log",
+        "noDecisions": "No AI decisions yet",
+        "enableAIToSeeDecisions": "Enable AI Control to see decisions",
         "log": {
           "enabled": "🧠 AI Traffic Control enabled successfully!",
           "enableFailed": "❌ Failed to enable AI: {{error}}",
