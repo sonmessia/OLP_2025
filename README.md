@@ -1,6 +1,6 @@
 <!--
  Copyright (c) 2025 Green Wave Team
- 
+
  This software is released under the MIT License.
  https://opensource.org/licenses/MIT
 -->
@@ -12,13 +12,13 @@
 
 ### _AI-Powered Traffic Optimization for Cleaner Cities_
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=for-the-badge)](https://opensource.org/licenses/MIT)
-[![FIWARE](https://img.shields.io/badge/FIWARE-Orion--LD-002E67?style=for-the-badge&logo=fiware)](https://www.fiware.org/)
-[![Docker](https://img.shields.io/badge/Docker-Ready-2496ED?style=for-the-badge&logo=docker&logoColor=white)](https://www.docker.com/)
+<a href="https://opensource.org/licenses/MIT" target="_blank"><img src="https://img.shields.io/badge/License-MIT-yellow.svg?style=for-the-badge" alt="License: MIT"/></a>
+<a href="https://www.fiware.org/" target="_blank"><img src="https://img.shields.io/badge/FIWARE-Orion--LD-002E67?style=for-the-badge&logo=fiware" alt="FIWARE"/></a>
+<a href="https://www.docker.com/" target="_blank"><img src="https://img.shields.io/badge/Docker-Ready-2496ED?style=for-the-badge&logo=docker&logoColor=white" alt="Docker"/></a>
 
   <br />
 
-[**Documentation**](http://localhost:3000/GreenWave/) • [**Quick Start**](#-quick-start) • [**Architecture**](#-architecture) • [**Features**](#-features)
+<a href="https://sonmessia.github.io/GreenWave/" target="_blank"><strong>Documentation</strong></a> • [**Quick Start**](#getting-started) • [**Architecture**](#architecture) • [**Features**](#features)
 
 </div>
 
@@ -102,13 +102,13 @@
 
 ### Prerequisites
 
-| Requirement | Version | Download                                           |
-| :---------- | :------ | :------------------------------------------------- |
-| **Docker**  | 28.3.2+ | [Get Docker](https://www.docker.com/get-started/)  |
-| **Node.js** | 24.6.0+ | [Get Node.js](https://nodejs.org/en/download)      |
-| **SUMO**    | 1.25.0+ | [Get SUMO](https://sumo.dlr.de/docs/Downloads.php) |
+| Requirement | Version | Download                                                                      |
+| :---------- | :------ | :---------------------------------------------------------------------------- |
+| **Docker**  | 28.3.2+ | <a href="https://www.docker.com/get-started/" target="_blank">Get Docker</a>  |
+| **Node.js** | 24.6.0+ | <a href="https://nodejs.org/en/download" target="_blank">Get Node.js</a>      |
+| **SUMO**    | 1.25.0+ | <a href="https://sumo.dlr.de/docs/Downloads.php" target="_blank">Get SUMO</a> |
 
-> **Note:** If you want to run SUMO on your local machine, you need to download and install it from the [SUMO website](https://sumo.dlr.de/docs/Downloads.php).
+> **Note:** If you want to run SUMO on your local machine, you need to download and install it from the <a href="https://sumo.dlr.de/docs/Downloads.php" target="_blank">SUMO website</a>.
 
 ### 🏃‍♂️ Run the Application
 
@@ -190,7 +190,7 @@ Once services are running, access them at:
 
 <div align="center">
 
-### **[Read Full Documentation](https://sonmessia.github.io/GreenWave)**
+### <a href="https://sonmessia.github.io/GreenWave" target="_blank"><strong>Read Full Documentation</strong></a>
 
 Explore detailed tutorials, API references, architecture guides, and more!
 
