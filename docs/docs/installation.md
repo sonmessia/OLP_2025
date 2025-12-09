@@ -45,6 +45,13 @@ cd GreenWave
 Copy the example configuration file to the official `.env` file:
 
 ```bash
+# Copy the environment variables
+cp .env.example .env
+
+ # Change directory to backend
+cd src/backend 
+
+# Copy the environment variables
 cp .env.example .env
 ```
 
@@ -55,6 +62,7 @@ cp .env.example .env
 This is the simplest way to start the whole system:
 
 ```bash
+# Run docker compose
 docker compose up -d
 ```
 

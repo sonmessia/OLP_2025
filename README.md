@@ -123,6 +123,12 @@ cd GreenWave
 
 # Copy the environment variables
 cp .env.example .env
+
+# Navigate to the project directory
+cd src/backend
+
+# Copy the environment variables
+cp .env.example .env
 ```
 
 #### Launch All Services
