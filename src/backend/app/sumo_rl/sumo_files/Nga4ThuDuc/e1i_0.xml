@@ -1,17 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<!-- generated on 2025-12-09T07:12:54.722794+00:00 by Eclipse SUMO sumo 1.25.0
+<!-- generated on 2025-12-09T15:30:51.038904+07:00 by Eclipse SUMO GUI 1.25.0
 <sumoConfiguration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/sumoConfiguration.xsd">
 
     <input>
-        <net-file value="/app/sumo_files/Nga4ThuDuc/Nga4ThuDuc.net.xml"/>
-        <route-files value="/app/sumo_files/Nga4ThuDuc/routes.rou.xml"/>
-        <additional-files value="/app/sumo_files/Nga4ThuDuc/Nga4ThuDuc.add.xml"/>
+        <net-file value="D:\GreenWave\src\backend\app\sumo_rl\sumo_files\Nga4ThuDuc\Nga4ThuDuc.net.xml"/>
+        <route-files value="D:\GreenWave\src\backend\app\sumo_rl\sumo_files\Nga4ThuDuc\routes.rou.xml"/>
+        <additional-files value="D:\GreenWave\src\backend\app\sumo_rl\sumo_files\Nga4ThuDuc\Nga4ThuDuc.add.xml"/>
     </input>
+
+    <time>
+        <step-length value="1.0"/>
+    </time>
 
     <traci_server>
         <remote-port value="8813"/>
-        <num-clients value="2"/>
     </traci_server>
 
+    <gui_only>
+        <start value="true"/>
+    </gui_only>
+
 </sumoConfiguration>
+-->
+
+<instantE1 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/instant_e1_file.xsd">
+    <instantOut id="e1i_0" time="128.87" state="enter" vehID="121" speed="9.80" length="5.00" type="car"/>
+    <instantOut id="e1i_0" time="129.00" state="stay" vehID="121" speed="9.80" length="5.00" type="car"/>
+    <instantOut id="e1i_0" time="129.71" state="leave" vehID="121" speed="5.30" length="5.00" type="car" occupancy="0.83"/>
+</instantE1>

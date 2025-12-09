@@ -42,7 +42,9 @@
     "warning": "Cảnh báo",
     "info": "Thông tin",
     "success": "Thành công",
-    "type": "Loại"
+    "type": "Loại",
+    "temperature": "Nhiệt độ",
+    "humidity": "Độ ẩm"
   },
   "locations": {
     "nga4ThuDuc": "Ngã 4 Thủ Đức",
@@ -496,7 +498,13 @@
       "inProgress": "Đang thực hiện",
       "completed": "Hoàn thành"
     },
-    "aiTag": "AI"
+    "pm25Critical": "Chỉ số PM2.5 nguy hại tại {{location}} ({{value}})",
+    "trafficCongestion": "Tắc nghẽn giao thông tại {{location}}",
+    "aiTag": "AI",
+    "interventions": {
+      "signalAdjustment": "Điều chỉnh tín hiệu: Kéo dài pha đèn xanh cho {{direction}}",
+      "routeRebalancing": "Cân bằng tuyến đường: Đề xuất tuyến đường thay thế qua {{route}}"
+    }
   },
   "user": {
     "profile": "Hồ sơ",
@@ -814,6 +822,7 @@
         "disable": "Tắt AI",
         "disabledMessage": "Điều khiển AI đang tắt",
         "startSumoMessage": "Hãy khởi động SUMO, sau đó bật điều khiển AI",
+        "decisionLog": "Nhật ký Quyết định AI",
         "log": {
           "enabled": "🧠 Điều khiển Giao thông AI đã bật thành công!",
           "enableFailed": "❌ Bật AI thất bại: {{error}}",

@@ -1,17 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<!-- generated on 2025-12-09T07:12:54.732815+00:00 by Eclipse SUMO sumo 1.25.0
+<!-- generated on 2025-12-09T15:30:51.041835+07:00 by Eclipse SUMO GUI 1.25.0
 <sumoConfiguration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/sumoConfiguration.xsd">
 
     <input>
-        <net-file value="/app/sumo_files/Nga4ThuDuc/Nga4ThuDuc.net.xml"/>
-        <route-files value="/app/sumo_files/Nga4ThuDuc/routes.rou.xml"/>
-        <additional-files value="/app/sumo_files/Nga4ThuDuc/Nga4ThuDuc.add.xml"/>
+        <net-file value="D:\GreenWave\src\backend\app\sumo_rl\sumo_files\Nga4ThuDuc\Nga4ThuDuc.net.xml"/>
+        <route-files value="D:\GreenWave\src\backend\app\sumo_rl\sumo_files\Nga4ThuDuc\routes.rou.xml"/>
+        <additional-files value="D:\GreenWave\src\backend\app\sumo_rl\sumo_files\Nga4ThuDuc\Nga4ThuDuc.add.xml"/>
     </input>
+
+    <time>
+        <step-length value="1.0"/>
+    </time>
 
     <traci_server>
         <remote-port value="8813"/>
-        <num-clients value="2"/>
     </traci_server>
 
+    <gui_only>
+        <start value="true"/>
+    </gui_only>
+
 </sumoConfiguration>
+-->
+
+<detector xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/det_e2_file.xsd">
+   <interval begin="0.00" end="227.00" id="e2_2" sampledSeconds="215.70" nVehEntered="19" nVehLeft="19" nVehSeen="19" meanSpeed="1.28" meanTimeLoss="10.48" meanOccupancy="27.10" maxOccupancy="68.72" meanMaxJamLengthInVehicles="0.71" meanMaxJamLengthInMeters="2.65" maxJamLengthInVehicles="2" maxJamLengthInMeters="10.00" jamLengthInVehiclesSum="162" jamLengthInMetersSum="601.64" meanHaltingDuration="10.88" maxHaltingDuration="64.00" haltingDurationSum="87.00" meanIntervalHaltingDuration="10.88" maxIntervalHaltingDuration="64.00" intervalHaltingDurationSum="87.00" startedHalts="10.00" meanVehicleNumber="1.02" maxVehicleNumber="2" />
+</detector>
