@@ -9,7 +9,6 @@ import { DashboardHeader } from '../../components/feature/dashboard/DashboardHea
 import { KPICard } from '../../components/feature/dashboard/KPICard'
 import { MonitoringChart } from '../../components/feature/dashboard/MonitoringChart'
 import { DeviceHealthPanel } from '../../components/feature/dashboard/DeviceHealthPanel'
-import { PollutionMap } from '../../components/feature/dashboard/PollutionMap'
 import { AlertPanel } from '../../components/feature/dashboard/AlertPanel'
 import { ManualControlPanel } from '../../components/feature/dashboard/ManualControlPanel'
 import type {
@@ -375,12 +374,17 @@ export const ManagerDashboard: React.FC = () => {
                 <KPICard key={kpi.id} kpi={kpi} />
               ))}
             </div>
-            {/* Pollution Map */}
-            <div className="h-[600px]">
-              <PollutionMap
-                hotspots={dashboardData.pollutionHotspots}
-                onHotspotSelect={setSelectedSensor}
-              />
+            {/* Map Placeholder */}
+            <div className="h-[600px] bg-white dark:bg-gray-800 rounded-xl border-2 border-gray-200 dark:border-gray-700 flex items-center justify-center">
+              <div className="text-center p-8">
+                <div className="text-6xl mb-4">🗺️</div>
+                <h3 className="text-xl font-bold text-gray-700 dark:text-gray-300 mb-2">
+                  Map Feature Removed
+                </h3>
+                <p className="text-gray-600 dark:text-gray-400">
+                  The map feature has been removed for license compliance.
+                </p>
+              </div>
             </div>
           </div>
 

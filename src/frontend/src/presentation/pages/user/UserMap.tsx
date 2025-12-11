@@ -1,135 +1,83 @@
 // Copyright (c) 2025 Green Wave Team
-// 
+//
 // This software is released under the MIT License.
 // https://opensource.org/licenses/MIT
 
-import React, { useState, useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import { UserMapHeader } from "../../components/feature/usermap/UserMapHeader";
-import { UserMapView } from "../../components/feature/usermap/UserMapView";
-import { HealthInsightPanel } from "../../components/feature/usermap/HealthInsightPanel";
-import { AQIGauge } from "../../components/feature/usermap/AQIGauge";
-import { TrafficStatusCard } from "../../components/feature/usermap/TrafficStatusCard";
-import type { AirQualityObservedModel } from "../../../domain/models/AirQualityObservedModel";
-import type { LocationModel } from "../../../domain/models/CommonModels";
-import { AirQualityRepositoryImpl } from "../../../data/repositories/AirQualityRepositoryImpl";
-import { GetAirQualityDataUseCase } from "../../../domain/usecases/airquality/GetAirQualityDataUseCase";
-import { fetchSumoState } from "../../../data/redux/sumoSlice";
-import type { RootState, AppDispatch } from "../../../data/redux/store";
+import React, { useState, useEffect } from 'react'
+import { useSelector, useDispatch } from 'react-redux'
+import { UserMapHeader } from '../../components/feature/usermap/UserMapHeader'
+
+import { AQIGauge } from '../../components/feature/usermap/AQIGauge'
+import { TrafficStatusCard } from '../../components/feature/usermap/TrafficStatusCard'
+
+import { fetchSumoState } from '../../../data/redux/sumoSlice'
+import type { RootState, AppDispatch } from '../../../data/redux/store'
 
 export const UserMap: React.FC = () => {
-  const dispatch = useDispatch<AppDispatch>();
-  const { simulationState } = useSelector((state: RootState) => state.sumo);
+  const dispatch = useDispatch<AppDispatch>()
+  const { simulationState } = useSelector((state: RootState) => state.sumo)
 
-  const [isDarkMode, setIsDarkMode] = useState(false);
-  const [selectedLocation, setSelectedLocation] =
-    useState<LocationModel | null>(null);
-  const [selectedAirQuality, setSelectedAirQuality] =
-    useState<AirQualityObservedModel | null>(null);
-  const [searchQuery, setSearchQuery] = useState("");
-  const [airQualityData, setAirQualityData] = useState<
-    AirQualityObservedModel[]
-  >([]);
+  const [isDarkMode, setIsDarkMode] = useState(false)
+
+  const [searchQuery, setSearchQuery] = useState('')
 
   // Initialize dark mode
   useEffect(() => {
     const getInitialDarkMode = () => {
-      if (typeof window !== "undefined") {
-        const stored = localStorage.getItem("darkMode");
+      if (typeof window !== 'undefined') {
+        const stored = localStorage.getItem('darkMode')
         if (stored !== null) {
-          return stored === "true";
+          return stored === 'true'
         }
-        return window.matchMedia("(prefers-color-scheme: dark)").matches;
+        return window.matchMedia('(prefers-color-scheme: dark)').matches
       }
-      return false;
-    };
+      return false
+    }
 
-    setIsDarkMode(getInitialDarkMode());
-  }, []);
-
-  // Fetch Air Quality Data
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const repository = new AirQualityRepositoryImpl();
-        const useCase = new GetAirQualityDataUseCase(repository);
-        const data = await useCase.execute();
-        setAirQualityData(data);
-      } catch (error) {
-        console.error("Failed to fetch air quality data:", error);
-      }
-    };
-
-    fetchData();
-  }, []);
+    setIsDarkMode(getInitialDarkMode())
+  }, [])
 
   // Poll SUMO Traffic Data
   useEffect(() => {
     // Fetch immediately
-    dispatch(fetchSumoState());
+    dispatch(fetchSumoState())
 
     // Poll every 5 seconds
     const intervalId = setInterval(() => {
-      dispatch(fetchSumoState());
-    }, 5000);
+      dispatch(fetchSumoState())
+    }, 5000)
 
-    return () => clearInterval(intervalId);
-  }, [dispatch]);
+    return () => clearInterval(intervalId)
+  }, [dispatch])
 
   // Apply dark mode class
   useEffect(() => {
     if (isDarkMode) {
-      document.documentElement.classList.add("dark");
+      document.documentElement.classList.add('dark')
     } else {
-      document.documentElement.classList.remove("dark");
+      document.documentElement.classList.remove('dark')
     }
-  }, [isDarkMode]);
+  }, [isDarkMode])
 
   const handleThemeToggle = () => {
-    const newDarkMode = !isDarkMode;
-    setIsDarkMode(newDarkMode);
-    localStorage.setItem("darkMode", newDarkMode.toString());
-  };
-
-  const handleLocationSelect = (
-    location: LocationModel,
-    airQuality?: AirQualityObservedModel
-  ) => {
-    setSelectedLocation(location);
-    setSelectedAirQuality(airQuality || null);
-  };
+    const newDarkMode = !isDarkMode
+    setIsDarkMode(newDarkMode)
+    localStorage.setItem('darkMode', newDarkMode.toString())
+  }
 
   const handleSearch = (query: string) => {
-    setSearchQuery(query);
-    // Search functionality will be implemented in the search component
-  };
-
-  const handleTrafficSelect = (_scenarioId: string) => {
-    // For now, we assume selecting a traffic location triggers a fetch of the state
-    // In a real app, this might switch the active scenario on the backend
-    // or fetch specific data for that scenario.
-    // For this demo, we'll just ensure we are fetching the global state
-    // and maybe set a local state to show we are focusing on this traffic node.
-
-    // If you wanted to switch scenario:
-    // dispatch(startSimulation({ scenario: scenarioId, gui: false, port: 8813 }));
-
-    // Just fetch state for now
-    dispatch(fetchSumoState());
-
-    // We could also set a "selectedTrafficNode" state if we wanted to show specific info
-    // distinct from the global simulation state, but the request implies showing the card.
-  };
+    setSearchQuery(query)
+  }
 
   // State to track last update time
-  const [lastUpdated, setLastUpdated] = useState(new Date());
+  const [lastUpdated, setLastUpdated] = useState(new Date())
 
   // Update timestamp when simulationState changes
   useEffect(() => {
     if (simulationState) {
-      setLastUpdated(new Date());
+      setLastUpdated(new Date())
     }
-  }, [simulationState]);
+  }, [simulationState])
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900 relative">
@@ -143,22 +91,22 @@ export const UserMap: React.FC = () => {
 
       {/* Main Content */}
       <div className="relative z-0 h-[calc(100vh-72px)]">
-        {/* Map View */}
-        <UserMapView
-          isDarkMode={isDarkMode}
-          airQualityData={airQualityData}
-          selectedLocation={selectedLocation}
-          onLocationSelect={handleLocationSelect}
-          onTrafficSelect={handleTrafficSelect}
-          searchQuery={searchQuery}
-        />
+        {/* Map Placeholder */}
+        <div className="w-full h-full flex items-center justify-center bg-gray-100 dark:bg-gray-800">
+          <div className="text-center p-8">
+            <div className="text-6xl mb-4">🗺️</div>
+            <h2 className="text-2xl font-bold text-gray-700 dark:text-gray-300 mb-2">
+              Map Feature Removed
+            </h2>
+            <p className="text-gray-600 dark:text-gray-400">
+              The map feature has been removed for license compliance.
+            </p>
+          </div>
+        </div>
 
         {/* AQI Gauge - Fixed Position (Bottom Left) */}
         <div className="absolute bottom-6 left-4 z-[1000]">
-          <AQIGauge
-            value={selectedAirQuality?.airQualityIndex || 50}
-            isDarkMode={isDarkMode}
-          />
+          <AQIGauge value={50} isDarkMode={isDarkMode} />
         </div>
 
         {/* Traffic Status Card - Fixed Position (Bottom Right) */}
@@ -173,17 +121,7 @@ export const UserMap: React.FC = () => {
             />
           </div>
         )}
-
-        {/* Health Insight Panel - Fixed Position (Top Right) */}
-        {selectedAirQuality && (
-          <div className="absolute top-4 right-4 z-[1000] w-80">
-            <HealthInsightPanel
-              airQuality={selectedAirQuality}
-              isDarkMode={isDarkMode}
-            />
-          </div>
-        )}
       </div>
     </div>
-  );
-};
+  )
+}
