@@ -1,78 +1,106 @@
 // Copyright (c) 2025 Green Wave Team
-// 
+//
 // This software is released under the MIT License.
 // https://opensource.org/licenses/MIT
 
-import React, { useEffect, useRef, useState } from "react";
-import { useTranslation } from "react-i18next";
-import { useAppDispatch, useAppSelector } from "../../../../data/redux/hooks";
+import React, { useEffect, useRef, useState } from 'react'
+import { useTranslation } from 'react-i18next'
+import { useAppDispatch, useAppSelector } from '../../../../data/redux/hooks'
 import {
   activateAIControl,
   deactivateAIControl,
   performAIStep,
-} from "../../../../data/redux/sumoSlice";
-import { Brain, Circle, Zap } from "lucide-react";
-import { AIStatusCard } from "./components/AIStatusCard";
-import { AIModelDetailsDialog } from "./components/AIModelDetailsDialog";
+} from '../../../../data/redux/sumoSlice'
+import { Brain, Circle, Zap } from 'lucide-react'
+import { AIStatusCard } from './components/AIStatusCard'
+import { AIModelDetailsDialog } from './components/AIModelDetailsDialog'
+import type { AIDecision } from '../../../../domain/models/SumoModels'
 
-interface AIControlPanelProps {
-  onLog?: (message: string) => void;
+export interface AIDecisionLog extends AIDecision {
+  timestamp: number
 }
 
-export const AIControlPanel: React.FC<AIControlPanelProps> = ({ onLog }) => {
-  const { t } = useTranslation("sumo");
-  const dispatch = useAppDispatch();
-  const { aiControlState, isAIControlActive, isLoading, simulationState } =
-    useAppSelector((state) => state.sumo);
+interface AIControlPanelProps {
+  onLog?: (message: string) => void
+  onDecisionLogsChange?: (logs: AIDecisionLog[]) => void
+}
 
-  const aiIntervalRef = useRef<number | null>(null);
-  const [showDetailsDialog, setShowDetailsDialog] = useState(false);
+export const AIControlPanel: React.FC<AIControlPanelProps> = ({ onLog, onDecisionLogsChange }) => {
+  const { t } = useTranslation('sumo')
+  const dispatch = useAppDispatch()
+  const { aiControlState, isAIControlActive, isLoading, simulationState } = useAppSelector(
+    (state) => state.sumo
+  )
+
+  const aiIntervalRef = useRef<number | null>(null)
+  const [showDetailsDialog, setShowDetailsDialog] = useState(false)
+  const decisionLogsRef = useRef<AIDecisionLog[]>([])
 
   // AI Control Loop
   useEffect(() => {
     if (isAIControlActive && aiControlState) {
       aiIntervalRef.current = window.setInterval(async () => {
         try {
-          const result = await dispatch(performAIStep()).unwrap();
+          const result = await dispatch(performAIStep()).unwrap()
+
+          // Debug: Log the entire result
+          console.log('🔍 AI Step Result:', result)
+          console.log('🔍 Decisions:', result.decisions)
+          console.log('🔍 Decisions length:', result.decisions?.length)
+
+          // Add decisions to log
+          if (result.decisions && result.decisions.length > 0) {
+            const newLogs: AIDecisionLog[] = result.decisions.map((decision) => ({
+              ...decision,
+              timestamp: result.simulationTime,
+            }))
+            const updated = [...newLogs, ...decisionLogsRef.current].slice(0, 50) // Keep last 50 decisions
+            decisionLogsRef.current = updated
+            onDecisionLogsChange?.(updated)
+            console.log('✅ Updated decision logs:', updated.length, 'decisions')
+          } else {
+            console.log('⚠️ No decisions in result')
+          }
+
           if (result.totalSwitches > 0) {
             onLog?.(
-              t("controlPanel.ai.log.decision", {
+              t('controlPanel.ai.log.decision', {
                 switches: result.totalSwitches,
                 holds: result.totalHolds,
                 time: result.simulationTime.toFixed(0),
               })
-            );
+            )
           }
         } catch (error) {
-          console.error("AI step error:", error);
+          console.error('AI step error:', error)
         }
-      }, 2000);
+      }, 2000)
 
       return () => {
         if (aiIntervalRef.current) {
-          clearInterval(aiIntervalRef.current);
+          clearInterval(aiIntervalRef.current)
         }
-      };
+      }
     }
-  }, [isAIControlActive, dispatch, onLog, aiControlState]);
+  }, [isAIControlActive, dispatch, onLog, aiControlState, t, onDecisionLogsChange])
 
   const handleEnableAI = async () => {
     try {
-      await dispatch(activateAIControl()).unwrap();
-      onLog?.(t("controlPanel.ai.log.enabled"));
+      await dispatch(activateAIControl()).unwrap()
+      onLog?.(t('controlPanel.ai.log.enabled'))
     } catch (error) {
-      onLog?.(t("controlPanel.ai.log.enableFailed", { error }));
+      onLog?.(t('controlPanel.ai.log.enableFailed', { error }))
     }
-  };
+  }
 
   const handleDisableAI = async () => {
     try {
-      await dispatch(deactivateAIControl()).unwrap();
-      onLog?.(t("controlPanel.ai.log.disabled"));
+      await dispatch(deactivateAIControl()).unwrap()
+      onLog?.(t('controlPanel.ai.log.disabled'))
     } catch (error) {
-      onLog?.(t("controlPanel.ai.log.disableFailed", { error }));
+      onLog?.(t('controlPanel.ai.log.disableFailed', { error }))
     }
-  };
+  }
 
   return (
     <>
@@ -80,7 +108,7 @@ export const AIControlPanel: React.FC<AIControlPanelProps> = ({ onLog }) => {
         <div className="flex items-center gap-3 mb-6">
           <Brain className="w-6 h-6 text-emerald-600 dark:text-emerald-400" />
           <h2 className="text-xl font-bold text-gray-900 dark:text-white">
-            {t("controlPanel.ai.title")}
+            {t('controlPanel.ai.title')}
           </h2>
         </div>
 
@@ -95,7 +123,7 @@ export const AIControlPanel: React.FC<AIControlPanelProps> = ({ onLog }) => {
                          hover:shadow-lg hover:scale-105 disabled:hover:scale-100"
             >
               <Zap className="w-5 h-5" />
-              {t("controlPanel.ai.enable")}
+              {t('controlPanel.ai.enable')}
             </button>
           ) : (
             <button
@@ -106,17 +134,19 @@ export const AIControlPanel: React.FC<AIControlPanelProps> = ({ onLog }) => {
                          hover:shadow-lg hover:scale-105 disabled:hover:scale-100"
             >
               <Circle className="w-5 h-5" />
-              {t("controlPanel.ai.disable")}
+              {t('controlPanel.ai.disable')}
             </button>
           )}
         </div>
 
         {/* AI Status */}
         {aiControlState && isAIControlActive && (
-          <AIStatusCard
-            aiControlState={aiControlState}
-            onShowDetails={() => setShowDetailsDialog(true)}
-          />
+          <>
+            <AIStatusCard
+              aiControlState={aiControlState}
+              onShowDetails={() => setShowDetailsDialog(true)}
+            />
+          </>
         )}
 
         {/* Disabled State Message */}
@@ -124,10 +154,10 @@ export const AIControlPanel: React.FC<AIControlPanelProps> = ({ onLog }) => {
           <div className="text-center py-6">
             <Circle className="w-12 h-12 text-gray-400 mx-auto mb-3" />
             <p className="text-sm text-gray-500 dark:text-gray-400">
-              {t("controlPanel.ai.disabledMessage")}
+              {t('controlPanel.ai.disabledMessage')}
             </p>
             <p className="text-xs text-gray-400 dark:text-gray-500 mt-1">
-              {t("controlPanel.ai.startSumoMessage")}
+              {t('controlPanel.ai.startSumoMessage')}
             </p>
           </div>
         )}
@@ -141,5 +171,5 @@ export const AIControlPanel: React.FC<AIControlPanelProps> = ({ onLog }) => {
         />
       )}
     </>
-  );
-};
+  )
+}

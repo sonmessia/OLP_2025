@@ -1,10 +1,10 @@
 // Copyright (c) 2025 Green Wave Team
-// 
+//
 // This software is released under the MIT License.
 // https://opensource.org/licenses/MIT
 
-import React from "react";
-import { useTranslation } from "react-i18next";
+import React from 'react'
+import { useTranslation } from 'react-i18next'
 import {
   Play,
   Square,
@@ -12,19 +12,20 @@ import {
   PlayCircle,
   PauseCircle,
   RefreshCw,
-} from "lucide-react";
+  Loader2,
+} from 'lucide-react'
 
 interface SumoActionButtonsProps {
-  isSimulationRunning: boolean;
-  isLoading: boolean;
-  isStepping: boolean;
-  autoStep: boolean;
-  setAutoStep: (value: boolean) => void;
-  onStart: () => void;
-  onStop: () => void;
-  onStep: () => void;
-  onRefresh: () => void;
-  disabled?: boolean;
+  isSimulationRunning: boolean
+  isLoading: boolean
+  isStepping: boolean
+  autoStep: boolean
+  setAutoStep: (value: boolean) => void
+  onStart: () => void
+  onStop: () => void
+  onStep: () => void
+  onRefresh: () => void
+  disabled?: boolean
 }
 
 export const SumoActionButtons: React.FC<SumoActionButtonsProps> = ({
@@ -39,7 +40,7 @@ export const SumoActionButtons: React.FC<SumoActionButtonsProps> = ({
   onRefresh,
   disabled = false,
 }) => {
-  const { t } = useTranslation(["traffic", "common"]);
+  const { t } = useTranslation(['traffic', 'common'])
   return (
     <div className="space-y-3">
       <div className="grid grid-cols-2 gap-3">
@@ -48,10 +49,10 @@ export const SumoActionButtons: React.FC<SumoActionButtonsProps> = ({
           disabled={isSimulationRunning || isLoading || disabled}
           className="flex items-center justify-center gap-2 px-4 py-3 eco-gradient-primary text-white font-semibold rounded-lg
                      transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed
-                     hover:shadow-lg hover:scale-105 disabled:hover:scale-100"
+                     hover:shadow-lg hover:scale-105 disabled:hover:scale-100 min-w-[120px]"
         >
-          <Play className="w-4 h-4" />
-          {isLoading ? t("traffic:connecting") : t("common:start")}
+          {isLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : <Play className="w-4 h-4" />}
+          {t('common:start')}
         </button>
 
         <button
@@ -59,10 +60,10 @@ export const SumoActionButtons: React.FC<SumoActionButtonsProps> = ({
           disabled={!isSimulationRunning || isLoading || disabled}
           className="flex items-center justify-center gap-2 px-4 py-3 bg-gray-600 hover:bg-gray-700 text-white font-semibold rounded-lg
                      transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed
-                     hover:shadow-lg hover:scale-105 disabled:hover:scale-100"
+                     hover:shadow-lg hover:scale-105 disabled:hover:scale-100 min-w-[120px]"
         >
           <Square className="w-4 h-4" />
-          {t("common:stop")}
+          {t('common:stop')}
         </button>
       </div>
 
@@ -75,7 +76,6 @@ export const SumoActionButtons: React.FC<SumoActionButtonsProps> = ({
                      transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed text-sm"
         >
           <SkipForward className="w-4 h-4" />
-          {t("traffic:stepForward")}
         </button>
 
         <button
@@ -85,16 +85,11 @@ export const SumoActionButtons: React.FC<SumoActionButtonsProps> = ({
                      disabled:opacity-50 disabled:cursor-not-allowed text-sm
                      ${
                        autoStep
-                         ? "bg-red-600 hover:bg-red-700 text-white"
-                         : "bg-indigo-600 hover:bg-indigo-700 text-white"
+                         ? 'bg-red-600 hover:bg-red-700 text-white'
+                         : 'bg-indigo-600 hover:bg-indigo-700 text-white'
                      }`}
         >
-          {autoStep ? (
-            <PauseCircle className="w-4 h-4" />
-          ) : (
-            <PlayCircle className="w-4 h-4" />
-          )}
-          {t("traffic:autoStep")}
+          {autoStep ? <PauseCircle className="w-4 h-4" /> : <PlayCircle className="w-4 h-4" />}
         </button>
 
         <button
@@ -107,5 +102,5 @@ export const SumoActionButtons: React.FC<SumoActionButtonsProps> = ({
         </button>
       </div>
     </div>
-  );
-};
+  )
+}

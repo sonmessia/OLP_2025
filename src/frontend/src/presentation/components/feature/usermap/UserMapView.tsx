@@ -1,46 +1,37 @@
 // Copyright (c) 2025 Green Wave Team
-// 
+//
 // This software is released under the MIT License.
 // https://opensource.org/licenses/MIT
 
-import React, { useEffect, useState } from "react";
-import {
-  MapContainer,
-  TileLayer,
-  Marker,
-  Popup,
-  Circle,
-  useMap,
-  useMapEvents,
-} from "react-leaflet";
-import L from "leaflet";
-import { Locate, Navigation } from "lucide-react";
-import "leaflet/dist/leaflet.css";
-import type { AirQualityObservedModel } from "../../../../domain/models/AirQualityObservedModel";
-import type { LocationModel } from "../../../../domain/models/CommonModels";
-import { GeoJSONType } from "../../../../domain/models/CommonModels";
-import { useTranslation } from "react-i18next";
+import React, { useEffect, useState } from 'react'
+import { MapContainer, TileLayer, Marker, Popup, Circle, useMap, useMapEvents } from 'react-leaflet'
+import L from 'leaflet'
+import { Locate, Navigation } from 'lucide-react'
+import 'leaflet/dist/leaflet.css'
+import type { AirQualityObservedModel } from '../../../../domain/models/AirQualityObservedModel'
+import type { LocationModel } from '../../../../domain/models/CommonModels'
+import { GeoJSONType } from '../../../../domain/models/CommonModels'
+import { useTranslation } from 'react-i18next'
 
-import { TRAFFIC_LOCATIONS } from "../../../../utils/trafficLocations";
+import { TRAFFIC_LOCATIONS } from '../../../../utils/trafficLocations'
 
 interface UserMapViewProps {
-  isDarkMode: boolean;
-  airQualityData: AirQualityObservedModel[];
-  selectedLocation: LocationModel | null;
-  onLocationSelect: (
-    location: LocationModel,
-    airQuality?: AirQualityObservedModel
-  ) => void;
-  onTrafficSelect: (scenarioId: string) => void;
-  searchQuery: string;
+  isDarkMode: boolean
+  airQualityData: AirQualityObservedModel[]
+  selectedLocation: LocationModel | null
+  onLocationSelect: (location: LocationModel, airQuality?: AirQualityObservedModel) => void
+  onTrafficSelect: (scenarioId: string) => void
+  searchQuery: string
 }
 
 // Custom icons for different AQI levels
 const getAQIIcon = (aqi: number): L.DivIcon => {
-  let color = "#10B981"; // Green for good
-  if (aqi > 150) color = "#D9232F"; // Red for hazardous
-  else if (aqi > 100) color = "#F59E0B"; // Orange for unhealthy
-  else if (aqi > 50) color = "#FBBF24"; // Yellow for moderate
+  let color = '#10B981' // Green for good
+  if (aqi > 150)
+    color = '#D9232F' // Red for hazardous
+  else if (aqi > 100)
+    color = '#F59E0B' // Orange for unhealthy
+  else if (aqi > 50) color = '#FBBF24' // Yellow for moderate
 
   return L.divIcon({
     html: `
@@ -61,24 +52,24 @@ const getAQIIcon = (aqi: number): L.DivIcon => {
         ${aqi}
       </div>
     `,
-    className: "custom-aqi-marker",
+    className: 'custom-aqi-marker',
     iconSize: [30, 30],
     iconAnchor: [15, 15],
-  });
-};
+  })
+}
 
 // Component to handle map interactions and logic
 const MapController: React.FC<{
-  searchQuery: string;
-  onLocationSelect: (location: LocationModel) => void;
+  searchQuery: string
+  onLocationSelect: (location: LocationModel) => void
 }> = ({ searchQuery, onLocationSelect }) => {
-  const map = useMap();
-  const [userLocation, setUserLocation] = useState<L.LatLng | null>(null);
-  const [userAccuracy, setUserAccuracy] = useState<number | null>(null);
-  const [isFollowing, setIsFollowing] = useState(true);
-  const [lastUpdate, setLastUpdate] = useState<Date | null>(null);
-  const [speed, setSpeed] = useState<number | null>(null);
-  const { t, i18n } = useTranslation(["maps", "common"]);
+  const map = useMap()
+  const [userLocation, setUserLocation] = useState<L.LatLng | null>(null)
+  const [userAccuracy, setUserAccuracy] = useState<number | null>(null)
+  const [isFollowing, setIsFollowing] = useState(true)
+  const [lastUpdate, setLastUpdate] = useState<Date | null>(null)
+  const [speed, setSpeed] = useState<number | null>(null)
+  const { t, i18n } = useTranslation(['maps', 'common'])
 
   // Handle map clicks
   useMapEvents({
@@ -86,59 +77,59 @@ const MapController: React.FC<{
       const location: LocationModel = {
         type: GeoJSONType.Point,
         coordinates: [e.latlng.lng, e.latlng.lat],
-      };
-      onLocationSelect(location);
+      }
+      onLocationSelect(location)
     },
     dragstart() {
       // Stop following if user manually drags the map
-      setIsFollowing(false);
+      setIsFollowing(false)
     },
-  });
+  })
 
   // Locate user on mount with realtime watching using native Geolocation API
   useEffect(() => {
-    let watchId: number | null = null;
+    let watchId: number | null = null
 
-    if ("geolocation" in navigator) {
+    if ('geolocation' in navigator) {
       watchId = navigator.geolocation.watchPosition(
         (position) => {
-          const { latitude, longitude, accuracy, speed } = position.coords;
-          const latlng = new L.LatLng(latitude, longitude);
+          const { latitude, longitude, accuracy, speed } = position.coords
+          const latlng = new L.LatLng(latitude, longitude)
 
-          setUserLocation(latlng);
-          setUserAccuracy(accuracy);
-          setLastUpdate(new Date());
-          setSpeed(speed);
+          setUserLocation(latlng)
+          setUserAccuracy(accuracy)
+          setLastUpdate(new Date())
+          setSpeed(speed)
 
           // Only auto-center if we are in "following" mode
           if (isFollowing) {
             map.setView(latlng, map.getZoom() < 16 ? 16 : map.getZoom(), {
               animate: true,
-            });
+            })
           }
         },
         (error) => {
-          console.warn("Location error:", error.message);
+          console.warn('Location error:', error.message)
         },
         {
           enableHighAccuracy: true,
           timeout: 10000,
           maximumAge: 0,
         }
-      );
+      )
     }
 
     // Cleanup function to stop watching when component unmounts
     return () => {
       if (watchId !== null) {
-        navigator.geolocation.clearWatch(watchId);
+        navigator.geolocation.clearWatch(watchId)
       }
-    };
-  }, [map, isFollowing]);
+    }
+  }, [map, isFollowing])
 
   // Handle search
   useEffect(() => {
-    if (!searchQuery) return;
+    if (!searchQuery) return
 
     const searchLocation = async () => {
       try {
@@ -146,45 +137,45 @@ const MapController: React.FC<{
           `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(
             searchQuery
           )}&limit=1`
-        );
-        const data = await response.json();
+        )
+        const data = await response.json()
 
         if (data && data.length > 0) {
-          const result = data[0];
-          const lat = parseFloat(result.lat);
-          const lng = parseFloat(result.lon);
-          const latLng = new L.LatLng(lat, lng);
+          const result = data[0]
+          const lat = parseFloat(result.lat)
+          const lng = parseFloat(result.lon)
+          const latLng = new L.LatLng(lat, lng)
 
-          map.setView(latLng, 15);
-          setIsFollowing(false); // Stop following user when searching
+          map.setView(latLng, 15)
+          setIsFollowing(false) // Stop following user when searching
 
           const location: LocationModel = {
             type: GeoJSONType.Point,
             coordinates: [lng, lat],
-          };
-          onLocationSelect(location);
+          }
+          onLocationSelect(location)
 
           // Add a temporary popup
           L.popup()
             .setLatLng(latLng)
             .setContent(`<p class="font-bold">${result.display_name}</p>`)
-            .openOn(map);
+            .openOn(map)
         }
       } catch (error) {
-        console.error("Search error:", error);
+        console.error('Search error:', error)
       }
-    };
+    }
 
-    const timeoutId = setTimeout(searchLocation, 500);
-    return () => clearTimeout(timeoutId);
-  }, [searchQuery, map, onLocationSelect]);
+    const timeoutId = setTimeout(searchLocation, 500)
+    return () => clearTimeout(timeoutId)
+  }, [searchQuery, map, onLocationSelect])
 
   const handleLocateClick = () => {
-    setIsFollowing(true);
+    setIsFollowing(true)
     if (userLocation) {
-      map.flyTo(userLocation, 16);
+      map.flyTo(userLocation, 16)
     }
-  };
+  }
 
   return (
     <>
@@ -203,19 +194,19 @@ const MapController: React.FC<{
                   box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.3);
                 "></div>
               `,
-              className: "user-location-marker",
+              className: 'user-location-marker',
               iconSize: [24, 24],
               iconAnchor: [12, 12],
             })}
           >
-            <Popup>{t("userLocation.youAreHere")}</Popup>
+            <Popup>{t('userLocation.youAreHere')}</Popup>
           </Marker>
           {userAccuracy && (
             <Circle
               center={userLocation}
               radius={userAccuracy}
               pathOptions={{
-                fillColor: "#3B82F6",
+                fillColor: '#3B82F6',
                 fillOpacity: 0.1,
                 stroke: false,
               }}
@@ -229,41 +220,33 @@ const MapController: React.FC<{
         <div className="absolute top-4 left-4 z-[1000] bg-white dark:bg-gray-800 rounded-lg shadow-lg p-3 min-w-[250px]">
           <h3 className="text-sm font-bold text-gray-900 dark:text-white mb-2 flex items-center gap-2">
             <Navigation className="w-4 h-4 text-blue-500" />
-            {t("userLocation.title")}
+            {t('userLocation.title')}
           </h3>
           <div className="space-y-1 text-xs text-gray-600 dark:text-gray-300">
             <div className="flex justify-between">
-              <span className="font-medium">{t("userLocation.lat")}:</span>
+              <span className="font-medium">{t('userLocation.lat')}:</span>
               <span className="font-mono">{userLocation.lat.toFixed(6)}°</span>
             </div>
             <div className="flex justify-between">
-              <span className="font-medium">{t("userLocation.lng")}:</span>
+              <span className="font-medium">{t('userLocation.lng')}:</span>
               <span className="font-mono">{userLocation.lng.toFixed(6)}°</span>
             </div>
             {userAccuracy && (
               <div className="flex justify-between">
-                <span className="font-medium">
-                  {t("userLocation.accuracy")}:
-                </span>
+                <span className="font-medium">{t('userLocation.accuracy')}:</span>
                 <span className="font-mono">±{Math.round(userAccuracy)}m</span>
               </div>
             )}
             {speed !== null && speed > 0 && (
               <div className="flex justify-between">
-                <span className="font-medium">{t("userLocation.speed")}:</span>
-                <span className="font-mono">
-                  {(speed * 3.6).toFixed(1)} km/h
-                </span>
+                <span className="font-medium">{t('userLocation.speed')}:</span>
+                <span className="font-mono">{(speed * 3.6).toFixed(1)} km/h</span>
               </div>
             )}
             {lastUpdate && (
               <div className="flex justify-between pt-1 border-t border-gray-200 dark:border-gray-700">
-                <span className="font-medium">
-                  {t("userLocation.updated")}:
-                </span>
-                <span className="font-mono">
-                  {lastUpdate.toLocaleTimeString(i18n.language)}
-                </span>
+                <span className="font-medium">{t('userLocation.updated')}:</span>
+                <span className="font-mono">{lastUpdate.toLocaleTimeString(i18n.language)}</span>
               </div>
             )}
           </div>
@@ -276,25 +259,17 @@ const MapController: React.FC<{
           onClick={handleLocateClick}
           className={`p-2 rounded-full shadow-lg transition-colors ${
             isFollowing
-              ? "bg-blue-500 text-white hover:bg-blue-600"
-              : "bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700"
+              ? 'bg-blue-500 text-white hover:bg-blue-600'
+              : 'bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700'
           }`}
-          title={
-            isFollowing
-              ? t("userLocation.following")
-              : t("userLocation.locateMe")
-          }
+          title={isFollowing ? t('userLocation.following') : t('userLocation.locateMe')}
         >
-          {isFollowing ? (
-            <Navigation className="w-6 h-6" />
-          ) : (
-            <Locate className="w-6 h-6" />
-          )}
+          {isFollowing ? <Navigation className="w-6 h-6" /> : <Locate className="w-6 h-6" />}
         </button>
       </div>
     </>
-  );
-};
+  )
+}
 
 export const UserMapView: React.FC<UserMapViewProps> = ({
   isDarkMode,
@@ -303,10 +278,10 @@ export const UserMapView: React.FC<UserMapViewProps> = ({
   onTrafficSelect,
   searchQuery,
 }) => {
-  const { t } = useTranslation(["maps", "common", "locations"]);
+  const { t } = useTranslation(['maps', 'common', 'locations'])
   const tileUrl = isDarkMode
-    ? "https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png"
-    : "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png";
+    ? 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png'
+    : 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
 
   return (
     <div className="w-full h-full">
@@ -330,14 +305,15 @@ export const UserMapView: React.FC<UserMapViewProps> = ({
 
         {/* Heatmap Circles */}
         {airQualityData.map((item) => {
-          if (!item.location || !item.airQualityIndex) return null;
-          const [lng, lat] = item.location.coordinates;
-          const intensity = Math.min(item.airQualityIndex / 200, 1);
-          const radius = 1000 + intensity * 2000;
+          if (!item.location || !item.airQualityIndex) return null
+          const [lng, lat] = item.location.coordinates
+          const intensity = Math.min(item.airQualityIndex / 200, 1)
+          const radius = 1000 + intensity * 2000
 
-          let color = "#10B981"; // Green
-          if (intensity > 0.75) color = "#D9232F"; // Red
-          else if (intensity > 0.5) color = "#FBBF24"; // Yellow
+          let color = '#10B981' // Green
+          if (intensity > 0.75)
+            color = '#D9232F' // Red
+          else if (intensity > 0.5) color = '#FBBF24' // Yellow
 
           return (
             <Circle
@@ -350,7 +326,7 @@ export const UserMapView: React.FC<UserMapViewProps> = ({
                 stroke: false,
               }}
             />
-          );
+          )
         })}
 
         {/* Traffic Location Markers */}
@@ -376,7 +352,7 @@ export const UserMapView: React.FC<UserMapViewProps> = ({
                   🚦
                 </div>
               `,
-              className: "traffic-marker",
+              className: 'traffic-marker',
               iconSize: [32, 32],
               iconAnchor: [16, 16],
             })}
@@ -388,18 +364,18 @@ export const UserMapView: React.FC<UserMapViewProps> = ({
               <div className="p-2">
                 <h3 className="font-bold text-lg">
                   {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
-                  {t(loc.nameKey.replace(/^locations\./, "") as any, {
-                    ns: "locations",
+                  {t(loc.nameKey.replace(/^locations\./, '') as any, {
+                    ns: 'locations',
                   })}
                 </h3>
                 <p className="text-sm text-gray-600">
                   {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
-                  {t(loc.descriptionKey.replace(/^locations\./, "") as any, {
-                    ns: "locations",
+                  {t(loc.descriptionKey.replace(/^locations\./, '') as any, {
+                    ns: 'locations',
                   })}
                 </p>
                 <p className="text-xs text-blue-500 mt-1 font-semibold">
-                  {t("trafficMarker.clickToView")}
+                  {t('trafficMarker.clickToView')}
                 </p>
               </div>
             </Popup>
@@ -408,8 +384,8 @@ export const UserMapView: React.FC<UserMapViewProps> = ({
 
         {/* Air Quality Markers */}
         {airQualityData.map((data) => {
-          if (!data.location) return null;
-          const [lng, lat] = data.location.coordinates;
+          if (!data.location) return null
+          const [lng, lat] = data.location.coordinates
 
           return (
             <Marker
@@ -423,36 +399,41 @@ export const UserMapView: React.FC<UserMapViewProps> = ({
               <Popup className="custom-popup">
                 <div className="p-2 min-w-[200px]">
                   <h3 className="font-bold text-lg mb-2">
-                    {data.areaServed || t("location", { ns: "common" })}
+                    {data.areaServed && data.areaServed.includes('locations.')
+                      ? data.areaServed
+                          .split(', ')
+                          .map((k) =>
+                            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                            t(k.trim().replace('locations.', ''), { ns: 'locations' } as any)
+                          )
+                          .join(', ')
+                      : data.areaServed || t('location', { ns: 'common' })}
                   </h3>
                   <div className="space-y-1 text-sm">
                     <p>
-                      <strong>{t("aqi")}</strong>{" "}
-                      {data.airQualityIndex || "N/A"}
+                      <strong>{t('aqi')}</strong> {data.airQualityIndex || 'N/A'}
                     </p>
                     <p>
-                      <strong>{t("pm25")}</strong> {data.pm25 || "N/A"} μg/m³
+                      <strong>{t('pm25')}</strong> {data.pm25 || 'N/A'} μg/m³
                     </p>
                     <p>
-                      <strong>PM10:</strong> {data.pm10 || "N/A"} μg/m³
+                      <strong>PM10:</strong> {data.pm10 || 'N/A'} μg/m³
                     </p>
                     <p>
-                      <strong>Nhiệt độ:</strong> {data.temperature || "N/A"}°C
+                      <strong>{t('common:temperature', { defaultValue: 'Temperature' })}:</strong>{' '}
+                      {data.temperature || 'N/A'}°C
                     </p>
                     <p>
-                      <strong>Độ ẩm:</strong>{" "}
-                      {data.relativeHumidity
-                        ? Math.round(data.relativeHumidity * 100)
-                        : "N/A"}
-                      %
+                      <strong>{t('common:humidity', { defaultValue: 'Humidity' })}:</strong>{' '}
+                      {data.relativeHumidity ? Math.round(data.relativeHumidity * 100) : 'N/A'}%
                     </p>
                   </div>
                 </div>
               </Popup>
             </Marker>
-          );
+          )
         })}
       </MapContainer>
     </div>
-  );
-};
+  )
+}

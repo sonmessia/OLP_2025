@@ -88,6 +88,13 @@ Run the following command to start all services (Context Broker, Backend, Fronte
 
 ```bash
 cp .env.example .env
+# Change directory to backend
+cd src/backend  
+
+# Copy the environment variables
+cp .env.example .env
+
+# Run docker compose
 docker compose up -d
 ```
 

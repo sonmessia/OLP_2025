@@ -42,7 +42,9 @@
     "warning": "Warning",
     "info": "Info",
     "success": "Success",
-    "type": "Type"
+    "type": "Type",
+    "temperature": "Temperature",
+    "humidity": "Humidity"
   },
   "locations": {
     "nga4ThuDuc": "Thu Duc 4-way Intersection",
@@ -496,7 +498,13 @@
       "inProgress": "In Progress",
       "completed": "Completed"
     },
-    "aiTag": "AI"
+    "pm25Critical": "Critical PM2.5 level at {{location}} ({{value}})",
+    "trafficCongestion": "Traffic congestion at {{location}}",
+    "aiTag": "AI",
+    "interventions": {
+      "signalAdjustment": "SignalAdjustment: Extended Green Phase for {{direction}}",
+      "routeRebalancing": "RouteRebalancing: Suggested alternate route via {{route}}"
+    }
   },
   "user": {
     "profile": "Profile",
@@ -814,6 +822,9 @@
         "disable": "Disable AI",
         "disabledMessage": "AI Control is disabled",
         "startSumoMessage": "Start SUMO, then enable AI control",
+        "decisionLog": "AI Decision Log",
+        "noDecisions": "No AI decisions yet",
+        "enableAIToSeeDecisions": "Enable AI Control to see decisions",
         "log": {
           "enabled": "🧠 AI Traffic Control enabled successfully!",
           "enableFailed": "❌ Failed to enable AI: {{error}}",

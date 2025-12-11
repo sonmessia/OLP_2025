@@ -19,7 +19,7 @@ export const NotificationPopover: React.FC<NotificationPopoverProps> = ({
   onClearAll,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
-  const unreadCount = notifications.filter((n) => !n.resolved).length;
+
 
   const getIcon = (type: string) => {
     switch (type) {
@@ -31,6 +31,35 @@ export const NotificationPopover: React.FC<NotificationPopoverProps> = ({
         return <Info className="w-4 h-4 text-blue-500" />;
     }
   };
+
+  // Mock data for demo purposes if no notifications provided
+  const MOCK_NOTIFICATIONS: AlertLog[] = [
+    {
+      id: "notif_mock_1",
+      timestamp: new Date().toISOString(),
+      type: "critical",
+      message: "Cảnh báo: Nồng độ PM2.5 vượt ngưỡng tại Ngã 4 Thủ Đức",
+      resolved: false,
+    },
+    {
+      id: "notif_mock_2",
+      timestamp: new Date(Date.now() - 1800000).toISOString(),
+      type: "warning",
+      message: "Lưu lượng giao thông tăng cao tại Hàng Xanh",
+      resolved: false,
+    },
+    {
+      id: "notif_mock_3",
+      timestamp: new Date(Date.now() - 3600000).toISOString(),
+      type: "info",
+      message: "Hệ thống đã tự động tối ưu hóa đèn tín hiệu",
+      resolved: true,
+    },
+  ];
+
+  const displayNotifications =
+    notifications.length > 0 ? notifications : MOCK_NOTIFICATIONS;
+  const unreadCount = displayNotifications.filter((n) => !n.resolved).length;
 
   return (
     <div className="relative">
@@ -52,10 +81,8 @@ export const NotificationPopover: React.FC<NotificationPopoverProps> = ({
           ></div>
           <div className="absolute right-0 mt-2 w-80 bg-white dark:bg-gray-800 rounded-lg shadow-xl border border-gray-200 dark:border-gray-700 z-50 overflow-hidden">
             <div className="px-4 py-3 border-b border-gray-200 dark:border-gray-700 flex justify-between items-center">
-              <h3 className="font-semibold text-gray-900 dark:text-white">
-                Thông báo
-              </h3>
-              {notifications.length > 0 && (
+       
+              {displayNotifications.length > 0 && (
                 <button
                   onClick={onClearAll}
                   className="text-xs text-gray-500 hover:text-gray-700 dark:hover:text-gray-300"
@@ -66,13 +93,13 @@ export const NotificationPopover: React.FC<NotificationPopoverProps> = ({
             </div>
 
             <div className="max-h-96 overflow-y-auto">
-              {notifications.length === 0 ? (
+              {displayNotifications.length === 0 ? (
                 <div className="p-4 text-center text-gray-500 dark:text-gray-400 text-sm">
                   Không có thông báo mới
                 </div>
               ) : (
                 <div className="divide-y divide-gray-100 dark:divide-gray-700">
-                  {notifications.map((notification) => (
+                  {displayNotifications.map((notification) => (
                     <div
                       key={notification.id}
                       className={`p-3 hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors ${
